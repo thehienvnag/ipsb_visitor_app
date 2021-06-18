@@ -1,79 +1,38 @@
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:indoor_positioning_visitor/src/common/endpoints.dart';
-import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
-import 'package:indoor_positioning_visitor/src/data/file_upload_utils.dart';
-import 'package:indoor_positioning_visitor/src/models/paging.dart';
-import 'package:indoor_positioning_visitor/src/models/product_category.dart';
-import 'package:indoor_positioning_visitor/src/models/todo.dart';
+import 'package:indoor_positioning_visitor/src/pages/home/views/home_page.dart';
+
+final listFloorPlanFinal = [
+  Floor(name: "Chọn tầng", floorNum: 0),
+  Floor(name: "Tầng 1", floorNum: 1),
+  Floor(name: "Tầng 2", floorNum: 2),
+  Floor(name: "Tầng 3", floorNum: 3),
+  Floor(name: "Tầng 4", floorNum: 4),
+  Floor(name: "Tầng 5", floorNum: 5),
+  Floor(name: "Tầng 5", floorNum: 6),
+];
 
 class HomeController extends GetxController {
-  /// Find ApiHelper instance which has been registered
-  IApiHelper _apiHelper = Get.find();
-  final _imagePicker = ImagePicker();
+  var counter = 0.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    // Call getTodoList from beginning
-    // getTodoList();
+  /// increaseCounter var
+  void increaseCounter() {
+    counter.value++;
   }
 
-  /// To do list values from API
-  final todoList = [].obs;
+  /// [searchValue] for home screen
+  var searchValue = "".obs;
 
-  /// Get product categories
-  final productCategories = [].obs;
-
-  /// Image picked from android
-  final image = ''.obs;
-
-  /// Data input
-  final data = {}.obs;
-
-  /// Change Data input with [field] and [name]
-  void inputData(String field, String value) {
-    data.putIfAbsent(field, () => value);
+  /// change search value with String [value]
+  void changeSearchValue(String value) {
+    searchValue.value = value;
   }
 
-  /// create category
-  Future<void> createCategory() async {
-    Response res = await _apiHelper.postOne(Endpoints.productCategory, data);
-    print(res.body);
-  }
-
-  /// Get todo list
-  Future<void> getTodoList() async {
-    Response res = await _apiHelper.getAll(Endpoints.todos);
-    todoList.clear();
-    todoList.addAll(
-      _apiHelper.convertToList<Todo>(res.body, (json) => Todo.fromJson(json)),
-    );
-    print(todoList);
-  }
-
-  /// Get product categories
-  Future<void> getProductCategories() async {
-    Response res = await _apiHelper.getAll(Endpoints.productCategory);
-    Paging paging = Paging.fromJson(res.body);
-    productCategories.value = _apiHelper.convertToList(
-        paging.content, (json) => ProductCategory.fromJson(json));
-    print(productCategories);
-  }
-
-  /// Pick image
-  Future<void> pickImage() async {
-    var picked = await _imagePicker.getImage(source: ImageSource.gallery);
-    if (picked != null) {
-      image.value = picked.path;
-    }
-  }
-
-  Future<void> uploadImage() async {
-    MultipartFile file =
-        FileUploadUtils.convertToMultipart(image.value, 'file');
-    Response res =
-        await _apiHelper.postOneWithFile(Endpoints.testUploadFile, file);
-    print(res.body);
+  ///  list floor plan data
+  var listFloorPlan = listFloorPlanFinal.obs;
+  /// Get selected of floor
+  var selectedFloor = listFloorPlanFinal[0].obs;
+  /// Change selected of floor
+  void changeSelectedFloor(Floor? floor){
+    selectedFloor.value = floor!;
   }
 }
