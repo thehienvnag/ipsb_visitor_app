@@ -10,7 +10,7 @@ import 'package:indoor_positioning_visitor/src/models/todo.dart';
 class HomeController extends GetxController {
   /// Find ApiHelper instance which has been registered
   IApiHelper _apiHelper = Get.find();
-  final _imagePicker = ImagePicker();
+  final _imagePicker = Get.find();
 
   @override
   void onInit() {
