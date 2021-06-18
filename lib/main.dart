@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:indoor_positioning_visitor/src/common/strings.dart';
 import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
 import 'package:indoor_positioning_visitor/src/routes/app_pages.dart';
@@ -8,6 +9,7 @@ import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 
 void main() {
   Get.lazyPut<IApiHelper>(() => ApiHelper());
+  Get.lazyPut<ImagePicker>(() => ImagePicker());
   runApp(MyApp());
 }
 

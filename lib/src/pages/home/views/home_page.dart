@@ -68,4 +68,6 @@ class HomePage extends GetView<HomeController> {
       ),
     );
   }
+
+  var list = [].map((e) => null).toList();
 }
