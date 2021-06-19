@@ -25,7 +25,7 @@ mixin IApiHelper {
   Future<Response> postOneWithFile(
     String endpoint,
     MultipartFile file, {
-    Map<String, dynamic> data = Constants.noData,
+    Map<String, dynamic> data = Constants.emptyMap,
   });
 
   /// Put 1 to API [endpoint] providing [id] and [data]
@@ -124,7 +124,7 @@ class ApiHelper extends GetConnect with IApiHelper {
   Future<Response> postOneWithFile(
     String endpoint,
     MultipartFile file, {
-    Map<String, dynamic> data = Constants.noData,
+    Map<String, dynamic> data = Constants.emptyMap,
   }) {
     var form = FormData(data);
     form.files.add(MapEntry('file', file));

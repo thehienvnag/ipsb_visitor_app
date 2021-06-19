@@ -6,6 +6,12 @@ class Endpoints {
   /// Version /api
   static const testUploadFile = '$apiVer/TestUploadFile';
 
-  /// Version /api/v1
-  static const productCategory = '$apiVer1/product-categories';
+  /// Product category endpoint version /api/v1
+  static const productCategories = '$apiVer1/product-categories';
+
+  /// Edge enpoint version /api/v1
+  static const edges = '$apiVer1/edges';
+
+  /// Edge enpoint version /api/v1
+  static const locations = '$apiVer1/locations';
 }
