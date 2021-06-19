@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:indoor_positioning_visitor/src/common/app_init.dart';
 import 'package:indoor_positioning_visitor/src/common/strings.dart';
-import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
 import 'package:indoor_positioning_visitor/src/routes/app_pages.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 
 void main() {
-  Get.lazyPut<IApiHelper>(() => ApiHelper());
-  Get.lazyPut<ImagePicker>(() => ImagePicker());
+  AppInit.init();
   runApp(MyApp());
 }
 
@@ -20,7 +18,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: Strings.appName,
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.home,
+      // initialRoute: Routes.home,
+      initialRoute: Routes.testAlgorithm,
       getPages: AppPages.routes,
     );
   }

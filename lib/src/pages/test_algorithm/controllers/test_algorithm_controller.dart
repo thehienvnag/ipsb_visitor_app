@@ -1,13 +1,38 @@
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/graph.dart';
+import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/shortest_path.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:indoor_positioning_visitor/src/common/endpoints.dart';
 import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
 import 'package:indoor_positioning_visitor/src/data/file_upload_utils.dart';
+import 'package:indoor_positioning_visitor/src/models/edge.dart';
 import 'package:indoor_positioning_visitor/src/models/paging.dart';
 import 'package:indoor_positioning_visitor/src/models/product_category.dart';
 import 'package:indoor_positioning_visitor/src/models/todo.dart';
+import 'package:indoor_positioning_visitor/src/services/api/edge_service.dart';
 
-class HomeController extends GetxController {
+class TestAlgorithmController extends GetxController {
+  /// Inject EdgeService
+  IEdgeService _edgeService = Get.find();
+
+  /// Find shortest path algorithm
+  IShortestPath _shortestPath = Get.find();
+
+  /// Graph from destination source
+  var graphFromDest = Constants.defaultGraph.obs;
+
+  /// Get edges from API
+  Future<void> getEdges() async {
+    Paging paging = await _edgeService.getAll(2);
+    List<Edge> edges = paging.content!.cast<Edge>();
+    Graph graph = GraphBuilder.buildGraph(edges);
+    graphFromDest.value = _shortestPath.getShortestPath(graph, 35);
+    print(graphFromDest.value.getPathFrom(30));
+  }
+}
+
+class TestApiController extends GetxController {
   /// Find ApiHelper instance which has been registered
   IApiHelper _apiHelper = Get.find();
   final _imagePicker = Get.find();

@@ -10,7 +10,7 @@ class Paging {
       currentPage,
       nextPage,
       previousPage;
-  final List<dynamic>? content;
+  List<dynamic>? content;
   Paging({
     this.totalCount,
     this.pageSize,
@@ -20,6 +20,11 @@ class Paging {
     this.previousPage,
     this.content,
   });
+
+  /// Convert json array to list
+  void convertToList(Function fromJson) {
+    content = content?.map((x) => fromJson(x)).toList();
+  }
 
   factory Paging.fromJson(Map<String, dynamic> json) => _$PagingFromJson(json);
 
