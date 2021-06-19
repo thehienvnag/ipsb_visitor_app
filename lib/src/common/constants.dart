@@ -4,8 +4,19 @@ import 'package:indoor_positioning_visitor/src/models/location.dart';
 import 'package:indoor_positioning_visitor/src/models/paging.dart';
 
 class Constants {
+  /// Location type is lift
+  static const int locationTypeLift = 3;
+
+  /// Location type is stair
+  static const int locationTypeStair = 4;
+
+  /// Base url for calling api
   static final String baseUrl = "https://ipsb.azurewebsites.net/";
+
+  /// Timeout when calling API
   static final Duration timeout = Duration(seconds: 20);
+
+  /// Default query of paging parameters
   static const Map<String, dynamic> defaultPagingQuery = {
     'page': '1',
     'pageSize': '20'

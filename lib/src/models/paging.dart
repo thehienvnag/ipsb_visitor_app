@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'paging.g.dart';
 
 @JsonSerializable()
-class Paging {
+class Paging<T> {
   final int? totalCount,
       pageSize,
       totalPage,

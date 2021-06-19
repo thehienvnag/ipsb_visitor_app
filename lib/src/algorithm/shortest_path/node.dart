@@ -1,10 +1,12 @@
 import 'package:indoor_positioning_visitor/src/common/constants.dart';
 
-class Node {
+class Node<T> {
   /// Node id
   final int? id;
 
-  Node({this.id});
+  Node({this.id, this.value});
+
+  final T? value;
 
   /// Initial distance for node
   double distance = Constants.infiniteDistance;
@@ -23,7 +25,6 @@ class Node {
 
   @override
   String toString() {
-    // TODO: implement toString
-    return id.toString();
+    return '$id - $value';
   }
 }

@@ -6,8 +6,8 @@ part of 'paging.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Paging _$PagingFromJson(Map<String, dynamic> json) {
-  return Paging(
+Paging<T> _$PagingFromJson<T>(Map<String, dynamic> json) {
+  return Paging<T>(
     totalCount: json['totalCount'] as int?,
     pageSize: json['pageSize'] as int?,
     totalPage: json['totalPage'] as int?,
@@ -18,7 +18,7 @@ Paging _$PagingFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PagingToJson(Paging instance) => <String, dynamic>{
+Map<String, dynamic> _$PagingToJson<T>(Paging<T> instance) => <String, dynamic>{
       'totalCount': instance.totalCount,
       'pageSize': instance.pageSize,
       'totalPage': instance.totalPage,

@@ -15,7 +15,7 @@ class TestAlgorithmPage extends GetView<TestAlgorithmController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             OutlinedButton(
-              onPressed: () => controller.getEdges(),
+              onPressed: () => controller.getStairsAndLifts(),
               child: Text('Get edges'),
             ),
           ],
