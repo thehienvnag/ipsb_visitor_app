@@ -1,7 +1,5 @@
 import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/graph.dart';
 import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/node.dart';
-import 'package:indoor_positioning_visitor/src/models/edge.dart';
-import 'package:indoor_positioning_visitor/src/models/location.dart';
 
 mixin IShortestPath {
   /// Get shortest path from graph [graph] and source node [source]

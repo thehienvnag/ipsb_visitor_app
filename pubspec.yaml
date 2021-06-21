@@ -42,8 +42,9 @@ dependencies:
   dotted_line: ^3.0.0
   # Get more icons to use
   font_awesome_flutter: ^9.1.0
-  # Use with the ticket form for show coupon.
-  # flutter_ticket_widget: ^0.0.1
+
+  # Date formatter
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

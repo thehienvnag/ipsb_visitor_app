@@ -10,13 +10,12 @@ class Coupon {
       description,
       code,
       discountType,
-      expireDate,
-      publishDate,
       productInclude,
       productExclude,
       status;
   final double? amount, maxDiscount, minDiscount, storeId;
   final int? limit;
+  final DateTime? expireDate, publishDate;
 
   Coupon({
     this.id,
