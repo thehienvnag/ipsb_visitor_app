@@ -27,7 +27,7 @@ class TestAlgorithmController extends GetxController {
   /// Get edges from API
   Future<void> getEdges() async {
     // Get edges from API
-    var edges = await _edgeService.getAll(2);
+    var edges = await _edgeService.getEdges([2, 3, 4]);
 
     // Build graph for Dijiktra algorithm
     var graph = Graph.from(edges);
@@ -35,10 +35,12 @@ class TestAlgorithmController extends GetxController {
     // Get shortest path from destination source id
     graphFromDest.value = _shortestPath.getShortestPath(
       graph,
-      destSourceId.value,
+      47,
     );
+
     // Retrieve path from depart source id
-    print(graphFromDest.value.getPathFrom(fromSourceId.value));
+    print(graphFromDest.value.getPathFrom(30));
+    // print(graphFromDest.value.getPathFrom(35));
   }
 
   /// Get stairs and lift on a floor

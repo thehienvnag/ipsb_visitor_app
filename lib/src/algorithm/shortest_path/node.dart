@@ -25,6 +25,6 @@ class Node<T> {
 
   @override
   String toString() {
-    return '$id - $value';
+    return 'id: $id, distance: $distance \n';
   }
 }

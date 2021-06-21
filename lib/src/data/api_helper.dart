@@ -12,7 +12,10 @@ mixin IApiHelper {
   Future<Response> getById<T>(String endpoint, dynamic id);
 
   /// Post 1 to API [endpoint] providing [data]
-  Future<Response> postOne(String endpoint, Map data);
+  Future<Response> postOne(
+    String endpoint,
+    Map<String, dynamic> data,
+  );
 
   /// Post 1 to API [endpoint] providing [data] with many files [files]
   Future<Response> postOneWithFiles(
@@ -24,15 +27,22 @@ mixin IApiHelper {
   /// Post 1 to API [endpoint] providing [data] with many files [files]
   Future<Response> postOneWithFile(
     String endpoint,
-    MultipartFile file, {
-    Map<String, dynamic> data = Constants.emptyMap,
-  });
+    Map<String, dynamic> data,
+    MultipartFile file,
+  );
 
   /// Put 1 to API [endpoint] providing [id] and [data]
   Future<Response> putOne(
     String endpoint,
     dynamic id,
     Map<String, dynamic> data,
+  );
+
+  /// Put 1 to API [endpoint] providing [data] with one file [files]
+  Future<Response> putOneWithOneFile(
+    String endpoint,
+    Map<String, dynamic> data,
+    MultipartFile file,
   );
 
   /// Put 1 to API [endpoint] providing [data] with many files [files]
@@ -46,9 +56,7 @@ mixin IApiHelper {
   Future<Response> deleteOne(String endpoint, dynamic id);
 
   /// Convert json array to list
-  List<T> convertToList<T>(dynamic body, Function fromJson) {
-    return (body as List).map<T>((x) => fromJson(x)).toList();
-  }
+  List<T> convertToList<T>(dynamic body, Function fromJson);
 }
 
 /// Class for calling HTTP methods
@@ -76,8 +84,19 @@ class ApiHelper extends GetConnect with IApiHelper {
   }
 
   @override
-  Future<Response> postOne(String endpoint, Map data) {
+  Future<Response> postOne(String endpoint, Map<String, dynamic> data) {
     return post(endpoint, data);
+  }
+
+  @override
+  Future<Response> postOneWithFile(
+    String endpoint,
+    Map<String, dynamic> data,
+    MultipartFile file,
+  ) {
+    var form = FormData(data);
+    form.files.add(MapEntry('file', file));
+    return post(endpoint, form);
   }
 
   @override
@@ -86,10 +105,10 @@ class ApiHelper extends GetConnect with IApiHelper {
     Map<String, dynamic> data,
     List<MultipartFile> files,
   ) {
-    // Add multipart files to form body
-    data.putIfAbsent('files', () => files);
-
     var form = FormData(data);
+    files.forEach((file) {
+      form.files.add(MapEntry('files', file));
+    });
     return post(endpoint, form);
   }
 
@@ -103,15 +122,27 @@ class ApiHelper extends GetConnect with IApiHelper {
   }
 
   @override
+  Future<Response> putOneWithOneFile(
+    String endpoint,
+    Map<String, dynamic> data,
+    MultipartFile file,
+  ) {
+    var form = FormData(data);
+    form.files.add(MapEntry('files', file));
+
+    return put(endpoint, form);
+  }
+
+  @override
   Future<Response> putOneWithFiles(
     String endpoint,
     Map<String, dynamic> data,
     List<MultipartFile> files,
   ) {
-    // Add multipart files to form body
-    data.putIfAbsent('files', () => files);
-
     var form = FormData(data);
+    files.forEach((file) {
+      form.files.add(MapEntry('files', file));
+    });
     return put(endpoint, form);
   }
 
@@ -121,13 +152,7 @@ class ApiHelper extends GetConnect with IApiHelper {
   }
 
   @override
-  Future<Response> postOneWithFile(
-    String endpoint,
-    MultipartFile file, {
-    Map<String, dynamic> data = Constants.emptyMap,
-  }) {
-    var form = FormData(data);
-    form.files.add(MapEntry('file', file));
-    return post(endpoint, form);
+  List<T> convertToList<T>(body, Function fromJson) {
+    return (body as List).map<T>((x) => fromJson(x)).toList();
   }
 }

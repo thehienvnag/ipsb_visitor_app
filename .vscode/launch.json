@@ -1,0 +1,20 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "indoor_positioning_visitor",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "indoor_positioning_visitor (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": ["--no-sound-null-safety"]
+    }
+  ]
+}

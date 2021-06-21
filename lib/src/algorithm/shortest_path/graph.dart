@@ -25,6 +25,12 @@ class Graph {
   }
 
   List<Node> getPathFrom(int id) {
-    return nodes[id]?.shortestPath.reversed.toList() ?? [];
+    Node? findNode = nodes[id];
+    findNode?.shortestPath.add(findNode);
+    return findNode?.shortestPath.reversed.toList() ?? [];
+  }
+
+  double getDistance(int id) {
+    return nodes[id]?.distance ?? 0;
   }
 }
