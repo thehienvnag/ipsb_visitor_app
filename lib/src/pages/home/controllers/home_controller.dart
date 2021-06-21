@@ -164,19 +164,19 @@ final listStoreSearchFinal = [
 ];
 
 class HomeController extends GetxController {
-  var counter = 0.obs;
-
-  /// IncreaseCounter var
-  void increaseCounter() {
-    counter.value++;
-  }
-
   /// [searchValue] for home screen
   var searchValue = "".obs;
+
+  /// Get list coupons random data
+  var listCoupon = listCouponFinal.obs;
+
+  /// Get list stores when search
+  var listStore = listStoreSearchFinal.obs;
 
   /// Change search value with String [value]
   void changeSearchValue(String value) {
     searchValue.value = value;
+    listStore.value = listStoreSearchFinal;
   }
 
   ///  List floor plan data
@@ -189,10 +189,4 @@ class HomeController extends GetxController {
   void changeSelectedFloor(FloorPlan? floor) {
     selectedFloor.value = floor!;
   }
-
-  /// Get list coupons random data
-  var listCoupon = listCouponFinal.obs;
-
-  /// Get list stores when search
-  var listStore = listStoreSearchFinal.obs;
 }
