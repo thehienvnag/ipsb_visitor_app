@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/controllers/home_controller.dart';
+import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -125,7 +126,6 @@ class HomePage extends GetView<HomeController> {
                   barrierDismissible: false,
                   builder: (context) {
                     return SlidingUpPanel(
-                      //margin: EdgeInsets.only(top: screenSize.height * 0.65),
                       controller: couponPanelController,
                       maxHeight: 190,
                       panelBuilder: (scrollController) => buildCouponPanel(
@@ -352,82 +352,123 @@ class HomePage extends GetView<HomeController> {
                   //     ),
                   //   );
                   // },
-                  child: Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.80,
-                        height: 120,
-                        padding: const EdgeInsets.all(10),
-                        margin: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 90,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(6),
-                                ),
-                                child: Image.network(
-                                  listCoupon[index].imageUrl ?? '',
-                                  width: 100,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 10),
-                              padding: const EdgeInsets.only(top: 15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.45,
-                                    height: 27,
-                                    child: Text(
-                                      listCoupon[index].name ?? '',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 13),
+                    child: TicketBox(
+                      margin: 20,
+                      fromEdgeMain: 62,
+                      fromEdgeSeparator: 134,
+                      isOvalSeparator: false,
+                      smallClipRadius: 15,
+                      clipRadius: 25,
+                      numberOfSmallClips: 8,
+                      ticketWidth: 340,
+                      ticketHeight: 130,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 24, left: 24),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(6),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Image.network(
+                                            listCoupon[index]
+                                                .imageUrl
+                                                .toString(),
+                                            width: 100,
+                                            height: 80,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.all(5),
+                                            margin:
+                                                const EdgeInsets.only(top: 10),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(4),
+                                              ),
+                                              border: Border.all(
+                                                color: Colors.grey.shade300,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              listCoupon[index]
+                                                  .code
+                                                  .toString()
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                color: Colors.green,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ),
-                                  Container(
-                                    height: 25,
-                                    child: Text(
-                                      listCoupon[index].description.toString(),
-                                      style: TextStyle(color: Colors.black87),
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          left: 10, top: 18),
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            listCoupon[index].name.toString(),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 19,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Container(
+                                            height: 20,
+                                            child: Text(
+                                              listCoupon[index]
+                                                  .description
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: Colors.black87),
+                                            ),
+                                          ),
+                                          Container(
+                                            margin:
+                                                const EdgeInsets.only(top: 8),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                OutlinedButton(
+                                                  onPressed: () {},
+                                                  child: Text('Xem chi tiết'),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        listCoupon[index].code ?? '',
-                                        style: TextStyle(
-                                          color: Colors.green,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        '      Xem chi tiết',
-                                        style: TextStyle(
-                                          color: Colors.blueAccent,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 );
               },

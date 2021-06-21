@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/pages/test_algorithm/controllers/test_algorithm_controller.dart';
+import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
 
 class TestAlgorithmPage extends GetView<TestAlgorithmController> {
   @override
@@ -18,72 +19,19 @@ class TestAlgorithmPage extends GetView<TestAlgorithmController> {
               onPressed: () => controller.getEdges(),
               child: Text('Get edges'),
             ),
+            TicketBox(
+              child: Text('Hello'),
+              fromEdgeMain: 74,
+              fromEdgeSeparator: 140,
+              isOvalSeparator: false,
+              smallClipRadius: 15,
+              clipRadius: 22,
+              numberOfSmallClips: 8,
+              ticketWidth: 340,
+            ),
           ],
         ),
       ),
     );
   }
-
-  // Scaffold testCallAPI() {
-  //   return Scaffold(
-  //     body: Center(
-  //       child: SingleChildScrollView(
-  //         child: Column(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             Text('Name: '),
-  //             TextField(
-  //               onSubmitted: (value) => controller.inputData('name', value),
-  //             ),
-  //             OutlinedButton.icon(
-  //               onPressed: () => controller.createCategory(),
-  //               icon: Icon(Icons.post_add),
-  //               label: Text('Post category'),
-  //             ),
-  //             OutlinedButton.icon(
-  //               onPressed: () => controller.pickImage(),
-  //               icon: Icon(Icons.camera_alt),
-  //               label: Text('Pick image'),
-  //             ),
-  //             OutlinedButton.icon(
-  //               onPressed: () => controller.getProductCategories(),
-  //               icon: Icon(Icons.category),
-  //               label: Text('Get product categories'),
-  //             ),
-  //             Obx(() {
-  //               String image = controller.image.value;
-  //               if (image.isEmpty) {
-  //                 return Text('No file has been picked!');
-  //               }
-  //               return Column(
-  //                 children: [
-  //                   Image.file(
-  //                     File(image),
-  //                     width: 200,
-  //                   ),
-  //                   OutlinedButton.icon(
-  //                     onPressed: () => controller.uploadImage(),
-  //                     icon: Icon(Icons.upload),
-  //                     label: Text('UPLOAD'),
-  //                   ),
-  //                 ],
-  //               );
-  //             }),
-  //             Center(
-  //               child: Obx(() {
-  //                 var listPC = controller.productCategories;
-  //                 return ListView.builder(
-  //                   shrinkWrap: true,
-  //                   itemCount: listPC.length,
-  //                   itemBuilder: (context, index) =>
-  //                       Text(listPC[index].toString()),
-  //                 );
-  //               }),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 }
