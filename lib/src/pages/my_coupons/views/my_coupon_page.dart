@@ -21,7 +21,7 @@ class MyCouponPage extends GetView<MyCouponController> {
           backgroundColor: Colors.white,
           leadingWidth: 0,
           title: Center(
-              child: Text('Voucher của tôi', style: TextStyle(color: Colors.black),)),
+              child: Text('Coupon của tôi', style: TextStyle(color: Colors.black),)),
           bottom: TabBar(
             indicatorSize: TabBarIndicatorSize.label,
             indicatorWeight: 3,
