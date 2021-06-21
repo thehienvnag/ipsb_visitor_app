@@ -33,6 +33,16 @@ final listCouponFinal = [
       publishDate: '2022/10/1'
   ),
   CouponInUse(
+      id: 8,
+      name: 'Trà sữa Tocotoco',
+      description: 'Giảm giá cuối tuần',
+      code: 'Giảm 20%',
+      status: 'NotUse',
+      imageUrl: 'https://1office.vn/wp-content/uploads/2020/02/36852230_419716301836700_6088975431891943424_n-1.png',
+      expireDate: '2022/10/15',
+      publishDate: '2022/10/1'
+  ),
+  CouponInUse(
       id: 5,
       name: 'Trà sữa Bobapop',
       description: 'Trà ngon vì sức khỏe',
@@ -63,6 +73,7 @@ final listCouponFinal = [
       expireDate: '2022/10/15',
       publishDate: '2022/10/1'
   ),
+
 ];
 class MyCouponController extends GetxController {
   /// Get selected coupon

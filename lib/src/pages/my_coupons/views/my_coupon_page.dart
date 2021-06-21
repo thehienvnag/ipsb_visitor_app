@@ -8,9 +8,9 @@ import 'package:indoor_positioning_visitor/src/pages/my_coupons/controllers/my_c
 class MyCouponPage extends GetView<MyCouponController> {
   CouponInUse? model;
   List<CouponInUse> listCoupon = [];
-  List<CouponInUse> listAllCoupon = [];
-  List<CouponInUse> listExpireCoupon = [];
-  List<CouponInUse> listCouponUsed = [];
+   List<CouponInUse> listAllCoupon = [];
+  final List<CouponInUse> listExpireCoupon = [];
+  final List<CouponInUse> listCouponUsed = [];
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +20,7 @@ class MyCouponPage extends GetView<MyCouponController> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           leadingWidth: 0,
-          title: Center(
-              child: Text('Coupon của tôi', style: TextStyle(color: Colors.black),)),
+          title: Center(child: Text('Mã giảm giá của tôi', style: TextStyle(color: Colors.black),)),
           bottom: TabBar(
             indicatorSize: TabBarIndicatorSize.label,
             indicatorWeight: 3,
@@ -127,109 +126,85 @@ class MyCouponPage extends GetView<MyCouponController> {
                     builder: (context) => MyCouponDetailPage(listAllCoupon[index]),
                   ));
                 },
-                child: Container(
-                  width: screenSize.width,
-                  child: Column(
-                      children: [
-                        SizedBox(height: 15),
-                        FlutterTicketWidget(
-                          width: screenSize.width*0.9,
-                          height: 130.0,
-                          isCornerRounded: true,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 20.0, right: 20, left: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(6),
-                                      ),
-                                      child: Image.network(
-                                        listAllCoupon[index].imageUrl.toString(),
-                                        width: 100,
-                                        height: 80,
-                                        fit: BoxFit.cover,
-                                      ),
+                child: Column(
+                    children: [
+                      SizedBox(height: 15),
+                      FlutterTicketWidget(
+                        width: screenSize.width*0.9,
+                        height: 130.0,
+                        isCornerRounded: true,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 20.0, right: 20, left: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround  ,
+                                children: <Widget>[
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(6),
                                     ),
-                                    Container(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: List.generate(
-                                          screenSize.height*0.8 ~/ (10 + 5),
-                                              (_) =>
-                                              Container(
-                                                width: 2,
-                                                height: 2,
-                                                color:  Colors.black38,
-                                                margin: EdgeInsets.only(left: 2.5, right: 2.5),
-                                              ),
-                                        ),
-                                      ),
+                                    child: Image.network(
+                                      listAllCoupon[index].imageUrl.toString(),
+                                      width: 100,
+                                      height: 80,
+                                      fit: BoxFit.cover,
                                     ),
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 10),
-                                      width: MediaQuery.of(context).size.width * 0.45,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            listAllCoupon[index].name.toString(),
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold),
-                                          ),
+                                  ),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: List.generate(
+                                      screenSize.height*0.8 ~/ (10 + 5),
+                                          (_) =>
                                           Container(
-                                            height: 20,
-                                            child: Text(
-                                              listAllCoupon[index].description.toString(),
-                                              style: TextStyle(color: Colors.black87),
-                                            ),
+                                            width: 2,
+                                            height: 2,
+                                            color:  Colors.black38,
                                           ),
-                                          Row(
-                                            children: [
-                                              Text(listAllCoupon[index].code.toString(),
-                                                  style: TextStyle(
-                                                      color: Colors.green,
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.bold)
-                                              ),
-                                              GestureDetector(
-                                                onTap: (){
-                                                  Navigator.of(context).push(MaterialPageRoute(
-                                                    builder: (context) => MyCouponDetailPage(listCoupon[index]),
-                                                  ));
-                                                },
-                                                child: Text('  Xem chi tiết',
-                                                    style: TextStyle(
-                                                        color: Colors.blueAccent,
-                                                        fontSize: 13)),
-                                              ),
-                                            ],
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        listAllCoupon[index].name.toString(),
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        listAllCoupon[index].description.toString(),
+                                        style: TextStyle(color: Colors.black87),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(listAllCoupon[index].code.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.green,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold)
                                           ),
-                                          Container(
-                                            margin: EdgeInsets.only(top: 5),
-                                            height: 15,
-                                            child: Text(
-                                              'Ngày hết hạn: ' + listAllCoupon[index].expireDate.toString(),
-                                              style: TextStyle(color: Colors.black87),
-                                            ),
-                                          ),
+                                          Text('  Xem chi tiết',
+                                              style: TextStyle(
+                                                  color: Colors.blueAccent,
+                                                  fontSize: 13)),
                                         ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                      Text(
+                                        'Ngày hết hạn: ' + listAllCoupon[index].expireDate.toString(),
+                                        style: TextStyle(color: Colors.black87),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                      ]
-                  ),
+                      ),
+                    ]
                 ),
               );
             }),
@@ -258,109 +233,85 @@ class MyCouponPage extends GetView<MyCouponController> {
                     builder: (context) => MyCouponDetailPage(listExpireCoupon[index]),
                   ));
                 },
-                child: Container(
-                  width: screenSize.width,
-                  child: Column(
-                      children: [
-                        SizedBox(height: 15),
-                        FlutterTicketWidget(
-                          width: screenSize.width*0.9,
-                          height: 130.0,
-                          isCornerRounded: true,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 20.0, right: 20, left: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(6),
-                                      ),
-                                      child: Image.network(
-                                        listExpireCoupon[index].imageUrl.toString(),
-                                        width: 100,
-                                        height: 80,
-                                        fit: BoxFit.cover,
-                                      ),
+                child: Column(
+                    children: [
+                      SizedBox(height: 15),
+                      FlutterTicketWidget(
+                        width: screenSize.width*0.9,
+                        height: 130.0,
+                        isCornerRounded: true,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 20.0, right: 20, left: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround ,
+                                children: <Widget>[
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(6),
                                     ),
-                                    Container(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: List.generate(
-                                          screenSize.height*0.8 ~/ (10 + 5),
-                                              (_) =>
-                                              Container(
-                                                width: 2,
-                                                height: 2,
-                                                color:  Colors.black38,
-                                                margin: EdgeInsets.only(left: 2.5, right: 2.5),
-                                              ),
-                                        ),
-                                      ),
+                                    child: Image.network(
+                                      listExpireCoupon[index].imageUrl.toString(),
+                                      width: 100,
+                                      height: 80,
+                                      fit: BoxFit.cover,
                                     ),
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 10),
-                                      width: MediaQuery.of(context).size.width * 0.45,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            listExpireCoupon[index].name.toString(),
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold),
-                                          ),
+                                  ),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: List.generate(
+                                      screenSize.height*0.8 ~/ (10 + 5),
+                                          (_) =>
                                           Container(
-                                            height: 20,
-                                            child: Text(
-                                              listExpireCoupon[index].description.toString(),
-                                              style: TextStyle(color: Colors.black87),
-                                            ),
+                                            width: 2,
+                                            height: 2,
+                                            color:  Colors.black38,
                                           ),
-                                          Row(
-                                            children: [
-                                              Text(listExpireCoupon[index].code.toString(),
-                                                  style: TextStyle(
-                                                      color: Colors.green,
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.bold)
-                                              ),
-                                              GestureDetector(
-                                                onTap: (){
-                                                  Navigator.of(context).push(MaterialPageRoute(
-                                                    builder: (context) => MyCouponDetailPage(listCoupon[index]),
-                                                  ));
-                                                },
-                                                child: Text('  Xem chi tiết',
-                                                    style: TextStyle(
-                                                        color: Colors.blueAccent,
-                                                        fontSize: 15)),
-                                              ),
-                                            ],
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        listExpireCoupon[index].name.toString(),
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        listExpireCoupon[index].description.toString(),
+                                        style: TextStyle(color: Colors.black87),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(listExpireCoupon[index].code.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.green,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold)
                                           ),
-                                          Container(
-                                            margin: EdgeInsets.only(top: 5),
-                                            height: 15,
-                                            child: Text(
-                                              'Ngày hết hạn: ' + listExpireCoupon[index].expireDate.toString(),
-                                              style: TextStyle(color: Colors.black87),
-                                            ),
-                                          ),
+                                          Text('  Xem chi tiết',
+                                              style: TextStyle(
+                                                  color: Colors.blueAccent,
+                                                  fontSize: 15)),
                                         ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                      Text(
+                                        'Ngày hết hạn: ' + listExpireCoupon[index].expireDate.toString(),
+                                        style: TextStyle(color: Colors.black87),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                      ]
-                  ),
+                      ),
+                    ]
                 ),
               );
             }),
@@ -389,109 +340,88 @@ class MyCouponPage extends GetView<MyCouponController> {
                       builder: (context) => MyCouponDetailPage(listCouponUsed[index]),
                     ));
                   },
-                  child: Container(
-                    width: screenSize.width,
-                    child: Column(
-                        children: [
-                          SizedBox(height: 15),
-                          FlutterTicketWidget(
-                            width: screenSize.width*0.9,
-                            height: 130.0,
-                            isCornerRounded: true,
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 20.0, right: 20, left: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(6),
-                                        ),
-                                        child: Image.network(
-                                          listCouponUsed[index].imageUrl.toString(),
-                                          width: 100,
-                                          height: 80,
-                                          fit: BoxFit.cover,
-                                        ),
+                  child: Column(
+                      children: [
+                        SizedBox(height: 15),
+                        FlutterTicketWidget(
+                          width: screenSize.width*0.9,
+                          height: 130.0,
+                          isCornerRounded: true,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 20.0, right: 20, left: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround ,
+                                  children: <Widget>[
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(6),
                                       ),
-                                      Container(
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: List.generate(
-                                            screenSize.height*0.8 ~/ (10 + 5),
-                                                (_) =>
-                                                Container(
-                                                  width: 2,
-                                                  height: 2,
-                                                  color:  Colors.black38,
-                                                  margin: EdgeInsets.only(left: 2.5, right: 2.5),
-                                                ),
-                                          ),
-                                        ),
+                                      child: Image.network(
+                                        listCouponUsed[index].imageUrl.toString(),
+                                        width: 100,
+                                        height: 80,
+                                        fit: BoxFit.cover,
                                       ),
-                                      Container(
-                                        margin: const EdgeInsets.only(left: 10),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
+                                    ),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: List.generate(
+                                        screenSize.height*0.8 ~/ (10 + 5),
+                                            (_) =>
+                                            Container(
+                                              width: 2,
+                                              height: 2,
+                                              color:  Colors.black38,
+                                            ),
+                                      ),
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          listCouponUsed[index].name.toString(),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          listCouponUsed[index].description.toString(),
+                                          style: TextStyle(color: Colors.black87),
+                                        ),
+                                        Row(
+                                          children: [
                                             Text(
-                                              listCouponUsed[index].name.toString(),
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
+                                                listCouponUsed[index].code.toString(),
+                                                style: TextStyle(
+                                                    color: Colors.green,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold
+                                                )
                                             ),
-                                            Container(
-                                              height: 20,
-                                              child: Text(
-                                                listCouponUsed[index].description.toString(),
-                                                style: TextStyle(color: Colors.black87),
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                    listCouponUsed[index].code.toString(),
-                                                    style: TextStyle(
-                                                        color: Colors.green,
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.bold)
-                                                ),
-                                                GestureDetector(
-                                                  onTap: (){
-                                                    Navigator.of(context).push(MaterialPageRoute(
-                                                      builder: (context) => MyCouponDetailPage(listCouponUsed[index]),
-                                                    ));
-                                                  },
-                                                  child: Text('  Xem chi tiết',
-                                                      style: TextStyle(
-                                                          color: Colors.blueAccent,
-                                                          fontSize: 15)),
-                                                ),
-                                              ],
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.only(top: 5),
-                                              height: 15,
-                                              child: Text(
-                                                'Ngày sử dụng: ' + listCouponUsed[index].applyDate.toString(),
-                                                style: TextStyle(color: Colors.black87),
-                                              ),
+                                            Text('  Xem chi tiết',
+                                                style: TextStyle(
+                                                    color: Colors.blueAccent,
+                                                    fontSize: 15)
                                             ),
                                           ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                        Text(
+                                          'Ngày sử dụng: ' + listCouponUsed[index].applyDate.toString(),
+                                          style: TextStyle(color: Colors.black87),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
-                        ]
-                    ),
+                        ),
+                      ]
                   ),
                 );
               }),
