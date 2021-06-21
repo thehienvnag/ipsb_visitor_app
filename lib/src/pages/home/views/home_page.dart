@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_ticket_widget/flutter_ticket_widget.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/controllers/home_controller.dart';
+import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -352,38 +352,80 @@ class HomePage extends GetView<HomeController> {
                   //     ),
                   //   );
                   // },
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10),
-                        child: FlutterTicketWidget(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          height: 110.0,
-                          isCornerRounded: true,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 20.0, right: 20, left: 20),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 13),
+                    child: TicketBox(
+                      margin: 20,
+                      fromEdgeMain: 62,
+                      fromEdgeSeparator: 134,
+                      isOvalSeparator: false,
+                      smallClipRadius: 15,
+                      clipRadius: 25,
+                      numberOfSmallClips: 8,
+                      ticketWidth: 340,
+                      ticketHeight: 130,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 24, left: 24),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     ClipRRect(
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(6),
                                       ),
-                                      child: Image.network(
-                                        listCoupon[index].imageUrl.toString(),
-                                        width: 100,
-                                        height: 80,
-                                        fit: BoxFit.cover,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Image.network(
+                                            listCoupon[index]
+                                                .imageUrl
+                                                .toString(),
+                                            width: 100,
+                                            height: 80,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.all(5),
+                                            margin:
+                                                const EdgeInsets.only(top: 10),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(4),
+                                              ),
+                                              border: Border.all(
+                                                color: Colors.grey.shade300,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              listCoupon[index]
+                                                  .code
+                                                  .toString()
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                color: Colors.green,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     Container(
-                                      margin: const EdgeInsets.only(left: 10),
-                                      width: MediaQuery.of(context).size.width * 0.4,
+                                      margin: const EdgeInsets.only(
+                                          left: 10, top: 18),
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
                                             listCoupon[index].name.toString(),
@@ -395,23 +437,26 @@ class HomePage extends GetView<HomeController> {
                                           Container(
                                             height: 20,
                                             child: Text(
-                                              listCoupon[index].description.toString(),
-                                              style: TextStyle(color: Colors.black87),
+                                              listCoupon[index]
+                                                  .description
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: Colors.black87),
                                             ),
                                           ),
-                                          Row(
-                                            children: [
-                                              Text(listCoupon[index].code.toString(),
-                                                  style: TextStyle(
-                                                      color: Colors.green,
-                                                      fontSize: 15,
-                                                      fontWeight: FontWeight.bold)
-                                              ),
-                                              Text('  Xem chi tiết',
-                                                  style: TextStyle(
-                                                      color: Colors.blueAccent,
-                                                      fontSize: 13)),
-                                            ],
+                                          Container(
+                                            margin:
+                                                const EdgeInsets.only(top: 8),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                OutlinedButton(
+                                                  onPressed: () {},
+                                                  child: Text('Xem chi tiết'),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -421,9 +466,9 @@ class HomePage extends GetView<HomeController> {
                               ],
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 );
               },
