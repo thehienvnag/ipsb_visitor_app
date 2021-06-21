@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: Strings.appName,
       debugShowCheckedModeBanner: false,
-      // initialRoute: Routes.home,
-      initialRoute: Routes.testAlgorithm,
+      initialRoute: Routes.home,
+      // initialRoute: Routes.testAlgorithm,
       getPages: AppPages.routes,
     );
   }
