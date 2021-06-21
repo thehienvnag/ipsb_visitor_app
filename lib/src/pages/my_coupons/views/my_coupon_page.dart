@@ -61,7 +61,7 @@ class MyCouponPage extends GetView<MyCouponController> {
             return  TabBarView(
               children: [
                 _AllCoupon(listCoupon, context, 'NotUse'),
-                _ExpireCoupon(listCoupon, context, 'ExpireDate'),
+                _ExpireCoupon(listCoupon, context, 'Expired'),
                 _UsedCoupon(listCoupon, context, 'Used'),
               ],
             );
@@ -129,14 +129,6 @@ class MyCouponPage extends GetView<MyCouponController> {
                 },
                 child: Container(
                   width: screenSize.width,
-                  // decoration: BoxDecoration(
-                  //   border: Border.all(width: 4),
-                  //   boxShadow: [ BoxShadow(
-                  //       spreadRadius: 2,
-                  //       blurRadius: 10,
-                  //       offset: Offset(0, 10))
-                  //   ],
-                  // ),
                   child: Column(
                       children: [
                         SizedBox(height: 15),
@@ -150,20 +142,17 @@ class MyCouponPage extends GetView<MyCouponController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    Container(
-                                      height: 80,
-                                      margin: EdgeInsets.only(left: 15),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(6),
-                                        ),
-                                        child: Image.network(
-                                          listAllCoupon[index].imageUrl.toString(),
-                                          width: 100,
-                                          fit: BoxFit.cover,
-                                        ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(6),
+                                      ),
+                                      child: Image.network(
+                                        listAllCoupon[index].imageUrl.toString(),
+                                        width: 100,
+                                        height: 80,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                     Container(
@@ -183,22 +172,19 @@ class MyCouponPage extends GetView<MyCouponController> {
                                     ),
                                     Container(
                                       margin: const EdgeInsets.only(left: 10),
+                                      width: MediaQuery.of(context).size.width * 0.45,
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Container(
-                                            width: MediaQuery.of(context).size.width * 0.45,
-                                            height: 27,
-                                            child: Text(
-                                              listAllCoupon[index].name.toString(),
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                          Text(
+                                            listAllCoupon[index].name.toString(),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                           Container(
-                                            height: 25,
+                                            height: 20,
                                             child: Text(
                                               listAllCoupon[index].description.toString(),
                                               style: TextStyle(color: Colors.black87),
@@ -218,10 +204,10 @@ class MyCouponPage extends GetView<MyCouponController> {
                                                     builder: (context) => MyCouponDetailPage(listCoupon[index]),
                                                   ));
                                                 },
-                                                child: Text('      Xem chi tiết',
+                                                child: Text('  Xem chi tiết',
                                                     style: TextStyle(
                                                         color: Colors.blueAccent,
-                                                        fontSize: 15)),
+                                                        fontSize: 13)),
                                               ),
                                             ],
                                           ),
@@ -274,14 +260,6 @@ class MyCouponPage extends GetView<MyCouponController> {
                 },
                 child: Container(
                   width: screenSize.width,
-                  // decoration: BoxDecoration(
-                  //   border: Border.all(width: 4),
-                  //   boxShadow: [ BoxShadow(
-                  //       spreadRadius: 2,
-                  //       blurRadius: 10,
-                  //       offset: Offset(0, 10))
-                  //   ],
-                  // ),
                   child: Column(
                       children: [
                         SizedBox(height: 15),
@@ -295,20 +273,17 @@ class MyCouponPage extends GetView<MyCouponController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    Container(
-                                      height: 80,
-                                      margin: EdgeInsets.only(left: 15),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(6),
-                                        ),
-                                        child: Image.network(
-                                          listExpireCoupon[index].imageUrl.toString(),
-                                          width: 100,
-                                          fit: BoxFit.cover,
-                                        ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(6),
+                                      ),
+                                      child: Image.network(
+                                        listExpireCoupon[index].imageUrl.toString(),
+                                        width: 100,
+                                        height: 80,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                     Container(
@@ -328,22 +303,19 @@ class MyCouponPage extends GetView<MyCouponController> {
                                     ),
                                     Container(
                                       margin: const EdgeInsets.only(left: 10),
+                                      width: MediaQuery.of(context).size.width * 0.45,
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Container(
-                                            width: MediaQuery.of(context).size.width * 0.45,
-                                            height: 27,
-                                            child: Text(
-                                              listExpireCoupon[index].name.toString(),
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                          Text(
+                                            listExpireCoupon[index].name.toString(),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                           Container(
-                                            height: 25,
+                                            height: 20,
                                             child: Text(
                                               listExpireCoupon[index].description.toString(),
                                               style: TextStyle(color: Colors.black87),
@@ -363,7 +335,7 @@ class MyCouponPage extends GetView<MyCouponController> {
                                                     builder: (context) => MyCouponDetailPage(listCoupon[index]),
                                                   ));
                                                 },
-                                                child: Text('      Xem chi tiết',
+                                                child: Text('  Xem chi tiết',
                                                     style: TextStyle(
                                                         color: Colors.blueAccent,
                                                         fontSize: 15)),
@@ -419,14 +391,6 @@ class MyCouponPage extends GetView<MyCouponController> {
                   },
                   child: Container(
                     width: screenSize.width,
-                    // decoration: BoxDecoration(
-                    //   border: Border.all(width: 4),
-                    //   boxShadow: [ BoxShadow(
-                    //       spreadRadius: 2,
-                    //       blurRadius: 10,
-                    //       offset: Offset(0, 10))
-                    //   ],
-                    // ),
                     child: Column(
                         children: [
                           SizedBox(height: 15),
@@ -440,20 +404,17 @@ class MyCouponPage extends GetView<MyCouponController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      Container(
-                                        height: 80,
-                                        margin: EdgeInsets.only(left: 15),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(6),
-                                          ),
-                                          child: Image.network(
-                                            listCouponUsed[index].imageUrl.toString(),
-                                            width: 100,
-                                            fit: BoxFit.cover,
-                                          ),
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(6),
+                                        ),
+                                        child: Image.network(
+                                          listCouponUsed[index].imageUrl.toString(),
+                                          width: 100,
+                                          height: 80,
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                       Container(
@@ -476,19 +437,15 @@ class MyCouponPage extends GetView<MyCouponController> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Container(
-                                              width: MediaQuery.of(context).size.width * 0.45,
-                                              height: 27,
-                                              child: Text(
-                                                listCouponUsed[index].name.toString(),
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
+                                            Text(
+                                              listCouponUsed[index].name.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             Container(
-                                              height: 25,
+                                              height: 20,
                                               child: Text(
                                                 listCouponUsed[index].description.toString(),
                                                 style: TextStyle(color: Colors.black87),
@@ -509,7 +466,7 @@ class MyCouponPage extends GetView<MyCouponController> {
                                                       builder: (context) => MyCouponDetailPage(listCouponUsed[index]),
                                                     ));
                                                   },
-                                                  child: Text('      Xem chi tiết',
+                                                  child: Text('  Xem chi tiết',
                                                       style: TextStyle(
                                                           color: Colors.blueAccent,
                                                           fontSize: 15)),

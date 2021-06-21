@@ -27,7 +27,7 @@ final listCouponFinal = [
       name: 'Trà sữa Tocotoco',
       description: 'Trà ngon vì sức khỏe',
       code: 'Giảm 50%',
-      status: 'NotUse',
+      status: 'Expired',
       imageUrl: 'https://1office.vn/wp-content/uploads/2020/02/36852230_419716301836700_6088975431891943424_n-1.png',
       expireDate: '2022/10/15',
       publishDate: '2022/10/1'
