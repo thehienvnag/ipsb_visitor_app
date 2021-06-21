@@ -35,6 +35,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   # Use with the Ticketview class for ticket style.
   ticketview: ^1.0.0
+  # Use with the ticket form for show visitor coupon.
+  flutter_ticket_widget: ^0.0.1
 
 dev_dependencies:
   flutter_test:
