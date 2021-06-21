@@ -28,7 +28,7 @@ class LocationService extends BaseService<Location>
     var stairs = getLocationByType(Constants.locationTypeStair, floorPlanId);
     var lifts = getLocationByType(Constants.locationTypeLift, floorPlanId);
     var result = await Future.wait([stairs, lifts]);
-    return result[0] + result[1];
+    return result.expand((element) => element).toList();
   }
 
   @override

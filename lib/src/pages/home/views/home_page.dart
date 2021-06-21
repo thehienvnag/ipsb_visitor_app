@@ -115,7 +115,7 @@ class HomePage extends GetView<HomeController> {
         if (controller.searchValue.isEmpty) {
           return Container(
             alignment: Alignment.bottomLeft,
-            margin: EdgeInsets.only(left: 30, bottom: 80),
+            margin: EdgeInsets.only(left: 30, bottom: 130),
             width: screenSize.width,
             child: ElevatedButton(
               onPressed: () {
@@ -325,8 +325,17 @@ class HomePage extends GetView<HomeController> {
   }) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Row(
+      body: Column(
         children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 13),
+            width: 70,
+            height: 6,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+          ),
           Expanded(child: Obx(() {
             var listCoupon = controller.listCoupon;
             return ListView.builder(
