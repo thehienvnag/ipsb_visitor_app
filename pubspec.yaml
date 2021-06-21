@@ -40,6 +40,8 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   # Get more icons to use
   font_awesome_flutter: ^9.1.0
+  # Use with the ticket form for show coupon.
+  flutter_ticket_widget: ^0.0.1
 
 dev_dependencies:
   flutter_test:
