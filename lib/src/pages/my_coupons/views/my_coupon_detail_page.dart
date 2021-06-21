@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupons/controllers/my_coupon_controller.dart';
+import 'package:indoor_positioning_visitor/src/pages/show_coupon_qr/views/show_coupon_qr_page.dart';
 
 class MyCouponDetailPage extends GetView<MyCouponController> {
   final CouponInUse? coupon;
@@ -43,10 +44,10 @@ class MyCouponDetailPage extends GetView<MyCouponController> {
         margin: EdgeInsets.only( left: 30, right: 30),
         child: Column(
             children: [
-              SizedBox(height: 15),
+              SizedBox(height: 10),
               FlutterTicketWidget(
                 width: screenSize.width,
-                height: screenSize.height*0.86,
+                height: screenSize.height*0.83,
                 isCornerRounded: true,
                 child: Padding(
                   padding: EdgeInsets.only( left: 25, right: 25),
@@ -55,7 +56,7 @@ class MyCouponDetailPage extends GetView<MyCouponController> {
                       Container(
                         color: Colors.white,
                         width: screenSize.width,
-                        height: screenSize.height *0.64,
+                        height: screenSize.height *0.65,
                         child: Column(
                           children: [
                             Container(
@@ -86,7 +87,7 @@ class MyCouponDetailPage extends GetView<MyCouponController> {
                                     child: Column(
                                       children: [
                                         Container(
-                                          width: screenSize.width * 0.4,
+                                          width: screenSize.width * 0.5,
                                           margin: EdgeInsets.only(bottom: 5),
                                           child: Text(
                                             coupon!.name.toString(),
@@ -100,8 +101,9 @@ class MyCouponDetailPage extends GetView<MyCouponController> {
                                         Text(
                                           coupon!.code.toString(),
                                           style: TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.lightGreen
+                                            fontSize: 19,
+                                            color: Colors.lightGreen,
+                                            fontWeight: FontWeight.bold
                                           ),
                                         )
                                       ],
@@ -111,7 +113,7 @@ class MyCouponDetailPage extends GetView<MyCouponController> {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(top: 30, bottom: 20),
+                              margin: EdgeInsets.only(top: 30, bottom: 10),
                               child: Text(coupon!.description.toString(),
                                   style: TextStyle(
                                       fontSize: 20,
@@ -232,7 +234,7 @@ class MyCouponDetailPage extends GetView<MyCouponController> {
                             Container(
                               margin: EdgeInsets.only(left: 25),
                               child: Text(
-                                "Ngày hết hạn mã : ",
+                                "Ngày hết hạn : ",
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -247,7 +249,7 @@ class MyCouponDetailPage extends GetView<MyCouponController> {
                         ),
                       ),
                       Container(
-                        height: 25,
+                        height: 20,
                         child: coupon!.applyDate.toString().endsWith('null') ?
                         SizedBox() : Row(
                           children: [
@@ -312,9 +314,11 @@ class MyCouponDetailPage extends GetView<MyCouponController> {
                             FlatButton(
                               textColor: Color(0xFF6200EE),
                               onPressed: () {
-                                // code here
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ShowCouponQRPage(coupon),
+                                ));
                               },
-                              child: Text('Lưu ngay'),
+                              child: Text('ÁP dụng'),
                             ),
                           ],
                         );

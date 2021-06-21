@@ -37,6 +37,8 @@ dependencies:
   ticketview: ^1.0.0
   # Use with the ticket form for show visitor coupon.
   flutter_ticket_widget: ^0.0.1
+  # create QR Code
+  barcode_widget: ^1.5.0
 
 dev_dependencies:
   flutter_test:
