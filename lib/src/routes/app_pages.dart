@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/bindings/my_coupon_detail_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupons/bindings/my_coupon_binding.dart';
-import 'package:indoor_positioning_visitor/src/pages/my_coupons/views/my_coupon_detail_page.dart';
+import '../pages/my_coupon_detail/views/my_coupon_detail_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupons/views/my_coupon_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/notifications/bindings/notifications_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/notifications/views/notifications_page.dart';
@@ -32,7 +33,7 @@ class AppPages {
     GetPage(
       name: Routes.couponDetail,
       page: () => MyCouponDetailPage(),
-      binding: MyCouponBinding(),
+      binding: MyCouponDetailBinding(),
     ),
     GetPage(
       name: Routes.notifications,

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:indoor_positioning_visitor/src/models/store.dart';
+import 'package:indoor_positioning_visitor/src/services/shared_data/shared_data.dart';
 
 final listFloorPlanFinal = [
   FloorPlan(floorCode: "Chọn tầng", floorNumber: 0),
@@ -189,4 +190,7 @@ class HomeController extends GetxController {
   void changeSelectedFloor(FloorPlan? floor) {
     selectedFloor.value = floor!;
   }
+
+  /// Shared data
+  final SharedData sharedData = Get.find();
 }

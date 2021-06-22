@@ -231,7 +231,8 @@ class MyCouponPage extends GetView<MyCouponController> {
             final coupon = couponInUse.coupon!;
             return GestureDetector(
               onTap: () {
-                Get.toNamed(Routes.myCoupon);
+                controller.sharedData.saveCouponInUse(couponInUse);
+                Get.toNamed(Routes.couponDetail);
               },
               child: Column(children: [
                 SizedBox(height: 15),
@@ -343,7 +344,8 @@ class MyCouponPage extends GetView<MyCouponController> {
             var coupon = couponInUse.coupon!;
             return GestureDetector(
               onTap: () {
-                Get.toNamed(Routes.myCoupon);
+                controller.sharedData.saveCouponInUse(couponInUse);
+                Get.toNamed(Routes.couponDetail);
               },
               child: Column(children: [
                 SizedBox(height: 15),
