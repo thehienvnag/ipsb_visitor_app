@@ -4,4 +4,5 @@ class Routes {
   static const String couponDetail = "/couponDetail";
   static const String myCoupon = "/myCoupon";
   static const String showCouponQR = "/showCouponQR";
+  static const String notifications = "/notifications";
 }
