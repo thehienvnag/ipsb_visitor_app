@@ -285,8 +285,7 @@ class MyCouponPage extends GetView<MyCouponController> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  coupon.description.toString() ??
-                                      'Description not set',
+                                  coupon.description ?? 'Description not set',
                                   style: TextStyle(color: Colors.black87),
                                 ),
                                 Row(
