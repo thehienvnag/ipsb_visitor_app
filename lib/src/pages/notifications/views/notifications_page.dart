@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/edge.dart';
 import 'package:indoor_positioning_visitor/src/pages/notifications/controllers/notifications_controller.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 

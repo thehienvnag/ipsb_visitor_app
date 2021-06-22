@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/controllers/my_coupon_detail_controller.dart';
-import 'package:indoor_positioning_visitor/src/pages/my_coupons/controllers/my_coupon_controller.dart';
+
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/shared_data/shared_data.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
@@ -26,7 +26,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
               color: Colors.black,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Get.back();
             },
           ),
           backgroundColor: Colors.white,

@@ -8,10 +8,10 @@ import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class HomePage extends GetView<HomeController> {
-  final storePanelController = PanelController();
-  final couponPanelController = PanelController();
   final double tabBarHeight = 80;
 
+  final storePanelController = PanelController();
+  final couponPanelController = PanelController();
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -236,6 +236,8 @@ class HomePage extends GetView<HomeController> {
             return ListView.builder(
               itemCount: listStore.length,
               itemBuilder: (context, index) {
+                final store = listStore[index];
+                final floorPlan = store.floorPlan;
                 return GestureDetector(
                   // onTap: () {
                   //   Navigator.push(
@@ -258,7 +260,7 @@ class HomePage extends GetView<HomeController> {
                               Radius.circular(6),
                             ),
                             child: Image.network(
-                              listStore[index].imageUrl ?? '',
+                              store.imageUrl ?? '',
                               width: 110,
                               fit: BoxFit.cover,
                             ),
@@ -276,35 +278,35 @@ class HomePage extends GetView<HomeController> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      listStore[index].floorPlan?.floorCode ??
-                                          'L-NotSet',
+                                      floorPlan?.floorCode ?? 'L-NotSet',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Container(
-                                        child: Icon(
-                                      Icons.directions,
-                                      size: 33,
-                                    )),
+                                    OutlinedButton(
+                                      onPressed: () {},
+                                      child: Icon(Icons.directions),
+                                    ),
                                   ],
                                 ),
                               ),
                               Container(
                                 height: 20,
                                 child: Text(
-                                  listStore[index].description ??
-                                      'Description not set',
+                                  store.description ?? 'Description not set',
                                   style: TextStyle(color: Colors.black87),
                                 ),
                               ),
-                              Text(listStore[index].status ?? 'Status not set',
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold)),
+                              Text(
+                                store.status ?? 'Status not set',
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -348,7 +350,7 @@ class HomePage extends GetView<HomeController> {
                 return GestureDetector(
                   onTap: () {
                     controller.sharedData.saveCoupon(coupon);
-                    Get.offAndToNamed(Routes.couponDetail);
+                    Get.offNamed(Routes.couponDetail);
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 13),
@@ -382,7 +384,7 @@ class HomePage extends GetView<HomeController> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Image.network(
-                                            coupon.imageUrl.toString(),
+                                            coupon.imageUrl ?? '',
                                             width: 100,
                                             height: 80,
                                             fit: BoxFit.cover,
@@ -400,7 +402,9 @@ class HomePage extends GetView<HomeController> {
                                               ),
                                             ),
                                             child: Text(
-                                              coupon.code.toString().toUpperCase(),
+                                              coupon.code
+                                                  .toString()
+                                                  .toUpperCase(),
                                               style: TextStyle(
                                                 color: Colors.green,
                                                 fontSize: 15,

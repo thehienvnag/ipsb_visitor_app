@@ -8,7 +8,7 @@ import 'package:indoor_positioning_visitor/src/pages/store_details/controllers/s
 class StoreDetailsPage extends GetView<StoreDetailsController> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
