@@ -8,6 +8,8 @@
 .buildlog/
 .history
 .svn/
+.vscode/
+pubspec.lock
 
 # IntelliJ related
 *.iml

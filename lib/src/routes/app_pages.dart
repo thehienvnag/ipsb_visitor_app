@@ -6,6 +6,8 @@ import 'package:indoor_positioning_visitor/src/pages/notifications/bindings/noti
 import 'package:indoor_positioning_visitor/src/pages/notifications/views/notifications_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/show_coupon_qr/bindings/show_coupon_qr_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/show_coupon_qr/views/show_coupon_qr_page.dart';
+import 'package:indoor_positioning_visitor/src/pages/store_details/bindings/store_details_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/store_details/views/store_details_page.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/bindings/home_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/views/home_page.dart';
@@ -36,6 +38,11 @@ class AppPages {
       name: Routes.notifications,
       page: () => NotificationsPage(),
       binding: NotificationsBinding(),
+    ),
+    GetPage(
+      name: Routes.storeDetails,
+      page: () => StoreDetailsPage(),
+      binding: StoreDetailsBinding(),
     ),
   ];
 }
