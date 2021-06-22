@@ -290,11 +290,13 @@ class MyCouponPage extends GetView<MyCouponController> {
                                 ),
                                 Row(
                                   children: [
-                                    Text(coupon.name ?? 'Name not set',
-                                        style: TextStyle(
-                                            color: Colors.green,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)),
+                                    Text(
+                                      coupon.name ?? 'Name not set',
+                                      style: TextStyle(
+                                          color: Colors.green,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                     Text('  Xem chi tiết',
                                         style: TextStyle(
                                             color: Colors.blueAccent,
