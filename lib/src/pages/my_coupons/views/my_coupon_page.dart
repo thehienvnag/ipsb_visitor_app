@@ -231,7 +231,8 @@ class MyCouponPage extends GetView<MyCouponController> {
             final coupon = couponInUse.coupon!;
             return GestureDetector(
               onTap: () {
-                Get.toNamed(Routes.myCoupon);
+                controller.sharedData.saveCouponInUse(couponInUse);
+                Get.toNamed(Routes.couponDetail);
               },
               child: Column(children: [
                 SizedBox(height: 15),
@@ -285,13 +286,13 @@ class MyCouponPage extends GetView<MyCouponController> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  coupon.description.toString() ??
+                                  coupon.description ??
                                       'Description not set',
                                   style: TextStyle(color: Colors.black87),
                                 ),
                                 Row(
                                   children: [
-                                    Text(coupon.name ?? 'Name not set',
+                                    Text(coupon.code ?? 'Name not set',
                                         style: TextStyle(
                                             color: Colors.green,
                                             fontSize: 16,
@@ -342,7 +343,8 @@ class MyCouponPage extends GetView<MyCouponController> {
             var coupon = couponInUse.coupon!;
             return GestureDetector(
               onTap: () {
-                Get.toNamed(Routes.myCoupon);
+                controller.sharedData.saveCouponInUse(couponInUse);
+                Get.toNamed(Routes.couponDetail);
               },
               child: Column(children: [
                 SizedBox(height: 15),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/pages/show_coupon_qr/controllers/show_coupon_qr_controller.dart';
 import 'package:indoor_positioning_visitor/src/services/shared_data/shared_data.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class ShowCouponQRPage extends GetView<ShowCouponQRController> {
   final SharedData sharedData = Get.find();
@@ -64,13 +65,11 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 15),
-                      // BarcodeWidget(
-                      //   barcode: Barcode.qrCode(),
-                      //   color: Colors.black,
-                      //   data: coupon!.code.toString(),
-                      //   width: 180,
-                      //   height: 180,
-                      // ),
+                      QrImage(
+                        data: coupon.code.toString(),
+                        size: 180,
+                        backgroundColor: Colors.white,
+                      ),
                       SizedBox(height: 20),
                       Center(
                         child: Text(

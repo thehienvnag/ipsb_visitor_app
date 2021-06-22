@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/controllers/home_controller.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -343,15 +344,12 @@ class HomePage extends GetView<HomeController> {
               shrinkWrap: true,
               itemCount: listCoupon.length,
               itemBuilder: (context, index) {
+                var coupon = listCoupon[index];
                 return GestureDetector(
-                  // onTap: () {
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => StoreDetailScreen(id: model.id.toString()),
-                  //     ),
-                  //   );
-                  // },
+                  onTap: () {
+                    controller.sharedData.saveCoupon(coupon);
+                    Get.offAndToNamed(Routes.couponDetail);
+                  },
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 13),
                     child: TicketBox(
@@ -384,9 +382,7 @@ class HomePage extends GetView<HomeController> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Image.network(
-                                            listCoupon[index]
-                                                .imageUrl
-                                                .toString(),
+                                            coupon.imageUrl.toString(),
                                             width: 100,
                                             height: 80,
                                             fit: BoxFit.cover,
@@ -404,10 +400,7 @@ class HomePage extends GetView<HomeController> {
                                               ),
                                             ),
                                             child: Text(
-                                              listCoupon[index]
-                                                  .code
-                                                  .toString()
-                                                  .toUpperCase(),
+                                              coupon.code.toString().toUpperCase(),
                                               style: TextStyle(
                                                 color: Colors.green,
                                                 fontSize: 15,
@@ -428,7 +421,7 @@ class HomePage extends GetView<HomeController> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            listCoupon[index].name.toString(),
+                                            coupon.name.toString(),
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 19,
@@ -437,9 +430,7 @@ class HomePage extends GetView<HomeController> {
                                           Container(
                                             height: 20,
                                             child: Text(
-                                              listCoupon[index]
-                                                  .description
-                                                  .toString(),
+                                              coupon.description.toString(),
                                               style: TextStyle(
                                                   color: Colors.black87),
                                             ),

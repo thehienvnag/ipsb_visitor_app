@@ -2,19 +2,20 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/controllers/my_coupon_detail_controller.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupons/controllers/my_coupon_controller.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/shared_data/shared_data.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
 
-class MyCouponDetailPage extends GetView<MyCouponController> {
+class MyCouponDetailPage extends GetView<MyCouponDetailController> {
   final SharedData sharedData = Get.find();
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final couponInUse = sharedData.couponInUse.value;
-    final coupon = couponInUse.coupon!;
+    final coupon = couponInUse.coupon ?? sharedData.coupon.value;
     return Scaffold(
         backgroundColor: Color(0xFFEFEBEB),
         appBar: AppBar(
@@ -50,7 +51,7 @@ class MyCouponDetailPage extends GetView<MyCouponController> {
               smallClipRadius: 15,
               clipRadius: 20,
               numberOfSmallClips: 8,
-              ticketWidth: 400,
+              ticketWidth: 350,
               ticketHeight: 600,
               child: Padding(
                 padding: EdgeInsets.only(left: 25, right: 25),
