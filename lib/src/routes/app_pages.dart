@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/bindings/my_coupon_detail_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupons/bindings/my_coupon_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/test_algorithm/bindings/test_algorithm_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/test_algorithm/views/test_algorithm_page.dart';
 import '../pages/my_coupon_detail/views/my_coupon_detail_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupons/views/my_coupon_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/notifications/bindings/notifications_binding.dart';
@@ -15,6 +17,11 @@ import 'package:indoor_positioning_visitor/src/pages/home/views/home_page.dart';
 
 class AppPages {
   static final routes = [
+    GetPage(
+      name: Routes.testAlgorithm,
+      page: () => TestAlgorithmPage(),
+      binding: TestAlgorithmBinding(),
+    ),
     GetPage(
       name: Routes.home,
       page: () => HomePage(),

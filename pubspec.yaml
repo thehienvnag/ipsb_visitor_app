@@ -41,7 +41,7 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
 
   # add dashed line
-  dotted_line: ^3.0.0
+  # dotted_line: ^3.0.0
 
   # Get more icons to use
   font_awesome_flutter: ^9.1.0
@@ -51,6 +51,12 @@ dependencies:
 
   # QR Code Generator
   qr_flutter: ^4.0.0
+
+  # Display view with svg view
+  flutter_svg: ^0.22.0
+
+  # Dashed line
+  path_drawing: ^0.5.1
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +75,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/images/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

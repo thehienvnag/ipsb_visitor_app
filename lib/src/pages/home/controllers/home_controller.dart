@@ -2,7 +2,8 @@ import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:indoor_positioning_visitor/src/models/store.dart';
-import 'package:indoor_positioning_visitor/src/services/shared_data/shared_data.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
+import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 
 final listFloorPlanFinal = [
   FloorPlan(floorCode: "Chọn tầng", floorNumber: 0),
@@ -165,6 +166,9 @@ final listStoreSearchFinal = [
 ];
 
 class HomeController extends GetxController {
+  /// Shared data
+  final SharedStates sharedData = Get.find();
+
   /// [searchValue] for home screen
   var searchValue = "".obs;
 
@@ -191,6 +195,8 @@ class HomeController extends GetxController {
     selectedFloor.value = floor!;
   }
 
-  /// Shared data
-  final SharedData sharedData = Get.find();
+  void gotoCouponDetails(Coupon coupon) {
+    sharedData.saveCoupon(coupon);
+    Get.toNamed(Routes.couponDetail);
+  }
 }

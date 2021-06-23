@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
 
-class SharedData extends GetxService {
+class SharedStates extends GetxService {
   /// Coupon in use state
   final couponInUse = CouponInUse().obs;
 
@@ -14,7 +14,4 @@ class SharedData extends GetxService {
 
   /// Save the coupon detail
   void saveCoupon(value) => coupon.value = value;
-
-  /// Dispose coupon in use
-  void disposeCouponInUse() => couponInUse.close();
 }

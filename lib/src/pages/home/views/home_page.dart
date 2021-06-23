@@ -348,10 +348,7 @@ class HomePage extends GetView<HomeController> {
               itemBuilder: (context, index) {
                 var coupon = listCoupon[index];
                 return GestureDetector(
-                  onTap: () {
-                    controller.sharedData.saveCoupon(coupon);
-                    Get.offNamed(Routes.couponDetail);
-                  },
+                  onTap: () => controller.gotoCouponDetails(coupon),
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 13),
                     child: TicketBox(

@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
-import 'package:indoor_positioning_visitor/src/services/shared_data/shared_data.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
+import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 
 final dateTime = DateTime.now();
 
@@ -102,8 +103,13 @@ final listCouponFinal = [
 
 class MyCouponController extends GetxController {
   /// Shared data
-  final SharedData sharedData = Get.find();
+  final SharedStates sharedData = Get.find();
 
   /// Get list all coupon of visitor save before
   var listCoupon = listCouponFinal.obs;
+
+  void gotoCouponDetails(CouponInUse coupon) {
+    sharedData.saveCouponInUse(coupon);
+    Get.toNamed(Routes.couponDetail);
+  }
 }
