@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/node.dart';
 import 'package:indoor_positioning_visitor/src/models/location.dart';
 
@@ -23,12 +24,22 @@ class Constants {
   /// Initial value for emptyMap
   static const Map<String, dynamic> emptyMap = {};
 
-  /// Initial value for empty Node Map
-  static const Map<int, Node> emptyNodeMap = {};
-
   /// Initial value for empty set of locations
   static const Set<Location> emptySetLocation = {};
 
   /// Infinite distance for node
   static const double infiniteDistance = double.infinity;
+
+  /// Svg initial
+  /// // '<svg viewBox="0 0 $width $height"></svg>';
+  static String initSvg(int width, int height) => '''
+      <svg width="400" height="500" xmlns="http://www.w3.org/2000/svg">
+       
+      </svg>
+    ''';
+
+  /// Get default rx var getx controller
+  static Rx<T> get<T>() {
+    return (Get.arguments['defaultState'] as T).obs;
+  }
 }

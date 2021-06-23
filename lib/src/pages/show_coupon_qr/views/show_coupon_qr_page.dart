@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/pages/show_coupon_qr/controllers/show_coupon_qr_controller.dart';
-import 'package:indoor_positioning_visitor/src/services/shared_data/shared_data.dart';
+import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ShowCouponQRPage extends GetView<ShowCouponQRController> {
-  final SharedData sharedData = Get.find();
+  final SharedStates sharedData = Get.find();
   @override
   Widget build(BuildContext context) {
     final couponInUse = sharedData.couponInUse.value;

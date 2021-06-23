@@ -5,12 +5,12 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/controllers/my_coupon_detail_controller.dart';
 
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/shared_data/shared_data.dart';
+import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
 
 class MyCouponDetailPage extends GetView<MyCouponDetailController> {
-  final SharedData sharedData = Get.find();
+  final SharedStates sharedData = Get.find();
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -26,7 +26,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
               color: Colors.black,
             ),
             onPressed: () {
-              Get.back();
+              Get.back(closeOverlays: true);
             },
           ),
           backgroundColor: Colors.white,

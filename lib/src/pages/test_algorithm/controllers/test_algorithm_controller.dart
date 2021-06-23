@@ -3,6 +3,8 @@ import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/graph.dar
 import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/shortest_path.dart';
 import 'package:indoor_positioning_visitor/src/services/api/edge_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/location_service.dart';
+import 'package:indoor_positioning_visitor/src/widgets/image_view/image_view_controller.dart';
+import 'package:indoor_positioning_visitor/src/widgets/indoor_map/indoor_map_controller.dart';
 
 class TestAlgorithmController extends GetxController {
   /// Inject EdgeService
@@ -44,5 +46,15 @@ class TestAlgorithmController extends GetxController {
     // Get stairs and lifts from API
     var locations = await _locationService.getStairsAndLifts(2);
     print(locations);
+  }
+
+  /// IndoorMapController
+  IndoorMapController _mapController = IndoorMapController();
+
+  @override
+  void onInit() {
+    super.onInit();
+    _mapController.loadStoresOnMap([]);
+    _mapController.setPathOnMap([]);
   }
 }
