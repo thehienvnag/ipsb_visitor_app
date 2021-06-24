@@ -55,15 +55,6 @@ dependencies:
   # Dashed line
   path_drawing: ^0.5.1
 
-  # Dropdown list
-  dropdown_search: ^0.6.3
-
-  # Date time picker
-  datetime_picker_formfield: ^2.0.0
-
-  # Slidable
-  flutter_slidable: ^0.6.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
