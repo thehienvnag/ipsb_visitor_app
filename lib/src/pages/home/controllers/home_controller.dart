@@ -164,6 +164,7 @@ final listStoreSearchFinal = [
           'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
 ];
 
+
 class HomeController extends GetxController {
   /// [searchValue] for home screen
   var searchValue = "".obs;
@@ -193,4 +194,18 @@ class HomeController extends GetxController {
 
   /// Shared data
   final SharedData sharedData = Get.find();
+
+  /// [isShow] for home screen
+  var isShow =  false.obs;
+
+  /// Change ishow value with true
+  void changeIsShow() {
+    isShow.value = true;
+  }
+
+  /// Change ishow value with false
+  void changeIsShowFalse() {
+    isShow.value = false;
+  }
+
 }

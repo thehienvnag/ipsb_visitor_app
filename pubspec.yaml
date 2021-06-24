@@ -52,6 +52,8 @@ dependencies:
   # QR Code Generator
   qr_flutter: ^4.0.0
 
+  scrollable_bottom_sheet: ^0.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

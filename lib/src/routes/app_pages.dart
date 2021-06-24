@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/pages/home/views/home_page_test.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/bindings/my_coupon_detail_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupons/bindings/my_coupon_binding.dart';
 import '../pages/my_coupon_detail/views/my_coupon_detail_page.dart';
@@ -17,7 +18,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: Routes.home,
-      page: () => HomePage(),
+      page: () => HomePage2(),
       binding: HomeBinding(),
     ),
     GetPage(
