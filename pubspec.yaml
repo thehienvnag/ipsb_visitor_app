@@ -52,11 +52,14 @@ dependencies:
   # QR Code Generator
   qr_flutter: ^4.0.0
 
-  # Display view with svg view
-  flutter_svg: ^0.22.0
-
   # Dashed line
   path_drawing: ^0.5.1
+
+  # Dropdown list
+  dropdown_search: ^0.6.3
+
+  # Date time picker
+  datetime_picker_formfield: ^2.0.0
 
 dev_dependencies:
   flutter_test:

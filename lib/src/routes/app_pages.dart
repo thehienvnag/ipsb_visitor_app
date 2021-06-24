@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/pages/create-coupon/bindings/create_coupon_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/create-coupon/views/create_coupon_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/bindings/my_coupon_detail_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupons/bindings/my_coupon_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/test_algorithm/bindings/test_algorithm_binding.dart';
@@ -51,6 +53,11 @@ class AppPages {
       name: Routes.storeDetails,
       page: () => StoreDetailsPage(),
       binding: StoreDetailsBinding(),
+    ),
+    GetPage(
+      name: Routes.createCoupon,
+      page: () => CreateCouponPage(),
+      binding: CreateCouponBinding(),
     ),
   ];
 }
