@@ -1,4 +1,5 @@
 class Product {
+  bool? isSelected = false;
   final int? id;
   final String? name, description, imageUrl;
   final double? price;
@@ -10,4 +11,9 @@ class Product {
     this.price,
     this.imageUrl,
   });
+
+  @override
+  String toString() {
+    return '$id,$name,$imageUrl';
+  }
 }
