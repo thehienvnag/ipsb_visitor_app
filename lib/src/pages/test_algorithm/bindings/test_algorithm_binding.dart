@@ -7,8 +7,8 @@ class TestAlgorithmBinding extends Bindings {
   @override
   void dependencies() {
     // Bind Home controller
-    Get.put(ImageViewController());
-    Get.put(IndoorMapController());
-    Get.put(TestAlgorithmController());
+    Get.lazyPut<ImageViewController>(() => ImageViewController());
+    Get.lazyPut<IndoorMapController>(() => IndoorMapController());
+    Get.lazyPut<TestAlgorithmController>(() => TestAlgorithmController());
   }
 }
