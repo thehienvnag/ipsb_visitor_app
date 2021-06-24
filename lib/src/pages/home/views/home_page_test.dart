@@ -6,11 +6,10 @@ import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/controllers/home_controller.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
-import 'package:scrollable_bottom_sheet/scrollable_bottom_sheet.dart';
-import 'package:scrollable_bottom_sheet/scrollable_controller.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
-class HomePage2 extends GetView<HomeController>  {
+class HomePage2 extends GetView<HomeController> {
   final double tabBarHeight = 80;
 
   final storePanelController = PanelController();
@@ -47,14 +46,14 @@ class HomePage2 extends GetView<HomeController>  {
                   cursorWidth: 1,
                   decoration: new InputDecoration(
                     prefixIcon:
-                    Icon(Icons.search_rounded, color: Color(0xff0DB5B4)),
+                        Icon(Icons.search_rounded, color: Color(0xff0DB5B4)),
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     errorBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
                     contentPadding:
-                    EdgeInsets.only(left: 15, top: 9, right: 15),
+                        EdgeInsets.only(left: 15, top: 9, right: 15),
                     hintText: 'Tìm kiếm ...',
                     hintStyle: TextStyle(color: Colors.grey),
                     labelStyle: TextStyle(color: Colors.black),
@@ -107,15 +106,15 @@ class HomePage2 extends GetView<HomeController>  {
           panelController: storePanelController,
         ),
         body: Container(
-        margin: EdgeInsets.only(top: 10),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(
-                'https://genk.mediacdn.vn/2018/3/14/photo-1-1521033482343809363991.png'),
-            fit: BoxFit.cover,
+          margin: EdgeInsets.only(top: 10),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(
+                  'https://genk.mediacdn.vn/2018/3/14/photo-1-1521033482343809363991.png'),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
-          ),
       ),
       floatingActionButton: Obx(() {
         if (controller.searchValue.isEmpty) {
@@ -131,14 +130,16 @@ class HomePage2 extends GetView<HomeController>  {
                   barrierDismissible: false,
                   builder: (context) {
                     return Scaffold(
-                      backgroundColor: Colors.transparent,
-                        body:
-                        Obx(() {
-                          return controller.isShow.value ? bottomSheetTest2(context) : bottomSheetTest(context);
-                        })
+                        backgroundColor: Colors.transparent,
+                      body:  Obx(() {
+                        return controller.isShow.value
+                        ? bottomSheetEnd(context)
+                        : bottomSheetStart(context);
+                      })
                     );
                   },
                 );
+
               },
               child: Icon(Icons.card_giftcard_sharp, color: Colors.white),
               style: ElevatedButton.styleFrom(
@@ -275,7 +276,7 @@ class HomePage2 extends GetView<HomeController>  {
                                 width: MediaQuery.of(context).size.width * 0.60,
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       floorPlan?.floorCode ?? 'L-NotSet',
@@ -289,13 +290,13 @@ class HomePage2 extends GetView<HomeController>  {
                                       onPressed: () {
                                         showModalBottomSheet(
                                             context: context,
-                                            builder: (builder){
+                                            builder: (builder) {
                                               return Container(
                                                 color: Colors.white,
-                                                child: Center(child: Text('hello')),
+                                                child: Center(
+                                                    child: Text('hello')),
                                               );
-                                            }
-                                        );
+                                            });
                                       },
                                       child: Icon(Icons.directions),
                                     ),
@@ -383,7 +384,7 @@ class HomePage2 extends GetView<HomeController>  {
                               children: <Widget>[
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     ClipRRect(
                                       borderRadius: BorderRadius.all(
@@ -391,7 +392,7 @@ class HomePage2 extends GetView<HomeController>  {
                                       ),
                                       child: Column(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Image.network(
                                             coupon.imageUrl ?? '',
@@ -402,7 +403,7 @@ class HomePage2 extends GetView<HomeController>  {
                                           Container(
                                             padding: const EdgeInsets.all(5),
                                             margin:
-                                            const EdgeInsets.only(top: 10),
+                                                const EdgeInsets.only(top: 10),
                                             decoration: BoxDecoration(
                                               borderRadius: BorderRadius.all(
                                                 Radius.circular(4),
@@ -432,7 +433,7 @@ class HomePage2 extends GetView<HomeController>  {
                                           0.4,
                                       child: Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
                                             coupon.name.toString(),
@@ -451,10 +452,10 @@ class HomePage2 extends GetView<HomeController>  {
                                           ),
                                           Container(
                                             margin:
-                                            const EdgeInsets.only(top: 8),
+                                                const EdgeInsets.only(top: 8),
                                             child: Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.end,
+                                                  MainAxisAlignment.end,
                                               children: [
                                                 OutlinedButton(
                                                   onPressed: () {},
@@ -484,263 +485,252 @@ class HomePage2 extends GetView<HomeController>  {
     );
   }
 
-  // Widget buildTets({
-  //   required PanelController panelController,
-  //   required ScrollController scrollController,
-  // }) {
-  //   return Scaffold(
-  //     backgroundColor: Colors.transparent,
-  //     body: Column(
-  //       children: [
-  //         Center(
-  //           child: Container(
-  //             margin: const EdgeInsets.only(top: 5,bottom: 5),
-  //             width: 60,
-  //             height: 5,
-  //             decoration: BoxDecoration(
-  //               color: Colors.black,
-  //               borderRadius: BorderRadius.all(Radius.circular(10)),
-  //             ),
-  //           ),
-  //         ),
-  //          Center(
-  //            child: Container(
-  //              width: 250,
-  //              margin: EdgeInsets.only(left: 20),
-  //              child: Row(
-  //                children: [
-  //                  Text('Trà sữa Phúc Long ',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-  //                  Text('Tầng 1',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
-  //                ],
-  //              ),
-  //            ),
-  //          ),
-  //          Row(
-  //            children: [
-  //              SizedBox(width: 30,),
-  //              Container(
-  //                width: 150,
-  //                margin: EdgeInsets.only(left: 10,right: 10),
-  //                child: OutlinedButton(
-  //                  onPressed: () {
-  //
-  //                  },
-  //                  child: Row(
-  //                    children: [
-  //                      Icon(Icons.view_list_outlined,
-  //                          color: Colors.white),
-  //                      Text('   Các chặng'),
-  //                    ],
-  //                  ),
-  //                ),
-  //              ),
-  //              Container(
-  //                width: 150,
-  //                child: ElevatedButton(
-  //                  onPressed: () {},
-  //                  child: Row(
-  //                    children: [
-  //                      Icon(Icons.directions_sharp,
-  //                          color: Colors.white),
-  //                      Text('   Bắt đầu'),
-  //                    ],
-  //                  ),
-  //                ),
-  //              ),
-  //            ],
-  //          ),
-  //          Container(),
-  //       ],
-  //     ),
-  //   );
-  // }
-  Widget bottomSheetTest(BuildContext context){
-    return Stack(
-      children: [
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: ScrollableBottomSheet(
-            minimumHeight: 120.0,
-            halfHeight: 300.0,
-            autoPop: false,
-            scrollTo: ScrollState.full,
-            snapAbove: true,
-            snapBelow: true,
+  Widget bottomSheetStart(BuildContext context){
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      bottomSheet: SolidBottomSheet(
+        minHeight: 120,
+        headerBar: Container(
+          color: Colors.white,
+          height: 45,
+          child: Center(
             child: Container(
-              height:  MediaQuery.of(context).size.height * 0.85,
-              decoration: BoxDecoration(color: Colors.white,
-                  //borderRadius: BorderRadius.only(topRight: Radius.circular(24.0), topLeft: Radius.circular(24.0))
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 5, left: 15.0, right: 15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Center(
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 16.0),
-                        height: 4,
-                        width: 64,
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(16.0)),
+              margin: EdgeInsets.only(bottom: 16.0),
+              height: 4,
+              width: 64,
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(16.0)),
+            ),
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Center(
+                child: Container(
+                  width: 300,
+                  margin: EdgeInsets.only(left: 20),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Trà sữa Phúc Long ',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
                       ),
-                    ),
-                    Center(
-                      child: Container(
-                        width: 300,
-                        margin: EdgeInsets.only(left: 20),
-                        child: Row(
-                          children: [
-                            Text('Trà sữa Phúc Long ',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black),),
-                            Text('Tầng 1',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black))
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 15,),
-                    Row(
-                      children: [
-                        Container(
-                          width: 150,
-                          margin: EdgeInsets.only(left: 40,right: 10),
-                          child: OutlinedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.black12,
-                              onPrimary: Colors.black,
-                            ),
-                            onPressed: () {
-
-                            },
-                            child: Row(
-                              children: [
-                                Icon(FontAwesomeIcons.arrowDown, color: Colors.black),
-                                Text('   Các chặng'),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 150,
-                          child: ElevatedButton(
-                            onPressed: () {
-                                controller.changeIsShow();
-                            },
-                            child: Row(
-                              children: [
-                                Icon(Icons.directions_sharp, color: Colors.white),
-                                Text('   Bắt đầu'),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 30,),
-                    Row(
-                      children: [
-                        SizedBox(width: 20,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(FontAwesomeIcons.arrowAltCircleUp,size: 35,),
-                                Container(
-                                  margin: EdgeInsets.only(left: 20),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(' Đi thẳng',style: TextStyle(fontSize: 18,color: Colors.black)),
-                                      Text(' 500m',style: TextStyle(fontSize: 14,color: Colors.black38)),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 30,),
-                            Row(
-                              children: [
-                                Icon(FontAwesomeIcons.arrowCircleLeft, size: 35),
-                                Container(
-                                  margin: EdgeInsets.only(left: 20),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(' Rẽ trái',style: TextStyle(fontSize: 16,color: Colors.black)),
-                                      Text(' 270m',style: TextStyle(fontSize: 12,color: Colors.black38)),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 30,),
-                            Row(
-                              children: [
-                                Icon(FontAwesomeIcons.arrowAltCircleRight,size: 35,),
-                                Container(
-                                  margin: EdgeInsets.only(left: 20),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(' Rẽ phải',style: TextStyle(fontSize: 16,color: Colors.black)),
-                                      Text(' 270m',style: TextStyle(fontSize: 12,color: Colors.black38)),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 30,),
-                            Row(
-                              children: [
-                                Icon(FontAwesomeIcons.arrowAltCircleUp,size: 35,),
-                                Container(
-                                  margin: EdgeInsets.only(left: 20),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(' Đi thẳng',style: TextStyle(fontSize: 16,color: Colors.black)),
-                                      Text(' 500m',style: TextStyle(fontSize: 12,color: Colors.black38)),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 30,),
-                            Row(
-                              children: [
-                                Icon(Icons.store,size: 35,),
-                                Container(
-                                  margin: EdgeInsets.only(left: 20),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(' Cửa hàng Phúc Long',style: TextStyle(fontSize: 16,color: Colors.black)),
-                                      Text(' 140m',style: TextStyle(fontSize: 12,color: Colors.black38)),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+                      Text('Tầng 1',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black))
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ))
-      ],
+              SizedBox(
+                height: 15,
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: 150,
+                    margin: EdgeInsets.only(left: 40, right: 10),
+                    child: OutlinedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.black12,
+                        onPrimary: Colors.black,
+                      ),
+                      onPressed: () {},
+                      child: Row(
+                        children: [
+                          Icon(FontAwesomeIcons.arrowDown,
+                              color: Colors.black),
+                          Text('   Các chặng'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 150,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        controller.changeIsShow();
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.directions_sharp,
+                              color: Colors.white),
+                          Text('   Bắt đầu'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.arrowAltCircleUp,
+                            size: 35,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20),
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Text(' Đi thẳng',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black)),
+                                Text(' 500m',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black38)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Row(
+                        children: [
+                          Icon(FontAwesomeIcons.arrowCircleLeft,
+                              size: 35),
+                          Container(
+                            margin: EdgeInsets.only(left: 20),
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Text(' Rẽ trái',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black)),
+                                Text(' 270m',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.black38)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.arrowAltCircleRight,
+                            size: 35,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20),
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Text(' Rẽ phải',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black)),
+                                Text(' 270m',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.black38)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.arrowAltCircleUp,
+                            size: 35,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20),
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Text(' Đi thẳng',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black)),
+                                Text(' 500m',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.black38)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.store,
+                            size: 35,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20),
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Text(' Cửa hàng Phúc Long',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black)),
+                                Text(' 140m',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.black38)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 50,)
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
-  Widget bottomSheetTest2(BuildContext context){
+  Widget bottomSheetEnd(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
@@ -749,22 +739,33 @@ class HomePage2 extends GetView<HomeController>  {
             top: 0,
             left: 0,
             right: 0,
-            bottom:  MediaQuery.of(context).size.height * 0.8,
+            bottom: MediaQuery.of(context).size.height * 0.8,
             child: Container(
               // height: 100,
-              color: Colors.blueAccent.shade200,
+                color: Colors.blueAccent.shade200,
                 child: Row(
                   children: [
                     Container(
-                      width: 100,
-                        child: Icon(Icons.arrow_upward,size: 60,color: Colors.white,)),
+                        width: 100,
+                        child: Icon(
+                          Icons.arrow_upward,
+                          size: 60,
+                          color: Colors.white,
+                        )),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text('Đi về hướng Tây Bắc',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 28),
+                        Text(
+                          'Đi về hướng Tây Bắc',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 28),
                         ),
-                        Text('650m',style: TextStyle(color: Colors.white,fontSize: 28),),
+                        Text(
+                          '100m',
+                          style: TextStyle(color: Colors.white, fontSize: 28),
+                        ),
                       ],
                     ),
                   ],
@@ -774,63 +775,75 @@ class HomePage2 extends GetView<HomeController>  {
               left: 0,
               right: 0,
               bottom: 0,
-              child: ScrollableBottomSheet(
-                minimumHeight: 120.0,
-                halfHeight: 200.0,
-                autoPop: false,
-                scrollTo: ScrollState.full,
-                snapAbove: true,
-                snapBelow: true,
-                child: Container(
-                  height:  MediaQuery.of(context).size.height * 0.85,
-                  decoration: BoxDecoration(color: Colors.white,
-                      //borderRadius: BorderRadius.only(topRight: Radius.circular(24.0), topLeft: Radius.circular(24.0))
+              child: SolidBottomSheet(
+                minHeight: 120,
+                headerBar: Container(
+                  color: Colors.white,
+                  height: 45,
+                  child: Center(
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 16.0),
+                      height: 4,
+                      width: 64,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(16.0)),
+                    ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 5, left: 15.0, right: 15.0),
+                ),
+                body: ListView(
+                  children: [
+                  Container(
+                    color: Colors.white,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Center(
                           child: Container(
-                            margin: EdgeInsets.only(bottom: 16.0),
-                            height: 4,
-                            width: 64,
-                            decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(16.0)),
-                          ),
-                        ),
-                        Center(
-                          child: Container(
-                            width: 300,
-                            margin: EdgeInsets.only(left: 20),
+                            width: 370,
+                            margin: EdgeInsets.only(left: 10),
                             child: Row(
                               children: [
-                                Text('Trà sữa Phúc Long ',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black),),
-                                Text('Tầng 1',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black))
+                                Text('Đi tới: ',
+                                    style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
+                                Text(
+                                  'Trà sữa Phúc Long ',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                Text('Tầng 1 (250m)',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black))
                               ],
                             ),
                           ),
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
                         Row(
                           children: [
                             Container(
                               width: 150,
-                              margin: EdgeInsets.only(left: 40,right: 10),
+                              margin: EdgeInsets.only(left: 40, right: 10),
                               child: OutlinedButton(
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.black12,
                                   onPrimary: Colors.black,
                                 ),
-                                onPressed: () {
-
-                                },
+                                onPressed: () {},
                                 child: Row(
                                   children: [
-                                    Icon(FontAwesomeIcons.arrowDown, color: Colors.black),
+                                    Icon(FontAwesomeIcons.arrowDown,
+                                        color: Colors.black),
                                     Text('   Các chặng'),
                                   ],
                                 ),
@@ -844,7 +857,8 @@ class HomePage2 extends GetView<HomeController>  {
                                 },
                                 child: Row(
                                   children: [
-                                    Icon(Icons.directions_sharp, color: Colors.white),
+                                    Icon(Icons.directions_sharp,
+                                        color: Colors.white),
                                     Text('   Kết thúc'),
                                   ],
                                 ),
@@ -857,94 +871,154 @@ class HomePage2 extends GetView<HomeController>  {
                             ),
                           ],
                         ),
-                        SizedBox(height: 30,),
+                        SizedBox(
+                          height: 30,
+                        ),
                         Row(
                           children: [
-                            SizedBox(width: 20,),
+                            SizedBox(
+                              width: 20,
+                            ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Row(
                                   children: [
-                                    Icon(FontAwesomeIcons.arrowAltCircleUp,size: 35,),
+                                    Icon(
+                                      FontAwesomeIcons.arrowAltCircleUp,
+                                      size: 35,
+                                    ),
                                     Container(
                                       margin: EdgeInsets.only(left: 20),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                         children: [
-                                          Text(' Đi thẳng',style: TextStyle(fontSize: 18,color: Colors.black)),
-                                          Text(' 500m',style: TextStyle(fontSize: 14,color: Colors.black38)),
+                                          Text(' Đi thẳng',
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.black)),
+                                          Text(' 500m',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black38)),
                                         ],
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 30,),
+                                SizedBox(
+                                  height: 30,
+                                ),
                                 Row(
                                   children: [
-                                    Icon(FontAwesomeIcons.arrowCircleLeft, size: 35),
+                                    Icon(FontAwesomeIcons.arrowCircleLeft,
+                                        size: 35),
                                     Container(
                                       margin: EdgeInsets.only(left: 20),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                         children: [
-                                          Text(' Rẽ trái',style: TextStyle(fontSize: 16,color: Colors.black)),
-                                          Text(' 270m',style: TextStyle(fontSize: 12,color: Colors.black38)),
+                                          Text(' Rẽ trái',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black)),
+                                          Text(' 270m',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black38)),
                                         ],
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 30,),
+                                SizedBox(
+                                  height: 30,
+                                ),
                                 Row(
                                   children: [
-                                    Icon(FontAwesomeIcons.arrowAltCircleRight,size: 35,),
+                                    Icon(
+                                      FontAwesomeIcons.arrowAltCircleRight,
+                                      size: 35,
+                                    ),
                                     Container(
                                       margin: EdgeInsets.only(left: 20),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                         children: [
-                                          Text(' Rẽ phải',style: TextStyle(fontSize: 16,color: Colors.black)),
-                                          Text(' 270m',style: TextStyle(fontSize: 12,color: Colors.black38)),
+                                          Text(' Rẽ phải',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black)),
+                                          Text(' 270m',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black38)),
                                         ],
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 30,),
+                                SizedBox(
+                                  height: 30,
+                                ),
                                 Row(
                                   children: [
-                                    Icon(FontAwesomeIcons.arrowAltCircleUp,size: 35,),
+                                    Icon(
+                                      FontAwesomeIcons.arrowAltCircleUp,
+                                      size: 35,
+                                    ),
                                     Container(
                                       margin: EdgeInsets.only(left: 20),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                         children: [
-                                          Text(' Đi thẳng',style: TextStyle(fontSize: 16,color: Colors.black)),
-                                          Text(' 500m',style: TextStyle(fontSize: 12,color: Colors.black38)),
+                                          Text(' Đi thẳng',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black)),
+                                          Text(' 500m',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black38)),
                                         ],
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 30,),
+                                SizedBox(
+                                  height: 30,
+                                ),
                                 Row(
                                   children: [
-                                    Icon(Icons.store,size: 35,),
+                                    Icon(
+                                      Icons.store,
+                                      size: 35,
+                                    ),
                                     Container(
                                       margin: EdgeInsets.only(left: 20),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                         children: [
-                                          Text(' Cửa hàng Phúc Long',style: TextStyle(fontSize: 16,color: Colors.black)),
-                                          Text(' 140m',style: TextStyle(fontSize: 12,color: Colors.black38)),
+                                          Text(' Cửa hàng Phúc Long',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black)),
+                                          Text(' 140m',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black38)),
                                         ],
                                       ),
                                     ),
                                   ],
                                 ),
-
+                                SizedBox(height: 100,)
                               ],
                             ),
                           ],
@@ -952,6 +1026,7 @@ class HomePage2 extends GetView<HomeController>  {
                       ],
                     ),
                   ),
+                  ],
                 ),
               )),
         ],
