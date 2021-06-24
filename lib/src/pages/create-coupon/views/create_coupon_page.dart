@@ -2,7 +2,6 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/product.dart';
 import 'package:indoor_positioning_visitor/src/pages/create-coupon/controllers/create_coupon_controller.dart';
 import 'package:intl/intl.dart';
 
@@ -14,7 +13,7 @@ class CreateCouponPage extends GetView<CreateCouponController> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          'CREATE COUPON',
+          'TẠO KHUYẾN MÃI',
           style: TextStyle(color: Colors.black87),
         ),
         leading: _buildLeading(),

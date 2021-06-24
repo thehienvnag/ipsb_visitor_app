@@ -8,4 +8,5 @@ class Routes {
   static const String notifications = "/notifications";
   static const String storeDetails = "/storeDetails";
   static const String createCoupon = "/createCoupon";
+  static const String manageCoupon = "/manageCoupon";
 }

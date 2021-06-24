@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 
 import 'package:indoor_positioning_visitor/src/models/product.dart';
 import 'package:indoor_positioning_visitor/src/pages/store_details/controllers/store_details_controller.dart';
@@ -252,14 +253,3 @@ final coupons = [
         'https://www.highlandscoffee.com.vn/vnt_upload/product/03_2018/TRASENVANG.png',
   ),
 ];
-
-class Coupon {
-  final int? id;
-  final String? name, description, imageUrl;
-  Coupon({
-    this.id,
-    this.name,
-    this.description,
-    this.imageUrl,
-  });
-}
