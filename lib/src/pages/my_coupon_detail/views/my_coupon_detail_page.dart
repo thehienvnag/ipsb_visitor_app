@@ -10,6 +10,7 @@ import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
 
 class MyCouponDetailPage extends GetView<MyCouponDetailController> {
+  final dateTime = DateTime.now();
   final SharedStates sharedData = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -70,8 +71,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                               decoration: BoxDecoration(
                                 border: Border.all(
                                     width: 4,
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor),
+                                    color: Theme.of(context).scaffoldBackgroundColor),
                                 boxShadow: [
                                   BoxShadow(
                                       spreadRadius: 2,
@@ -118,7 +118,8 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 30, bottom: 10),
+                        height: 100,
+                        //margin: EdgeInsets.only(top: 30, bottom: 10),
                         child: Text(coupon.description ?? 'Description not set',
                             style: TextStyle(
                                 fontSize: 20,
@@ -329,7 +330,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                           ),
                           Container(
                             height: 20,
-                            child: couponInUse.applyDate == null
+                            child: couponInUse.applyDate! == null
                                 ? SizedBox()
                                 : Row(
                                     children: [
@@ -340,14 +341,11 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                           style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.black
-                                                  .withOpacity(0.7)),
+                                              color: Colors.black.withOpacity(0.7)),
                                         ),
                                       ),
                                       Text(
-                                        Formatter.dateFormat(
-                                            couponInUse.applyDate),
-                                        style: TextStyle(fontSize: 18),
+                                        Formatter.dateFormat(couponInUse.applyDate), style: TextStyle(fontSize: 18),
                                       ),
                                     ],
                                   ),
@@ -361,7 +359,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
             ),
           ]),
         ),
-        floatingActionButton: (couponInUse.status == "Active")
+        floatingActionButton: (controller.checkCouponValid('NotUse', couponInUse))
             ? Container(
                 margin: EdgeInsets.only(right: 50, bottom: 40),
                 width: MediaQuery.of(context).size.width * 0.7,
