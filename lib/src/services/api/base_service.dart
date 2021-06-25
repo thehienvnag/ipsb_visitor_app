@@ -14,7 +14,7 @@ abstract class BaseService<T> {
   /// Set api endpoint for entity
   String endpoint();
 
-  Future<T> getByIdBase(dynamic id) async {
+  Future<T> getByIdBase(int id) async {
     Response response = await _apiHelper.getById(endpoint(), id);
     return fromJson(response.body);
   }
