@@ -14,6 +14,12 @@ Location _$LocationFromJson(Map<String, dynamic> json) {
     floorPlanId: json['floorPlanId'] as int?,
     x: (json['x'] as num?)?.toDouble(),
     y: (json['y'] as num?)?.toDouble(),
+    locationType: json['locationType'] == null
+        ? null
+        : LocationType.fromJson(json['locationType'] as Map<String, dynamic>),
+    store: json['store'] == null
+        ? null
+        : Store.fromJson(json['store'] as Map<String, dynamic>),
   );
 }
 
@@ -24,4 +30,6 @@ Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
       'floorPlanId': instance.floorPlanId,
       'x': instance.x,
       'y': instance.y,
+      'locationType': instance.locationType,
+      'store': instance.store,
     };

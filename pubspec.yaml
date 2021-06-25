@@ -55,6 +55,12 @@ dependencies:
   # Dashed line
   path_drawing: ^0.5.1
 
+  # Glowing point
+  avatar_glow: ^2.0.1
+
+  # Glowing anything
+  flutter_glow: ^0.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

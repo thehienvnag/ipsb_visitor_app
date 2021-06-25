@@ -7,10 +7,12 @@ class TestAlgorithmPage extends GetView<TestAlgorithmController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: IndoorMap(
-          image: AssetImage('assets/images/floor_2_fptu.png'),
-          loading: Text('Loading'),
+      body: SafeArea(
+        child: Center(
+          child: IndoorMap(
+            image: AssetImage('assets/images/floor_2_fptu.png'),
+            loading: Text('Loading'),
+          ),
         ),
       ),
     );
