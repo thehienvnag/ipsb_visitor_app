@@ -14,4 +14,7 @@ class Endpoints {
 
   /// Edge enpoint version /api/v1
   static const locations = '$apiVer1/locations';
+
+  /// Edge enpoint version /api/v1
+  static const coupons = '$apiVer1/coupons';
 }

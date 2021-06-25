@@ -340,7 +340,7 @@ class HomePage extends GetView<HomeController> {
             ),
           ),
           Expanded(child: Obx(() {
-            var listCoupon = controller.listCoupon;
+            final listCoupon = controller.listCoupon;
             return ListView.builder(
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,

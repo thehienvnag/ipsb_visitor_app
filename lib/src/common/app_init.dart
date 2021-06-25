@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/shortest_path.dart';
 import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
+import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/edge_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/location_service.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
@@ -35,5 +36,7 @@ class AppInit {
     Get.lazyPut<IEdgeService>(() => EdgeService());
     // Calling api at location service
     Get.lazyPut<ILocationService>(() => LocationService());
+    // Calling api at coupon service
+    Get.lazyPut<ICouponService>(() => CouponService());
   }
 }

@@ -4,6 +4,7 @@ import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:indoor_positioning_visitor/src/models/store.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
+import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
 
 final listFloorPlanFinal = [
   FloorPlan(floorCode: "Chọn tầng", floorNumber: 0),
@@ -13,57 +14,6 @@ final listFloorPlanFinal = [
   FloorPlan(floorCode: "Tầng 4", floorNumber: 4),
   FloorPlan(floorCode: "Tầng 5", floorNumber: 5),
   FloorPlan(floorCode: "Tầng 5", floorNumber: 6),
-];
-
-final listCouponFinal = [
-  Coupon(
-      id: 1,
-      name: 'Trà sữa Phúc Long',
-      description: 'Giảm 30% cho đơn 100k',
-      code: 'Giảm 30%',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Coupon(
-      id: 3,
-      name: 'Trà sữa Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Mua 1 tặng 1',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-  Coupon(
-      id: 4,
-      name: 'Trà sữa Tocotoco',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Giảm 50%',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://1office.vn/wp-content/uploads/2020/02/36852230_419716301836700_6088975431891943424_n-1.png'),
-  Coupon(
-      id: 5,
-      name: 'Trà sữa Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Mua 2 tặng 1',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-  Coupon(
-      id: 6,
-      name: 'Trà sữa Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Giảm 20%',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-  Coupon(
-      id: 7,
-      name: 'Trà sữa Tocotoco',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Giảm 20%',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://1office.vn/wp-content/uploads/2020/02/36852230_419716301836700_6088975431891943424_n-1.png'),
 ];
 
 final listStoreSearchFinal = [
@@ -169,11 +119,21 @@ class HomeController extends GetxController {
   /// Shared data
   final SharedStates sharedData = Get.find();
 
+  ICouponService _service = Get.find();
+
   /// [searchValue] for home screen
   var searchValue = "".obs;
 
   /// Get list coupons random data
-  var listCoupon = listCouponFinal.obs;
+  //var listCoupon = listCouponFinal.obs;
+
+  /// Get list coupons random data
+  final listCoupon = <Coupon>[].obs;
+
+  Future<void> getCoupons() async {
+    final paging = await _service.getCoupons();
+    listCoupon.value = paging.content!;
+  }
 
   /// Get list stores when search
   var listStore = listStoreSearchFinal.obs;
@@ -199,4 +159,9 @@ class HomeController extends GetxController {
     sharedData.saveCoupon(coupon);
     Get.toNamed(Routes.couponDetail);
   }
+  @override
+  void onInit() {
+    getCoupons();
+  }
+
 }
