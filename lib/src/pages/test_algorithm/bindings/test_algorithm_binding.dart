@@ -9,6 +9,6 @@ class TestAlgorithmBinding extends Bindings {
     // Bind Home controller
     Get.lazyPut<ImageViewController>(() => ImageViewController());
     Get.lazyPut<IndoorMapController>(() => IndoorMapController());
-    Get.lazyPut<TestAlgorithmController>(() => TestAlgorithmController());
+    Get.put<TestAlgorithmController>(TestAlgorithmController());
   }
 }

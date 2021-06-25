@@ -1,52 +1,28 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 
 class CurrentLocation extends StatelessWidget {
+  static const double radius = 40;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 20,
-      height: 20,
-      child: CustomPaint(
-        painter: GlowingCircle(10),
+    return AvatarGlow(
+      glowColor: Colors.cyan,
+      endRadius: radius,
+      duration: Duration(milliseconds: 1500),
+      repeat: true,
+      showTwoGlows: true,
+      repeatPauseDuration: Duration(milliseconds: 50),
+      child: Material(
+        // Replace this child with your own
+        elevation: 8.0,
+        shape: CircleBorder(
+          side: BorderSide(width: 2.5, color: Colors.white),
+        ),
+        child: CircleAvatar(
+          backgroundColor: Color(0XFF4086F4),
+          radius: 17.0,
+        ),
       ),
     );
   }
-}
-
-class GlowingCircle extends CustomPainter {
-  final innerCircle = Paint()
-    ..color = Color(0XFF4086F4)
-    ..style = PaintingStyle.fill;
-
-  final border = Paint()
-    ..color = Colors.white
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 2.0;
-
-  final outerCircle = Paint()
-    ..color = Color(0XFF4086F4).withOpacity(0.08)
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 14.0;
-
-  final double radius;
-
-  GlowingCircle(this.radius);
-  @override
-  void paint(Canvas canvas, Size size) {
-    canvas.drawOval(
-      Rect.fromCircle(center: Offset(0, 0), radius: radius),
-      innerCircle,
-    );
-    canvas.drawOval(
-      Rect.fromCircle(center: Offset(0, 0), radius: radius + 3),
-      border,
-    );
-    canvas.drawOval(
-      Rect.fromCircle(center: Offset(0, 0), radius: radius + 10),
-      outerCircle,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

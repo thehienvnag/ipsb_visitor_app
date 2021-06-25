@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:json_annotation/json_annotation.dart';
 

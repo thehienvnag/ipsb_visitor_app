@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:indoor_positioning_visitor/src/models/location_type.dart';
+import 'package:indoor_positioning_visitor/src/models/store.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'location.g.dart';
@@ -6,6 +9,9 @@ part 'location.g.dart';
 class Location {
   final int? id, locationTypeId, storeId, floorPlanId;
   final double? x, y;
+  final LocationType? locationType;
+  final Store? store;
+
   Location({
     this.id,
     this.locationTypeId,
@@ -13,6 +19,8 @@ class Location {
     this.floorPlanId,
     this.x,
     this.y,
+    this.locationType,
+    this.store,
   });
 
   factory Location.fromJson(Map<String, dynamic> json) =>
@@ -23,5 +31,14 @@ class Location {
   @override
   String toString() {
     return '{id=$id __ ($x, $y)}';
+  }
+
+  ImageProvider? retrieveStoreImg() {
+    ImageProvider? image;
+    var storeImg = this.store?.imageUrl;
+    if (storeImg != null) {
+      image = NetworkImage(storeImg);
+    }
+    return image;
   }
 }
