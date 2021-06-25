@@ -14,6 +14,11 @@ abstract class BaseService<T> {
   /// Set api endpoint for entity
   String endpoint();
 
+  Future<T> getByIdBase(dynamic id) async {
+    Response response = await _apiHelper.getById(endpoint(), id);
+    return fromJson(response.body);
+  }
+
   /// Get paging instance from API with [query]
   Future<Paging<T>> getPagingBase(Map<String, dynamic> query) async {
     Response res = await _apiHelper.getAll(endpoint(), query: query);

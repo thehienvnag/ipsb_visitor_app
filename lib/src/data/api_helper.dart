@@ -9,7 +9,7 @@ mixin IApiHelper {
   });
 
   /// Get 1 by Id from API [endpoint] using [uri] and [id]
-  Future<Response> getById<T>(String endpoint, dynamic id);
+  Future<Response> getById(String endpoint, dynamic id);
 
   /// Post 1 to API [endpoint] providing [data]
   Future<Response> postOne(
@@ -79,8 +79,8 @@ class ApiHelper extends GetConnect with IApiHelper {
   }
 
   @override
-  Future<Response> getById<T>(String endpoint, dynamic id) {
-    return get<T>('$endpoint/$id');
+  Future<Response> getById(String endpoint, dynamic id) {
+    return get('$endpoint/$id');
   }
 
   @override
