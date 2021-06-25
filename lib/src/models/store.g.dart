@@ -15,7 +15,7 @@ Store _$StoreFromJson(Map<String, dynamic> json) {
     name: json['name'] as String?,
     description: json['description'] as String?,
     imageUrl: json['imageUrl'] as String?,
-    floorPlanId: json['floorPlanId'] as String?,
+    floorPlanId: json['floorPlanId'] as int?,
     status: json['status'] as String?,
   );
 }

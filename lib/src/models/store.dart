@@ -9,7 +9,7 @@ class Store {
   final String? name;
   final String? description;
   final String? imageUrl;
-  final String? floorPlanId;
+  final int? floorPlanId;
   final String? status;
   final FloorPlan? floorPlan;
 

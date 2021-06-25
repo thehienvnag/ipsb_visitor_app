@@ -331,13 +331,8 @@ class HomePage extends GetView<HomeController> {
       body: Column(
         children: [
           Container(
-            margin: const EdgeInsets.only(bottom: 13),
-            width: 70,
-            height: 6,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
+            margin: const EdgeInsets.only(bottom: 13), width: 70, height: 6,
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(10)),),
           ),
           Expanded(child: Obx(() {
             final listCoupon = controller.listCoupon;
@@ -369,16 +364,12 @@ class HomePage extends GetView<HomeController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     ClipRRect(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(6),
-                                      ),
+                                      borderRadius: BorderRadius.all(Radius.circular(6),),
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Image.network(
                                             coupon.imageUrl ?? '',
@@ -388,20 +379,13 @@ class HomePage extends GetView<HomeController> {
                                           ),
                                           Container(
                                             padding: const EdgeInsets.all(5),
-                                            margin:
-                                                const EdgeInsets.only(top: 10),
+                                            margin: const EdgeInsets.only(top: 10),
                                             decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(4),
-                                              ),
-                                              border: Border.all(
-                                                color: Colors.grey.shade300,
-                                              ),
+                                              borderRadius: BorderRadius.all(Radius.circular(4)),
+                                              border: Border.all(color: Colors.grey.shade300,),
                                             ),
                                             child: Text(
-                                              coupon.code
-                                                  .toString()
-                                                  .toUpperCase(),
+                                              coupon.code.toString().toUpperCase(),
                                               style: TextStyle(
                                                 color: Colors.green,
                                                 fontSize: 15,
@@ -413,13 +397,10 @@ class HomePage extends GetView<HomeController> {
                                       ),
                                     ),
                                     Container(
-                                      margin: const EdgeInsets.only(
-                                          left: 10, top: 18),
-                                      width: MediaQuery.of(context).size.width *
-                                          0.4,
+                                      margin: const EdgeInsets.only(left: 10, top: 18),
+                                      width: MediaQuery.of(context).size.width * 0.4,
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
                                             coupon.name.toString(),
@@ -437,11 +418,9 @@ class HomePage extends GetView<HomeController> {
                                             ),
                                           ),
                                           Container(
-                                            margin:
-                                                const EdgeInsets.only(top: 8),
+                                            margin: const EdgeInsets.only(top: 8),
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
+                                              mainAxisAlignment: MainAxisAlignment.end,
                                               children: [
                                                 OutlinedButton(
                                                   onPressed: () {},
