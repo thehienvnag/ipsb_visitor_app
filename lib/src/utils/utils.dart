@@ -29,6 +29,7 @@ class Utils {
     return DecorationImage(
       onError: (exception, stackTrace) => Image.asset(Constants.imageErr),
       image: NetworkImage(url),
+      fit: BoxFit.cover,
     );
   }
 }

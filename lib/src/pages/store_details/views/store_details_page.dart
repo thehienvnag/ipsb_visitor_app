@@ -32,7 +32,8 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                           width: size.width,
                           height: 200,
                           decoration: BoxDecoration(
-                              image: Utils.resolveDecoImg(store.imageUrl)),
+                            image: Utils.resolveDecoImg(store.imageUrl),
+                          ),
                         ),
                         Positioned(
                           top: 18,
