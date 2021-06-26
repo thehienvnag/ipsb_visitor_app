@@ -33,4 +33,7 @@ class Constants {
   static Rx<T> get<T>() {
     return (Get.arguments['defaultState'] as T).obs;
   }
+
+  /// Default image
+  static const String imageErr = "assets/images/error.png";
 }
