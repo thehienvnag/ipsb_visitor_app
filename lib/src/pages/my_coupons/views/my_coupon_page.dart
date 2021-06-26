@@ -198,7 +198,7 @@ class MyCouponPage extends GetView<MyCouponController> {
                                   ],
                                 ),
                                 Text(
-                                  'Ngày hết hạn: ${Formatter.dateFormat(coupon.expireDate)}',
+                                  'Ngày hết hạn: ${Formatter.date(coupon.expireDate)}',
                                   style: TextStyle(color: Colors.black87),
                                 ),
                               ],
@@ -302,7 +302,7 @@ class MyCouponPage extends GetView<MyCouponController> {
                                   ],
                                 ),
                                 Text(
-                                  'Ngày hết hạn: ${Formatter.dateFormat(couponInUse.applyDate)}',
+                                  'Ngày hết hạn: ${Formatter.date(couponInUse.applyDate)}',
                                   style: TextStyle(color: Colors.black87),
                                 ),
                               ],
@@ -413,7 +413,7 @@ class MyCouponPage extends GetView<MyCouponController> {
                                   ],
                                 ),
                                 Text(
-                                  'Ngày sử dụng: ${Formatter.dateFormat(couponInUse.applyDate)}',
+                                  'Ngày sử dụng: ${Formatter.date(couponInUse.applyDate)}',
                                   style: TextStyle(color: Colors.black87),
                                 ),
                               ],

@@ -110,7 +110,7 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                           ),
                         ),
                         Text(
-                          Formatter.dateFormat(coupon.publishDate),
+                          Formatter.date(coupon.publishDate),
                         )
                       ],
                     ),

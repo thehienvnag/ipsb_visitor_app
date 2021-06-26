@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/controllers/home_controller.dart';
+import 'package:indoor_positioning_visitor/src/widgets/rounded_button.dart';
 import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -206,24 +207,14 @@ class HomePage extends GetView<HomeController> {
                   'Kết quả tìm kiếm',
                   style: TextStyle(color: Colors.black, fontSize: 22),
                 ),
-                ClipOval(
-                  child: Material(
-                    color: Colors.grey.shade300,
-                    // Button color
-                    child: InkWell(
-                      splashColor: Colors.blueAccent, // Splash color
-                      onTap: () {
-                        panelController.close();
-                        controller.changeSearchValue('');
-                      },
-                      child: SizedBox(
-                        width: 30,
-                        height: 30,
-                        child: Icon(Icons.close),
-                      ),
-                    ),
-                  ),
-                )
+                RoundedButton(
+                  onPressed: () {
+                    panelController.close();
+                    controller.changeSearchValue('');
+                  },
+                  radius: 30,
+                  icon: Icon(Icons.close),
+                ),
               ],
             ),
           ),

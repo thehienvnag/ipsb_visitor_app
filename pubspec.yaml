@@ -57,6 +57,12 @@ dependencies:
   # Glowing anything
   flutter_glow: ^0.2.0
 
+  # grid view animation
+  flutter_staggered_animations: ^1.0.0
+
+  # tab view
+  flutter_tab_indicator_styler: ^2.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

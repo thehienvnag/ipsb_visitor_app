@@ -304,7 +304,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                 ),
                               ),
                               Text(
-                                Formatter.dateFormat(coupon.publishDate),
+                                Formatter.date(coupon.publishDate),
                                 style: TextStyle(fontSize: 18),
                               ),
                             ],
@@ -322,7 +322,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                 ),
                               ),
                               Text(
-                                Formatter.dateFormat(coupon.expireDate),
+                                Formatter.date(coupon.expireDate),
                                 style: TextStyle(fontSize: 18),
                               ),
                             ],
@@ -345,8 +345,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                         ),
                                       ),
                                       Text(
-                                        Formatter.dateFormat(
-                                            couponInUse.applyDate),
+                                        Formatter.date(couponInUse.applyDate),
                                         style: TextStyle(fontSize: 18),
                                       ),
                                     ],

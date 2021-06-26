@@ -1,7 +1,5 @@
 import 'package:indoor_positioning_visitor/src/common/endpoints.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
-import 'package:indoor_positioning_visitor/src/models/store.dart';
-import 'package:indoor_positioning_visitor/src/pages/store_details/controllers/store_details_controller.dart';
 import 'package:indoor_positioning_visitor/src/services/api/base_service.dart';
 
 mixin ICouponService {
