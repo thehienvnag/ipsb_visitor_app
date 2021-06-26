@@ -36,7 +36,8 @@ class HomePage extends GetView<HomeController> {
                 child: TextFormField(
                   onFieldSubmitted: (value) {
                     controller.changeSearchValue(value);
-                    storePanelController.open();
+                    // storePanelController.open();
+                    controller.getStore();
                   },
                   cursorColor: Colors.black,
                   cursorHeight: 22,
@@ -68,19 +69,20 @@ class HomePage extends GetView<HomeController> {
                 width: screenSize.width * 0.27,
                 color: Colors.grey[300],
                 child: Obx(() {
+                  FloorPlan floorPlan =  controller.selectedFloor.value;
                   return DropdownButton<FloorPlan>(
                     onChanged: controller.changeSelectedFloor,
                     icon: Icon(
                       Icons.arrow_drop_down,
                       size: 25,
                     ),
-                    value: controller.selectedFloor.value,
+                    value: floorPlan,
                     items: controller.listFloorPlan.map((e) {
                       return DropdownMenuItem(
                         value: e,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10.0),
-                          child: Text(e.floorCode ?? ''),
+                          child: Text('Tầng ${e.floorCode}'),
                         ),
                       );
                     }).toList(),
@@ -106,8 +108,7 @@ class HomePage extends GetView<HomeController> {
           margin: EdgeInsets.only(top: 10),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(
-                  'https://genk.mediacdn.vn/2018/3/14/photo-1-1521033482343809363991.png'),
+              image: NetworkImage('https://genk.mediacdn.vn/2018/3/14/photo-1-1521033482343809363991.png'),
               fit: BoxFit.cover,
             ),
           ),

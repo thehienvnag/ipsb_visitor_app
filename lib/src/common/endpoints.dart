@@ -20,4 +20,7 @@ class Endpoints {
 
   /// Store enpoint version /api/v1
   static const stores = '$apiVer1/stores';
+
+  /// FloorPlan enpoint version /api/v1
+  static const floorPlans = '$apiVer1/floor-plans';
 }

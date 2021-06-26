@@ -4,6 +4,7 @@ import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/shortest_
 import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/edge_service.dart';
+import 'package:indoor_positioning_visitor/src/services/api/floor_plan_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/location_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
@@ -41,5 +42,7 @@ class AppInit {
     Get.lazyPut<ICouponService>(() => CouponService());
     // Calling api at Store service
     Get.lazyPut<IStoreService>(() => StoreService());
+    // Calling api at FloorPlan service
+    Get.lazyPut<IFloorPlanService>(() => FloorPlanService());
   }
 }
