@@ -25,7 +25,7 @@ class IndoorMap extends GetView<IndoorMapController> {
         if (snapshot.hasData) {
           var data = snapshot.data!;
           return InteractiveViewer(
-            maxScale: 1.5,
+            maxScale: 1.2,
             minScale: 0.1,
             constrained: false,
             transformationController: TransformationController(),

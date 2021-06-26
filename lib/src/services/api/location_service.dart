@@ -8,7 +8,9 @@ mixin ILocationService {
   Future<List<Location>> getStairsAndLifts(int floorPlanId);
 
   /// Get locations from a [floorPlanId] based on [locationType]
-  Future<List<Location>> getLocationByType(int locationType, int floorPlanId);
+  Future<List<Location>> getLocationsByType(int locationType, int floorPlanId);
+
+  Future<List<Location>> getLocationOnFloor(int floorPlanId);
 }
 
 class LocationService extends BaseService<Location>
@@ -25,18 +27,26 @@ class LocationService extends BaseService<Location>
 
   @override
   Future<List<Location>> getStairsAndLifts(int floorPlanId) async {
-    var stairs = getLocationByType(Constants.locationTypeStair, floorPlanId);
-    var lifts = getLocationByType(Constants.locationTypeLift, floorPlanId);
+    var stairs = getLocationsByType(Constants.locationTypeStair, floorPlanId);
+    var lifts = getLocationsByType(Constants.locationTypeLift, floorPlanId);
     var result = await Future.wait([stairs, lifts]);
     return result.expand((element) => element).toList();
   }
 
   @override
-  Future<List<Location>> getLocationByType(
+  Future<List<Location>> getLocationsByType(
       int locationType, int floorPlanId) async {
     return await getAllBase({
       'isAll': true.toString(),
-      'locationTypeId': Constants.locationTypeStair.toString(),
+      'locationTypeId': locationType.toString(),
+      'floorPlanId': floorPlanId.toString(),
+    });
+  }
+
+  @override
+  Future<List<Location>> getLocationOnFloor(int floorPlanId) async {
+    return await getAllBase({
+      'isAll': true.toString(),
       'floorPlanId': floorPlanId.toString(),
     });
   }

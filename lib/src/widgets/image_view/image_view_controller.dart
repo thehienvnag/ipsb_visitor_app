@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:indoor_positioning_visitor/src/models/location.dart';
 
 import 'package:indoor_positioning_visitor/src/widgets/image_view/map_marker.dart';
@@ -97,10 +98,11 @@ class PopupState {
 
   double determineWidth() {
     switch (location?.locationTypeId) {
-      case MarkerPopup.store:
+      case MapKey.store:
         return MarkerPopup.storeWidth;
-      case MarkerPopup.stairCase:
-      case MarkerPopup.elevator:
+      case MapKey.stairCase:
+      case MapKey.elevator:
+      case MapKey.restRoom:
         return MarkerPopup.serviceWidth;
     }
     return 0;
@@ -108,10 +110,11 @@ class PopupState {
 
   double determineHeight() {
     switch (location?.locationTypeId) {
-      case MarkerPopup.store:
+      case MapKey.store:
         return MarkerPopup.storeWidth;
-      case MarkerPopup.stairCase:
-      case MarkerPopup.elevator:
+      case MapKey.stairCase:
+      case MapKey.elevator:
+      case MapKey.restRoom:
         return MarkerPopup.serviceHeight;
     }
     return 0;

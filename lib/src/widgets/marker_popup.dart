@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
+import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
+import 'package:indoor_positioning_visitor/src/utils/utils.dart';
 
 import 'package:indoor_positioning_visitor/src/widgets/image_view/image_view_controller.dart';
-import 'package:indoor_positioning_visitor/src/widgets/place_object.dart';
 
 class MarkerPopup extends GetView<ImageViewController> {
-  static const int stairCase = 1;
-  static const int elevator = 2;
-  static const int store = 3;
   static const double serviceWidth = 320;
   static const double serviceHeight = 80;
   static const double storeWidth = 320;
-  static const double storeHeight = 120;
+  static const double storeHeight = 320;
 
   final PopupState state;
 
@@ -25,18 +24,36 @@ class MarkerPopup extends GetView<ImageViewController> {
       width: determineWidth(),
       height: determineHeight(),
       child: Card(
-        elevation: 6,
+        elevation: 7,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.black12,
-                backgroundImage: determineImg(state.location?.locationTypeId),
+            if (isStore())
+              Container(
+                width: storeWidth,
+                height: 180,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  image: DecorationImage(
+                    image: state.location!.retrieveStoreImg(),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-              title: Text(determineTitle() ?? ''),
-              subtitle: Text(determineSubtitle() ?? ''),
+            ListTile(
+              leading: !isStore()
+                  ? CircleAvatar(
+                      backgroundColor: Colors.black12,
+                      backgroundImage:
+                          Utils.getServiceImage(state.location?.locationTypeId),
+                    )
+                  : null,
+              title: Text(
+                Formatter.shorten(determineTitle()).toUpperCase(),
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
+              subtitle: Text(Formatter.shorten(determineSubtitle(), 40)),
               trailing: IconButton(
                 onPressed: () => controller.closePopup(state.popupType),
                 icon: Icon(Icons.close),
@@ -72,7 +89,7 @@ class MarkerPopup extends GetView<ImageViewController> {
     );
   }
 
-  bool isStore() => state.location?.locationTypeId == store;
+  bool isStore() => state.location?.locationTypeId == MapKey.store;
 
   double determineWidth() {
     if (isStore()) return storeWidth;
@@ -96,17 +113,5 @@ class MarkerPopup extends GetView<ImageViewController> {
       return state.location?.store?.description;
     }
     return state.location?.locationType?.description;
-  }
-
-  ImageProvider? determineImg(int? type) {
-    switch (type) {
-      case stairCase:
-        return AssetImage(PlaceConstants.stairCase);
-      case elevator:
-        return AssetImage(PlaceConstants.elevator);
-      case store:
-        return state.location?.retrieveStoreImg();
-    }
-    return AssetImage(PlaceConstants.stairCase);
   }
 }

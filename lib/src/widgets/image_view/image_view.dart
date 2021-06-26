@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:indoor_positioning_visitor/src/widgets/current_location.dart';
 import 'package:indoor_positioning_visitor/src/widgets/image_view/image_view_controller.dart';
 import 'package:indoor_positioning_visitor/src/widgets/image_view/map_marker.dart';
 import 'package:indoor_positioning_visitor/src/widgets/path_painter.dart';
-import 'package:indoor_positioning_visitor/src/widgets/place_object.dart';
 import 'package:indoor_positioning_visitor/src/widgets/marker_popup.dart';
 
 class ImageView extends GetView<ImageViewController> {
@@ -43,8 +43,8 @@ class ImageView extends GetView<ImageViewController> {
 
   List<Positioned> buildMapMarkers(List<MapMarker> markers) => markers
       .map((e) => Positioned(
-            left: e.dx - PlaceConstants.radius,
-            top: e.dy - PlaceConstants.radius,
+            left: e.dx - MapValue.radius,
+            top: e.dy - MapValue.radius,
             child: e.content,
           ))
       .toList();
@@ -74,7 +74,7 @@ class ImageView extends GetView<ImageViewController> {
               height,
               popupState.offset.dy,
             ) -
-            PlaceConstants.radius,
+            MapValue.radius,
         child: MarkerPopup(state: popupState),
       );
     }
@@ -90,7 +90,7 @@ class ImageView extends GetView<ImageViewController> {
     dOffset += offset;
     double widthEnd = dOffset + popupSize;
     double value = widthEnd > screenSize
-        ? dOffset - popupSize - PlaceConstants.radius * 3
+        ? dOffset - popupSize - MapValue.radius * 3
         : dOffset;
     return value;
   }

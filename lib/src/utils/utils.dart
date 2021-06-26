@@ -32,4 +32,18 @@ class Utils {
       fit: BoxFit.cover,
     );
   }
+
+  static ImageProvider getServiceImage(int? locationTypeId) {
+    ImageProvider imageProvider = AssetImage(MapValue.stairCase);
+
+    switch (locationTypeId) {
+      case MapKey.elevator:
+        imageProvider = AssetImage(MapValue.elevator);
+        break;
+      case MapKey.restRoom:
+        imageProvider = AssetImage(MapValue.restRoom);
+        break;
+    }
+    return imageProvider;
+  }
 }

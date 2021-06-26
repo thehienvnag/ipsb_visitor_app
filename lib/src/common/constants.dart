@@ -36,4 +36,20 @@ class Constants {
 
   /// Default image
   static const String imageErr = "assets/images/error.png";
+
+  static const String pin = "assets/images/pin.png";
+}
+
+class MapKey {
+  static const int stairCase = 4;
+  static const int elevator = 3;
+  static const int restRoom = 10;
+  static const int store = 1;
+}
+
+class MapValue {
+  static const String stairCase = "assets/images/staircase.png";
+  static const String elevator = "assets/images/elevator.png";
+  static const String restRoom = "assets/images/toilet.png";
+  static const double radius = 18;
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:indoor_positioning_visitor/src/models/location_type.dart';
 import 'package:indoor_positioning_visitor/src/models/store.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -33,11 +34,13 @@ class Location {
     return '{id=$id __ ($x, $y)}';
   }
 
-  ImageProvider? retrieveStoreImg() {
+  ImageProvider retrieveStoreImg() {
     ImageProvider? image;
     var storeImg = this.store?.imageUrl;
     if (storeImg != null) {
       image = NetworkImage(storeImg);
+    } else {
+      image = AssetImage(Constants.imageErr);
     }
     return image;
   }
