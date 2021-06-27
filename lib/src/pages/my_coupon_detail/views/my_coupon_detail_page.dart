@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/controllers/my_coupon_detail_controller.dart';
-
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
 
 class MyCouponDetailPage extends GetView<MyCouponDetailController> {
+  final dateTime = DateTime.now();
   final SharedStates sharedData = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
               color: Colors.black,
             ),
             onPressed: () {
-              Get.back(closeOverlays: true);
+              Get.back();
             },
           ),
           backgroundColor: Colors.white,
@@ -52,7 +52,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
               clipRadius: 20,
               numberOfSmallClips: 8,
               ticketWidth: 350,
-              ticketHeight: 600,
+              ticketHeight: 660,
               child: Padding(
                 padding: EdgeInsets.only(left: 25, right: 25),
                 child: Container(
@@ -70,8 +70,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                               decoration: BoxDecoration(
                                 border: Border.all(
                                     width: 4,
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor),
+                                    color: Theme.of(context).scaffoldBackgroundColor),
                                 boxShadow: [
                                   BoxShadow(
                                       spreadRadius: 2,
@@ -118,7 +117,8 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 30, bottom: 10),
+                        height: 100,
+                        //margin: EdgeInsets.only(top: 30, bottom: 10),
                         child: Text(coupon.description ?? 'Description not set',
                             style: TextStyle(
                                 fontSize: 20,
@@ -280,7 +280,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                             mainAxisSize: MainAxisSize.min,
                             children: List.generate(
                               screenSize.width * 0.75 ~/ (10 + 5),
-                              (_) => Container(
+                                  (_) => Container(
                                 width: 10,
                                 height: 2,
                                 color: Colors.black38,
@@ -332,25 +332,71 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                             child: couponInUse.applyDate == null
                                 ? SizedBox()
                                 : Row(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(left: 25),
-                                        child: Text(
-                                          "Ngày sử dụng : ",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black
-                                                  .withOpacity(0.7)),
-                                        ),
-                                      ),
-                                      Text(
-                                        Formatter.date(couponInUse.applyDate),
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                    ],
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 25),
+                                  child: Text(
+                                    "Ngày sử dụng : ",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black.withOpacity(0.7)),
                                   ),
+                                ),
+                                Text(
+                                  Formatter.date(couponInUse.applyDate), style: TextStyle(fontSize: 18),
+                                ),
+                              ],
+                            ),
                           ),
+                          sharedData.coupon.value.id == null && coupon.id != null
+                              ? SizedBox()
+                              : Container(
+                            margin: EdgeInsets.only(left: 20, right: 30, bottom: 40),
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            height: 38,
+                                child: FloatingActionButton.extended(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                ),
+                            ),
+                            backgroundColor: Colors.lightBlue,
+                            label: Text(
+                                'Lấy ưu đãi',
+                                style: TextStyle(
+                                    fontSize: 17, color: Colors.white, letterSpacing: 4),
+                            ),
+                            onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      content: Text(
+                                        "Bạn có muốn lưu mã khuyến mãi không?",
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Hủy'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            controller.createCouponInUse(coupon.id!);
+
+                                          },
+                                          child: Text('Lưu ngay'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                            },
+                          ),
+                              )
                         ],
                       ),
                     ],
@@ -360,52 +406,52 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
             ),
           ]),
         ),
-        floatingActionButton: (couponInUse.status == "Active")
+        floatingActionButton: (controller.checkCouponValid('NotUse', couponInUse))
             ? Container(
-                margin: EdgeInsets.only(right: 50, bottom: 40),
-                width: MediaQuery.of(context).size.width * 0.7,
-                height: 38,
-                child: FloatingActionButton.extended(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10.0),
+          margin: EdgeInsets.only(right: 50, bottom: 40),
+          width: MediaQuery.of(context).size.width * 0.7,
+          height: 38,
+          child: FloatingActionButton.extended(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(10.0),
+              ),
+            ),
+            backgroundColor: Colors.lightBlue,
+            label: Text(
+              'Dùng ngay',
+              style: TextStyle(
+                  fontSize: 17, color: Colors.white, letterSpacing: 4),
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) {
+                  return AlertDialog(
+                    content: Text(
+                      "Bạn có muốn dùng mã khuyến mãi không?",
                     ),
-                  ),
-                  backgroundColor: Colors.lightBlue,
-                  label: Text(
-                    'Dùng ngay',
-                    style: TextStyle(
-                        fontSize: 17, color: Colors.white, letterSpacing: 4),
-                  ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return AlertDialog(
-                          content: Text(
-                            "Bạn có muốn dùng mã khuyến mãi không?",
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('Không'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Get.toNamed(Routes.showCouponQR);
-                              },
-                              child: Text('Áp dụng'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ),
-              )
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Không'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Get.toNamed(Routes.showCouponQR);
+                        },
+                        child: Text('Áp dụng'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        )
             : SizedBox());
   }
 }

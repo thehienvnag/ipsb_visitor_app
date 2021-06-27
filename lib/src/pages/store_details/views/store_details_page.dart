@@ -203,23 +203,26 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
         itemCount: coupons.length,
         itemBuilder: (context, index) {
           final coupon = coupons[index];
-          return AnimateWrapper(
-            index: index,
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              child: Card(
-                color: Color(0xffF5F5F7),
-                child: ListTile(
-                  leading: Image.network(
-                    coupon.imageUrl ?? '',
-                    width: 50,
-                  ),
-                  title: Text(Formatter.shorten(coupon.name)),
-                  subtitle: Text(Formatter.shorten(coupon.description)),
-                  trailing: TextButton.icon(
-                    onPressed: () {},
-                    icon: Icon(Icons.local_activity),
-                    label: Text('Chi tiết'),
+          return GestureDetector(
+            onTap: () => controller.gotoCouponDetails(coupon),
+            child: AnimateWrapper(
+              index: index,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                child: Card(
+                  color: Color(0xffF5F5F7),
+                  child: ListTile(
+                    leading: Image.network(
+                      coupon.imageUrl ?? '',
+                      width: 50,
+                    ),
+                    title: Text(Formatter.shorten(coupon.name)),
+                    subtitle: Text(Formatter.shorten(coupon.description)),
+                    trailing: TextButton.icon(
+                      onPressed: () {},
+                      icon: Icon(Icons.local_activity),
+                      label: Text('Chi tiết'),
+                    ),
                   ),
                 ),
               ),
