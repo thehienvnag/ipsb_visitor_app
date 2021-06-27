@@ -175,4 +175,17 @@ class HomeController extends GetxController {
     if (path == null) return;
     _mapController.setPathOnMap(path);
   }
+
+  /// [isShow] for home screen
+  var isShow = false.obs;
+
+  /// Change ishow value with true
+  void changeIsShow() {
+    isShow.value = true;
+  }
+
+  /// Change ishow value with false
+  void changeIsShowFalse() {
+    isShow.value = false;
+  }
 }

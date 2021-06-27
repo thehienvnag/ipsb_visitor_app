@@ -63,6 +63,9 @@ dependencies:
   # tab view
   flutter_tab_indicator_styler: ^2.0.0
 
+  # Bottom sheet
+  solid_bottom_sheet: ^0.1.10
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
