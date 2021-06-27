@@ -1,3 +1,4 @@
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:intl/intl.dart';
 
 class Formatter {
@@ -21,5 +22,18 @@ class Formatter {
   static String price(double? price, [String currency = "VNĐ"]) {
     final formatter = new NumberFormat("###,###,###,###");
     return formatter.format(price) + ' $currency';
+  }
+
+  static String amount(double? amount, String? discountType,
+      [String currency = "VNĐ"]) {
+    if (amount == null || discountType == null) {
+      return '';
+    }
+    if (discountType == Constants.discountTypeFixed) {
+      final formatter = new NumberFormat("###,###,###,###");
+      return '-' + formatter.format(amount) + ' $currency';
+    }
+    final formatter = new NumberFormat("###");
+    return '-' + formatter.format(amount) + '%';
   }
 }

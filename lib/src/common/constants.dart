@@ -38,6 +38,9 @@ class Constants {
   static const String imageErr = "assets/images/error.png";
 
   static const String pin = "assets/images/pin.png";
+
+  static const String discountTypeFixed = "Fixed";
+  static const String discountTypePercentage = "Percentage";
 }
 
 class MapKey {

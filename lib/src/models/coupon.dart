@@ -1,3 +1,4 @@
+import 'package:indoor_positioning_visitor/src/models/store.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'coupon.g.dart';
@@ -16,6 +17,7 @@ class Coupon {
   final double? amount, maxDiscount, minDiscount, storeId;
   final int? limit;
   final DateTime? expireDate, publishDate;
+  final Store? store;
 
   Coupon({
     this.id,
@@ -34,6 +36,7 @@ class Coupon {
     this.minDiscount,
     this.limit,
     this.storeId,
+    this.store,
   });
 
   factory Coupon.fromJson(Map<String, dynamic> json) => _$CouponFromJson(json);

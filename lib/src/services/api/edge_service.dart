@@ -7,7 +7,7 @@ mixin IEdgeService {
   Future<List<Edge>> getByFloorPlanId(int floorPlanId);
 
   /// Get all edges from n floor [floors]
-  Future<List<Edge>> getEdges(List<int> floors);
+  Future<List<Edge>> getEdgesFromFloors(List<int> floors);
 }
 
 class EdgeService extends BaseService<Edge> implements IEdgeService {
@@ -30,7 +30,7 @@ class EdgeService extends BaseService<Edge> implements IEdgeService {
   }
 
   @override
-  Future<List<Edge>> getEdges(List<int> floorIds) async {
+  Future<List<Edge>> getEdgesFromFloors(List<int> floorIds) async {
     var edges = await Future.wait(
       floorIds.map((id) => getByFloorPlanId(id)),
     );

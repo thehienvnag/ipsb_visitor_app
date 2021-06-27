@@ -23,4 +23,10 @@ class Endpoints {
 
   /// Coupon enpoint version /api/v1
   static const coupons = '$apiVer1/coupons';
+
+  /// FloorPlan enpoint version /api/v1
+  static const floorPlans = '$apiVer1/floor-plans';
+
+  /// FloorPlan enpoint version /api/v1
+  static const buildings = '$apiVer1/buildings';
 }

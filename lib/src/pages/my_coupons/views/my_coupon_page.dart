@@ -289,7 +289,7 @@ class MyCouponPage extends GetView<MyCouponController> {
                                 Row(
                                   children: [
                                     Text(
-                                      coupon.name ?? 'Name not set',
+                                      coupon.code ?? 'Name not set',
                                       style: TextStyle(
                                           color: Colors.green,
                                           fontSize: 16,

@@ -1,4 +1,5 @@
 import 'package:indoor_positioning_visitor/src/common/constants.dart';
+import 'package:indoor_positioning_visitor/src/models/location.dart';
 
 class Node<T> {
   /// Node id
@@ -12,14 +13,14 @@ class Node<T> {
   double distance = Constants.infiniteDistance;
 
   ///
-  final Map<Node, double> adjacents = {};
+  final Map<Node<T>, double> adjacents = {};
 
   ///
-  List<Node> shortestPath = [];
+  List<Node<T>> shortestPath = [];
 
   /// Add a destination for current node with id of destination node [destId]
   /// and distance from current node to destination node [distance]
-  void addDestination(Node destNode, double distance) {
+  void addDestination(Node<T> destNode, double distance) {
     adjacents.putIfAbsent(destNode, () => distance);
   }
 

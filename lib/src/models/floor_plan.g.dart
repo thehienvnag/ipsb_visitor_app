@@ -8,6 +8,9 @@ part of 'floor_plan.dart';
 
 FloorPlan _$FloorPlanFromJson(Map<String, dynamic> json) {
   return FloorPlan(
+    locations: (json['locations'] as List<dynamic>?)
+        ?.map((e) => Location.fromJson(e as Map<String, dynamic>))
+        .toList(),
     floorNumber: json['floorNumber'] as int?,
     buildingId: json['buildingId'] as int?,
     imageUrl: json['imageUrl'] as String?,
@@ -24,4 +27,5 @@ Map<String, dynamic> _$FloorPlanToJson(FloorPlan instance) => <String, dynamic>{
       'floorCode': instance.floorCode,
       'floorNum': instance.floorNum,
       'imageUrl': instance.imageUrl,
+      'locations': instance.locations,
     };

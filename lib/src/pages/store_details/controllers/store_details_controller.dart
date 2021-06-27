@@ -10,10 +10,13 @@ class StoreDetailsController extends GetxController {
   final store = Store().obs;
   final listProduct = <Product>[].obs;
   final listCoupon = <Coupon>[].obs;
+  final storeId = 0.obs;
   @override
   void onInit() {
     super.onInit();
-
+    String? id = Get.parameters['id'];
+    if (id == null) return;
+    storeId.value = int.parse(id);
     getStoreDetail();
     getProducts();
     getCoupons();
@@ -21,17 +24,17 @@ class StoreDetailsController extends GetxController {
 
   IStoreService storeService = Get.find();
   Future<void> getStoreDetail() async {
-    //int id = Get.parameters['id'] as int;
-    store.value = await storeService.getStoreById(18);
+    store.value = await storeService.getStoreById(storeId.value);
   }
 
   IProductService productService = Get.find();
   Future<void> getProducts() async {
-    listProduct.value = await productService.getProductsByStoreId(15);
+    listProduct.value =
+        await productService.getProductsByStoreId(storeId.value);
   }
 
   ICouponService couponService = Get.find();
   Future<void> getCoupons() async {
-    listCoupon.value = await couponService.getCouponsByStoreId(18);
+    listCoupon.value = await couponService.getCouponsByStoreId(storeId.value);
   }
 }

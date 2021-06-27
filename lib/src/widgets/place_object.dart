@@ -72,7 +72,7 @@ class PlaceObject extends GetView<ImageViewController> {
 
   Widget selected(PopupState state) {
     Widget icon = Icon(
-      Icons.location_pin,
+      Icons.store,
       color: Color(0xff9AA0A6),
       size: 32,
     );
@@ -81,7 +81,7 @@ class PlaceObject extends GetView<ImageViewController> {
       icon = Transform.translate(
         offset: Offset(-6, -10),
         child: Icon(
-          Icons.location_pin,
+          Icons.store,
           color: Color(0xffEA4335),
           size: 46,
         ),

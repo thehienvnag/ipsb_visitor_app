@@ -1,4 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
+import 'package:indoor_positioning_visitor/src/utils/utils.dart';
 
 class TicketBox extends StatelessWidget {
   final double margin;
@@ -38,16 +42,6 @@ class TicketBox extends StatelessWidget {
     return Container(
       width: ticketWidth,
       height: ticketHeight,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 8),
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 37,
-            spreadRadius: 0,
-          ),
-        ],
-      ),
       child: ClipPath(
         clipper: TicketClipper(
           xAxisMain: xAxisMain,
@@ -64,12 +58,123 @@ class TicketBox extends StatelessWidget {
           hasSeparator: hasSeparator,
         ),
         child: Container(
-          color: Colors.white,
+          decoration: BoxDecoration(
+            color: Colors.white,
+          ),
           child: child,
         ),
       ),
     );
   }
+
+  factory TicketBox.small({
+    required String imgUrl,
+    required String? storeName,
+    required String? name,
+    required String? description,
+    required double? amount,
+    required String? discountType,
+    required DateTime? expireDate,
+  }) {
+    return TicketBox(
+      margin: 20,
+      fromEdgeMain: 62,
+      fromEdgeSeparator: 134,
+      isOvalSeparator: false,
+      smallClipRadius: 15,
+      clipRadius: 29,
+      numberOfSmallClips: 8,
+      ticketWidth: 360,
+      ticketHeight: 130,
+      child: Container(
+        color: Colors.grey.withOpacity(.2),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Utils.resolveImg(
+              imgUrl,
+              fit: BoxFit.fitHeight,
+              width: 125,
+            ),
+            // Image.network(
+            //   // 'https://channel.mediacdn.vn/thumb_w/640/prupload/164/2017/05/img20170523165323853.jpg',
+            //   imgUrl,
+            //   fit: BoxFit.fitHeight,
+            //   width: 125,
+            // ),
+            Container(
+              width: 227,
+              padding: const EdgeInsets.only(top: 4),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        Formatter.shorten(storeName).toUpperCase(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 17,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        Formatter.amount(amount, discountType),
+                        style: TextStyle(
+                          fontSize: discountType == 'Fixed' ? 25 : 40,
+                        ),
+                      ),
+                      Text(
+                        Formatter.shorten(description, 20).toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 47),
+                    child: Text(
+                      'Hết hạn: ${Formatter.date(expireDate)}',
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BorderPaint extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint();
+    paint.style = PaintingStyle.stroke;
+    paint.strokeWidth = 1;
+    paint.color = Colors.white;
+
+    canvas.drawArc(
+      Rect.fromCenter(
+        center: Offset(size.height / 2, size.width / 2),
+        height: size.height,
+        width: size.width,
+      ),
+      pi,
+      pi,
+      false,
+      paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
 class TicketClipper extends CustomClipper<Path> {
@@ -149,12 +254,6 @@ class TicketClipper extends CustomClipper<Path> {
             ? Offset(clipFromEdgeSeparator, centerX)
             : Offset(centerX, clipFromEdgeSeparator);
       });
-      // final boxX = smallClipStart + numberOfSmallClips * smallClipBoxSize;
-      // final centerX = boxX + smallClipPadding + smallClipRadius;
-
-      // final lastOffset = xAxisSeparator
-      //     ? Offset(clipFromEdgeSeparator, centerX)
-      //     : Offset(centerX, clipFromEdgeSeparator);
 
       smallClipCenterOffsets.forEach((centerOffset) {
         if (isOvalSeparator) {

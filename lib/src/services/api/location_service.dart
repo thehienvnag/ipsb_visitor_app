@@ -11,6 +11,11 @@ mixin ILocationService {
   Future<List<Location>> getLocationsByType(int locationType, int floorPlanId);
 
   Future<List<Location>> getLocationOnFloor(int floorPlanId);
+
+  Future<List<Location>> getLocationOnFloorWithLocationTypeId(int floorPlanId,
+      [int locationTypeId = 2]);
+
+  Future<Location> getLocationById(int id);
 }
 
 class LocationService extends BaseService<Location>
@@ -44,10 +49,26 @@ class LocationService extends BaseService<Location>
   }
 
   @override
-  Future<List<Location>> getLocationOnFloor(int floorPlanId) async {
+  Future<List<Location>> getLocationOnFloor(int floorPlanId,
+      [int locationTypeId = 2]) async {
     return await getAllBase({
       'isAll': true.toString(),
       'floorPlanId': floorPlanId.toString(),
+    });
+  }
+
+  @override
+  Future<Location> getLocationById(int id) async {
+    return getByIdBase(id);
+  }
+
+  @override
+  Future<List<Location>> getLocationOnFloorWithLocationTypeId(int floorPlanId,
+      [int locationTypeId = 2]) async {
+    return await getAllBase({
+      'isAll': true.toString(),
+      'floorPlanId': floorPlanId.toString(),
+      'locationTypeId': locationTypeId.toString(),
     });
   }
 }

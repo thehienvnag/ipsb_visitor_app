@@ -4,6 +4,7 @@ import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/shortest_
 import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/edge_service.dart';
+import 'package:indoor_positioning_visitor/src/services/api/floor_plan_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/location_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/product_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
@@ -33,16 +34,20 @@ class AppInit {
   /// Init api services
   static void initApiServices() {
     // Use for calling api
-    Get.lazyPut<IApiHelper>(() => ApiHelper());
+    Get.lazyPut<IApiHelper>(() => ApiHelper(), fenix: true);
     // Calling api at edge service
-    Get.lazyPut<IEdgeService>(() => EdgeService());
+    Get.lazyPut<IEdgeService>(() => EdgeService(), fenix: true);
     // Calling api at location service
-    Get.lazyPut<ILocationService>(() => LocationService());
+    Get.lazyPut<ILocationService>(() => LocationService(), fenix: true);
     // Calling api at store service
-    Get.lazyPut<IStoreService>(() => StoreService());
+    Get.lazyPut<IStoreService>(() => StoreService(), fenix: true);
     // Calling api at product service
-    Get.lazyPut<IProductService>(() => ProductService());
+    Get.lazyPut<IProductService>(() => ProductService(), fenix: true);
     // Calling api at coupon service
-    Get.lazyPut<ICouponService>(() => CouponService());
+    Get.lazyPut<ICouponService>(() => CouponService(), fenix: true);
+    // Calling api at Store service
+    Get.lazyPut<IStoreService>(() => StoreService(), fenix: true);
+    // Calling api at FloorPlan service
+    Get.lazyPut<IFloorPlanService>(() => FloorPlanService(), fenix: true);
   }
 }

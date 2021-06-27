@@ -1,3 +1,4 @@
+import 'package:indoor_positioning_visitor/src/models/location.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'floor_plan.g.dart';
@@ -6,8 +7,10 @@ part 'floor_plan.g.dart';
 class FloorPlan {
   final int? id, floorNumber, buildingId;
   final String? floorCode, floorNum, imageUrl;
+  final List<Location>? locations;
 
   FloorPlan({
+    this.locations,
     this.floorNumber,
     this.buildingId,
     this.imageUrl,

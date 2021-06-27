@@ -24,15 +24,18 @@ class IndoorMap extends GetView<IndoorMapController> {
       builder: (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {
         if (snapshot.hasData) {
           var data = snapshot.data!;
-          return InteractiveViewer(
-            maxScale: 1.2,
-            minScale: 0.1,
-            constrained: false,
-            transformationController: TransformationController(),
-            child: ImageView(
-              width: data.width.toDouble(),
-              height: data.height.toDouble(),
-              image: image,
+          return Container(
+            margin: const EdgeInsets.only(bottom: 200),
+            child: InteractiveViewer(
+              maxScale: 1,
+              minScale: 0.1,
+              constrained: false,
+              transformationController: TransformationController(),
+              child: ImageView(
+                width: data.width.toDouble(),
+                height: data.height.toDouble(),
+                image: image,
+              ),
             ),
           );
         } else {

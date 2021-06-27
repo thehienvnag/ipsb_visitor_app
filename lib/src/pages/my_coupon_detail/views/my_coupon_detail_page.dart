@@ -11,6 +11,7 @@ import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
 
 class MyCouponDetailPage extends GetView<MyCouponDetailController> {
   final SharedStates sharedData = Get.find();
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -360,52 +361,96 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
             ),
           ]),
         ),
-        floatingActionButton: (couponInUse.status == "Active")
+        floatingActionButton: (controller.checkStatus(couponInUse, 'Active'))
             ? Container(
                 margin: EdgeInsets.only(right: 50, bottom: 40),
                 width: MediaQuery.of(context).size.width * 0.7,
                 height: 38,
-                child: FloatingActionButton.extended(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10.0),
-                    ),
-                  ),
-                  backgroundColor: Colors.lightBlue,
-                  label: Text(
-                    'Dùng ngay',
-                    style: TextStyle(
-                        fontSize: 17, color: Colors.white, letterSpacing: 4),
-                  ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return AlertDialog(
-                          content: Text(
-                            "Bạn có muốn dùng mã khuyến mãi không?",
+                child: (sharedData.coupon.value.name == null)
+                    ? FloatingActionButton.extended(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
                           ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('Không'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Get.toNamed(Routes.showCouponQR);
-                              },
-                              child: Text('Áp dụng'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ),
-              )
+                        ),
+                        backgroundColor: Colors.lightBlue,
+                        label: Text(
+                          'Dùng ngay',
+                          style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.white,
+                              letterSpacing: 4),
+                        ),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return AlertDialog(
+                                content: Text(
+                                  "Bạn có muốn dùng mã khuyến mãi không?",
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Không'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.toNamed(Routes.showCouponQR);
+                                    },
+                                    child: Text('Áp dụng'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      )
+                    : FloatingActionButton.extended(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                        ),
+                        backgroundColor: Colors.lightBlue,
+                        label: Text(
+                          'Lấy ưu đãi',
+                          style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.white,
+                              letterSpacing: 4),
+                        ),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return AlertDialog(
+                                content: Text(
+                                  "Bạn có muốn lưu mã khuyến mãi không?",
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Không'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.toNamed(Routes.showCouponQR);
+                                    },
+                                    child: Text('Lưu ngay'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      ))
             : SizedBox());
   }
 }

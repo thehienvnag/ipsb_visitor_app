@@ -1,202 +1,178 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/graph.dart';
+import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/node.dart'
+    as node;
+import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/shortest_path.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
+import 'package:indoor_positioning_visitor/src/models/edge.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
+import 'package:indoor_positioning_visitor/src/models/location.dart';
 import 'package:indoor_positioning_visitor/src/models/store.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
+import 'package:indoor_positioning_visitor/src/services/api/edge_service.dart';
+import 'package:indoor_positioning_visitor/src/services/api/floor_plan_service.dart';
+import 'package:indoor_positioning_visitor/src/services/api/location_service.dart';
+import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
-
-final listFloorPlanFinal = [
-  FloorPlan(floorCode: "Chọn tầng", floorNumber: 0),
-  FloorPlan(floorCode: "Tầng 1", floorNumber: 1),
-  FloorPlan(floorCode: "Tầng 2", floorNumber: 2),
-  FloorPlan(floorCode: "Tầng 3", floorNumber: 3),
-  FloorPlan(floorCode: "Tầng 4", floorNumber: 4),
-  FloorPlan(floorCode: "Tầng 5", floorNumber: 5),
-  FloorPlan(floorCode: "Tầng 5", floorNumber: 6),
-];
-
-final listCouponFinal = [
-  Coupon(
-      id: 1,
-      name: 'Trà sữa Phúc Long',
-      description: 'Giảm 30% cho đơn 100k',
-      code: 'Giảm 30%',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Coupon(
-      id: 3,
-      name: 'Trà sữa Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Mua 1 tặng 1',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-  Coupon(
-      id: 4,
-      name: 'Trà sữa Tocotoco',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Giảm 50%',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://1office.vn/wp-content/uploads/2020/02/36852230_419716301836700_6088975431891943424_n-1.png'),
-  Coupon(
-      id: 5,
-      name: 'Trà sữa Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Mua 2 tặng 1',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-  Coupon(
-      id: 6,
-      name: 'Trà sữa Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Giảm 20%',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-  Coupon(
-      id: 7,
-      name: 'Trà sữa Tocotoco',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Giảm 20%',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://1office.vn/wp-content/uploads/2020/02/36852230_419716301836700_6088975431891943424_n-1.png'),
-];
-
-final listStoreSearchFinal = [
-  Store(
-      id: 1,
-      name: 'Phúc Long',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: 1,
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Store(
-      id: 2,
-      name: 'Highlands Coffee',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: 2,
-      status: 'Mở cả ngày',
-      imageUrl:
-          'http://niie.edu.vn/wp-content/uploads/2017/09/highlands-coffee.jpg'),
-  Store(
-      id: 3,
-      name: 'Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: 3,
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-  Store(
-      id: 4,
-      name: 'Tocotoco',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: 1,
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://1office.vn/wp-content/uploads/2020/02/36852230_419716301836700_6088975431891943424_n-1.png'),
-  Store(
-      id: 5,
-      name: 'Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: 3,
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-  Store(
-      id: 6,
-      name: 'Phúc Long',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: 1,
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Store(
-      id: 7,
-      name: 'Gong Cha',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: 1,
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Store(
-      id: 8,
-      name: 'Gong Cha',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: 1,
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Store(
-      id: 9,
-      name: 'Gong Cha',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: 1,
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Store(
-      id: 10,
-      name: 'Gong Cha',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: 1,
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Store(
-      id: 11,
-      name: 'Highlands Coffee',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: 2,
-      status: 'Mở cả ngày',
-      imageUrl:
-          'http://niie.edu.vn/wp-content/uploads/2017/09/highlands-coffee.jpg'),
-  Store(
-      id: 12,
-      name: 'Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: 3,
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-];
+import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
+import 'package:indoor_positioning_visitor/src/widgets/indoor_map/indoor_map_controller.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class HomeController extends GetxController {
+  final storePanelController = PanelController();
+  final couponPanelController = PanelController();
+
   /// Shared data
   final SharedStates sharedData = Get.find();
+
+  ICouponService _service = Get.find();
+  IStoreService _storeService = Get.find();
+  IFloorPlanService _floorPlanService = Get.find();
 
   /// [searchValue] for home screen
   var searchValue = "".obs;
 
   /// Get list coupons random data
-  var listCoupon = listCouponFinal.obs;
+  final listCoupon = <Coupon>[].obs;
 
-  /// Get list stores when search
-  var listStore = listStoreSearchFinal.obs;
-
-  /// Change search value with String [value]
-  void changeSearchValue(String value) {
-    searchValue.value = value;
-    listStore.value = listStoreSearchFinal;
+  /// Get list Coupon from api
+  Future<void> getCoupons() async {
+    final paging = await _service.getCoupons();
+    listCoupon.value = paging.content!;
   }
 
-  ///  List floor plan data
-  var listFloorPlan = listFloorPlanFinal.obs;
+  /// Get list stores when search
+  final listStore = <Store>[].obs;
+
+  //gọi locationTypeName, storeName, join list lại
+
+  /// Get list search Store from api by buildingID,searchvalue, floorplanID
+  Future<void> getStore(String value) async {
+    // if (selectedFloorID == null) {
+    //   return;
+    // }
+    changeVisible();
+    storePanelController.open();
+    final paging =
+        await _storeService.getStores(value, selectedFloor.value.id!);
+    listStore.value = paging.content!;
+  }
+
+  /// Get list floorPlan
+  final listFloorPlan = <FloorPlan>[].obs;
+
+  /// Get list FloorPlan from api by buildingID
+  Future<List<int>> getFloorPlan() async {
+    final paging = await _floorPlanService.getFloorPlans(12);
+    listFloorPlan.value = paging.content!;
+    selectedFloor.value = listFloorPlan[0];
+    loadPlaceOnFloor(listFloorPlan[0].id!);
+    return listFloorPlan.map((element) => element.id!).toList();
+  }
 
   /// Get selected of floor
-  var selectedFloor = listFloorPlanFinal[0].obs;
+  var selectedFloor = FloorPlan().obs;
 
   /// Change selected of floor
   void changeSelectedFloor(FloorPlan? floor) {
     selectedFloor.value = floor!;
+    loadPlaceOnFloor(floor.id!);
   }
 
+  /// Go to coupon detail of selected
   void gotoCouponDetails(Coupon coupon) {
     sharedData.saveCoupon(coupon);
     Get.toNamed(Routes.couponDetail);
+  }
+
+  final isCouponBtnVisible = true.obs;
+
+  void changeVisible() {
+    isCouponBtnVisible.value = !isCouponBtnVisible.value;
+  }
+
+  IndoorMapController _mapController = Get.find();
+
+  @override
+  void onInit() {
+    super.onInit();
+    getFloorPlan().then((value) => loadEdgesInBuilding(value));
+    getCoupons();
+    onLocationChanged();
+    testLocationChange();
+  }
+
+  void testLocationChange() {
+    final list = [53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64];
+    int index = 0;
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (index < list.length) {
+        setCurrentLocation(list[index++]);
+      }
+    });
+  }
+
+  final edges = <Edge>[].obs;
+  IEdgeService _edgeService = Get.find();
+  Future<void> loadEdgesInBuilding(List<int> floorIds) async {
+    final result = await _edgeService.getEdgesFromFloors(floorIds);
+    edges.value = result;
+  }
+
+  ILocationService _locationService = Get.find();
+  Future<void> loadPlaceOnFloor(int floorId) async {
+    final locations = await _locationService.getLocationOnFloor(floorId);
+    print(locations.length);
+    _mapController.loadLocationsOnMap(locations);
+  }
+
+  final currentPosition = 0.obs;
+  Future<void> setCurrentLocation(int id) async {
+    if (id == 0) {
+      return;
+    }
+    var position = locations[id]?.value;
+    if (position == null) {
+      position = await _locationService.getLocationById(id);
+    }
+    _mapController.setCurrentMarker(position);
+  }
+
+  IShortestPath _shortestPath = Get.find();
+
+  final locations = RxMap<int, node.Node<Location>>({});
+  void onLocationChanged() {
+    currentPosition.listen((id) {
+      setCurrentLocation(id);
+      if (isShowingDirection.value) {
+        showDirection();
+      }
+    });
+  }
+
+  final destPosition = 0.obs;
+  final isShowingDirection = false.obs;
+  Future<void> showDirection() async {
+    if (edges.isEmpty) return;
+    int from = currentPosition.value;
+    int dest = destPosition.value;
+
+    // If list of edges is available
+    _mapController.setPathOnMap([]);
+    Graph g = Graph.from(edges);
+
+    //Set locationo
+    locations.value = g.nodes;
+
+    // Run Dijiktra algorithm
+    _shortestPath.getShortestPath(g, dest);
+
+    // Get shortest path
+    final path = g.nodes[from]?.shortestPath.map((e) => e.value!).toList();
+
+    if (path == null) return;
+    _mapController.setPathOnMap(path);
   }
 }

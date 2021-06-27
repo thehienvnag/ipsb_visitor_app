@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:indoor_positioning_visitor/src/common/constants.dart';
 
 class Utils {
@@ -11,25 +12,30 @@ class Utils {
     return sqrt(xSquare + ySquare);
   }
 
-  static Image resolveImg(String? url) {
+  static Image resolveImg(String? url, {double? width, BoxFit? fit}) {
     if (url == null) {
       return Image.asset(Constants.imageErr);
     }
     return Image(
+      fit: fit,
+      width: width,
+      // loadingBuilder: (context, child, loadingProgress) =>
+      //     CircularProgressIndicator(),
       image: NetworkImage(url),
       errorBuilder: (context, error, stackTrace) =>
           Image.asset(Constants.imageErr),
     );
   }
 
-  static DecorationImage resolveDecoImg(String? url) {
+  static DecorationImage resolveDecoImg(String? url,
+      {BoxFit? fit = BoxFit.cover}) {
     if (url == null) {
       return DecorationImage(image: AssetImage(Constants.imageErr));
     }
     return DecorationImage(
       onError: (exception, stackTrace) => Image.asset(Constants.imageErr),
       image: NetworkImage(url),
-      fit: BoxFit.cover,
+      fit: fit,
     );
   }
 

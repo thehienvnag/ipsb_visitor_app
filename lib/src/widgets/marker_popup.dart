@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/common/constants.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:indoor_positioning_visitor/src/utils/utils.dart';
 
@@ -66,7 +67,10 @@ class MarkerPopup extends GetView<ImageViewController> {
                   Container(
                     margin: const EdgeInsets.only(left: 20),
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () => Get.toNamed(Routes.storeDetails,
+                          parameters: {
+                            'id': state.location!.storeId.toString()
+                          }),
                       icon: Icon(Icons.store),
                       label: Text('Xem thông tin'),
                     ),
