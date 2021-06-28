@@ -27,12 +27,16 @@ class IndoorMapController extends GetxController {
 
   /// Set a point on map
   void setCurrentMarker(Location? location) {
-    if (location == null) return;
-    var marker = MapMarker(
-      dx: location.x!,
-      dy: location.y!,
-      content: CurrentLocation(),
-    );
+    var marker;
+    if (location == null) {
+      marker = MapMarker(dx: -100, dy: -100, content: CurrentLocation());
+    } else {
+      marker = MapMarker(
+        dx: location.x!,
+        dy: location.y!,
+        content: CurrentLocation(),
+      );
+    }
     _imageViewController.setPoint(marker);
   }
 

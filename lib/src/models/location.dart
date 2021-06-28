@@ -31,7 +31,7 @@ class Location {
 
   @override
   String toString() {
-    return '{id=$id __ ($x, $y)}';
+    return id.toString();
   }
 
   ImageProvider retrieveStoreImg() {

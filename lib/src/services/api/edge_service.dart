@@ -8,6 +8,9 @@ mixin IEdgeService {
 
   /// Get all edges from n floor [floors]
   Future<List<Edge>> getEdgesFromFloors(List<int> floors);
+
+  /// Get all edges from n floor [floors]
+  Future<List<Edge>> getAll();
 }
 
 class EdgeService extends BaseService<Edge> implements IEdgeService {
@@ -35,5 +38,12 @@ class EdgeService extends BaseService<Edge> implements IEdgeService {
       floorIds.map((id) => getByFloorPlanId(id)),
     );
     return edges.expand((edge) => edge).toList();
+  }
+
+  @override
+  Future<List<Edge>> getAll() async {
+    return getAllBase({
+      "isAll": true.toString(),
+    });
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/common/constants.dart';
+import 'package:indoor_positioning_visitor/src/pages/home/controllers/home_controller.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:indoor_positioning_visitor/src/utils/utils.dart';
@@ -14,6 +15,7 @@ class MarkerPopup extends GetView<ImageViewController> {
   static const double storeHeight = 320;
 
   final PopupState state;
+  final HomeController homeController = Get.find();
 
   MarkerPopup({
     Key? key,
@@ -78,7 +80,8 @@ class MarkerPopup extends GetView<ImageViewController> {
                   Container(
                     margin: const EdgeInsets.only(right: 20),
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () =>
+                          homeController.startShowDirection(state.location?.id),
                       child: Icon(
                         Icons.directions,
                         size: 32,

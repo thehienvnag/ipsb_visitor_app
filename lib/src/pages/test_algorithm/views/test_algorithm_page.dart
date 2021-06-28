@@ -7,7 +7,7 @@ import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 class TestAlgorithmPage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
-    return bottomSheetEnd(context);
+    return bottomSheetStart(context);
   }
 
   Widget bottomSheetStart(BuildContext context) {

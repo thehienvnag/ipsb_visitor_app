@@ -47,7 +47,8 @@ class HomePage extends GetView<HomeController> {
                 child: Obx(() {
                   FloorPlan floorPlan = controller.selectedFloor.value;
                   return DropdownButton<FloorPlan>(
-                    onChanged: controller.changeSelectedFloor,
+                    onChanged: (value) =>
+                        controller.changeSelectedFloor(value, true),
                     icon: Icon(
                       Icons.arrow_drop_down,
                       size: 25,
@@ -93,25 +94,39 @@ class HomePage extends GetView<HomeController> {
             alignment: Alignment.bottomLeft,
             margin: EdgeInsets.only(left: 30, bottom: 10),
             width: screenSize.width,
-            child: ElevatedButton(
-              onPressed: () {
-                controller.changeVisible();
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  barrierColor: Colors.transparent,
-                  builder: (context) {
-                    return buildCouponPanel();
+            child: Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    controller.changeVisible();
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      barrierColor: Colors.transparent,
+                      builder: (context) {
+                        return buildCouponPanel();
+                      },
+                    );
                   },
-                );
-              },
-              child: Icon(Icons.card_giftcard_sharp, color: Colors.white),
-              style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-                padding: EdgeInsets.all(20),
-                primary: Colors.blue,
-                onPrimary: Colors.red,
-              ),
+                  child: Icon(Icons.card_giftcard_sharp, color: Colors.white),
+                  style: ElevatedButton.styleFrom(
+                    shape: CircleBorder(),
+                    padding: EdgeInsets.all(20),
+                    primary: Colors.blue,
+                    onPrimary: Colors.red,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () => controller.testLocationChange(),
+                  child: Icon(Icons.run_circle, color: Colors.white),
+                  style: ElevatedButton.styleFrom(
+                    shape: CircleBorder(),
+                    padding: EdgeInsets.all(20),
+                    primary: Colors.blue,
+                    onPrimary: Colors.red,
+                  ),
+                ),
+              ],
             ),
           );
         }

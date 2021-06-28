@@ -1,5 +1,6 @@
 import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/graph.dart';
 import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/node.dart';
+import 'package:indoor_positioning_visitor/src/models/location.dart';
 
 mixin IShortestPath {
   /// Get shortest path from graph [graph] and source node [source]
@@ -9,23 +10,23 @@ mixin IShortestPath {
 class ShortestPath implements IShortestPath {
   @override
   Graph getShortestPath(Graph graph, int destId) {
-    Node? source = graph.nodes[destId];
+    Node<Location>? source = graph.nodes[destId];
     if (source == null) {
       throw new Exception('No destination source found!');
     }
     return getShortestPathFromSource(graph, source);
   }
 
-  Graph getShortestPathFromSource(Graph graph, Node source) {
+  Graph getShortestPathFromSource(Graph graph, Node<Location> source) {
     int start = DateTime.now().millisecondsSinceEpoch;
     source.distance = 0;
 
-    Set<Node> settledNodes = {};
-    Set<Node> unSettledNodes = {};
+    Set<Node<Location>> settledNodes = {};
+    Set<Node<Location>> unSettledNodes = {};
 
     unSettledNodes.add(source);
     while (unSettledNodes.isNotEmpty) {
-      Node current = getMinDistanceNode(unSettledNodes);
+      Node<Location> current = getMinDistanceNode(unSettledNodes);
       unSettledNodes.remove(current);
 
       current.adjacents.keys.forEach((adjacentNode) {
@@ -42,20 +43,20 @@ class ShortestPath implements IShortestPath {
     return graph;
   }
 
-  Node getMinDistanceNode(Set<Node> unSettledNodes) {
+  Node<Location> getMinDistanceNode(Set<Node<Location>> unSettledNodes) {
     return unSettledNodes
         .reduce((curr, next) => curr.distance < next.distance ? curr : next);
   }
 
   void calculateMinDistance(
-    Node evaluationNode,
+    Node<Location> evaluationNode,
     double edgeDistance,
-    Node sourceNode,
+    Node<Location> sourceNode,
   ) {
     double sourceDistance = sourceNode.distance;
     if (sourceDistance + edgeDistance < evaluationNode.distance) {
       evaluationNode.distance = sourceDistance + edgeDistance;
-      List<Node> shortestPath = List.from(sourceNode.shortestPath);
+      List<Node<Location>> shortestPath = List.from(sourceNode.shortestPath);
       shortestPath.add(sourceNode);
       evaluationNode.shortestPath = shortestPath;
     }
