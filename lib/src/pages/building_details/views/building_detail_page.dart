@@ -14,13 +14,12 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
     final screenSize = MediaQuery.of(context).size;
     final buildingSelected = sharedData.building.value;
     return Scaffold(
-      //backgroundColor: Color(0xffF2F2F2),
-      backgroundColor: Colors.black54,
+      backgroundColor: Color(0xffF2F2F2),
       body: Column(
         children: [
           Stack(
             children: [
-              Image.network('http://www.vtr.org.vn/FileManager/Anh%20web%202019/Thang%2011/2130/tttmgigamall%20(3).jpg'),
+              Image.network(buildingSelected.imageUrl ?? 'http://www.vtr.org.vn/FileManager/Anh%20web%202019/Thang%2011/2130/tttmgigamall%20(3).jpg'),
               Container(
                 margin: EdgeInsets.only(top: 50),
                 width: screenSize.width,
@@ -89,14 +88,12 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                          Text('Thương Hiệu',style: TextStyle(fontSize: 23),),
-                          GestureDetector(
-                            onTap: (){
-
-                            },
-                              child: Text('Xem tất cả',style: TextStyle(color: Colors.blueAccent,fontSize: 17),)
-                          )
-                        ],
+                            Text('Thương Hiệu',style: TextStyle(fontSize: 23),),
+                            GestureDetector(
+                                onTap: (){},
+                                child: Text('Xem tất cả',style: TextStyle(color: Colors.blueAccent,fontSize: 17),)
+                            )
+                          ],
                         ),
                         Obx(() {
                           var listStore = controller.listStore;
@@ -104,40 +101,45 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                             onTap: (){
 
                             },
-                            child: Container(
-                              height: 310,
-                              child: GridView.builder(
-                                shrinkWrap: true,
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3, // num row
-                                      mainAxisSpacing: 8,
-                                      childAspectRatio: 0.85,// height of Card
-                                  ),
-                                  itemCount: 6,
-                                  itemBuilder: (BuildContext ctx, index) {
-                                    final store = listStore[index];
-                                    return Card(
-                                        shape: BeveledRectangleBorder(
-                                          borderRadius: BorderRadius.circular(6.0),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                                width: 100,
-                                                height: 82,
-                                                child: Image(
-                                                  image: NetworkImage(store.imageUrl.toString()),
-                                                  fit: BoxFit.cover,
-                                                )
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 310,
+                                  child: GridView.builder(
+                                    addSemanticIndexes: true,
+                                    shrinkWrap: true,
+                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 3, // num row
+                                          mainAxisSpacing: 8,
+                                          childAspectRatio: 0.85,// height of Card
+                                      ),
+                                      itemCount: 6,
+                                      itemBuilder: (BuildContext ctx, index) {
+                                        final store = listStore[index];
+                                        return Card(
+                                            shape: BeveledRectangleBorder(
+                                              borderRadius: BorderRadius.circular(6.0),
                                             ),
-                                            Container(
-                                                width: 100, height: 40,
-                                                child: Center(child: Text(store.name.toString()))
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                    width: 100,
+                                                    height: 82,
+                                                    child: Image(
+                                                      image: NetworkImage(store.imageUrl.toString()),
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                ),
+                                                Container(
+                                                    width: 100, height: 40,
+                                                    child: Center(child: Text(store.name.toString()))
+                                                )
+                                              ],
                                             )
-                                          ],
-                                        )
-                                    );
-                                  }),
+                                        );
+                                      }),
+                                ),
+                              ],
                             ),
                           );
                         })
