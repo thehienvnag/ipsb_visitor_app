@@ -50,13 +50,7 @@ class HomeController extends GetxController {
 
   /// Get list search Store from api by buildingID,searchvalue, floorplanID
   Future<void> getStore(String value) async {
-    // if (selectedFloorID == null) {
-    //   return;
-    // }
-    changeVisible();
-    storePanelController.open();
-    final paging =
-        await _storeService.getStores(value, selectedFloor.value.id!);
+    final paging = await _storeService.getStores(value, selectedFloor.value.id!);
     listStore.value = paging.content!;
   }
 

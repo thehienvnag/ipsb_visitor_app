@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/models/building.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
 
@@ -14,4 +15,10 @@ class SharedStates extends GetxService {
 
   /// Save the coupon detail
   void saveCoupon(value) => coupon.value = value;
+
+  /// Building state
+  final building = Building().obs;
+
+  /// Save the building detail
+  void saveBuilding(value) => building.value = value;
 }
