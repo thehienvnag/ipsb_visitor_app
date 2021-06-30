@@ -7,4 +7,5 @@ class Routes {
   static const String showCouponQR = "/showCouponQR";
   static const String notifications = "/notifications";
   static const String storeDetails = "/storeDetails";
+  static const String homePageFinal = "/homePageFinal";
 }
