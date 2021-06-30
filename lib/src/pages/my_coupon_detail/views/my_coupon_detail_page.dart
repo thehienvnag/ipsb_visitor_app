@@ -10,6 +10,7 @@ import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
 
 class MyCouponDetailPage extends GetView<MyCouponDetailController> {
+  final dateTime = DateTime.now();
   final SharedStates sharedData = Get.find();
 
   @override
@@ -119,7 +120,8 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 30, bottom: 10),
+                        height: 100,
+                        //margin: EdgeInsets.only(top: 30, bottom: 10),
                         child: Text(coupon.description ?? 'Description not set',
                             style: TextStyle(
                                 fontSize: 20,
@@ -330,7 +332,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                           ),
                           Container(
                             height: 20,
-                            child: couponInUse.applyDate == null
+                            child: couponInUse.applyDate! == null
                                 ? SizedBox()
                                 : Row(
                                     children: [
@@ -361,96 +363,97 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
             ),
           ]),
         ),
-        floatingActionButton: (controller.checkStatus(couponInUse, 'Active'))
-            ? Container(
-                margin: EdgeInsets.only(right: 50, bottom: 40),
-                width: MediaQuery.of(context).size.width * 0.7,
-                height: 38,
-                child: (sharedData.coupon.value.name == null)
-                    ? FloatingActionButton.extended(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                        ),
-                        backgroundColor: Colors.lightBlue,
-                        label: Text(
-                          'Dùng ngay',
-                          style: TextStyle(
-                              fontSize: 17,
-                              color: Colors.white,
-                              letterSpacing: 4),
-                        ),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) {
-                              return AlertDialog(
-                                content: Text(
-                                  "Bạn có muốn dùng mã khuyến mãi không?",
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Không'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Get.toNamed(Routes.showCouponQR);
-                                    },
-                                    child: Text('Áp dụng'),
-                                  ),
-                                ],
+        floatingActionButton:
+            (controller.checkCouponValid('NotUse', couponInUse))
+                ? Container(
+                    margin: EdgeInsets.only(right: 50, bottom: 40),
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    height: 38,
+                    child: (sharedData.coupon.value.name == null)
+                        ? FloatingActionButton.extended(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
+                            backgroundColor: Colors.lightBlue,
+                            label: Text(
+                              'Dùng ngay',
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  color: Colors.white,
+                                  letterSpacing: 4),
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    content: Text(
+                                      "Bạn có muốn dùng mã khuyến mãi không?",
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('Không'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Get.toNamed(Routes.showCouponQR);
+                                        },
+                                        child: Text('Áp dụng'),
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                      )
-                    : FloatingActionButton.extended(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                        ),
-                        backgroundColor: Colors.lightBlue,
-                        label: Text(
-                          'Lấy ưu đãi',
-                          style: TextStyle(
-                              fontSize: 17,
-                              color: Colors.white,
-                              letterSpacing: 4),
-                        ),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) {
-                              return AlertDialog(
-                                content: Text(
-                                  "Bạn có muốn lưu mã khuyến mãi không?",
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Không'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Get.toNamed(Routes.showCouponQR);
-                                    },
-                                    child: Text('Lưu ngay'),
-                                  ),
-                                ],
+                          )
+                        : FloatingActionButton.extended(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
+                            backgroundColor: Colors.lightBlue,
+                            label: Text(
+                              'Lấy ưu đãi',
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  color: Colors.white,
+                                  letterSpacing: 4),
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    content: Text(
+                                      "Bạn có muốn lưu mã khuyến mãi không?",
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('Không'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Get.toNamed(Routes.showCouponQR);
+                                        },
+                                        child: Text('Lưu ngay'),
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                      ))
-            : SizedBox());
+                          ))
+                : SizedBox());
   }
 }

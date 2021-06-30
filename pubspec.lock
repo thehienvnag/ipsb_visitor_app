@@ -29,6 +29,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.7.0"
+<<<<<<< HEAD
   avatar_glow:
     dependency: "direct main"
     description:
@@ -36,6 +37,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+=======
+>>>>>>> BIPSMV-28-api-call-my-coupons
   boolean_selector:
     dependency: transitive
     description:
