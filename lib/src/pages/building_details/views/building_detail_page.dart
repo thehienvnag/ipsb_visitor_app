@@ -1,9 +1,9 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:indoor_positioning_visitor/src/pages/building_details/controllers/building_detail_controller.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 
 class BuildingDetailPage extends GetView<BuildingDetailController> {
@@ -90,7 +90,7 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                           children: [
                             Text('Thương Hiệu',style: TextStyle(fontSize: 23),),
                             GestureDetector(
-                                onTap: (){},
+                                onTap: (){Get.toNamed(Routes.buildingStore);},
                                 child: Text('Xem tất cả',style: TextStyle(color: Colors.blueAccent,fontSize: 17),)
                             )
                           ],

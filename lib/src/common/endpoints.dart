@@ -27,6 +27,9 @@ class Endpoints {
   /// FloorPlan enpoint version /api/v1
   static const floorPlans = '$apiVer1/floor-plans';
 
-  /// FloorPlan enpoint version /api/v1
+  /// Buidling enpoint version /api/v1
   static const buildings = '$apiVer1/buildings';
+
+  /// ProductCategory enpoint version /api/v1
+  static const productCategory = '$apiVer1/product-categories';
 }
