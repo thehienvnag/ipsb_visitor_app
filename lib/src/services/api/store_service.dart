@@ -6,6 +6,7 @@ import 'package:indoor_positioning_visitor/src/services/api/base_service.dart';
 mixin IStoreService {
   Future<Store> getStoreById(int id);
   Future<Paging<Store>> getStores(String searchName, int floorPlanId);
+  Future<List<Store>> getStoresByBuildingId(int buildingId);
 }
 
 class StoreService extends BaseService<Store> implements IStoreService {
@@ -29,5 +30,14 @@ class StoreService extends BaseService<Store> implements IStoreService {
       "name": searchName.toString(),
       "floorPlanId": floorPlanId.toString(),
     });
+  }
+
+  @override
+  Future<List<Store>> getStoresByBuildingId(int buildingId) {
+    return getAllBase(
+      {
+        'buildingId': buildingId.toString(),
+      },
+    );
   }
 }

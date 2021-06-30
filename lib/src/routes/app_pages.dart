@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/views/home_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/views/home_page_test.dart';
+
+import 'package:indoor_positioning_visitor/src/pages/home_page_final/bindings/home_page_final_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/home_page_final/views/home_page_final_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/bindings/my_coupon_detail_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupons/bindings/my_coupon_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/test_algorithm/bindings/test_algorithm_binding.dart';
@@ -52,6 +55,11 @@ class AppPages {
       name: Routes.storeDetails,
       page: () => StoreDetailsPage(),
       binding: StoreDetailsBinding(),
+    ),
+    GetPage(
+      name: Routes.homePageFinal,
+      page: () => HomePageFinalPage(),
+      binding: HomePageFinalBinding(),
     ),
   ];
 }
