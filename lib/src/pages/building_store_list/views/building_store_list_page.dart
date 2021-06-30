@@ -65,7 +65,7 @@ class BuildingStorePage extends GetView<BuildingStoreController> {
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         backgroundColor: Colors.white,
-                        selectedColor: Colors.lightGreen.withOpacity(0.7),
+                        selectedColor: Color(0xff9EFFF9),
                         selected: category.select!,
                         onSelected: (value) {
                           controller.changeSelected(category.category!.id);
