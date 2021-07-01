@@ -1,5 +1,7 @@
 import 'dart:ui';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bullet_list/flutter_bullet_list.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/controllers/my_coupon_detail_controller.dart';
@@ -7,6 +9,8 @@ import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/controller
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
+import 'package:indoor_positioning_visitor/src/utils/utils.dart';
+import 'package:indoor_positioning_visitor/src/widgets/rounded_button.dart';
 import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
 
 class MyCouponDetailPage extends GetView<MyCouponDetailController> {
@@ -19,441 +23,274 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
     final couponInUse = sharedData.couponInUse.value;
     final coupon = couponInUse.coupon ?? sharedData.coupon.value;
     return Scaffold(
-        backgroundColor: Color(0xFFEFEBEB),
-        appBar: AppBar(
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Get.back(closeOverlays: true);
-            },
+      appBar: AppBar(
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
           ),
-          backgroundColor: Colors.white,
-          elevation: 1,
-          title: Column(
-            children: [
-              Text(
-                'Chi tiết mã giảm giá',
-                style: TextStyle(color: Colors.black),
-              ),
-            ],
-          ),
+          onPressed: () {
+            Get.back(closeOverlays: true);
+          },
         ),
-        body: Container(
-          margin: const EdgeInsets.only(left: 30, right: 30),
-          child: Column(children: [
-            SizedBox(height: 10),
-            TicketBox(
-              fromEdgeMain: 464,
-              fromEdgeSeparator: 134,
-              isOvalSeparator: false,
-              smallClipRadius: 15,
-              clipRadius: 20,
-              numberOfSmallClips: 8,
-              ticketWidth: 350,
-              ticketHeight: 600,
-              child: Padding(
-                padding: EdgeInsets.only(left: 25, right: 25),
-                child: Container(
-                  color: Colors.white,
-                  width: screenSize.width,
-                  height: screenSize.height * 0.7,
-                  child: Column(
+        backgroundColor: Colors.white,
+        elevation: 1,
+        title: Column(
+          children: [
+            Text(
+              'Chi tiết mã giảm giá',
+              style: TextStyle(color: Colors.black),
+            ),
+          ],
+        ),
+      ),
+      body: Center(
+        child: Column(children: [
+          SizedBox(height: 40),
+          TicketBox(
+            xAxisMain: false,
+            fromEdgeMain: 545,
+            fromEdgeSeparator: 134,
+            isOvalSeparator: false,
+            smallClipRadius: 15,
+            clipRadius: 17,
+            numberOfSmallClips: 8,
+            ticketWidth: 370,
+            ticketHeight: 640,
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        child: Row(
-                          children: [
-                            Container(
-                              width: screenSize.width * 0.27,
-                              height: 140,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 4,
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor),
-                                boxShadow: [
-                                  BoxShadow(
-                                      spreadRadius: 2,
-                                      blurRadius: 10,
-                                      color: Colors.black.withOpacity(0.1),
-                                      offset: Offset(0, 10))
-                                ],
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    coupon.imageUrl ?? '',
-                                  ),
-                                ),
+                        margin: const EdgeInsets.only(right: 20),
+                        child: Card(
+                          child: Container(
+                            width: 125,
+                            height: 125,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(coupon.imageUrl!),
+                                fit: BoxFit.cover,
                               ),
+                              borderRadius: BorderRadius.circular(7),
                             ),
-                            Container(
-                              width: screenSize.width * 0.45,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    width: screenSize.width * 0.5,
-                                    margin: EdgeInsets.only(bottom: 5),
-                                    child: Text(
-                                      coupon.name ?? 'Name not set',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black.withOpacity(0.7),
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    coupon.code ?? 'Code not set',
-                                    style: TextStyle(
-                                        fontSize: 19,
-                                        color: Colors.lightGreen,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                      Container(
-                        height: 100,
-                        //margin: EdgeInsets.only(top: 30, bottom: 10),
-                        child: Text(coupon.description ?? 'Description not set',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black.withOpacity(0.7))),
-                      ),
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "* Áp dụng cho: ",
+                            Formatter.shorten(coupon.store?.name).toUpperCase(),
                             style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black.withOpacity(0.7)),
-                          ),
-                          SizedBox(
-                            height: 6,
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.api_sharp,
-                                size: 15,
-                                color: Colors.lightBlue,
-                              ),
-                              Text(
-                                "Áp dụng cho toàn sản phẩm size L ",
-                                style: TextStyle(fontSize: 15),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.api_sharp,
-                                size: 15,
-                                color: Colors.lightBlue,
-                              ),
-                              Text(
-                                "Toàn menu (không áp dụng combo) ",
-                                style: TextStyle(fontSize: 15),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.api_sharp,
-                                size: 15,
-                                color: Colors.lightBlue,
-                              ),
-                              Text(
-                                "Áp dụng nhiều sản phẩm trong 1 hóa đơn",
-                                style: TextStyle(fontSize: 15),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            "* Lưu ý: ",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black.withOpacity(0.7)),
-                          ),
-                          SizedBox(
-                            height: 6,
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.api_sharp,
-                                size: 15,
-                                color: Colors.lightBlue,
-                              ),
-                              Text(
-                                "Giá chưa bao gồm VAT ",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.api_sharp,
-                                size: 15,
-                                color: Colors.lightBlue,
-                              ),
-                              Text(
-                                "Không đồng thời áp dụng việc tích điểm ",
-                                style: TextStyle(fontSize: 15),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.api_sharp,
-                                size: 15,
-                                color: Colors.lightBlue,
-                              ),
-                              Text("Mỗi người chỉ áp dụng 1 thiết bị chứa mã",
-                                  style: TextStyle(fontSize: 15)),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.api_sharp,
-                                size: 15,
-                                color: Colors.lightBlue,
-                              ),
-                              Text('Không dùng chung với khuyến mãi khác',
-                                  style: TextStyle(fontSize: 15)),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.api_sharp,
-                                size: 15,
-                                color: Colors.lightBlue,
-                              ),
-                              Text(
-                                "Chỉ áp dụng tại cửa hàng",
-                                style: TextStyle(fontSize: 15),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.api_sharp,
-                                size: 15,
-                                color: Colors.lightBlue,
-                              ),
-                              Text(
-                                "Khi thanh toán chỉ áp dụng 1 mã",
-                                style: TextStyle(fontSize: 15),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.api_sharp,
-                                size: 15,
-                                color: Colors.lightBlue,
-                              ),
-                              Text("Không áp dụng hình chụp màn hình",
-                                  style: TextStyle(fontSize: 15)),
-                            ],
-                          ),
-                          SizedBox(height: 25),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: List.generate(
-                              screenSize.width * 0.75 ~/ (10 + 5),
-                              (_) => Container(
-                                width: 10,
-                                height: 2,
-                                color: Colors.black38,
-                                margin: EdgeInsets.only(left: 2.5, right: 2.5),
-                              ),
+                              fontSize: 16,
+                              color: Colors.black54,
                             ),
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 25),
-                                child: Text(
-                                  "Ngày áp dụng mã : ",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black.withOpacity(0.7)),
-                                ),
-                              ),
-                              Text(
-                                Formatter.date(coupon.publishDate),
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 25),
-                                child: Text(
-                                  "Ngày hết hạn : ",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black.withOpacity(0.7)),
-                                ),
-                              ),
-                              Text(
-                                Formatter.date(coupon.expireDate),
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            height: 20,
-                            child: couponInUse.applyDate! == null
-                                ? SizedBox()
-                                : Row(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(left: 25),
-                                        child: Text(
-                                          "Ngày sử dụng : ",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black
-                                                  .withOpacity(0.7)),
-                                        ),
-                                      ),
-                                      Text(
-                                        Formatter.date(couponInUse.applyDate),
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                    ],
+                          if (coupon.discountType! == 'Fixed')
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(top: 8),
+                                  child: Text(
+                                    '[Giảm giá] ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black54,
+                                    ),
                                   ),
-                          ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 8),
+                                  child: Text(
+                                    Formatter.price(coupon.amount)
+                                        .toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: 23,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 180,
+                                  margin: const EdgeInsets.only(top: 8),
+                                  child: Text(
+                                    Formatter.shorten(
+                                        '(${coupon.description})'),
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 16),
+                                  ),
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                     ],
                   ),
                 ),
-              ),
+                Container(
+                  margin: const EdgeInsets.only(top: 8),
+                  width: 380,
+                  child: FlutterBulletList(
+                    data: [
+                      ListItemModel(
+                        label: "Thời gian áp dụng:",
+                        data: [
+                          ListItemModel(
+                              label:
+                                  "${Formatter.date(coupon.publishDate)}  -  ${Formatter.date(coupon.expireDate)}"),
+                        ],
+                      ),
+                      ListItemModel(
+                          label: "Chương trình: ",
+                          data: [ListItemModel(label: "${coupon.name}")]),
+                      ListItemModel(label: "Áp dụng cho: ", data: [
+                        ListItemModel(label: "Toàn menu (không áp dụng combo)"),
+                        ListItemModel(label: "Giá chưa bao gồm VAT}"),
+                      ]),
+                      ListItemModel(
+                        label: "Lưu ý: ",
+                        data: [
+                          ListItemModel(
+                            label: "Chỉ áp dụng tại cửa hàng",
+                          ),
+                          ListItemModel(
+                              label:
+                                  "Khi thanh toán chỉ áp dụng duy nhất 1 mã (bao gồm khách đi lẻ và đi theo nhóm"),
+                          ListItemModel(
+                              label:
+                                  "Áp dụng cho nhiều sản phẩm trong cùng hóa đơn"),
+                        ],
+                      ),
+                    ],
+                    textStyle: TextStyle(color: Colors.black54, fontSize: 16),
+                    bulletColor: Colors.grey,
+                    bulletSize: 3,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 60),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RoundedButton(
+                        onPressed: () {},
+                        radius: 40,
+                        icon: Icon(Icons.ios_share_outlined),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () {},
+                        icon: Icon(Icons.save),
+                        label: Text('Lấy ưu đãi'),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ]),
-        ),
-        floatingActionButton:
-            (controller.checkCouponValid('NotUse', couponInUse))
-                ? Container(
-                    margin: EdgeInsets.only(right: 50, bottom: 40),
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    height: 38,
-                    child: (sharedData.coupon.value.name == null)
-                        ? FloatingActionButton.extended(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
-                              ),
-                            ),
-                            backgroundColor: Colors.lightBlue,
-                            label: Text(
-                              'Dùng ngay',
-                              style: TextStyle(
-                                  fontSize: 17,
-                                  color: Colors.white,
-                                  letterSpacing: 4),
-                            ),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    content: Text(
-                                      "Bạn có muốn dùng mã khuyến mãi không?",
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text('Không'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          Get.toNamed(Routes.showCouponQR);
-                                        },
-                                        child: Text('Áp dụng'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                          )
-                        : FloatingActionButton.extended(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
-                              ),
-                            ),
-                            backgroundColor: Colors.lightBlue,
-                            label: Text(
-                              'Lấy ưu đãi',
-                              style: TextStyle(
-                                  fontSize: 17,
-                                  color: Colors.white,
-                                  letterSpacing: 4),
-                            ),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    content: Text(
-                                      "Bạn có muốn lưu mã khuyến mãi không?",
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text('Không'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          Get.toNamed(Routes.showCouponQR);
-                                        },
-                                        child: Text('Lưu ngay'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                          ))
-                : SizedBox());
+          ),
+        ]),
+      ),
+    );
+    // floatingActionButton:
+    //     (controller.checkCouponValid('NotUse', couponInUse))
+    //         ? Container(
+    //             margin: EdgeInsets.only(right: 50, bottom: 40),
+    //             width: MediaQuery.of(context).size.width * 0.7,
+    //             height: 38,
+    //             child: (sharedData.coupon.value.name == null)
+    //                 ? FloatingActionButton.extended(
+    //                     shape: RoundedRectangleBorder(
+    //                       borderRadius: BorderRadius.all(
+    //                         Radius.circular(10.0),
+    //                       ),
+    //                     ),
+    //                     backgroundColor: Colors.lightBlue,
+    //                     label: Text(
+    //                       'Dùng ngay',
+    //                       style: TextStyle(
+    //                           fontSize: 17,
+    //                           color: Colors.white,
+    //                           letterSpacing: 4),
+    //                     ),
+    //                     onPressed: () {
+    //                       showDialog(
+    //                         context: context,
+    //                         barrierDismissible: false,
+    //                         builder: (context) {
+    //                           return AlertDialog(
+    //                             content: Text(
+    //                               "Bạn có muốn dùng mã khuyến mãi không?",
+    //                             ),
+    //                             actions: [
+    //                               TextButton(
+    //                                 onPressed: () {
+    //                                   Navigator.of(context).pop();
+    //                                 },
+    //                                 child: Text('Không'),
+    //                               ),
+    //                               TextButton(
+    //                                 onPressed: () {
+    //                                   Get.toNamed(Routes.showCouponQR);
+    //                                 },
+    //                                 child: Text('Áp dụng'),
+    //                               ),
+    //                             ],
+    //                           );
+    //                         },
+    //                       );
+    //                     },
+    //                   )
+    //                 : FloatingActionButton.extended(
+    //                     shape: RoundedRectangleBorder(
+    //                       borderRadius: BorderRadius.all(
+    //                         Radius.circular(10.0),
+    //                       ),
+    //                     ),
+    //                     backgroundColor: Colors.lightBlue,
+    //                     label: Text(
+    //                       'Lấy ưu đãi',
+    //                       style: TextStyle(
+    //                           fontSize: 17,
+    //                           color: Colors.white,
+    //                           letterSpacing: 4),
+    //                     ),
+    //                     onPressed: () {
+    //                       showDialog(
+    //                         context: context,
+    //                         barrierDismissible: false,
+    //                         builder: (context) {
+    //                           return AlertDialog(
+    //                             content: Text(
+    //                               "Bạn có muốn lưu mã khuyến mãi không?",
+    //                             ),
+    //                             actions: [
+    //                               TextButton(
+    //                                 onPressed: () {
+    //                                   Navigator.of(context).pop();
+    //                                 },
+    //                                 child: Text('Không'),
+    //                               ),
+    //                               TextButton(
+    //                                 onPressed: () {
+    //                                   Get.toNamed(Routes.showCouponQR);
+    //                                 },
+    //                                 child: Text('Lưu ngay'),
+    //                               ),
+    //                             ],
+    //                           );
+    //                         },
+    //                       );
+    //                     },
+    //                   ))
+    //         : SizedBox());
   }
 }

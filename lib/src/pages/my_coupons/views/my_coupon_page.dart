@@ -132,86 +132,15 @@ class MyCouponPage extends GetView<MyCouponController> {
                 onTap: () => controller.gotoCouponDetails(couponInUse),
                 child: Column(children: [
                   SizedBox(height: 15),
-                  TicketBox(
-                    fromEdgeMain: 62,
-                    fromEdgeSeparator: 134,
-                    isOvalSeparator: false,
-                    smallClipRadius: 15,
-                    clipRadius: 25,
-                    numberOfSmallClips: 8,
-                    ticketWidth: 340,
-                    ticketHeight: 130,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 20.0, right: 20, left: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              ClipRRect(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(6),
-                                ),
-                                child: Image.network(
-                                  coupon.imageUrl ?? '',
-                                  width: 100,
-                                  height: 80,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: List.generate(
-                                  screenSize.height * 0.8 ~/ (10 + 5),
-                                  (_) => Container(
-                                    width: 2,
-                                    height: 2,
-                                    color: Colors.black38,
-                                  ),
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    coupon.name ?? 'Name not set',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    coupon.description ?? 'Description not set',
-                                    style: TextStyle(color: Colors.black87),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        coupon.code ?? 'Code not set',
-                                        style: TextStyle(
-                                            color: Colors.green,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text('  Xem chi tiết',
-                                          style: TextStyle(
-                                              color: Colors.blueAccent,
-                                              fontSize: 13)),
-                                    ],
-                                  ),
-                                  Text(
-                                    'Ngày hết hạn: ${Formatter.date(coupon.expireDate)}',
-                                    style: TextStyle(color: Colors.black87),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  TicketBox.small(
+                    imgUrl: coupon.imageUrl!,
+                    storeName: coupon.store?.name,
+                    name: coupon.name,
+                    description: coupon.description,
+                    amount: coupon.amount,
+                    discountType: coupon.discountType,
+                    expireDate: coupon.expireDate,
+                  )
                 ]),
               );
             }
@@ -236,86 +165,15 @@ class MyCouponPage extends GetView<MyCouponController> {
                 onTap: () => controller.gotoCouponDetails(couponInUse),
                 child: Column(children: [
                   SizedBox(height: 15),
-                  TicketBox(
-                    fromEdgeMain: 62,
-                    fromEdgeSeparator: 134,
-                    isOvalSeparator: false,
-                    smallClipRadius: 15,
-                    clipRadius: 25,
-                    numberOfSmallClips: 8,
-                    ticketWidth: 340,
-                    ticketHeight: 130,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 20.0, right: 20, left: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              ClipRRect(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(6),
-                                ),
-                                child: Image.network(
-                                  coupon.imageUrl ?? '',
-                                  width: 100,
-                                  height: 80,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: List.generate(
-                                  screenSize.height * 0.8 ~/ (10 + 5),
-                                  (_) => Container(
-                                    width: 2,
-                                    height: 2,
-                                    color: Colors.black38,
-                                  ),
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    coupon.name ?? 'Name not set',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    coupon.description ?? 'Description not set',
-                                    style: TextStyle(color: Colors.black87),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        coupon.code ?? 'Name not set',
-                                        style: TextStyle(
-                                            color: Colors.green,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text('  Xem chi tiết',
-                                          style: TextStyle(
-                                              color: Colors.blueAccent,
-                                              fontSize: 15)),
-                                    ],
-                                  ),
-                                  Text(
-                                    'Ngày hết hạn: ${Formatter.date(coupon.expireDate)}',
-                                    style: TextStyle(color: Colors.black87),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  TicketBox.small(
+                    imgUrl: coupon.imageUrl!,
+                    storeName: coupon.store?.name,
+                    name: coupon.name,
+                    description: coupon.description,
+                    amount: coupon.amount,
+                    discountType: coupon.discountType,
+                    expireDate: coupon.expireDate,
+                  )
                 ]),
               );
             }
@@ -350,83 +208,23 @@ class MyCouponPage extends GetView<MyCouponController> {
                 child: Column(children: [
                   SizedBox(height: 15),
                   TicketBox(
-                    fromEdgeMain: 62,
-                    fromEdgeSeparator: 134,
-                    isOvalSeparator: false,
-                    smallClipRadius: 15,
-                    clipRadius: 25,
-                    numberOfSmallClips: 8,
-                    ticketWidth: 340,
-                    ticketHeight: 130,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 20.0, right: 20, left: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              ClipRRect(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(6),
-                                ),
-                                child: Image.network(
-                                  coupon.imageUrl ?? '',
-                                  width: 100,
-                                  height: 80,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: List.generate(
-                                  screenSize.height * 0.8 ~/ (10 + 5),
-                                  (_) => Container(
-                                    width: 2,
-                                    height: 2,
-                                    color: Colors.black38,
-                                  ),
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    coupon.name ?? 'Name not set',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    coupon.description ?? 'Description not set',
-                                    style: TextStyle(color: Colors.black87),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(coupon.code ?? 'Code not set',
-                                          style: TextStyle(
-                                              color: Colors.green,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold)),
-                                      Text('  Xem chi tiết',
-                                          style: TextStyle(
-                                              color: Colors.blueAccent,
-                                              fontSize: 15)),
-                                    ],
-                                  ),
-                                  Text(
-                                    'Ngày sử dụng: ${Formatter.date(couponInUse.applyDate)}',
-                                    style: TextStyle(color: Colors.black87),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                      fromEdgeMain: 62,
+                      fromEdgeSeparator: 134,
+                      isOvalSeparator: false,
+                      smallClipRadius: 15,
+                      clipRadius: 25,
+                      numberOfSmallClips: 8,
+                      ticketWidth: 360,
+                      ticketHeight: 130,
+                      child: TicketBox.small(
+                        imgUrl: coupon.imageUrl!,
+                        storeName: coupon.store?.name,
+                        name: coupon.name,
+                        description: coupon.description,
+                        amount: coupon.amount,
+                        discountType: coupon.discountType,
+                        expireDate: coupon.expireDate,
+                      )),
                 ]),
               );
             }

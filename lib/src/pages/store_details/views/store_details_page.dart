@@ -5,6 +5,7 @@ import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
 import 'package:get/get.dart';
 
 import 'package:indoor_positioning_visitor/src/pages/store_details/controllers/store_details_controller.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:indoor_positioning_visitor/src/utils/utils.dart';
 import 'package:indoor_positioning_visitor/src/widgets/rounded_button.dart';
@@ -203,23 +204,26 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
         itemCount: coupons.length,
         itemBuilder: (context, index) {
           final coupon = coupons[index];
-          return AnimateWrapper(
-            index: index,
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              child: Card(
-                color: Color(0xffF5F5F7),
-                child: ListTile(
-                  leading: Image.network(
-                    coupon.imageUrl ?? '',
-                    width: 50,
-                  ),
-                  title: Text(Formatter.shorten(coupon.name)),
-                  subtitle: Text(Formatter.shorten(coupon.description)),
-                  trailing: TextButton.icon(
-                    onPressed: () {},
-                    icon: Icon(Icons.local_activity),
-                    label: Text('Chi tiết'),
+          return GestureDetector(
+            onTap: () => controller.gotoStoreDetail(coupon),
+            child: AnimateWrapper(
+              index: index,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                child: Card(
+                  color: Color(0xffF5F5F7),
+                  child: ListTile(
+                    leading: Image.network(
+                      coupon.imageUrl ?? '',
+                      width: 50,
+                    ),
+                    title: Text(Formatter.shorten(coupon.name)),
+                    subtitle: Text(Formatter.shorten(coupon.description)),
+                    trailing: TextButton.icon(
+                      onPressed: () {},
+                      icon: Icon(Icons.local_activity),
+                      label: Text('Chi tiết'),
+                    ),
                   ),
                 ),
               ),

@@ -2,9 +2,11 @@ import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/models/product.dart';
 import 'package:indoor_positioning_visitor/src/models/store.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/product_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
+import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 
 class StoreDetailsController extends GetxController {
   final store = Store().obs;
@@ -36,5 +38,11 @@ class StoreDetailsController extends GetxController {
   ICouponService couponService = Get.find();
   Future<void> getCoupons() async {
     listCoupon.value = await couponService.getCouponsByStoreId(storeId.value);
+  }
+
+  SharedStates shared = Get.find();
+  void gotoStoreDetail(Coupon coupon) {
+    shared.saveCoupon(coupon);
+    Get.toNamed(Routes.myCouponDetail);
   }
 }

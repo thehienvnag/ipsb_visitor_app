@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/controllers/home_controller.dart';
@@ -352,7 +351,8 @@ class HomePage extends GetView<HomeController> {
                   return GestureDetector(
                     onTap: () => controller.gotoCouponDetails(coupon),
                     child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 13),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 13, vertical: 5),
                       child: TicketBox.small(
                         storeName: coupon.store?.name,
                         imgUrl: coupon.imageUrl!,
