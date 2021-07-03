@@ -52,8 +52,8 @@ class ImageView extends GetView<ImageViewController> {
 
   List<Positioned> buildMapMarkers(List<MapMarker> markers) => markers
       .map((e) => Positioned(
-            left: e.dx - MapValue.radius,
-            top: e.dy - MapValue.radius,
+            left: e.dx - MapKey.radius,
+            top: e.dy - MapKey.radius,
             child: e.content,
           ))
       .toList();
@@ -83,7 +83,7 @@ class ImageView extends GetView<ImageViewController> {
               height,
               popupState.offset.dy,
             ) -
-            MapValue.radius,
+            MapKey.radius,
         child: MarkerPopup(state: popupState),
       );
     }
@@ -99,7 +99,7 @@ class ImageView extends GetView<ImageViewController> {
     dOffset += offset;
     double widthEnd = dOffset + popupSize;
     double value = widthEnd > screenSize
-        ? dOffset - popupSize - MapValue.radius * 3
+        ? dOffset - popupSize - MapKey.radius * 3
         : dOffset;
     return value;
   }

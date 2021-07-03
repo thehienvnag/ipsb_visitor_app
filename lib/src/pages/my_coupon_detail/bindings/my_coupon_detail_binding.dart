@@ -5,6 +5,7 @@ class MyCouponDetailBinding extends Bindings {
   @override
   void dependencies() {
     // Bind My Coupon Details controller
-    Get.lazyPut<MyCouponDetailController>(() => MyCouponDetailController());
+    Get.lazyPut<MyCouponDetailController>(() => MyCouponDetailController(),
+        fenix: true);
   }
 }

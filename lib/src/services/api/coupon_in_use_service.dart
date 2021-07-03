@@ -5,6 +5,7 @@ import 'package:indoor_positioning_visitor/src/services/api/base_service.dart';
 
 mixin ICouponInUseService {
   Future<Paging<CouponInUse>> getCouponInUseByVisitorId(int visitorId);
+  Future<CouponInUse?> getByVisitorIdAndCouponId(int visitorId, int couponId);
   Future<CouponInUse?> createCouponInUse(CouponInUse couponInUse);
 }
 
@@ -28,5 +29,17 @@ class CouponInUseService extends BaseService<CouponInUse>
   @override
   Future<CouponInUse?> createCouponInUse(CouponInUse couponInUse) {
     return postBase(couponInUse.toJson());
+  }
+
+  @override
+  Future<CouponInUse?> getByVisitorIdAndCouponId(
+      int visitorId, int couponId) async {
+    final result = await getAllBase({
+      'couponId': couponId.toString(),
+      'visitorId': visitorId.toString(),
+    });
+    if (result.isNotEmpty) {
+      return result.first;
+    }
   }
 }

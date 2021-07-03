@@ -12,7 +12,7 @@ class MyCouponPage extends GetView<MyCouponController> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -39,13 +39,19 @@ class MyCouponPage extends GetView<MyCouponController> {
                   Container(
                     width: 100,
                     child: Tab(
+                      text: "MỚI",
+                    ),
+                  ),
+                  Container(
+                    width: 100,
+                    child: Tab(
                       text: "ĐÃ DÙNG",
                     ),
                   ),
                   Container(
                     width: 100,
                     child: Tab(
-                      text: "ĐÃ HẾT HẠN",
+                      text: "HẾT HẠN",
                     ),
                   ),
                 ],
@@ -54,7 +60,7 @@ class MyCouponPage extends GetView<MyCouponController> {
                   height: 5,
                   topLeftRadius: 8,
                   topRightRadius: 8,
-                  horizontalPadding: 50,
+                  horizontalPadding: 15,
                   tabPosition: TabPosition.bottom,
                 ),
               ),
@@ -65,9 +71,10 @@ class MyCouponPage extends GetView<MyCouponController> {
           final listCoupon = controller.listCouponInUse;
           return TabBarView(
             children: [
-              _displayAllCoupon(listCoupon, context),
-              _displayAllCoupon(listCoupon, context),
-              _displayAllCoupon(listCoupon, context),
+              _displayAllCoupon(listCoupon, 'All'),
+              _displayAllCoupon(listCoupon, 'New'),
+              _displayAllCoupon(listCoupon, 'Used'),
+              _displayAllCoupon(listCoupon, 'Expired'),
             ],
           );
         })),
@@ -76,23 +83,43 @@ class MyCouponPage extends GetView<MyCouponController> {
     );
   }
 
-  Widget _displayAllCoupon(List<CouponInUse> allCoupon, BuildContext context) {
+  Widget _displayAllCoupon(List<CouponInUse> listCoupon, String status) {
     // final screenSize = MediaQuery.of(context).size;
+    var coupons = [];
+    switch (status) {
+      case 'Used':
+        coupons = listCoupon.where((e) => e.status == status).toList();
 
-    if (allCoupon.isEmpty) {
+        break;
+      case 'New':
+        coupons = listCoupon
+            .where((e) =>
+                e.status == status && !controller.checkExpireCoupon(e.coupon))
+            .toList();
+        break;
+      case 'Expired':
+        coupons = listCoupon
+            .where((e) => controller.checkExpireCoupon(e.coupon))
+            .toList();
+        break;
+      default:
+        coupons = listCoupon;
+    }
+
+    if (coupons.isEmpty) {
       return Container(
         child: Center(
             child: Text(
-              "Chưa lưu voucher nào !",
-              style: TextStyle(fontSize: 20),
-            )),
+          "Chưa lưu voucher nào !",
+          style: TextStyle(fontSize: 20),
+        )),
       );
     }
     return ListView.builder(
         physics: BouncingScrollPhysics(),
-        itemCount: allCoupon.length,
+        itemCount: coupons.length,
         itemBuilder: (BuildContext buildContext, int index) {
-          var couponInUse = allCoupon[index];
+          var couponInUse = coupons[index];
           var coupon = couponInUse.coupon!;
           return GestureDetector(
             onTap: () => controller.gotoCouponDetails(couponInUse),

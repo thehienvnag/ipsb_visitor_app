@@ -23,8 +23,9 @@ class MyCouponController extends GetxController {
   }
 
   void gotoCouponDetails(CouponInUse coupon) {
-    sharedData.saveCouponInUse(coupon);
-    Get.toNamed(Routes.couponDetail);
+    Get.toNamed(Routes.couponDetail, parameters: {
+      'couponId': coupon.couponId.toString(),
+    });
   }
 
   /// Check coupons of visitor save before with status is 'NotUse'
@@ -39,13 +40,10 @@ class MyCouponController extends GetxController {
   }
 
   /// Check coupons of visitor save before with Expriredate
-  bool checkExpireCoupon(Coupon coupon) {
-    bool result = false;
-    if (coupon.publishDate!.compareTo(dateTime) < 0 &&
-        coupon.expireDate!.compareTo(dateTime) < 0) {
-      result = true;
-    }
-    return result;
+  bool checkExpireCoupon(Coupon? coupon) {
+    if (coupon == null) return false;
+    final now = DateTime.now();
+    return coupon.expireDate?.isBefore(now) ?? false;
   }
 
   @override

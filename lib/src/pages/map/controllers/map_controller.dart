@@ -91,8 +91,10 @@ class MapController extends GetxController {
 
   /// Go to coupon detail of selected
   void gotoCouponDetails(Coupon coupon) {
-    sharedData.saveCoupon(coupon);
-    Get.toNamed(Routes.couponDetail);
+    sharedData.coupon.value = coupon;
+    Get.toNamed(Routes.couponDetail, parameters: {
+      'couponId': coupon.id.toString(),
+    });
   }
 
   final isCouponBtnVisible = true.obs;

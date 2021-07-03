@@ -6,15 +6,9 @@ class SharedStates extends GetxService {
   /// selected bottom bar index
   final bottomBarSelectedIndex = 0.obs;
 
-  /// Coupon in use state
-  final couponInUse = CouponInUse().obs;
-
-  /// Coupon state
+  // Coupon
   final coupon = Coupon().obs;
 
-  /// Save the coupon in use detail
-  void saveCouponInUse(value) => couponInUse.value = value;
-
-  /// Save the coupon detail
-  void saveCoupon(value) => coupon.value = value;
+  // Coupon
+  final couponInUse = CouponInUse().obs;
 }

@@ -6,6 +6,7 @@ class StoreDetailsBinding extends Bindings {
   @override
   void dependencies() {
     // Bind Home controller
-    Get.lazyPut<StoreDetailsController>(() => StoreDetailsController());
+    Get.lazyPut<StoreDetailsController>(() => StoreDetailsController(),
+        fenix: true);
   }
 }

@@ -71,7 +71,7 @@ class MapSearchBar extends StatelessWidget {
                           width: 30,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(MapValue.stairCase),
+                              image: AssetImage(ConstImg.stairCase),
                             ),
                           ),
                         ),

@@ -22,7 +22,7 @@ class PlaceObject extends GetView<ImageViewController> {
         children: [
           if (!isStore())
             AvatarGlow(
-              endRadius: MapValue.radius,
+              endRadius: MapKey.radius,
               child: Material(
                 elevation: 8.0,
                 shape: CircleBorder(
@@ -35,7 +35,7 @@ class PlaceObject extends GetView<ImageViewController> {
                   backgroundColor: Colors.white,
                   backgroundImage:
                       Utils.getServiceImage(location.locationTypeId),
-                  radius: MapValue.radius,
+                  radius: MapKey.radius,
                 ),
               ),
             ),

@@ -26,16 +26,18 @@ abstract class BaseService<T> {
   /// Get paging instance from API with [query]
   Future<Paging<T>> getPagingBase(Map<String, dynamic> query) async {
     Response res = await _apiHelper.getAll(endpoint(), query: query);
-    Paging<T> paging = Paging.fromJson(res.body);
-    paging.convertToList(fromJson);
-    return paging;
+
+    if (res.isOk) {
+      Paging<T> paging = Paging.fromJson(res.body);
+      paging.convertToList(fromJson);
+      return paging;
+    }
+    return Paging.defaultInstance();
   }
 
   /// Get list instances from API with [query]
   Future<List<T>> getAllBase(Map<String, dynamic> query) async {
-    Response res = await _apiHelper.getAll(endpoint(), query: query);
-    Paging<T> paging = Paging.fromJson(res.body);
-    paging.convertToList(fromJson);
+    Paging<T> paging = await getPagingBase(query);
     return paging.content ?? [];
   }
 

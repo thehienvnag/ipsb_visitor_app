@@ -48,11 +48,13 @@ class MapKey {
   static const int elevator = 3;
   static const int restRoom = 10;
   static const int store = 1;
+  static const double radius = 18;
 }
 
-class MapValue {
+class ConstImg {
   static const String stairCase = "assets/images/staircase.png";
   static const String elevator = "assets/images/elevator.png";
   static const String restRoom = "assets/images/toilet.png";
-  static const double radius = 18;
+  static const String couponSaved = "assets/images/saved.svg";
+  static const String couponExpired = "assets/images/expired.svg";
 }

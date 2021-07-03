@@ -5,6 +5,7 @@ class ShowCouponQRBinding extends Bindings {
   @override
   void dependencies() {
     // Bind Show Coupon QR controller
-    Get.lazyPut<ShowCouponQRController>(() => ShowCouponQRController());
+    Get.lazyPut<ShowCouponQRController>(() => ShowCouponQRController(),
+        fenix: true);
   }
 }

@@ -8,12 +8,12 @@ class MapBinding extends Bindings {
   @override
   void dependencies() {
     // Bind My Coupon controller
-    Get.lazyPut<MyCouponController>(() => MyCouponController());
+    Get.lazyPut<MyCouponController>(() => MyCouponController(), fenix: true);
     // Bind map controller
-    Get.lazyPut<ImageViewController>(() => ImageViewController());
+    Get.lazyPut<ImageViewController>(() => ImageViewController(), fenix: true);
     // Bind map controller
-    Get.lazyPut<IndoorMapController>(() => IndoorMapController());
+    Get.lazyPut<IndoorMapController>(() => IndoorMapController(), fenix: true);
     // Bind Home controller
-    Get.lazyPut<MapController>(() => MapController());
+    Get.lazyPut<MapController>(() => MapController(), fenix: true);
   }
 }

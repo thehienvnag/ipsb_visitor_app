@@ -65,7 +65,7 @@ class CustomBottombar extends GetView<CustomBottombarController> {
           border: Border.all(color: Colors.grey.shade300),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade300,
+              color: Colors.grey.shade200,
               blurRadius: 4.0,
               offset: Offset(0, 0),
             ),

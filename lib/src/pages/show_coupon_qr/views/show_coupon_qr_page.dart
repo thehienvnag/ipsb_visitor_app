@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bullet_list/flutter_bullet_list.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/pages/show_coupon_qr/controllers/show_coupon_qr_controller.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
-import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ShowCouponQRPage extends GetView<ShowCouponQRController> {
@@ -18,8 +18,9 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.close,
             color: Colors.black,
+            size: 30,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -33,13 +34,9 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
               alignment: Alignment.center,
               width: 290,
               child: Text(
-                coupon.name ?? 'Name not set',
+                'MÃ QR CODE',
                 style: TextStyle(color: Colors.black),
               ),
-            ),
-            Icon(
-              Icons.view_headline,
-              color: Colors.black,
             ),
           ],
         ),
@@ -53,31 +50,35 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
               color: Colors.white,
               child: Container(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.all(24),
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Giảm 30k cho đơn từ 100k',
+                        'HIGH LAND COFFEE',
                         style: TextStyle(
-                            color: Colors.red,
+                            color: Colors.black54,
                             fontSize: 20,
                             fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 15),
+                      Text(
+                        '(${coupon.description})',
+                        style: TextStyle(color: Colors.black54, fontSize: 15),
+                      ),
+                      SizedBox(height: 10),
                       QrImage(
                         data: coupon.code.toString(),
-                        size: 180,
+                        size: 220,
                         backgroundColor: Colors.white,
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
                       Center(
                         child: Text(
-                          'Đưa mã này cho nhân viên quét để kích hoặt',
+                          'Đưa mã này cho nhân viên quét để kích hoạt',
                           style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
+                            color: Colors.black54,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ],
@@ -92,121 +93,52 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
             child: Card(
               color: Colors.white,
               child: SingleChildScrollView(
-                padding:
-                    EdgeInsets.only(left: 24, right: 24, bottom: 24, top: 10),
+                padding: EdgeInsets.only(bottom: 5, top: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Thời gian áp dụng: ',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Text(
-                          Formatter.date(coupon.publishDate),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Chương trình: ',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Text(coupon.code ?? 'Code not set')
-                      ],
-                    ),
                     Container(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "Áp dụng cho: ",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 20, top: 10),
-                      width: screenSize.width * 0.9,
-                      child: Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "- Toàn menu (không áp dụng combo) ",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "- Giá chưa bao gồm VAT ",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "- Chỉ áp dụng tại cửa hàng",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "- Khi thanh toán chỉ áp dụng duy nhất 1 mã (bao gồm khách lẻ và đi theo nhóm)",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "- Áp dụng cho nhiều sản phẩm trong cùng hóa đơn",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "- Mỗi người chỉ áp dụng 1 thiết bị chứa mã",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "- Không áp dụng hình chụp màn hình và dùng chung với các chương trình khuyến mãi khác",
-                              style: TextStyle(fontSize: 16),
-                            ),
+                      child: FlutterBulletList(
+                        data: [
+                          ListItemModel(
+                              label: "Chương trình: ",
+                              data: [ListItemModel(label: "${coupon.name}")]),
+                          ListItemModel(label: "Áp dụng cho: ", data: [
+                            ListItemModel(
+                                label: "Toàn menu (không áp dụng combo)"),
+                            ListItemModel(label: "Giá chưa bao gồm VAT}"),
+                          ]),
+                          ListItemModel(
+                            label: "Lưu ý: ",
+                            data: [
+                              ListItemModel(
+                                label: "Chỉ áp dụng tại cửa hàng",
+                              ),
+                              ListItemModel(
+                                  label:
+                                      "Khi thanh toán chỉ áp dụng duy nhất 1 mã (bao gồm khách đi lẻ và đi theo nhóm"),
+                              ListItemModel(
+                                  label:
+                                      "Áp dụng cho nhiều sản phẩm trong cùng hóa đơn"),
+                            ],
                           ),
                         ],
+                        textStyle:
+                            TextStyle(color: Colors.black54, fontSize: 16),
+                        bulletColor: Colors.grey,
+                        bulletSize: 3,
                       ),
                     ),
-                    SizedBox(height: 20),
                     Container(
-                      width: screenSize.width * 0.65,
+                      width: screenSize.width * 0.75,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ElevatedButton(
                             onPressed: () {},
                             child: Row(
                               children: [
-                                Icon(Icons.location_on_outlined,
-                                    color: Colors.white),
+                                Icon(Icons.directions, color: Colors.white),
                                 Text('Chỉ đường'),
                               ],
                             ),
@@ -214,17 +146,14 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                           SizedBox(
                             width: 6,
                           ),
-                          ElevatedButton(
+                          OutlinedButton.icon(
                             onPressed: () {},
-                            child: Row(
+                            label: Row(
                               children: [
-                                Icon(Icons.phone, color: Colors.white),
                                 Text('Gọi cửa hàng'),
                               ],
                             ),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.red, // <-- Button color
-                            ),
+                            icon: Icon(Icons.phone),
                           ),
                         ],
                       ),

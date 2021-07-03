@@ -81,6 +81,12 @@ dependencies:
   # Carousel
   carousel_slider: ^4.0.0
 
+  # Svg display
+  flutter_svg: ^0.22.0
+
+  # Toast
+  bot_toast: ^4.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

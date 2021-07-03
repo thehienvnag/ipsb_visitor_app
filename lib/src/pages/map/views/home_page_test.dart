@@ -354,7 +354,6 @@ class HomePage2 extends GetView<MapController> {
                 var coupon = listCoupon[index];
                 return GestureDetector(
                   onTap: () {
-                    controller.sharedData.saveCoupon(coupon);
                     Get.offNamed(Routes.couponDetail);
                   },
                   child: Container(

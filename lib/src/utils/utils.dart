@@ -40,14 +40,14 @@ class Utils {
   }
 
   static ImageProvider getServiceImage(int? locationTypeId) {
-    ImageProvider imageProvider = AssetImage(MapValue.stairCase);
+    ImageProvider imageProvider = AssetImage(ConstImg.stairCase);
 
     switch (locationTypeId) {
       case MapKey.elevator:
-        imageProvider = AssetImage(MapValue.elevator);
+        imageProvider = AssetImage(ConstImg.elevator);
         break;
       case MapKey.restRoom:
-        imageProvider = AssetImage(MapValue.restRoom);
+        imageProvider = AssetImage(ConstImg.restRoom);
         break;
     }
     return imageProvider;

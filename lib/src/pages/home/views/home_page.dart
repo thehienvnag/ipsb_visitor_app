@@ -29,13 +29,13 @@ class HomePage extends GetView<HomeController> {
                 return CarouselSlider(
                   options: CarouselOptions(
                     height: 180.0,
-                    viewportFraction: 1.03,
+                    viewportFraction: 1.4,
                   ),
                   items: images.map((i) {
                     return Builder(
                       builder: (BuildContext context) {
                         return Container(
-                          width: screenSize.width,
+                          width: screenSize.width * 1.01,
                           margin: EdgeInsets.symmetric(horizontal: 5.0),
                           decoration: BoxDecoration(
                             image: DecorationImage(
