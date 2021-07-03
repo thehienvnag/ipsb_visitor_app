@@ -4,7 +4,7 @@ import 'package:indoor_positioning_visitor/src/models/store.dart';
 import 'package:indoor_positioning_visitor/src/services/api/base_service.dart';
 
 mixin IStoreService {
-  Future<Store> getStoreById(int id);
+  Future<Store?> getStoreById(int id);
   Future<Paging<Store>> getStores(String searchName, int floorPlanId);
   Future<List<Store>> getStoresByBuildingId(int buildingId);
 }
@@ -21,7 +21,7 @@ class StoreService extends BaseService<Store> implements IStoreService {
   }
 
   @override
-  Future<Store> getStoreById(int id) {
+  Future<Store?> getStoreById(int id) {
     return getByIdBase(id);
   }
 

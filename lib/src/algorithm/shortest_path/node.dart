@@ -1,5 +1,4 @@
 import 'package:indoor_positioning_visitor/src/common/constants.dart';
-import 'package:indoor_positioning_visitor/src/models/location.dart';
 
 class Node<T> {
   /// Node id
@@ -22,10 +21,5 @@ class Node<T> {
   /// and distance from current node to destination node [distance]
   void addDestination(Node<T> destNode, double distance) {
     adjacents.putIfAbsent(destNode, () => distance);
-  }
-
-  @override
-  String toString() {
-    return 'id: $id, distance: $distance \n';
   }
 }

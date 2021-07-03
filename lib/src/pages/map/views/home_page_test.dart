@@ -3,13 +3,13 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
-import 'package:indoor_positioning_visitor/src/pages/home/controllers/home_controller.dart';
+import 'package:indoor_positioning_visitor/src/pages/map/controllers/map_controller.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
-class HomePage2 extends GetView<HomeController> {
+class HomePage2 extends GetView<MapController> {
   final double tabBarHeight = 80;
 
   final storePanelController = PanelController();

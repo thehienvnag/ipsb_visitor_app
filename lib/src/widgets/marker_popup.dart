@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/common/constants.dart';
-import 'package:indoor_positioning_visitor/src/pages/home/controllers/home_controller.dart';
+import 'package:indoor_positioning_visitor/src/pages/map/controllers/map_controller.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:indoor_positioning_visitor/src/utils/utils.dart';
@@ -15,7 +15,7 @@ class MarkerPopup extends GetView<ImageViewController> {
   static const double storeHeight = 320;
 
   final PopupState state;
-  final HomeController homeController = Get.find();
+  final MapController homeController = Get.find();
 
   MarkerPopup({
     Key? key,

@@ -36,9 +36,6 @@ dependencies:
   # Use with the sliding up a paned to show infomation when searching
   sliding_up_panel: ^2.0.0+1
 
-  # add dashed line
-  # dotted_line: ^3.0.0
-
   # Get more icons to use
   font_awesome_flutter: ^9.1.0
 
@@ -71,6 +68,18 @@ dependencies:
 
   # Badges
   badges: ^2.0.1
+
+  # Bottom bar
+  salomon_bottom_bar: ^3.1.0
+
+  # App bar search
+  material_floating_search_bar: ^0.3.4
+
+  # Menu button
+  menu_button: ^1.4.2+1
+
+  # Carousel
+  carousel_slider: ^4.0.0
 
 dev_dependencies:
   flutter_test:

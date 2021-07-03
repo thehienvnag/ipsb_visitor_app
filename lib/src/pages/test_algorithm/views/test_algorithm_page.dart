@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/pages/home/controllers/home_controller.dart';
+import 'package:indoor_positioning_visitor/src/pages/map/controllers/map_controller.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
-class TestAlgorithmPage extends GetView<HomeController> {
+class TestAlgorithmPage extends GetView<MapController> {
   @override
   Widget build(BuildContext context) {
     return bottomSheetStart(context);

@@ -1,300 +1,149 @@
-import 'dart:async';
-
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/graph.dart';
-import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/node.dart'
-    as node;
-import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/shortest_path.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
-import 'package:indoor_positioning_visitor/src/models/edge.dart';
-import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
-import 'package:indoor_positioning_visitor/src/models/location.dart';
+import 'package:indoor_positioning_visitor/src/models/product_category.dart';
+
 import 'package:indoor_positioning_visitor/src/models/store.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/api/edge_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/floor_plan_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/location_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
-import 'package:indoor_positioning_visitor/src/widgets/indoor_map/indoor_map_controller.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
 
 class HomeController extends GetxController {
-  final storePanelController = PanelController();
-  final couponPanelController = PanelController();
+  //final listStore = <Store>[].obs;
+  //final listCoupon = <Coupon>[].obs;
+  final buildingId = 0.obs;
 
-  /// Shared data
-  final SharedStates sharedData = Get.find();
-
-  ICouponService _service = Get.find();
-  IStoreService _storeService = Get.find();
-  IFloorPlanService _floorPlanService = Get.find();
-
-  /// [searchValue] for home screen
-  var searchValue = "".obs;
-
-  /// Get list coupons random data
-  final listCoupon = <Coupon>[].obs;
-
-  /// Get list Coupon from api
-  Future<void> getCoupons() async {
-    final paging = await _service.getCoupons();
-    listCoupon.value = paging.content!;
-  }
-
-  /// Get list stores when search
-  final listStore = <Store>[].obs;
-
-  //gọi locationTypeName, storeName, join list lại
-
-  /// Get list search Store from api by buildingID,searchvalue, floorplanID
-  Future<void> getStore(String value) async {
-    // if (selectedFloorID == null) {
-    //   return;
-    // }
-    changeVisible();
-    storePanelController.open();
-    final paging =
-        await _storeService.getStores(value, selectedFloor.value.id!);
-    listStore.value = paging.content!;
-  }
-
-  /// Get list floorPlan
-  final listFloorPlan = <FloorPlan>[].obs;
-
-  /// Get list FloorPlan from api by buildingID
-  Future<List<int>> getFloorPlan(Function() callback) async {
-    final paging = await _floorPlanService.getFloorPlans(12);
-    listFloorPlan.value = paging.content!;
-    selectedFloor.value = listFloorPlan[0];
-    callback.call();
-    loadPlaceOnFloor(listFloorPlan[0].id!);
-
-    return listFloorPlan.map((element) => element.id!).toList();
-  }
-
-  /// Get selected of floor
-  var selectedFloor = FloorPlan().obs;
-
-  /// Change selected of floor
-  Future<void> changeSelectedFloor(FloorPlan? floor, [pressBtn = false]) async {
-    if (floor?.id == selectedFloor.value.id) return;
-    selectedFloor.value = floor!;
-
-    setCurrentLocation(currentPosition.value, pressBtn);
-    loadPlaceOnFloor(floor.id!);
-    _mapController.setPathOnMap(shortestPath
-        .where((element) => element.floorPlanId == selectedFloor.value.id)
-        .toList());
-  }
-
-  /// Go to coupon detail of selected
-  void gotoCouponDetails(Coupon coupon) {
-    sharedData.saveCoupon(coupon);
-    Get.toNamed(Routes.couponDetail);
-  }
-
-  final isCouponBtnVisible = true.obs;
-
-  void changeVisible() {
-    isCouponBtnVisible.value = !isCouponBtnVisible.value;
-  }
-
-  IndoorMapController _mapController = Get.find();
+  final listStore = stores.obs;
+  final listCoupon = coupons.obs;
+  final listCategories = categories.obs;
 
   @override
   void onInit() {
     super.onInit();
-    getFloorPlan(() => setCurrentLocation(53))
-        .then((value) => loadEdgesInBuilding(value));
-    getCoupons();
+    //String? id = Get.parameters['id'];
+    //if (id == null) return;
+    //buildingId.value = int.parse(id);
 
-    onLocationChanged();
+    //getStores();
+    //getCoupons();
   }
 
-  void testLocationChange() {
-    final list = [
-      54,
-      55,
-      56,
-      57,
-      58,
-      59,
-      60,
-      61,
-      62,
-      63,
-      64,
-      65,
-      66,
-      67,
-      68,
-      69,
-      70,
-      71,
-      72,
-      73,
-      74,
-      75,
-      76,
-      77,
-      78,
-      79,
-      80,
-      81,
-      82,
-      83,
-      84,
-      85,
-      86,
-      87,
-      88,
-      89,
-      90,
-      91,
-      92,
-      93,
-      116,
-      141,
-      142,
-      143,
-      144,
-      145,
-      146
-    ];
-    int index = -1;
-    Timer.periodic(Duration(milliseconds: 500), (timer) {
-      if (index >= 0 && index < list.length) {
-        setCurrentLocation(list[index]);
-      }
-      index++;
-    });
+  IStoreService storeService = Get.find();
+  Future<void> getStores() async {
+    listStore.value = await storeService.getStoresByBuildingId(12);
   }
 
-  final edges = <Edge>[].obs;
-  IEdgeService _edgeService = Get.find();
-  Future<void> loadEdgesInBuilding(List<int> floorIds) async {
-    final result = await _edgeService.getAll();
-    edges.value = result;
-    // print(edges.length);
-  }
-
-  ILocationService _locationService = Get.find();
-  Future<void> loadPlaceOnFloor(int floorId) async {
-    _mapController.loadLocationsOnMap([]);
-    final locations = await _locationService.getLocationOnFloor(floorId);
-    print(locations.length);
-    _mapController.loadLocationsOnMap(locations);
-  }
-
-  final currentPosition = 0.obs;
-  Future<void> setCurrentLocation(int id, [pressBtn = false]) async {
-    if (id == 0) {
-      _mapController.setCurrentMarker(null);
-    }
-    currentPosition.value = id;
-    var position = locations[id]?.value;
-
-    if (position == null) {
-      position = await _locationService.getLocationById(id);
-    }
-    final currentFloor = selectedFloor.value.id;
-    if (currentFloor != position.floorPlanId && !pressBtn) {
-      changeSelectedFloor(listFloorPlan
-          .where(
-            (e) => position?.floorPlanId == e.id!,
-          )
-          .first);
-    }
-    if (currentFloor == null)
-      _mapController.setCurrentMarker(null);
-    else if (currentFloor != position.floorPlanId)
-      _mapController.setCurrentMarker(null);
-    else
-      _mapController.setCurrentMarker(position);
-  }
-
-  IShortestPath _shortestPath = Get.find();
-
-  final locations = RxMap<int, node.Node<Location>>({});
-  void onLocationChanged() {
-    currentPosition.listen((id) {
-      setCurrentLocation(id);
-      // if (isShowingDirection.value) {
-      //   showDirection(destPosition.value);
-      // }
-      showDirection(destPosition.value);
-    });
-  }
-
-  final destPosition = 0.obs;
-  final isShowingDirection = false.obs;
-  final shortestPath = <Location>[].obs;
-  Future<void> showDirection(int newDest) async {
-    if (edges.isEmpty) return;
-    int from = currentPosition.value;
-    int dest = destPosition.value;
-
-    // If list of edges is available
-    _mapController.setPathOnMap([]);
-
-    if (newDest != dest && edges.isNotEmpty) {
-      destPosition.value = newDest;
-      Graph g = Graph.from(edges);
-
-      // Run Dijiktra algorithm
-      _shortestPath.getShortestPath(g, destPosition.value);
-
-      //Set locationo
-      locations.value = g.nodes;
-    }
-
-    if (locations.isEmpty) return;
-
-    node.Node<Location>? fromNode = locations[from];
-    if (fromNode == null) return;
-    // Get shortest path
-    final path = fromNode.shortestPath
-        .map(
-          (e) => e.value!,
-        )
-        .toList()
-        .reversed
-        .toList();
-    if (path.isEmpty) return;
-    shortestPath.value = path;
-    print(path);
-
-    if (fromNode.value?.floorPlanId == selectedFloor.value.id) {
-      _mapController.setPathOnMap(shortestPath
-          .where((element) => element.floorPlanId == selectedFloor.value.id)
-          .toList());
-    } else {
-      changeSelectedFloor(listFloorPlan
-          .where(
-            (e) => fromNode.value?.floorPlanId == e.id!,
-          )
-          .first);
-    }
-  }
-
-  void startShowDirection(int? destId) {
-    if (destId == null) return;
-    isShowingDirection.value = true;
-    showDirection(destId);
-  }
-
-  /// [isShow] for home screen
-  var isShow = false.obs;
-
-  /// Change ishow value with true
-  void changeIsShow() {
-    isShow.value = true;
-  }
-
-  /// Change ishow value with false
-  void changeIsShowFalse() {
-    isShow.value = false;
+  ICouponService couponService = Get.find();
+  Future<void> getCoupons() async {
+    listCoupon.value = await couponService.getCouponsByStoreId(18);
   }
 }
+
+final categories = [
+  ProductCategory(name: 'Cà phê', imageUrl: 'assets/images/icon_coffee.png'),
+  ProductCategory(name: 'Trà sữa', imageUrl: 'assets/images/icon_milktea.png'),
+  ProductCategory(name: 'Mua sắm', imageUrl: 'assets/images/icon_shopping.png'),
+  ProductCategory(
+      name: 'Nhà hàng', imageUrl: 'assets/images/icon_restaurant.png'),
+  ProductCategory(name: 'Xem phim', imageUrl: 'assets/images/icon_cinema.png'),
+];
+
+final stores = [
+  Store(
+    id: 1,
+    name: 'Trung Nguyên Legend Cafe ',
+    imageUrl:
+        'https://printgo.vn/uploads/file-logo/1/512x512.00d1282ddc823f5e876c6258ff02d2f3.ai.1.png',
+  ),
+  Store(
+    id: 2,
+    name: 'The Pizza Company ',
+    imageUrl:
+        'http://static.ybox.vn/2019/3/2/1551761814432-1200px-The_Pizza_Company_Logo.svg.png',
+  ),
+  Store(
+    id: 3,
+    name: 'LOTTERIAL ',
+    imageUrl:
+        'https://uploads-ssl.webflow.com/5f2fe3ded95c7c53a081a285/5f55176a71709b6ffb4b29bf_2b3761_b52630ea7ff243d2af6c79297aa73cc9~mv2.png',
+  ),
+  Store(
+    id: 4,
+    name: 'Highlands Coffee ',
+    imageUrl:
+        'https://kalan-an.com/wp-content/uploads/2019/02/logo_kalan-an_highlands-coffee.jpg',
+  ),
+  Store(
+    id: 5,
+    name: 'The Body Shop ',
+    imageUrl:
+        'https://cloudfront.gotomalls.com/uploads/retailers/logo/L7VfeOvWvvJXxiYp-2288-the-body-shop-1422885122889802288_1.jpg',
+  ),
+  Store(
+    id: 6,
+    name: 'ADIDAS ',
+    imageUrl:
+        'https://img2.storyblok.com/filters:grayscale()/f/62481/500x500/e955841e5e/adidas-500x500-logo.jpg',
+  ),
+  Store(
+    id: 7,
+    name: 'Innisfree ',
+    imageUrl:
+        'https://bloganchoi.com/wp-content/uploads/2017/12/innisfree-logo-2.jpg',
+  ),
+  Store(
+    id: 8,
+    name: 'NIKE ',
+    imageUrl:
+        'https://i.pinimg.com/originals/41/e2/b6/41e2b604186c64d7604662d2234a2f99.jpg',
+  ),
+  Store(
+    id: 8,
+    name: 'KFC ',
+    imageUrl:
+        'https://gigamall.com.vn/data/2019/09/17/18124154_LOGO-KFC-500x500.jpg',
+  ),
+];
+
+final coupons = [
+  Coupon(
+    store: Store(name: 'Highlands Coffee'),
+    id: 1,
+    description: 'Ưu đãi mua 1 tặng 1 vào ngày 7/7/2021',
+    imageUrl:
+        'https://vuakhuyenmai.vn/wp-content/uploads/2020/06/HIGHLAND-MUA-1-TANG-1-4720.jpg',
+  ),
+  Coupon(
+    store: Store(name: 'LOTTERIAL'),
+    id: 3,
+    description: 'Ưu đãi giảm 43% trên tổng hóa đơn 500k',
+    imageUrl:
+        'https://img.kam.vn/images/414x0/92660d6d3dd1412495428b7bc8a45fc9/yes24-san-voucher-giam-den-43-tu-lotteria.jpg',
+  ),
+  Coupon(
+    store: Store(name: 'Trung Nguyên Legend Cafe'),
+    id: 2,
+    description: 'Giảm 10k cà phê sáng và bánh mì',
+    imageUrl:
+        'https://img.kam.vn/images/375x0/475b76ba278e4668831a2ab5348f6ca2/image/trung-nguyen-e-coffee-giam-10k-khi-chon-mua-cung-banh-mi-op-la-hoac-banh-mi-ca-xot-ca.jpg',
+  ),
+  Coupon(
+    store: Store(name: 'The Pizza Company'),
+    id: 4,
+    description: 'Mua 1 tặng 1 với giá chỉ 120k',
+    imageUrl:
+        'https://stc.shopiness.vn/deal/2017/08/30/1/3/3/a/1504077887275_540.png',
+  ),
+  Coupon(
+    store: Store(name: 'The Body Shop'),
+    id: 5,
+    description: 'Gỉảm 20% và nhận quà 210k vào ngày 7/7/2021',
+    imageUrl:
+        'https://stc.shopiness.vn/deal/2019/03/28/9/3/6/4/1553765517157_540.png',
+  ),
+  Coupon(
+    store: Store(name: 'The Coffee House'),
+    id: 6,
+    description: 'Mua 2 tặng 1 áp dụng với trà đào vị đào',
+    imageUrl:
+        'https://stc.shopiness.vn/deal/2021/03/17/8/3/7/7/1615964681763_540.png',
+  ),
+];

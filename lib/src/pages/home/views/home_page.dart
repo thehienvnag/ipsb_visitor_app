@@ -1,375 +1,366 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/controllers/home_controller.dart';
-import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
-import 'package:indoor_positioning_visitor/src/utils/utils.dart';
-import 'package:indoor_positioning_visitor/src/widgets/indoor_map/indoor_map.dart';
-import 'package:indoor_positioning_visitor/src/widgets/rounded_button.dart';
-import 'package:indoor_positioning_visitor/src/widgets/text_search.dart';
-import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
+import 'package:indoor_positioning_visitor/src/widgets/custom_search_bar.dart';
 
 class HomePage extends GetView<HomeController> {
-  final double tabBarHeight = 80;
-
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
+    Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 3,
-        leadingWidth: 0,
-        title: Container(
-          padding: const EdgeInsets.only(top: 7, bottom: 7),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(180),
+        child: SafeArea(
+          child: Container(
+            height: 200,
+            color: Colors.white,
+            child: Stack(children: [
+              Obx(() {
+                final images = controller.listCoupon
+                    .map((element) => element.imageUrl!)
+                    .toList();
+                if (images.isEmpty)
+                  return Container(
+                    color: Colors.grey.shade200,
+                  );
+                return CarouselSlider(
+                  options: CarouselOptions(
+                    height: 180.0,
+                    viewportFraction: 1.03,
+                  ),
+                  items: images.map((i) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return Container(
+                          width: screenSize.width,
+                          margin: EdgeInsets.symmetric(horizontal: 5.0),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(i),
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }).toList(),
+                );
+              }),
               Container(
-                height: 42,
-                width: screenSize.width * 0.54,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(3),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+                  child: HomeSearchBar(),
                 ),
-                child: TextSearch(
-                  onFieldSubmitted: (value) => controller.getStore(value),
+              ),
+            ]),
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    bottom: BorderSide(color: Colors.grey.shade200),
+                  ),
+                ),
+                height: 150,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 10),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Danh mục sản phẩm',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Xem thêm >>',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Obx(
+                      () {
+                        final list = controller.listCategories;
+                        if (list.isEmpty) return Text('Loading');
+                        return Expanded(
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              final item = list[index];
+                              return Container(
+                                height: 60,
+                                width: 100,
+                                child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                      width: 55,
+                                      height: 50,
+                                      padding: const EdgeInsets.all(4),
+                                      margin: const EdgeInsets.only(bottom: 7),
+                                      child: Image.asset(
+                                        item.imageUrl ?? '',
+                                        height: 38,
+                                        width: 38,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        border:
+                                            Border.all(color: Colors.black12),
+                                        borderRadius: BorderRadius.circular(7),
+                                      ),
+                                    ),
+                                    Text(
+                                      item.name ?? '',
+                                      style: TextStyle(
+                                        color: Colors.black54,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
               Container(
-                height: 40,
-                width: screenSize.width * 0.27,
-                color: Colors.grey[300],
-                child: Obx(() {
-                  FloorPlan floorPlan = controller.selectedFloor.value;
-                  return DropdownButton<FloorPlan>(
-                    onChanged: (value) =>
-                        controller.changeSelectedFloor(value, true),
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      size: 25,
+                margin: const EdgeInsets.only(top: 15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 10),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Thương hiệu nổi bật',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Xem thêm >>',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    value: floorPlan,
-                    items: controller.listFloorPlan.map((e) {
-                      return DropdownMenuItem(
-                        value: e,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: Text('Tầng ${e.floorCode}'),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      child: Obx(() {
+                        var listStore = controller.listStore;
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Wrap(
+                                spacing: 18,
+                                children: List.generate(6, (index) {
+                                  final store = listStore[index];
+                                  return Column(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(
+                                            right: 5, bottom: 10),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 6, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.black12),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              width: 60,
+                                              height: 60,
+                                              child: Image.network(
+                                                store.imageUrl ?? '',
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(top: 10),
+                                              width: 100,
+                                              height: 35,
+                                              child: Text(
+                                                store.name ?? '',
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 15),
+                padding: const EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 10),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Ưu đãi nổi bật',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Xem thêm >>',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Obx(() {
+                      var listCoupon = controller.listCoupon;
+                      return GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          height: 290,
+                          child: ListView.builder(
+                            addSemanticIndexes: true,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: listCoupon.length,
+                            itemBuilder: (BuildContext ctx, index) {
+                              final coupon = listCoupon[index];
+                              return Container(
+                                margin: EdgeInsets.only(left: 5),
+                                child: Card(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 180,
+                                        width: 180,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                coupon.imageUrl ?? '',
+                                              ),
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          Container(
+                                            width: 170,
+                                            height: 100,
+                                            child: RichText(
+                                              text: TextSpan(children: [
+                                                TextSpan(
+                                                  text:
+                                                      '[${coupon.store?.name ?? ''}] ',
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.black),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      coupon.description ?? ' ',
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.black),
+                                                ),
+                                              ]),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       );
-                    }).toList(),
-                  );
-                }),
+                    }),
+                  ],
+                ),
               ),
             ],
           ),
         ),
       ),
-      body: buildStorePanel(
-        height: screenSize.height,
-        child: Center(
-          child: Obx(() {
-            FloorPlan floorplan = controller.selectedFloor.value;
-            if (floorplan.imageUrl == null) {
-              return Text('Loading');
-            }
-            return IndoorMap(
-              image: NetworkImage(floorplan.imageUrl!),
-              loading: Text('Loading'),
-            );
-          }),
-        ),
-      ),
-      floatingActionButton: Obx(() {
-        if (!controller.isCouponBtnVisible.value) {
-          return Container();
-        }
-        if (controller.searchValue.isEmpty) {
-          return Container(
-            alignment: Alignment.bottomLeft,
-            margin: EdgeInsets.only(left: 30, bottom: 10),
-            width: screenSize.width,
-            child: Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    controller.changeVisible();
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      barrierColor: Colors.transparent,
-                      builder: (context) {
-                        return buildCouponPanel();
-                      },
-                    );
-                  },
-                  child: Icon(Icons.card_giftcard_sharp, color: Colors.white),
-                  style: ElevatedButton.styleFrom(
-                    shape: CircleBorder(),
-                    padding: EdgeInsets.all(20),
-                    primary: Colors.blue,
-                    onPrimary: Colors.red,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () => controller.testLocationChange(),
-                  child: Icon(Icons.run_circle, color: Colors.white),
-                  style: ElevatedButton.styleFrom(
-                    shape: CircleBorder(),
-                    padding: EdgeInsets.all(20),
-                    primary: Colors.blue,
-                    onPrimary: Colors.red,
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
-        return SizedBox();
-      }),
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedLabelStyle: TextStyle(color: Colors.grey),
-        selectedLabelStyle: TextStyle(color: Color(0xff0DB5B4)),
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 0,
-        selectedItemColor: Color(0xff0DB5B4),
-        unselectedItemColor: Color(0xffC4C4C4),
-        items: [
-          BottomNavigationBarItem(
-            label: 'Home',
-            icon: Icon(
-              Icons.home,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'My Coupons',
-            icon: Icon(
-              Icons.view_list,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Messenges',
-            icon: Icon(
-              Icons.notifications_active,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Account',
-            icon: Icon(
-              Icons.account_circle,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildStorePanel({required Widget child, required double height}) {
-    return SlidingUpPanel(
-      controller: controller.storePanelController,
-      isDraggable: false,
-      minHeight: 0,
-      maxHeight: height,
-      defaultPanelState: PanelState.CLOSED,
-      panelBuilder: (scrollController) => Container(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Kết quả tìm kiếm',
-                    style: TextStyle(color: Colors.black, fontSize: 22),
-                  ),
-                  RoundedButton(
-                    onPressed: () {
-                      controller.storePanelController.close();
-                      controller.changeVisible();
-                    },
-                    radius: 30,
-                    icon: Icon(Icons.close),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Obx(() {
-                var listStore = controller.listStore;
-                if (listStore.isEmpty) {
-                  return Container(
-                    child: Text('No place found!'),
-                  );
-                }
-                return ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: listStore.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    final store = listStore[index];
-                    final floorPlan = store.floorPlan;
-                    return GestureDetector(
-                      onTap: () {},
-                      child: Card(
-                        child: Column(
-                          children: [
-                            Container(
-                              width: 383,
-                              height: 150,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(2),
-                                image: Utils.resolveDecoImg(
-                                  store.imageUrl,
-                                  fit: BoxFit.fitWidth,
-                                ),
-                              ),
-                            ),
-                            ListTile(
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    Formatter.shorten(store.name).toUpperCase(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Tầng: ${Formatter.shorten(floorPlan?.floorCode).toUpperCase()}',
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                ],
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    Formatter.shorten(store.description, 80),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      ElevatedButton.icon(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.store),
-                                        label: Text('Xem thông tin'),
-                                      ),
-                                      OutlinedButton(
-                                        onPressed: () {},
-                                        child: Icon(
-                                          Icons.directions,
-                                          size: 32,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      // ListTile(
-                      //   leading: Utils.resolveImg(
-                      //     store.imageUrl,
-                      //     fit: BoxFit.fitHeight,
-                      //     width: 50,
-                      //   ),
-                      //   title: Text(Formatter.shorten(store.name)),
-                      //   subtitle: Text(
-                      //     Formatter.shorten(store.description, 80),
-                      //   ),
-                      //   trailing: OutlinedButton(
-                      //     onPressed: () {},
-                      //     child: Icon(
-                      //       Icons.directions,
-                      //       size: 26,
-                      //     ),
-                      //   ),
-                      // ),
-                    );
-                  },
-                );
-              }),
-            ),
-          ],
-        ),
-      ),
-      body: child,
-    );
-  }
-
-  Widget buildCouponPanel() {
-    return SlidingUpPanel(
-      onPanelClosed: () {
-        controller.changeVisible();
-        Get.back();
-      },
-      border: Border.all(width: 0.6),
-      defaultPanelState: PanelState.OPEN,
-      controller: controller.couponPanelController,
-      maxHeight: 190,
-      color: Colors.white,
-      backdropOpacity: 0,
-      backdropEnabled: false,
-      boxShadow: [],
-      panelBuilder: (scrollController) => Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(
-                top: 8,
-                bottom: 12,
-              ),
-              width: 70,
-              height: 6,
-              decoration: BoxDecoration(
-                color: Colors.black26,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-            ),
-            Expanded(child: Obx(() {
-              final listCoupon = controller.listCoupon;
-              return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: listCoupon.length,
-                itemBuilder: (context, index) {
-                  var coupon = listCoupon[index];
-                  return GestureDetector(
-                    onTap: () => controller.gotoCouponDetails(coupon),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 13, vertical: 5),
-                      child: TicketBox.small(
-                        storeName: coupon.store?.name,
-                        imgUrl: coupon.imageUrl!,
-                        description: coupon.description,
-                        amount: coupon.amount,
-                        expireDate: coupon.expireDate,
-                        discountType: coupon.discountType,
-                        name: coupon.name,
-                      ),
-                    ),
-                  );
-                },
-              );
-            })),
-          ],
-        ),
-      ),
+      bottomNavigationBar: CustomBottombar(),
     );
   }
 }

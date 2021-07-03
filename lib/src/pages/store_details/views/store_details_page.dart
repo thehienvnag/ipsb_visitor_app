@@ -5,7 +5,6 @@ import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
 import 'package:get/get.dart';
 
 import 'package:indoor_positioning_visitor/src/pages/store_details/controllers/store_details_controller.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:indoor_positioning_visitor/src/utils/utils.dart';
 import 'package:indoor_positioning_visitor/src/widgets/rounded_button.dart';

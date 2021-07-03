@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
+import 'package:get/get_connect/http/src/status/http_status.dart';
 
 import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
 import 'package:indoor_positioning_visitor/src/data/file_upload_utils.dart';
@@ -14,9 +15,12 @@ abstract class BaseService<T> {
   /// Set api endpoint for entity
   String endpoint();
 
-  Future<T> getByIdBase(int id) async {
+  Future<T?> getByIdBase(int id) async {
     Response response = await _apiHelper.getById(endpoint(), id);
-    return fromJson(response.body);
+
+    if (response.isOk) {
+      return fromJson(response.body);
+    }
   }
 
   /// Get paging instance from API with [query]
@@ -36,13 +40,15 @@ abstract class BaseService<T> {
   }
 
   /// Post an instance with [body]
-  Future<T> postBase(Map<String, dynamic> body) async {
+  Future<T?> postBase(Map<String, dynamic> body) async {
     Response res = await _apiHelper.postOne(endpoint(), body);
-    return fromJson(res.body);
+    if (res.statusCode == HttpStatus.created) {
+      return fromJson(res.body);
+    }
   }
 
   /// Post an instance with [body]
-  Future<T> postWithFilesBase(
+  Future<T?> postWithFilesBase(
     Map<String, dynamic> body,
     List<String> filePaths,
   ) async {
@@ -50,11 +56,13 @@ abstract class BaseService<T> {
         .map((path) => FileUploadUtils.convertToMultipart(path))
         .toList();
     Response res = await _apiHelper.postOneWithFiles(endpoint(), body, files);
-    return fromJson(res.body);
+    if (res.statusCode == HttpStatus.created) {
+      return fromJson(res.body);
+    }
   }
 
   /// Post an instance with [body]
-  Future<T> postWithOneFileBase(
+  Future<T?> postWithOneFileBase(
     Map<String, dynamic> body,
     String filePath,
   ) async {
@@ -63,17 +71,21 @@ abstract class BaseService<T> {
       body,
       FileUploadUtils.convertToMultipart(filePath),
     );
-    return fromJson(res.body);
+    if (res.statusCode == HttpStatus.created) {
+      return fromJson(res.body);
+    }
   }
 
   /// Put an instance with [id] and [body]
-  Future<T> putBase(dynamic id, Map<String, dynamic> body) async {
+  Future<T?> putBase(dynamic id, Map<String, dynamic> body) async {
     Response res = await _apiHelper.putOne(endpoint(), id, body);
-    return fromJson(res.body);
+    if (res.statusCode == HttpStatus.noContent) {
+      return fromJson(res.body);
+    }
   }
 
   /// Put an instance with [body] and a file path [filePath]
-  Future<T> putWithOneFileBase(
+  Future<T?> putWithOneFileBase(
     Map<String, dynamic> body,
     String filePath,
   ) async {
@@ -82,11 +94,13 @@ abstract class BaseService<T> {
       body,
       FileUploadUtils.convertToMultipart(filePath),
     );
-    return fromJson(res.body);
+    if (res.statusCode == HttpStatus.noContent) {
+      return fromJson(res.body);
+    }
   }
 
   /// Put an instance with [body]
-  Future<T> putWithFilesBase(
+  Future<T?> putWithFilesBase(
     Map<String, dynamic> body,
     List<String> filePaths,
   ) async {
@@ -94,12 +108,14 @@ abstract class BaseService<T> {
         .map((path) => FileUploadUtils.convertToMultipart(path))
         .toList();
     Response res = await _apiHelper.putOneWithFiles(endpoint(), body, files);
-    return fromJson(res.body);
+    if (res.statusCode == HttpStatus.noContent) {
+      return fromJson(res.body);
+    }
   }
 
   /// Delete an instance
   Future<bool> deleteBase(dynamic id) async {
     Response res = await _apiHelper.deleteOne(endpoint(), id);
-    return res.isOk;
+    return res.statusCode == HttpStatus.noContent;
   }
 }

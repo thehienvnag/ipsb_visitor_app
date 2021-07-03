@@ -10,6 +10,7 @@ import 'package:indoor_positioning_visitor/src/services/api/location_service.dar
 import 'package:indoor_positioning_visitor/src/services/api/product_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
+import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
 
 class AppInit {
   static void init() {
@@ -24,12 +25,17 @@ class AppInit {
     Get.lazyPut<ImagePicker>(() => ImagePicker());
     // Shared states between widget
     Get.lazyPut<SharedStates>(() => SharedStates());
+    // Bottom bar
+    Get.lazyPut<CustomBottombarController>(
+      () => CustomBottombarController(),
+      fenix: true,
+    );
   }
 
   /// Init algorithms services
   static void initAlgorithmServices() {
     // Find shortest path algorithm
-    Get.lazyPut<IShortestPath>(() => ShortestPath());
+    Get.lazyPut<IShortestPath>(() => ShortestPath(), fenix: true);
   }
 
   /// Init api services

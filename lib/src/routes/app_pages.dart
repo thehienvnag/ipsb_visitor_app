@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/pages/home/bindings/home_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/views/home_page.dart';
-import 'package:indoor_positioning_visitor/src/pages/home_page_final/bindings/home_page_final_binding.dart';
-import 'package:indoor_positioning_visitor/src/pages/home_page_final/views/home_page_final_page.dart';
+import 'package:indoor_positioning_visitor/src/pages/map/views/map_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/bindings/my_coupon_detail_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupons/bindings/my_coupon_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/test_algorithm/bindings/test_algorithm_binding.dart';
@@ -15,7 +15,7 @@ import 'package:indoor_positioning_visitor/src/pages/show_coupon_qr/views/show_c
 import 'package:indoor_positioning_visitor/src/pages/store_details/bindings/store_details_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/store_details/views/store_details_page.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/pages/home/bindings/home_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/map/bindings/map_binding.dart';
 
 class AppPages {
   static final routes = [
@@ -23,16 +23,19 @@ class AppPages {
       name: Routes.testAlgorithm,
       page: () => TestAlgorithmPage(),
       binding: TestAlgorithmBinding(),
+      transition: Transition.noTransition,
     ),
     GetPage(
-      name: Routes.home,
-      page: () => HomePage(),
-      binding: HomeBinding(),
+      name: Routes.map,
+      page: () => MapPage(),
+      binding: MapBinding(),
+      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.myCoupon,
       page: () => MyCouponPage(),
       binding: MyCouponBinding(),
+      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.showCouponQR,
@@ -55,9 +58,9 @@ class AppPages {
       binding: StoreDetailsBinding(),
     ),
     GetPage(
-      name: Routes.homePageFinal,
-      page: () => HomePageFinalPage(),
-      binding: HomePageFinalBinding(),
+      name: Routes.home,
+      page: () => HomePage(),
+      binding: HomeBinding(),
     ),
   ];
 }

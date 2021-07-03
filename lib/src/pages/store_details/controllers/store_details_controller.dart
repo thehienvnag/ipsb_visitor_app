@@ -26,7 +26,10 @@ class StoreDetailsController extends GetxController {
 
   IStoreService storeService = Get.find();
   Future<void> getStoreDetail() async {
-    store.value = await storeService.getStoreById(storeId.value);
+    final storeApi = await storeService.getStoreById(storeId.value);
+    if (storeApi != null) {
+      store.value = storeApi;
+    }
   }
 
   IProductService productService = Get.find();

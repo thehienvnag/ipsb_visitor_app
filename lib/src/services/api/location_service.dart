@@ -15,7 +15,7 @@ mixin ILocationService {
   Future<List<Location>> getLocationOnFloorWithLocationTypeId(int floorPlanId,
       [int locationTypeId = 2]);
 
-  Future<Location> getLocationById(int id);
+  Future<Location?> getLocationById(int id);
 }
 
 class LocationService extends BaseService<Location>
@@ -58,7 +58,7 @@ class LocationService extends BaseService<Location>
   }
 
   @override
-  Future<Location> getLocationById(int id) async {
+  Future<Location?> getLocationById(int id) async {
     return getByIdBase(id);
   }
 

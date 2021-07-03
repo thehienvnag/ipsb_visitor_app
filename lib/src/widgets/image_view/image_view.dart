@@ -20,23 +20,32 @@ class ImageView extends GetView<ImageViewController> {
     return GestureDetector(
       onTap: () => controller.closeAllPopup(),
       child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          image: DecorationImage(image: image),
+        padding: const EdgeInsets.only(bottom: 90, top: 40),
+        color: Colors.white,
+        // padding:
+        //     const EdgeInsets.only(top: 200, bottom: 600, left: 200, right: 200),
+        // decoration: BoxDecoration(color: Colors.transparent),
+        child: Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            image: DecorationImage(image: image),
+            // border: Border.all(color: Colors.grey.shade300),
+            // borderRadius: BorderRadius.circular(8)
+          ),
+          child: Obx(() {
+            return Stack(
+              children: [
+                CustomPaint(
+                  painter: PathPainter(points: controller.points),
+                ),
+                ...buildMapMarkers(controller.markers),
+                buildOneMarker(controller.point.value),
+                buildPopup(controller.servicePopup.value, width, height),
+              ],
+            );
+          }),
         ),
-        child: Obx(() {
-          return Stack(
-            children: [
-              CustomPaint(
-                painter: PathPainter(points: controller.points),
-              ),
-              ...buildMapMarkers(controller.markers),
-              buildOneMarker(controller.point.value),
-              buildPopup(controller.servicePopup.value, width, height),
-            ],
-          );
-        }),
       ),
     );
   }

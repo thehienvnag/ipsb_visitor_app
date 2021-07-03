@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart';
 
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
-import 'package:indoor_positioning_visitor/src/utils/utils.dart';
 
 class TicketBox extends StatelessWidget {
   final double margin;
@@ -119,6 +116,7 @@ class TicketBox extends StatelessWidget {
           ),
           Container(
             width: 227,
+            height: 130,
             padding: const EdgeInsets.only(top: 4),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -148,7 +146,7 @@ class TicketBox extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  margin: const EdgeInsets.only(bottom: 29),
+                  margin: const EdgeInsets.only(bottom: 10),
                   child: Text(
                     'Hết hạn: ${Formatter.date(expireDate)}',
                     style: TextStyle(
