@@ -8,4 +8,6 @@ class Routes {
   static const String notifications = "/notifications";
   static const String storeDetails = "/storeDetails";
   static const String home = "/home";
+  static const String buildingDetails = "/buildingDetails";
+  static const String buildingStore = "/buildingStore";
 }

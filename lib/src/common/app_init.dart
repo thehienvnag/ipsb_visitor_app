@@ -7,6 +7,7 @@ import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart'
 import 'package:indoor_positioning_visitor/src/services/api/edge_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/floor_plan_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/location_service.dart';
+import 'package:indoor_positioning_visitor/src/services/api/product_category_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/product_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
@@ -52,11 +53,12 @@ class AppInit {
     Get.lazyPut<IProductService>(() => ProductService(), fenix: true);
     // Calling api at coupon service
     Get.lazyPut<ICouponService>(() => CouponService(), fenix: true);
-    // Calling api at Store service
-    Get.lazyPut<IStoreService>(() => StoreService(), fenix: true);
     // Calling api at FloorPlan service
     Get.lazyPut<IFloorPlanService>(() => FloorPlanService(), fenix: true);
     // Calling api at couponInUse service
     Get.lazyPut<ICouponInUseService>(() => CouponInUseService(), fenix: true);
+    // Calling api at ProductCategory service
+    Get.lazyPut<IProductCategoryService>(() => ProductCategoryService(),
+        fenix: true);
   }
 }

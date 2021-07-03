@@ -28,7 +28,8 @@ class HomeController extends GetxController {
 
   IStoreService storeService = Get.find();
   Future<void> getStores() async {
-    listStore.value = await storeService.getStoresByBuildingId(12);
+    listStore.value =
+        (await storeService.getStoresByBuilding(12)).content ?? [];
   }
 
   ICouponService couponService = Get.find();

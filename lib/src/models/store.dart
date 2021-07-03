@@ -10,6 +10,7 @@ class Store {
   final String? description;
   final String? imageUrl;
   final int? floorPlanId;
+  final String? productCategoryId;
   final String? status;
   final FloorPlan? floorPlan;
 
@@ -20,6 +21,7 @@ class Store {
     this.description,
     this.imageUrl,
     this.floorPlanId,
+    this.productCategoryId,
     this.status,
   });
 

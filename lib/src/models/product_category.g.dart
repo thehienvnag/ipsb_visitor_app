@@ -10,8 +10,8 @@ ProductCategory _$ProductCategoryFromJson(Map<String, dynamic> json) {
   return ProductCategory(
     id: json['id'] as int,
     name: json['name'] as String,
-    description: json['description'] as String,
-    imageUrl: json['imageUrl'] as String,
+    // description: json['description'] as String,
+    // imageUrl: json['imageUrl'] as String,
   );
 }
 

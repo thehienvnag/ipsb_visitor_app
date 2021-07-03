@@ -2,6 +2,10 @@ import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/bindings/home_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/views/home_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/map/views/map_page.dart';
+import 'package:indoor_positioning_visitor/src/pages/building_details/bindings/building_detail_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/building_details/views/building_detail_page.dart';
+import 'package:indoor_positioning_visitor/src/pages/building_store_list/bindings/building_store_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/building_store_list/views/building_store_list_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/bindings/my_coupon_detail_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupons/bindings/my_coupon_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/test_algorithm/bindings/test_algorithm_binding.dart';
@@ -61,6 +65,16 @@ class AppPages {
       name: Routes.home,
       page: () => HomePage(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: Routes.buildingDetails,
+      page: () => BuildingDetailPage(),
+      binding: BuildingDetailBinding(),
+    ),
+    GetPage(
+      name: Routes.buildingStore,
+      page: () => BuildingStorePage(),
+      binding: BuildingStoreBinding(),
     ),
   ];
 }
