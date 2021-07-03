@@ -8,6 +8,8 @@ import 'package:indoor_positioning_visitor/src/services/api/product_service.dart
 import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 
+final dateTime = DateTime.now();
+
 class StoreDetailsController extends GetxController {
   final store = Store().obs;
   final listProduct = <Product>[].obs;

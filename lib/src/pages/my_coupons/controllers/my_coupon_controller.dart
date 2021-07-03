@@ -7,7 +7,6 @@ import 'package:indoor_positioning_visitor/src/services/global_states/shared_sta
 
 final dateTime = DateTime.now();
 
-
 class MyCouponController extends GetxController {
   ICouponInUseService _service = Get.find();
 
@@ -21,7 +20,6 @@ class MyCouponController extends GetxController {
   Future<void> getCouponInUse() async {
     final paging = await _service.getCouponInUseByVisitorId(9);
     listCouponInUse.value = paging.content!;
-
   }
 
   void gotoCouponDetails(CouponInUse coupon) {
@@ -30,19 +28,21 @@ class MyCouponController extends GetxController {
   }
 
   /// Check coupons of visitor save before with status is 'NotUse'
-  bool checkCouponValid(String status, CouponInUse couponInUse){
+  bool checkCouponValid(String status, CouponInUse couponInUse) {
     bool result = false;
-    if(couponInUse.status == status && couponInUse.coupon!.publishDate!.compareTo(dateTime) < 0
-        &&  couponInUse.coupon!.expireDate!.compareTo(dateTime) >= 0){
+    if (couponInUse.status == status &&
+        couponInUse.coupon!.publishDate!.compareTo(dateTime) < 0 &&
+        couponInUse.coupon!.expireDate!.compareTo(dateTime) >= 0) {
       result = true;
     }
     return result;
   }
 
   /// Check coupons of visitor save before with Expriredate
-  bool checkExpireCoupon(Coupon coupon){
+  bool checkExpireCoupon(Coupon coupon) {
     bool result = false;
-    if(coupon.publishDate!.compareTo(dateTime) < 0 &&  coupon.expireDate!.compareTo(dateTime) < 0 ){
+    if (coupon.publishDate!.compareTo(dateTime) < 0 &&
+        coupon.expireDate!.compareTo(dateTime) < 0) {
       result = true;
     }
     return result;

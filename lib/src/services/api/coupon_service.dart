@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:indoor_positioning_visitor/src/common/endpoints.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/models/paging.dart';

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
+import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 
 class MyCouponDetailController extends GetxController {
@@ -15,5 +16,16 @@ class MyCouponDetailController extends GetxController {
       result = true;
     }
     return result;
+  }
+
+  /// save coupon for visitor
+  ICouponInUseService couponInUseService = Get.find();
+  void createCouponInUse(int couponID) {
+    CouponInUse couponInUse = CouponInUse(
+        couponId: couponID,
+        visitorId: 9,
+        redeemDate: dateTime,
+        status: "Active");
+    couponInUseService.createCouponInUse(couponInUse);
   }
 }

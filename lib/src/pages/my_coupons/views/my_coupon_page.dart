@@ -83,9 +83,9 @@ class MyCouponPage extends GetView<MyCouponController> {
       return Container(
         child: Center(
             child: Text(
-          "Chưa lưu voucher nào !",
-          style: TextStyle(fontSize: 20),
-        )),
+              "Chưa lưu voucher nào !",
+              style: TextStyle(fontSize: 20),
+            )),
       );
     }
     return ListView.builder(
