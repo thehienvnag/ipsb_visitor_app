@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
@@ -21,7 +23,18 @@ class MyCouponDetailController extends GetxController {
   @override
   onInit() {
     super.onInit();
-    getCouponInUse();
+
+    checkStatus();
+  }
+
+  void checkStatus() {
+    bool firstTime = true;
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (!firstTime) {
+        getCouponInUse();
+      }
+      firstTime = false;
+    });
   }
 
   void gotoShowQR() {
@@ -30,16 +43,21 @@ class MyCouponDetailController extends GetxController {
   }
 
   Future<void> getCouponInUse() async {
-    isLoading.value = true;
     final couponId = Get.parameters['couponId'];
     if (couponId == null) return;
+
     final result = await couponInUseService.getByVisitorIdAndCouponId(
       9,
       int.parse(couponId),
     );
-    if (result != null) {
-      couponInUse.value = result;
+    if (result == null) return;
+    if (result.status == couponInUse.value.status) {
+      return;
+    } else {
+      isLoading.value = true;
     }
+
+    couponInUse.value = result;
     isLoading.value = false;
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/pages/notifications/controllers/notifications_controller.dart';
+import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class NotificationsPage extends GetView<NotificationsController> {
@@ -11,13 +12,6 @@ class NotificationsPage extends GetView<NotificationsController> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-          onPressed: () {},
-        ),
         backgroundColor: Colors.white,
         elevation: 1,
         title: Text(
@@ -46,6 +40,7 @@ class NotificationsPage extends GetView<NotificationsController> {
         },
         label: Text("Notification"),
       ),
+      bottomNavigationBar: CustomBottombar(),
       body: Container(
         padding: const EdgeInsets.all(30),
         child: ListView.separated(

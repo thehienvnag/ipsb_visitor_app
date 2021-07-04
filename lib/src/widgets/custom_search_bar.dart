@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/common/constants.dart';
+import 'package:indoor_positioning_visitor/src/pages/home/controllers/home_controller.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
@@ -90,7 +92,7 @@ class MapSearchBar extends StatelessWidget {
   }
 }
 
-class HomeSearchBar extends StatelessWidget {
+class HomeSearchBar extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final screen = MediaQuery.of(context).size;
@@ -126,26 +128,29 @@ class HomeSearchBar extends StatelessWidget {
               cursorHeight: 24,
             ),
           ),
-          Row(
-            children: [
-              Container(
-                height: 34,
-                width: 1.3,
-                color: Colors.grey.shade300,
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 8, right: 10),
-                child: Icon(Icons.apartment_rounded, color: Colors.black45),
-              ),
-              Text(
-                'Vincomp Lê...',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
+          GestureDetector(
+            onTap: () => controller.gotoDetails(),
+            child: Row(
+              children: [
+                Container(
+                  height: 34,
+                  width: 1.3,
+                  color: Colors.grey.shade300,
                 ),
-              ),
-            ],
+                Container(
+                  margin: const EdgeInsets.only(left: 8, right: 10),
+                  child: Icon(Icons.apartment_rounded, color: Colors.black45),
+                ),
+                Text(
+                  'Vincomp Lê...',
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
