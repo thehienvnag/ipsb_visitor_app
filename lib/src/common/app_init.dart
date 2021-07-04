@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/shortest_path.dart';
 import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
+import 'package:indoor_positioning_visitor/src/services/api/building_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/edge_service.dart';
@@ -60,5 +61,6 @@ class AppInit {
     // Calling api at ProductCategory service
     Get.lazyPut<IProductCategoryService>(() => ProductCategoryService(),
         fenix: true);
+    Get.lazyPut<IBuildingService>(() => BuildingService(), fenix: true);
   }
 }

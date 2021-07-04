@@ -3,7 +3,8 @@ import 'package:indoor_positioning_visitor/src/models/building.dart';
 import 'package:indoor_positioning_visitor/src/services/api/base_service.dart';
 
 mixin IBuildingService {
-  Future<Building> getBuildingById(int id);
+  Future<Building?> getBuildingById(int id);
+  Future<List<Building>> getBuildings();
 }
 
 class BuildingService extends BaseService<Building>
@@ -19,7 +20,12 @@ class BuildingService extends BaseService<Building>
   }
 
   @override
-  Future<Building> getBuildingById(int id) async {
-    return Building();
+  Future<Building?> getBuildingById(int id) async {
+    return getByIdBase(id);
+  }
+
+  @override
+  Future<List<Building>> getBuildings() {
+    return getAllBase({});
   }
 }

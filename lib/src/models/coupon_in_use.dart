@@ -10,7 +10,7 @@ class CouponInUse {
   final int? couponId, visitorId;
   final DateTime? redeemDate, applyDate;
   final String? status;
-  final Coupon? coupon;
+  Coupon? coupon;
 
   CouponInUse({
     this.applyDate,

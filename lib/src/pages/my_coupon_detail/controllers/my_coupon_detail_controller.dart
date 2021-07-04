@@ -77,6 +77,8 @@ class MyCouponDetailController extends GetxController {
 
     BotToast.closeAllLoading();
     if (result != null) {
+      final coupon = couponInUse.value.coupon ?? sharedStates.coupon.value;
+      result.coupon = coupon;
       couponInUse.value = result;
     }
   }

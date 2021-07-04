@@ -1,38 +1,63 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/models/product_category.dart';
 
 import 'package:indoor_positioning_visitor/src/models/store.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
+import 'package:indoor_positioning_visitor/src/services/api/building_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
 
 class HomeController extends GetxController {
-  //final listStore = <Store>[].obs;
-  //final listCoupon = <Coupon>[].obs;
+  IStoreService storeService = Get.find();
+  ICouponService couponService = Get.find();
+  IBuildingService buildingService = Get.find();
+  final ScrollController scrollController = ScrollController();
+  final showSlider = true.obs;
   final buildingId = 0.obs;
-
   final listStore = stores.obs;
   final listCoupon = coupons.obs;
   final listCategories = categories.obs;
+  final buildings = [].obs;
 
   @override
   void onInit() {
     super.onInit();
-    //String? id = Get.parameters['id'];
-    //if (id == null) return;
-    //buildingId.value = int.parse(id);
-
+    if (!initPage()) return;
     //getStores();
     //getCoupons();
   }
 
-  IStoreService storeService = Get.find();
-  Future<void> getStores() async {
-    listStore.value =
-        (await storeService.getStoresByBuilding(12)).content ?? [];
+  bool initPage() {
+    scrollController.addListener(() {
+      final fromTop = scrollController.position.pixels;
+      if (fromTop > 10) {
+        showSlider.value = false;
+      } else if (fromTop == 0) {
+        showSlider.value = true;
+      }
+    });
+    String? id = Get.parameters['id'];
+    if (id == null) return false;
+    buildingId.value = int.parse(id);
+    return true;
   }
 
-  ICouponService couponService = Get.find();
+  void gotoDetails() {
+    Get.toNamed(Routes.buildingDetails);
+  }
+
+  Future<void> getBuildings() async {
+    final result = await buildingService.getBuildings();
+    buildings.value = result;
+  }
+
+  Future<void> getStores() async {
+    final stores = await storeService.getStoresByBuilding(buildingId.value);
+    listStore.value = stores.content ?? [];
+  }
+
   Future<void> getCoupons() async {
     listCoupon.value = await couponService.getCouponsByStoreId(18);
   }

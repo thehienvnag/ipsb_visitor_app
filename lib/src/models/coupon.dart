@@ -14,8 +14,8 @@ class Coupon {
       productInclude,
       productExclude,
       status;
-  final double? amount, maxDiscount, minDiscount, storeId;
-  final int? limit;
+  final double? amount, maxDiscount, minDiscount;
+  final int? storeId, limit;
   final DateTime? expireDate, publishDate;
   final Store? store;
 

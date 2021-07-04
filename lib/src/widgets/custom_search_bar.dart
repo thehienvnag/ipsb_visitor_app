@@ -96,7 +96,7 @@ class HomeSearchBar extends StatelessWidget {
     final screen = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.only(right: 10),
-      height: 44,
+      height: 47,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(5),

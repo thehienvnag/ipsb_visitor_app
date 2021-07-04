@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.buildingDetails,
+      initialRoute: Routes.home,
       getPages: AppPages.routes,
     );
   }
