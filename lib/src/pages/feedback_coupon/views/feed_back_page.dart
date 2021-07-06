@@ -27,16 +27,16 @@ class FeedbackCouponPage extends GetView<FeedbackCouponController> {
                 color: Color(0xff66CCCC),
               ),
               Container(
-                margin: EdgeInsets.only(left: 12,top: 70),
+                margin: EdgeInsets.only(left: 12,top: 60, right: 12,),
                 width: screenSize.width,
-                alignment: Alignment.topLeft,
+                alignment: Alignment.topRight,
                 child: RoundedButton(
                   radius: 35,
                   color: Colors.grey.shade50,
                   icon: Icon(
-                    Icons.chevron_left_rounded,
+                    Icons.close,
                     color: Colors.black,
-                    size: 30,
+                    size: 25,
                   ),
                   onPressed: () {
                     Get.back(closeOverlays: true);
@@ -44,7 +44,7 @@ class FeedbackCouponPage extends GetView<FeedbackCouponController> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 140, left: 15, right: 15),
+                margin: EdgeInsets.only(top: 110, left: 15, right: 15),
                 width: screenSize.width,
                 height: screenSize.height * 0.67,
                 child: Card(
