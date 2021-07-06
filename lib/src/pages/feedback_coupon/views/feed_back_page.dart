@@ -27,15 +27,15 @@ class FeedbackCouponPage extends GetView<FeedbackCouponController> {
                 color: Color(0xff66CCCC),
               ),
               Container(
-                margin: EdgeInsets.only(top: 70),
+                margin: EdgeInsets.only(left: 12,top: 70),
                 width: screenSize.width,
                 alignment: Alignment.topLeft,
                 child: RoundedButton(
                   radius: 35,
-                  color: Colors.grey.shade400,
+                  color: Colors.grey.shade50,
                   icon: Icon(
                     Icons.chevron_left_rounded,
-                    color: Colors.white,
+                    color: Colors.black,
                     size: 30,
                   ),
                   onPressed: () {
