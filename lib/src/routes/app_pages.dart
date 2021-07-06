@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/pages/feedback_coupon/bindings/feedback_coupon_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/feedback_coupon/views/feed_back_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/bindings/home_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/views/home_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/map/views/map_page.dart';
@@ -75,6 +77,11 @@ class AppPages {
       name: Routes.buildingStore,
       page: () => BuildingStorePage(),
       binding: BuildingStoreBinding(),
+    ),
+    GetPage(
+      name: Routes.feedbackCoupon,
+      page: () => FeedbackCouponPage(),
+      binding: FeedbackCouponBinding(),
     ),
   ];
 }
