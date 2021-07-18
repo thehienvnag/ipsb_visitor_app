@@ -5,7 +5,7 @@ import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 
-final dateTime = DateTime.now();
+
 
 class MyCouponController extends GetxController {
   ICouponInUseService _service = Get.find();
@@ -30,6 +30,7 @@ class MyCouponController extends GetxController {
 
   /// Check coupons of visitor save before with status is 'NotUse'
   bool checkCouponValid(String status, CouponInUse couponInUse) {
+    final dateTime = DateTime.now();
     bool result = false;
     if (couponInUse.status == status &&
         couponInUse.coupon!.publishDate!.compareTo(dateTime) < 0 &&
