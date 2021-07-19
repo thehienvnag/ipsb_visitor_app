@@ -67,7 +67,7 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                       ),
                       SizedBox(height: 10),
                       QrImage(
-                        data: controller.genCode(coupon),
+                        data: controller.genCode(coupon, couponInUse.id),
                         size: 220,
                         backgroundColor: Colors.white,
                       ),
