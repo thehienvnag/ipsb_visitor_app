@@ -15,7 +15,7 @@ class FeedbackCouponController extends GetxController {
   final filePath = ''.obs;
 
   Future<void> getImage() async {
-    final picked = await _imagePicker.getImage(source: ImageSource.gallery);
+    final picked = await _imagePicker.pickImage(source: ImageSource.gallery);
     filePath.value = picked?.path ?? '';
   }
 
@@ -27,12 +27,11 @@ class FeedbackCouponController extends GetxController {
 
   var feedbackContent = "".obs;
 
-  void saveFeedback(String content){
+  void saveFeedback(String content) {
     feedbackContent.value = content;
   }
 
-
-  void changeRating(double number){
+  void changeRating(double number) {
     rating.value = number;
   }
 
@@ -40,24 +39,23 @@ class FeedbackCouponController extends GetxController {
     if (couponInUse == null) return;
     final dateTime = DateTime.now();
     CouponInUse feedback = CouponInUse(
-      // couponId: couponInUse.couponId,
-      // visitorId: couponInUse.visitor!.id,
-      // redeemDate: couponInUse.redeemDate,
-      // applyDate: couponInUse.applyDate,
-      // status: couponInUse.status,
-      feedbackContent: feedbackContent.value,
-      feedbackImage: filePath.value,
-      feedBackDate: dateTime,
-      rateScore: rating.value
-    );
+        // couponId: couponInUse.couponId,
+        // visitorId: couponInUse.visitor!.id,
+        // redeemDate: couponInUse.redeemDate,
+        // applyDate: couponInUse.applyDate,
+        // status: couponInUse.status,
+        feedbackContent: feedbackContent.value,
+        feedbackImage: filePath.value,
+        feedBackDate: dateTime,
+        rateScore: rating.value);
     BotToast.showLoading();
 
-    final result = await couponInUseService.putFeedbackCouponInUse(feedback);
+    final result = await couponInUseService.putFeedbackCouponInUse(
+        feedback, filePath.value);
 
     BotToast.closeAllLoading();
     if (result != null) {
       print("update success couponInUse with feedback");
     }
   }
-
 }

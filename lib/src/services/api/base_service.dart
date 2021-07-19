@@ -50,8 +50,13 @@ abstract class BaseService<T> {
   }
 
   /// Post an instance with [body]
-  Future<T?> postWithFilesBase(Map<String, dynamic> body, List<String> filePaths,) async {
-    List<MultipartFile> files = filePaths.map((path) => FileUploadUtils.convertToMultipart(path)).toList();
+  Future<T?> postWithFilesBase(
+    Map<String, dynamic> body,
+    List<String> filePaths,
+  ) async {
+    List<MultipartFile> files = filePaths
+        .map((path) => FileUploadUtils.convertToMultipart(path))
+        .toList();
     Response res = await _apiHelper.postOneWithFiles(endpoint(), body, files);
     if (res.statusCode == HttpStatus.created) {
       return fromJson(res.body);
@@ -74,15 +79,16 @@ abstract class BaseService<T> {
   }
 
   /// Put an instance with [id] and [body]
-  Future<T?> putBase(dynamic id, Map<String, dynamic> body) async {
+  Future<bool> putBase(dynamic id, Map<String, dynamic> body) async {
     Response res = await _apiHelper.putOne(endpoint(), id, body);
     if (res.statusCode == HttpStatus.noContent) {
-      return fromJson(res.body);
+      return true;
     }
+    return false;
   }
 
   /// Put an instance with [body] and a file path [filePath]
-  Future<T?> putWithOneFileBase(
+  Future<bool> putWithOneFileBase(
     Map<String, dynamic> body,
     String filePath,
   ) async {
@@ -92,12 +98,13 @@ abstract class BaseService<T> {
       FileUploadUtils.convertToMultipart(filePath),
     );
     if (res.statusCode == HttpStatus.noContent) {
-      return fromJson(res.body);
+      return true;
     }
+    return false;
   }
 
   /// Put an instance with [body]
-  Future<T?> putWithFilesBase(
+  Future<bool> putWithFilesBase(
     Map<String, dynamic> body,
     List<String> filePaths,
   ) async {
@@ -106,8 +113,9 @@ abstract class BaseService<T> {
         .toList();
     Response res = await _apiHelper.putOneWithFiles(endpoint(), body, files);
     if (res.statusCode == HttpStatus.noContent) {
-      return fromJson(res.body);
+      return true;
     }
+    return false;
   }
 
   /// Delete an instance

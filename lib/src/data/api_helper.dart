@@ -118,7 +118,7 @@ class ApiHelper extends GetConnect with IApiHelper {
     dynamic id,
     Map<String, dynamic> data,
   ) {
-    return put('$endpoint$id', data);
+    return put('$endpoint/$id', data);
   }
 
   @override
