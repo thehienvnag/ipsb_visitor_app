@@ -15,7 +15,7 @@ class FeedbackCouponPage extends GetView<FeedbackCouponController> {
 
   @override
   Widget build(BuildContext context) {
-    final coupon = sharedData.couponInUse.value;
+    final couponInuse = sharedData.couponInUse.value;
     Size screenSize = MediaQuery.of(context).size;
       return Scaffold(
         body: SingleChildScrollView(
@@ -132,19 +132,10 @@ class FeedbackCouponPage extends GetView<FeedbackCouponController> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
-                                    Column(
+                                    Row(
                                       children: [
-                                        // IconButton(
-                                        //   icon: Icon(
-                                        //     Icons.image,
-                                        //     color: Colors.black.withOpacity(0.6),
-                                        //     size: 25,
-                                        //   ),
-                                        //   color: Colors.black,
-                                        //   onPressed: () => controller.getImage(),
-                                        // ),
                                         Text(
-                                          'Thêm ảnh',
+                                          'Thêm ảnh  ',
                                           style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontSize: 17,
@@ -174,11 +165,9 @@ class FeedbackCouponPage extends GetView<FeedbackCouponController> {
                                     Obx(() {
                                       String filePath = controller.filePath.value;
                                       if (filePath.isEmpty) {
-                                        return Container(width: 110, height: 120);
+                                        return Container( height: 120);
                                       } else {
                                         return Container(
-                                            // width: screenSize.width*0.85,
-                                            // height: 130,
                                             child: Card(
                                                 elevation: 0,
                                                 shape: RoundedRectangleBorder(
@@ -233,8 +222,7 @@ class FeedbackCouponPage extends GetView<FeedbackCouponController> {
                                 color: Colors.white,
                                 shape: Border.all(color: Color(0xff28BEBA), width: 2),
                                 onPressed: () {
-                                  //  feedbackContent = controller.feedbackContent.value;
-                                  //  rating = controller.rating;
+                                  controller.sendFeedback(couponInuse);
                                 },
                               ),
                             ),

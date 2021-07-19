@@ -50,13 +50,8 @@ abstract class BaseService<T> {
   }
 
   /// Post an instance with [body]
-  Future<T?> postWithFilesBase(
-    Map<String, dynamic> body,
-    List<String> filePaths,
-  ) async {
-    List<MultipartFile> files = filePaths
-        .map((path) => FileUploadUtils.convertToMultipart(path))
-        .toList();
+  Future<T?> postWithFilesBase(Map<String, dynamic> body, List<String> filePaths,) async {
+    List<MultipartFile> files = filePaths.map((path) => FileUploadUtils.convertToMultipart(path)).toList();
     Response res = await _apiHelper.postOneWithFiles(endpoint(), body, files);
     if (res.statusCode == HttpStatus.created) {
       return fromJson(res.body);

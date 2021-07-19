@@ -7,6 +7,7 @@ mixin ICouponInUseService {
   Future<Paging<CouponInUse>> getCouponInUseByVisitorId(int visitorId);
   Future<CouponInUse?> getByVisitorIdAndCouponId(int visitorId, int couponId);
   Future<CouponInUse?> createCouponInUse(CouponInUse couponInUse);
+  Future<CouponInUse?> putFeedbackCouponInUse(CouponInUse couponInUse);
 }
 
 class CouponInUseService extends BaseService<CouponInUse>
@@ -41,5 +42,11 @@ class CouponInUseService extends BaseService<CouponInUse>
     if (result.isNotEmpty) {
       return result.first;
     }
+  }
+
+  @override
+  Future<CouponInUse?> putFeedbackCouponInUse(CouponInUse couponInUse) {
+    List<String> files = [couponInUse.feedbackImage.toString()];
+    return putWithFilesBase(couponInUse.toJson(), files);
   }
 }
