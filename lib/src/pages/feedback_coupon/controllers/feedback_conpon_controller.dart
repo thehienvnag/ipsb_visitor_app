@@ -55,7 +55,7 @@ class FeedbackCouponController extends GetxController {
         feedBackDate: dateTime,
         rateScore: rating.value);
     BotToast.showLoading();
-    final result = await couponInUseService.putFeedbackCouponInUse(couponInUse, filePath.value, couponId.value);
+    final result = await couponInUseService.putFeedbackCouponInUse(couponInUse, filePath.value, conpon.id!);
 
     BotToast.closeAllLoading();
     if (result != null) {

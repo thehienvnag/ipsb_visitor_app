@@ -101,8 +101,6 @@ abstract class BaseService<T> {
     if (res.statusCode == HttpStatus.noContent) {
       return true;
     }
-    print("heehe: " + res.statusCode.toString());
-    print(res.body);
     return false;
   }
 

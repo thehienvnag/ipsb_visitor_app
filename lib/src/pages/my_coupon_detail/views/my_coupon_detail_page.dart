@@ -238,7 +238,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
             icon: Icon(Icons.qr_code),
             label: Text('SỬ DỤNG'),
           ),
-        if (state == 2) Container(
+        if (state == 2) couponInUse.feedbackContent == null ? Container(
           child: ElevatedButton(
             onPressed: () {
               sharedData.couponInUse.value = couponInUse;
@@ -248,6 +248,23 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
               children: [
                 Icon(Icons.library_add_check_rounded, color: Colors.white),
                 Text('Feedback'),
+              ],
+            ),
+          ),
+        ) :
+        Container(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                primary: Colors.lightGreen,
+               ),
+            onPressed: () {
+              // sharedData.couponInUse.value = couponInUse;
+              // Get.toNamed(Routes.feedbackCoupon);
+            },
+            child: Row(
+              children: [
+                Icon(Icons.library_add_check_rounded, color: Colors.white),
+                Text('  Đã feedback'),
               ],
             ),
           ),
