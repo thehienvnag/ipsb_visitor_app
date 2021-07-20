@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/controllers/home_controller.dart';
+import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
 import 'package:indoor_positioning_visitor/src/widgets/custom_search_bar.dart';
 
@@ -210,7 +211,8 @@ class HomePage extends GetView<HomeController> {
                               children: [
                                 Wrap(
                                   spacing: 18,
-                                  children: List.generate(6, (index) {
+                                  children:
+                                      List.generate(listStore.length, (index) {
                                     final store = listStore[index];
                                     return Column(
                                       children: [
@@ -303,7 +305,7 @@ class HomePage extends GetView<HomeController> {
                         return GestureDetector(
                           onTap: () {},
                           child: Container(
-                            height: 290,
+                            height: 280,
                             child: ListView.builder(
                               addSemanticIndexes: true,
                               shrinkWrap: true,
@@ -332,7 +334,7 @@ class HomePage extends GetView<HomeController> {
                                           children: <Widget>[
                                             Container(
                                               width: 170,
-                                              height: 100,
+                                              height: 60,
                                               child: RichText(
                                                 text: TextSpan(children: [
                                                   TextSpan(
@@ -355,6 +357,27 @@ class HomePage extends GetView<HomeController> {
                                               ),
                                             ),
                                           ],
+                                        ),
+                                        Container(
+                                          width: 170,
+                                          child: RichText(
+                                            text: TextSpan(children: [
+                                              TextSpan(
+                                                text: 'Expire: ',
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black),
+                                              ),
+                                              TextSpan(
+                                                text: Formatter.date(
+                                                    coupon.expireDate),
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black),
+                                              ),
+                                            ]),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -406,89 +429,99 @@ class HomePage extends GetView<HomeController> {
                           ),
                         ],
                       ),
-                      ListView.separated(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: 3,
-                          separatorBuilder: (context, index) => Divider(
-                                height: 20,
-                                thickness: 1,
-                                indent: 15,
-                                endIndent: 15,
-                              ),
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () => controller.gotoDetails(),
-                              child: Container(
-                                height: 100,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: 100,
-                                      width: screenSize.width * 0.38,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              'https://vanhanhmall.com/wp-content/uploads/2018/04/02-VHM.jpg'),
-                                          fit: BoxFit.cover,
+                      Obx(() {
+                        var listBuilding = controller.listBuilding;
+                        return ListView.separated(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: listBuilding.length,
+                            separatorBuilder: (context, index) => Divider(
+                                  height: 20,
+                                  thickness: 1,
+                                  indent: 15,
+                                  endIndent: 15,
+                                ),
+                            itemBuilder: (context, index) {
+                              final building = listBuilding[index];
+                              return GestureDetector(
+                                onTap: () => controller.gotoDetails(),
+                                child: Container(
+                                  height: 100,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 100,
+                                        width: screenSize.width * 0.38,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                                building.imageUrl ?? ''),
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                         ),
-                                        borderRadius: BorderRadius.circular(5),
                                       ),
-                                    ),
-                                    Container(
-                                      width: screenSize.width * 0.55,
-                                      child: ListTile(
-                                        title: Text(
-                                          'Vạn Hạnh mall quận 10',
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                        subtitle: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  top: 10),
-                                              child: Text(
-                                                '50 Lê Văn Việt | 3km',
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  top: 10),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    TextSpan(
-                                                      text: 'Đang hoạt động',
-                                                      style: TextStyle(
-                                                        color:
-                                                            Colors.blueAccent,
-                                                      ),
-                                                    ),
-                                                    TextSpan(
-                                                      text: ' 7h00 - 21h30',
-                                                      style: TextStyle(
-                                                        color: Colors.black87,
-                                                      ),
-                                                    ),
-                                                  ],
+                                      Container(
+                                        width: screenSize.width * 0.55,
+                                        child: ListTile(
+                                          title: Text(
+                                            Formatter.shorten(
+                                                building.name, 16),
+                                            style: TextStyle(fontSize: 17),
+                                          ),
+                                          subtitle: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                margin: const EdgeInsets.only(
+                                                    top: 7),
+                                                child: Text(
+                                                  Formatter.shorten(
+                                                      building.address),
+                                                  //'50 Lê Văn Việt | 3km'
+                                                  style:
+                                                      TextStyle(fontSize: 16),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                              Container(
+                                                margin: const EdgeInsets.only(
+                                                    top: 10),
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: 'Đang hoạt động',
+                                                        style: TextStyle(
+                                                          color:
+                                                              Colors.blueAccent,
+                                                        ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: ' 7h00 - 21h30',
+                                                        style: TextStyle(
+                                                          color: Colors.black87,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
-                          }),
+                              );
+                            });
+                      }),
                     ],
                   ),
                 ),
