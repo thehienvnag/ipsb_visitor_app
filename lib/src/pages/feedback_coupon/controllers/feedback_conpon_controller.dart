@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 
@@ -15,7 +18,7 @@ class FeedbackCouponController extends GetxController {
   final filePath = ''.obs;
 
   Future<void> getImage() async {
-    final picked = await _imagePicker.pickImage(source: ImageSource.gallery);
+    final picked = await _imagePicker.getImage(source: ImageSource.gallery);
     filePath.value = picked?.path ?? '';
   }
 
@@ -35,27 +38,31 @@ class FeedbackCouponController extends GetxController {
     rating.value = number;
   }
 
-  Future<void> sendFeedback(CouponInUse couponInUse) async {
-    if (couponInUse == null) return;
+  var couponId = 0.obs;
+
+  Future<void> sendFeedback() async {
+    CouponInUse conpon =  sharedStates.couponInUse.value;
     final dateTime = DateTime.now();
-    CouponInUse feedback = CouponInUse(
-        // couponId: couponInUse.couponId,
-        // visitorId: couponInUse.visitor!.id,
-        // redeemDate: couponInUse.redeemDate,
-        // applyDate: couponInUse.applyDate,
-        // status: couponInUse.status,
+    CouponInUse couponInUse = CouponInUse(
+        id: conpon.id,
+        applyDate: conpon.applyDate,
+        visitorId: conpon.visitorId,
+        couponId: conpon.couponId,
+        redeemDate: conpon.redeemDate,
+        status: conpon.status,
         feedbackContent: feedbackContent.value,
         feedbackImage: filePath.value,
         feedBackDate: dateTime,
         rateScore: rating.value);
     BotToast.showLoading();
-
-    final result = await couponInUseService.putFeedbackCouponInUse(
-        feedback, filePath.value);
+    final result = await couponInUseService.putFeedbackCouponInUse(couponInUse, filePath.value, conpon.id!);
 
     BotToast.closeAllLoading();
     if (result != null) {
-      print("update success couponInUse with feedback");
+      BotToast.showText(text: "Đánh giá thành công");
+      Timer(Duration(seconds: 2),(){
+        Get.toNamed(Routes.myCoupon);
+      });
     }
   }
 }

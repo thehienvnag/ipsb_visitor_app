@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bullet_list/flutter_bullet_list.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/pages/show_coupon_qr/controllers/show_coupon_qr_controller.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -129,35 +130,35 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                         bulletSize: 3,
                       ),
                     ),
-                    Container(
-                      width: screenSize.width * 0.75,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: Row(
-                              children: [
-                                Icon(Icons.directions, color: Colors.white),
-                                Text('Chỉ đường'),
-                              ],
+                      Container(
+                        width: screenSize.width * 0.75,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              child: Row(
+                                children: [
+                                  Icon(Icons.directions, color: Colors.white),
+                                  Text('Chỉ đường'),
+                                ],
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 6,
-                          ),
-                          OutlinedButton.icon(
-                            onPressed: () {},
-                            label: Row(
-                              children: [
-                                Text('Gọi cửa hàng'),
-                              ],
+                            SizedBox(
+                              width: 6,
                             ),
-                            icon: Icon(Icons.phone),
-                          ),
-                        ],
+                            OutlinedButton.icon(
+                              onPressed: () {},
+                              label: Row(
+                                children: [
+                                  Text('Gọi cửa hàng'),
+                                ],
+                              ),
+                              icon: Icon(Icons.phone),
+                            ),
+                          ],
+                        ),
                       ),
-                    )
                   ],
                 ),
               ),
@@ -166,7 +167,9 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
         ],
       ),
     );
+
   }
+
 
   Widget buildTextField(BuildContext context) => TextField(
         //controller: controller,

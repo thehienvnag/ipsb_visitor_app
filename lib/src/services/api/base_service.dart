@@ -90,12 +90,13 @@ abstract class BaseService<T> {
   /// Put an instance with [body] and a file path [filePath]
   Future<bool> putWithOneFileBase(
     Map<String, dynamic> body,
-    String filePath,
+    String filePath, int id,  [String fileName = "imageUrl"]
   ) async {
     Response res = await _apiHelper.putOneWithOneFile(
-      endpoint(),
+      endpoint() + "/" + id.toString(),
       body,
       FileUploadUtils.convertToMultipart(filePath),
+      fileName
     );
     if (res.statusCode == HttpStatus.noContent) {
       return true;

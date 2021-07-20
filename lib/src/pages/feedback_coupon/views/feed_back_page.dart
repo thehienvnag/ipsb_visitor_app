@@ -9,13 +9,13 @@ import 'package:indoor_positioning_visitor/src/widgets/rounded_button.dart';
 
 
 class FeedbackCouponPage extends GetView<FeedbackCouponController> {
-  final SharedStates sharedData = Get.find();
+  // final SharedStates sharedData = Get.find();
   double? rating ;
   String? feedbackContent ;
 
   @override
   Widget build(BuildContext context) {
-    final couponInuse = sharedData.couponInUse.value;
+    // final couponInuse = sharedData.couponInUse.value;
     Size screenSize = MediaQuery.of(context).size;
       return Scaffold(
         body: SingleChildScrollView(
@@ -78,7 +78,7 @@ class FeedbackCouponPage extends GetView<FeedbackCouponController> {
                           )),
                       SizedBox(height: 10,),
                       RatingBar.builder(
-                        initialRating: 3,
+                        initialRating: 0,
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: true,
@@ -222,7 +222,7 @@ class FeedbackCouponPage extends GetView<FeedbackCouponController> {
                                 color: Colors.white,
                                 shape: Border.all(color: Color(0xff28BEBA), width: 2),
                                 onPressed: () {
-                                  controller.sendFeedback(couponInuse);
+                                  controller.sendFeedback();
                                 },
                               ),
                             ),
