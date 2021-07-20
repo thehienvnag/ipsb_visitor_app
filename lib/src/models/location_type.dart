@@ -7,7 +7,8 @@ class LocationType {
   final int? id;
   final String? name;
   final String? description;
-  LocationType({this.id, this.name, this.description});
+  final String? imageUrl;
+  LocationType({this.id, this.name, this.description, this.imageUrl});
 
   factory LocationType.fromJson(Map<String, dynamic> json) =>
       _$LocationTypeFromJson(json);

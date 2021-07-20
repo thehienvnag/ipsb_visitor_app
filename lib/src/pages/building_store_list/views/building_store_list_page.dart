@@ -104,44 +104,48 @@ class BuildingStorePage extends GetView<BuildingStoreController> {
                       itemCount: listStore.length,
                       itemBuilder: (BuildContext ctx, index) {
                         final store = listStore[index];
-                        return Card(
-                            shape: BeveledRectangleBorder(
-                              borderRadius: BorderRadius.circular(6.0),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Container(
-                                    width: 70,
+                        return GestureDetector(
+                          onTap: () => controller.goToStoreDetails(store.id),
+                          child: Card(
+                              shape: BeveledRectangleBorder(
+                                borderRadius: BorderRadius.circular(6.0),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                      width: 70,
+                                      height: 62,
+                                      child: Card(
+                                        shape: BeveledRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(6.0),
+                                        ),
+                                        child: Image(
+                                          image: NetworkImage(
+                                              store.imageUrl.toString()),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )),
+                                  Container(
                                     height: 62,
-                                    child: Card(
-                                      shape: BeveledRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(6.0),
-                                      ),
-                                      child: Image(
-                                        image: NetworkImage(
-                                            store.imageUrl.toString()),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )),
-                                Container(
-                                  height: 62,
-                                  child: Column(
-                                    children: [
-                                      SizedBox(height: 10),
-                                      Text(
-                                        store.name.toString(),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(height: 10),
-                                      Text('3 ưu đãi')
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ));
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 10),
+                                        Text(
+                                          store.name.toString(),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Text('3 ưu đãi')
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              )),
+                        );
                       }),
                 ),
               ),

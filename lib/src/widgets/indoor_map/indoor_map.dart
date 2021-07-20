@@ -28,7 +28,7 @@ class IndoorMap extends GetView<IndoorMapController> {
             maxScale: 1,
             minScale: 0.1,
             constrained: false,
-            transformationController: TransformationController(),
+            transformationController: controller.transformationController,
             child: ImageView(
               width: data.width.toDouble(),
               height: data.height.toDouble(),

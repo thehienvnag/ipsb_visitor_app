@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/product_category.dart';
 import 'package:indoor_positioning_visitor/src/models/store.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/api/product_category_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
 
@@ -11,9 +12,15 @@ class BuildingStoreController extends GetxController {
   /// Get list stores of building
   final listStore = <Store>[].obs;
 
+  void goToStoreDetails(int? id) {
+    if (id != null) {
+      Get.toNamed(Routes.storeDetails, parameters: {"id": id.toString()});
+    }
+  }
+
   /// Get list Store by api from buildingID
   Future<void> getStore() async {
-    final paging = await _storeService.getStoresByBuilding(1);
+    final paging = await _storeService.getStoresByBuilding(12);
     listStore.value = paging.content!;
     for (int i = 0; i < listStore.length; i++) {
       listStoreByCategory.add(listStore[i]);

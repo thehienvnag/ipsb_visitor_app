@@ -19,6 +19,7 @@ class StoreDetailsController extends GetxController {
   void onInit() {
     super.onInit();
     String? id = Get.parameters['id'];
+    print(id);
     if (id == null) return;
     storeId.value = int.parse(id);
     getStoreDetail();
@@ -29,6 +30,7 @@ class StoreDetailsController extends GetxController {
   IStoreService storeService = Get.find();
   Future<void> getStoreDetail() async {
     final storeApi = await storeService.getStoreById(storeId.value);
+
     if (storeApi != null) {
       store.value = storeApi;
     }

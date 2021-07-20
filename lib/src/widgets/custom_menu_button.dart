@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/pages/map/controllers/map_controller.dart';
 import 'package:menu_button/menu_button.dart';
 
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 
-class CustomMenuButton extends StatelessWidget {
+class CustomMenuButton extends GetView<MapController> {
   final FloorPlan? selected;
 
   final List<FloorPlan>? items;
@@ -27,10 +29,10 @@ class CustomMenuButton extends StatelessWidget {
       toggledChild: Container(
         child: normalChildButton(),
       ),
-      onItemSelected: (value) {},
-      onMenuButtonToggle: (bool isToggle) {
-        print(isToggle);
+      onItemSelected: (value) {
+        controller.changeSelectedFloor(value, true);
       },
+      // onMenuButtonToggle: (bool isToggle) {},
     );
   }
 

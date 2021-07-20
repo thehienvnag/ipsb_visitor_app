@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/building.dart';
@@ -9,12 +11,14 @@ import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/api/building_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
+import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 
 class HomeController extends GetxController {
   IStoreService storeService = Get.find();
   final ScrollController scrollController = ScrollController();
   final showSlider = true.obs;
   final buildingId = 0.obs;
+  final buildingName = "".obs;
   final listCategories = categories.obs;
   final buildings = [].obs;
   final listCoupon = <Coupon>[].obs;
@@ -23,13 +27,14 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    //if (!initPage()) return;
+    if (!initPage()) return;
     initPage();
     getStores();
     getCoupons();
     getBuildings();
   }
 
+  SharedStates states = Get.find();
   bool initPage() {
     scrollController.addListener(() {
       final fromTop = scrollController.position.pixels;
@@ -39,18 +44,32 @@ class HomeController extends GetxController {
         showSlider.value = true;
       }
     });
-    String? id = Get.parameters['id'];
-    if (id == null) return false;
-    buildingId.value = int.parse(id);
+    buildingId.value = states.building.value.id!;
+    buildingName.value = states.building.value.name!;
     return true;
   }
 
-  void gotoDetails() {
-    Get.toNamed(Routes.buildingDetails);
+  void gotoDetails([int? id]) {
+    Get.toNamed(Routes.buildingDetails, parameters: {
+      "id": id != null ? id.toString() : buildingId.value.toString()
+    });
+  }
+
+  void goToStoreDetails(int? id) {
+    if (id != null) {
+      Get.toNamed(Routes.storeDetails, parameters: {"id": id.toString()});
+    }
+  }
+
+  void goToCouponDetails(Coupon coupon) {
+    states.coupon.value = coupon;
+    Get.toNamed(Routes.couponDetail, parameters: {
+      'couponId': coupon.id.toString(),
+    });
   }
 
   Future<void> getStores() async {
-    final stores = await storeService.getStoresByBuilding(1);
+    final stores = await storeService.getStoresByBuilding(buildingId.value);
     listStore.value = stores.content ?? [];
   }
 
@@ -62,6 +81,23 @@ class HomeController extends GetxController {
   IBuildingService buildingService = Get.find();
   Future<void> getBuildings() async {
     listBuilding.value = (await buildingService.getBuildings());
+  }
+
+  final listSearchCoupons = <Coupon>[].obs;
+  final isSearching = false.obs;
+  Future<void> searchCoupons(String keySearch) async {
+    if (keySearch.isEmpty) {
+      listSearchCoupons.clear();
+      return;
+    }
+    int? bId = buildingId.value;
+
+    if (!isSearching.value) {
+      isSearching.value = true;
+      listSearchCoupons.value =
+          await couponService.searchCoupons(bId.toString(), keySearch);
+      Timer(Duration(seconds: 1), () => isSearching.value = false);
+    }
   }
 }
 

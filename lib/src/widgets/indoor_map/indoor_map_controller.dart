@@ -11,6 +11,19 @@ import 'package:indoor_positioning_visitor/src/widgets/image_view/map_marker.dar
 import 'package:indoor_positioning_visitor/src/widgets/place_object.dart';
 
 class IndoorMapController extends GetxController {
+  final TransformationController transformationController =
+      TransformationController();
+
+  /// Controller for image view
+  ImageViewController _imageViewController = Get.find();
+
+  /// move to scene
+  void moveToScene(Location? location) {
+    if (location == null) return;
+    transformationController.value = Matrix4.identity()
+      ..translate(location.x!, location.y!);
+  }
+
   /// Get image size from image provider
   Future<ui.Image> getImage(ImageProvider imageProvider) {
     Completer<ui.Image> completer = Completer<ui.Image>();
@@ -21,9 +34,6 @@ class IndoorMapController extends GetxController {
         ));
     return completer.future;
   }
-
-  /// Controller for image view
-  ImageViewController _imageViewController = Get.find();
 
   /// Set a point on map
   void setCurrentMarker(Location? location) {

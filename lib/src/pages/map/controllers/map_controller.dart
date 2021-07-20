@@ -30,6 +30,27 @@ class MapController extends GetxController {
   ICouponService _service = Get.find();
   IStoreService _storeService = Get.find();
   IFloorPlanService _floorPlanService = Get.find();
+  ILocationService _locationService = Get.find();
+  IEdgeService _edgeService = Get.find();
+
+  final searchLocationList = <Location>[].obs;
+  final isSearching = false.obs;
+  Future<void> searchLocations(String keySearch) async {
+    if (keySearch.isEmpty) {
+      searchLocationList.clear();
+      return;
+    }
+    int? buildingId = sharedData.building.value.id;
+    if (buildingId != null) {
+      if (!isSearching.value) {
+        isSearching.value = true;
+        searchLocationList.value = await _locationService
+            .getLocationByKeySearch(buildingId.toString(), keySearch);
+        print(searchLocationList.length);
+        Timer(Duration(seconds: 1), () => isSearching.value = false);
+      }
+    }
+  }
 
   /// [searchValue] for home screen
   var searchValue = "".obs;
@@ -175,14 +196,13 @@ class MapController extends GetxController {
   }
 
   final edges = <Edge>[].obs;
-  IEdgeService _edgeService = Get.find();
+
   Future<void> loadEdgesInBuilding(List<int> floorIds) async {
     final result = await _edgeService.getAll();
     edges.value = result;
     // print(edges.length);
   }
 
-  ILocationService _locationService = Get.find();
   Future<void> loadPlaceOnFloor(int floorId) async {
     _mapController.loadLocationsOnMap([]);
     final locations = await _locationService.getLocationOnFloor(floorId);
@@ -203,18 +223,22 @@ class MapController extends GetxController {
     }
     final currentFloor = selectedFloor.value.id;
     if (currentFloor != position?.floorPlanId && !pressBtn) {
-      changeSelectedFloor(listFloorPlan
-          .where(
-            (e) => position?.floorPlanId == e.id!,
-          )
-          .first);
+      try {
+        changeSelectedFloor(listFloorPlan
+            .where(
+              (e) => position?.floorPlanId == e.id!,
+            )
+            .first);
+      } catch (e) {}
     }
     if (currentFloor == null)
       _mapController.setCurrentMarker(null);
     else if (currentFloor != position?.floorPlanId)
       _mapController.setCurrentMarker(null);
-    else
+    else {
       _mapController.setCurrentMarker(position);
+      // _mapController.moveToScene(position);
+    }
   }
 
   IShortestPath _shortestPath = Get.find();

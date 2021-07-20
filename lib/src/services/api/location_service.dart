@@ -16,6 +16,9 @@ mixin ILocationService {
       [int locationTypeId = 2]);
 
   Future<Location?> getLocationById(int id);
+
+  Future<List<Location>> getLocationByKeySearch(
+      String buildingId, String keySearch);
 }
 
 class LocationService extends BaseService<Location>
@@ -70,5 +73,34 @@ class LocationService extends BaseService<Location>
       'floorPlanId': floorPlanId.toString(),
       'locationTypeId': locationTypeId.toString(),
     });
+  }
+
+  @override
+  Future<List<Location>> getLocationByKeySearch(
+      String buildingId, String keySearch) async {
+    var locationsByStore = getAllBase({
+      "isAll": "true",
+      "storeName": keySearch,
+      "buildingId": buildingId,
+      "notLocationTypeId": "2"
+    });
+    var locationsByProduct = getAllBase({
+      "isAll": "true",
+      "productName": keySearch,
+      "buildingId": buildingId,
+      "notLocationTypeId": "2"
+    });
+    var locationsByTypeName = getAllBase({
+      "isAll": "true",
+      "locationTypeName": keySearch,
+      "buildingId": buildingId,
+      "notLocationTypeId": "2"
+    });
+    var result = await Future.wait(
+        [locationsByStore, locationsByProduct, locationsByTypeName]);
+    var list = result.expand((element) => element).toList();
+    final ids = list.map((e) => e.id).toSet();
+    list.retainWhere((x) => ids.remove(x.id));
+    return list;
   }
 }

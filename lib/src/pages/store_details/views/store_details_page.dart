@@ -51,35 +51,39 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                         ),
                       ],
                     ),
-                    ListTile(
-                      leading: Container(
-                        margin: const EdgeInsets.only(left: 14, top: 10),
-                        padding: const EdgeInsets.only(
-                          top: 5,
-                          left: 10,
-                          right: 10,
-                          bottom: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black26, width: 1),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          Formatter.shorten(store.name),
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900, fontSize: 26),
-                        ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 14, top: 10),
+                      padding: const EdgeInsets.only(
+                        top: 5,
+                        left: 10,
+                        right: 10,
+                        bottom: 10,
                       ),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black26, width: 1),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        Formatter.shorten(store.name),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900, fontSize: 26),
+                      ),
+                    ),
+                    ListTile(
                       title: Text(Formatter.shorten(store.description)),
-                      subtitle: Row(
+                      subtitle: Column(
                         children: [
-                          Container(
-                            child: Icon(
-                              Icons.location_on_outlined,
-                              color: Color(0xff0DB5B4),
-                            ),
+                          Row(
+                            children: [
+                              Container(
+                                child: Icon(
+                                  Icons.location_on_outlined,
+                                  color: Color(0xff0DB5B4),
+                                ),
+                              ),
+                              Text('Tầng 1 - Vincom Lê Văn Việt'),
+                            ],
                           ),
-                          Text('Tầng 1 - Vincom Lê Văn Việt'),
                         ],
                       ),
                     ),

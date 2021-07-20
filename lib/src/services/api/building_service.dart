@@ -26,6 +26,6 @@ class BuildingService extends BaseService<Building>
 
   @override
   Future<List<Building>> getBuildings() {
-    return getAllBase({});
+    return getAllBase({"pageSize": "5"});
   }
 }
