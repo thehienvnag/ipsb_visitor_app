@@ -19,11 +19,11 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$AccountToJson(Account instance) => <String, dynamic>{
-  'id': instance.id,
-  'name': instance.name,
-  'role': instance.role,
-  'imageUrl': instance.imageUrl,
-  'phone': instance.status,
-  'email': instance.email,
-  'status': instance.status,
-};
+      'id': instance.id,
+      'name': instance.name,
+      'role': instance.role,
+      'imageUrl': instance.imageUrl,
+      'phone': instance.phone,
+      'email': instance.email,
+      'status': instance.status,
+    };

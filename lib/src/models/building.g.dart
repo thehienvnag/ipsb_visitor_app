@@ -12,8 +12,8 @@ Building _$BuildingFromJson(Map<String, dynamic> json) {
         ?.map((e) => FloorPlan.fromJson(e as Map<String, dynamic>))
         .toList(),
     id: json['id'] as int?,
-    managerId: json['managerId'] as int?,
     name: json['name'] as String?,
+    managerId: json['managerId'] as int?,
     adminId: json['adminId'] as int?,
     numberOfFloor: json['numberOfFloor'] as int?,
     imageUrl: json['imageUrl'] as String?,
@@ -25,9 +25,9 @@ Map<String, dynamic> _$BuildingToJson(Building instance) => <String, dynamic>{
       'id': instance.id,
       'managerId': instance.managerId,
       'adminId': instance.adminId,
-      'name': instance.name,
       'numberOfFloor': instance.numberOfFloor,
       'imageUrl': instance.imageUrl,
+      'name': instance.name,
       'address': instance.address,
       'floorPlans': instance.floorPlans,
     };

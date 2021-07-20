@@ -73,7 +73,7 @@ class MyCouponDetailController extends GetxController {
         couponUse.coupon!.expireDate!.isBefore(now)) {
       return 2;
     }
-    if (couponUse.status == 'New') {
+    if (couponUse.status == 'NotUsed') {
       return 3;
     }
 

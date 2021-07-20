@@ -5,7 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:indoor_positioning_visitor/src/common/constants.dart';
+import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/controllers/my_coupon_detail_controller.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
@@ -211,7 +213,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                             padding: const EdgeInsets.symmetric(horizontal: 22),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: _couponState(coupon.id),
+                              children: _couponState(coupon.id, couponInUse),
                             ),
                           ),
                       ],
@@ -226,7 +228,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
     });
   }
 
-  List<Widget> _couponState(int? couponId) {
+  List<Widget> _couponState(int? couponId, CouponInUse couponInUse) {
     int state = controller.checkCouponState();
     if (state == 2 || state == 3)
       return [
@@ -236,7 +238,20 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
             icon: Icon(Icons.qr_code),
             label: Text('SỬ DỤNG'),
           ),
-        if (state == 2) Container(),
+        if (state == 2) Container(
+          child: ElevatedButton(
+            onPressed: () {
+              sharedData.couponInUse.value = couponInUse;
+              Get.toNamed(Routes.feedbackCoupon);
+              },
+            child: Row(
+              children: [
+                Icon(Icons.library_add_check_rounded, color: Colors.white),
+                Text('Feedback'),
+              ],
+            ),
+          ),
+        ),
         SvgPicture.asset(
           state == 3 ? ConstImg.couponSaved : ConstImg.couponExpired,
           semanticsLabel: 'Acme Logo',
