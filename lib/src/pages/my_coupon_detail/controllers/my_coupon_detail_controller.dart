@@ -24,7 +24,8 @@ class MyCouponDetailController extends GetxController {
   onInit() {
     super.onInit();
 
-    checkStatus();
+    //checkStatus();
+    getCouponInUse();
   }
 
   void checkStatus() {
@@ -46,10 +47,7 @@ class MyCouponDetailController extends GetxController {
     final couponId = Get.parameters['couponId'];
     if (couponId == null) return;
 
-    final result = await couponInUseService.getByVisitorIdAndCouponId(
-      9,
-      int.parse(couponId),
-    );
+    final result = await couponInUseService.getByVisitorIdAndCouponId(9, int.parse(couponId),);
     if (result == null) return;
     if (result.status == couponInUse.value.status) {
       return;

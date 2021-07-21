@@ -260,6 +260,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
             onPressed: () {
               // sharedData.couponInUse.value = couponInUse;
               // Get.toNamed(Routes.feedbackCoupon);
+
             },
             child: Row(
               children: [

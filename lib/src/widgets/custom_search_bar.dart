@@ -224,8 +224,7 @@ class HomeSearchBar extends GetView<HomeController> {
                           title: Text(title),
                           subtitle: Text(description),
                           trailing: OutlinedButton.icon(
-                            onPressed: () =>
-                                controller.goToCouponDetails(coupon),
+                            onPressed: () => controller.goToCouponDetails(coupon),
                             icon: Icon(
                               Icons.local_activity,
                               size: 24,
