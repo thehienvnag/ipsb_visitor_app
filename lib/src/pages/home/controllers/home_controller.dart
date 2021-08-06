@@ -68,6 +68,7 @@ class HomeController extends GetxController {
 
   void goToCouponDetails(Coupon coupon) {
     states.coupon.value = coupon;
+    // states.couponInUse.value = coupon;
     Get.toNamed(Routes.couponDetail, parameters: {
       'couponId': coupon.id.toString(),
     });
