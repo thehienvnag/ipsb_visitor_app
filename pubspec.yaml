@@ -90,6 +90,13 @@ dependencies:
   #Rating
   flutter_rating_bar: ^4.0.0
 
+  #Get current location
+  geocode: ^1.0.1
+  geolocator: ^7.4.0
+  url_launcher: ^6.0.9
+
+  location: ^4.3.0
+
 
 dev_dependencies:
   flutter_test:

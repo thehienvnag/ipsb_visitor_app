@@ -435,6 +435,8 @@ class HomePage extends GetView<HomeController> {
                                         ),
                                     itemBuilder: (context, index) {
                                       final building = listBuilding[index];
+                                      // controller.getDistanceBetweenTwoLocation(building.address.toString());
+                                      // String distance = controller.distanceTwoPoin.value.toString();
                                       return GestureDetector(
                                         onTap: () =>
                                             controller.gotoDetails(building.id),
@@ -463,11 +465,19 @@ class HomePage extends GetView<HomeController> {
                                               Container(
                                                 width: screenSize.width * 0.55,
                                                 child: ListTile(
-                                                  title: Text(
-                                                    Formatter.shorten(
-                                                        building.name, 16),
-                                                    style:
-                                                        TextStyle(fontSize: 17),
+                                                  title: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        Formatter.shorten(
+                                                            building.name, 14),
+                                                        style:
+                                                            TextStyle(fontSize: 16),
+                                                      ),
+                                                     // Text(controller.getDistanceDisplay(building.address.toString())
+                                                     //        , style: TextStyle(fontWeight: FontWeight.w400,fontSize: 14))
+
+                                                    ],
                                                   ),
                                                   subtitle: Column(
                                                     crossAxisAlignment:
