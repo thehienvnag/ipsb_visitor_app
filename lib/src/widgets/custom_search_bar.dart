@@ -86,6 +86,8 @@ class MapSearchBar extends GetView<MapController> {
                     final description = Formatter.shorten(
                         place.store?.description ??
                             place.locationType?.description);
+                    final floorCode =
+                        Formatter.shorten(place.floorPlan?.floorCode);
                     return Container(
                       height: 75,
                       child: TextButton(
@@ -96,7 +98,7 @@ class MapSearchBar extends GetView<MapController> {
                             radius: 25,
                             backgroundImage: NetworkImage(img),
                           ),
-                          title: Text(title),
+                          title: Text(title + " - Tầng " + floorCode),
                           subtitle: Text(description),
                           trailing: OutlinedButton(
                             onPressed: () =>

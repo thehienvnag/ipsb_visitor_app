@@ -136,60 +136,14 @@ class MapController extends GetxController {
     onLocationChanged();
   }
 
+  final listDemo = <int>[].obs;
   void testLocationChange() {
-    final list = [
-      54,
-      55,
-      56,
-      57,
-      58,
-      59,
-      60,
-      61,
-      62,
-      63,
-      64,
-      65,
-      66,
-      67,
-      68,
-      69,
-      70,
-      71,
-      72,
-      73,
-      74,
-      75,
-      76,
-      77,
-      78,
-      79,
-      80,
-      81,
-      82,
-      83,
-      84,
-      85,
-      86,
-      87,
-      88,
-      89,
-      90,
-      91,
-      92,
-      93,
-      116,
-      141,
-      142,
-      143,
-      144,
-      145,
-      146
-    ];
     int index = -1;
+    showDirection(destPosition.value);
+    firstStart = true;
     Timer.periodic(Duration(milliseconds: 500), (timer) {
-      if (index >= 0 && index < list.length) {
-        setCurrentLocation(list[index]);
+      if (index >= 0 && index < listDemo.length) {
+        setCurrentLocation(listDemo[index]);
       }
       index++;
     });
@@ -212,9 +166,9 @@ class MapController extends GetxController {
 
   final currentPosition = 0.obs;
   Future<void> setCurrentLocation(int id, [pressBtn = false]) async {
-    if (id == 0) {
-      _mapController.setCurrentMarker(null);
-    }
+    // if (id == 0) {
+    //   _mapController.setCurrentMarker(null);
+    // }
     currentPosition.value = id;
     var position = locations[id]?.value;
 
@@ -229,7 +183,9 @@ class MapController extends GetxController {
               (e) => position?.floorPlanId == e.id!,
             )
             .first);
-      } catch (e) {}
+      } catch (e) {
+        print(e);
+      }
     }
     if (currentFloor == null)
       _mapController.setCurrentMarker(null);
@@ -246,10 +202,10 @@ class MapController extends GetxController {
   final locations = RxMap<int, node.Node<Location>>({});
   void onLocationChanged() {
     currentPosition.listen((id) {
-      setCurrentLocation(id);
       // if (isShowingDirection.value) {
       //   showDirection(destPosition.value);
       // }
+      setCurrentLocation(id);
       showDirection(destPosition.value);
     });
   }
@@ -257,11 +213,12 @@ class MapController extends GetxController {
   final destPosition = 0.obs;
   final isShowingDirection = false.obs;
   final shortestPath = <Location>[].obs;
+  bool firstStart = true;
   Future<void> showDirection(int newDest) async {
     if (edges.isEmpty) return;
     int from = currentPosition.value;
-    int dest = destPosition.value;
 
+    int dest = destPosition.value;
     // If list of edges is available
     _mapController.setPathOnMap([]);
 
@@ -290,12 +247,27 @@ class MapController extends GetxController {
         .toList();
     if (path.isEmpty) return;
     shortestPath.value = path;
-    print(path);
+    if (firstStart) {
+      listDemo.value = path.map((item) => item.id!).toList();
+
+      // try {
+      //   var item = edges
+      //       .where((e) => e.fromLocationId == from || e.toLocationId == from)
+      //       .first;
+      //   if (listDemo[1] != item.fromLocationId &&
+      //       listDemo[1] != item.toLocationId) {
+      //     listDemo.value = listDemo.reversed.toList();
+      //   }
+      // } catch (e) {}
+
+      firstStart = false;
+    }
 
     if (fromNode.value?.floorPlanId == selectedFloor.value.id) {
-      _mapController.setPathOnMap(shortestPath
+      final list = shortestPath
           .where((element) => element.floorPlanId == selectedFloor.value.id)
-          .toList());
+          .toList();
+      _mapController.setPathOnMap(list);
     } else {
       changeSelectedFloor(listFloorPlan
           .where(

@@ -4,6 +4,8 @@ import 'package:indoor_positioning_visitor/src/models/location_type.dart';
 import 'package:indoor_positioning_visitor/src/models/store.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'floor_plan.dart';
+
 part 'location.g.dart';
 
 @JsonSerializable()
@@ -12,12 +14,14 @@ class Location {
   final double? x, y;
   final LocationType? locationType;
   final Store? store;
+  final FloorPlan? floorPlan;
 
   Location({
     this.id,
     this.locationTypeId,
     this.storeId,
     this.floorPlanId,
+    this.floorPlan,
     this.x,
     this.y,
     this.locationType,
