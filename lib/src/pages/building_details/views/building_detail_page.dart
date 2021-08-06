@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
@@ -7,8 +9,12 @@ import 'package:indoor_positioning_visitor/src/services/global_states/shared_sta
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:indoor_positioning_visitor/src/widgets/rounded_button.dart';
 
+
 class BuildingDetailPage extends GetView<BuildingDetailController> {
   final SharedStates sharedData = Get.find();
+
+  // MapUtils.openMap(currentAddress, booking.endAddress);
+
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +133,9 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                               color: Colors.blueAccent,
                                               fontSize: 16),
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          MapUtils.openMap(controller.currentAddress.value, buildingSelected.address.toString());
+                                        },
                                       )
                                     ],
                                   ),
