@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/building.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
@@ -14,6 +15,8 @@ class SharedStates extends GetxService {
   final couponInUse = CouponInUse().obs;
 
   // Building
-  final building =
-      Building(id: 12, name: "Đại học FPT thành phố Hồ Chí Minh").obs;
+  final building = Building(id: 12, name: "Đại học FPT thành phố Hồ Chí Minh").obs;
+
+  // User login in app
+  User? user;
 }

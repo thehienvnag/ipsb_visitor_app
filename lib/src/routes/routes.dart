@@ -11,4 +11,10 @@ class Routes {
   static const String buildingDetails = "/buildingDetails";
   static const String buildingStore = "/buildingStore";
   static const String feedbackCoupon = "/feedbackCoupon";
+  static const String login = "/login";
+  static const String loginPhone = "/loginPhone";
+  static const String phoneVerify = "/phoneVerify";
+  static const String profile = "/profile";
+  static const String profileDetail = "/profileDetail";
+  static const String setting = "/setting";
 }

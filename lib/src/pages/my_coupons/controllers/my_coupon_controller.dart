@@ -3,15 +3,11 @@ import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 
 
 
 class MyCouponController extends GetxController {
   ICouponInUseService _service = Get.find();
-
-  /// Shared data
-  final SharedStates sharedData = Get.find();
 
   /// Get list all coupon of visitor save before
   final listCouponInUse = <CouponInUse>[].obs;

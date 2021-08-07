@@ -3,6 +3,11 @@ import 'package:indoor_positioning_visitor/src/pages/feedback_coupon/bindings/fe
 import 'package:indoor_positioning_visitor/src/pages/feedback_coupon/views/feed_back_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/bindings/home_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/views/home_page.dart';
+import 'package:indoor_positioning_visitor/src/pages/login_gmail/bindings/login_email_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/login_gmail/views/login_email_page.dart';
+import 'package:indoor_positioning_visitor/src/pages/login_phone/bindings/login_phone_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/login_phone/views/login_phone_screen.dart';
+import 'package:indoor_positioning_visitor/src/pages/login_phone/views/verify_phone_screen.dart';
 import 'package:indoor_positioning_visitor/src/pages/map/views/map_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/building_details/bindings/building_detail_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/building_details/views/building_detail_page.dart';
@@ -10,6 +15,12 @@ import 'package:indoor_positioning_visitor/src/pages/building_store_list/binding
 import 'package:indoor_positioning_visitor/src/pages/building_store_list/views/building_store_list_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/bindings/my_coupon_detail_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupons/bindings/my_coupon_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/profile/bindings/profile_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/profile/views/profile_page.dart';
+import 'package:indoor_positioning_visitor/src/pages/profile_detail/bindings/profile_detail_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/profile_detail/views/profile_detail_page.dart';
+import 'package:indoor_positioning_visitor/src/pages/setting/bindings/setting_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/setting/views/setting_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/test_algorithm/bindings/test_algorithm_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/test_algorithm/views/test_algorithm_page.dart';
 import '../pages/my_coupon_detail/views/my_coupon_detail_page.dart';
@@ -82,6 +93,36 @@ class AppPages {
       name: Routes.feedbackCoupon,
       page: () => FeedbackCouponPage(),
       binding: FeedbackCouponBinding(),
+    ),
+    GetPage(
+      name: Routes.login,
+      page: () => LoginEmailPage(),
+      binding: LoginEmailBinding(),
+    ),
+    GetPage(
+      name: Routes.loginPhone,
+      page: () => LoginPhonePage(),
+      binding: LoginPhoneBinding(),
+    ),
+    GetPage(
+      name: Routes.phoneVerify,
+      page: () => VerifyPhoneScreen(),
+      binding: LoginPhoneBinding(),
+    ),
+    GetPage(
+      name: Routes.profile,
+      page: () => ProfilePage(),
+      binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.profileDetail,
+      page: () => ProfileDetailPage(),
+      binding: ProfileDetailBinding(),
+    ),
+    GetPage(
+      name: Routes.setting,
+      page: () => SettingPage(),
+      binding: SettingBinding(),
     ),
   ];
 }
