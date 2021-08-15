@@ -53,6 +53,11 @@ final items = [
     icon: Icon(Icons.notifications),
     route: Routes.notifications,
   ),
+  BottomItem(
+    text: 'Profile',
+    icon: Icon(Icons.person),
+    route: Routes.profile,
+  ),
 ];
 
 class CustomBottombar extends GetView<CustomBottombarController> {

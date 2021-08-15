@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "583874279153",
+    "project_id": "indoor-position-bbe73",
+    "storage_bucket": "indoor-position-bbe73.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583874279153:android:6d16c3c6c84744ba0d1b50",
+        "android_client_info": {
+          "package_name": "com.example.indoor_positioning_visitor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "583874279153-es20ml7u9kp6gta6aab0ldk7mes4gha8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.indoor_positioning_visitor",
+            "certificate_hash": "d9f0a1fa029a7e10c2e87ff0927e8aba032b1a23"
+          }
+        },
+        {
+          "client_id": "583874279153-ndf6833hfvso081kc87cvgte93lrttni.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5HWV_aFzg65MR2oP89OZ_cIXcxTANrb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "583874279153-ndf6833hfvso081kc87cvgte93lrttni.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

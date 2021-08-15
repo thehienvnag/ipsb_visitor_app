@@ -24,6 +24,7 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply plugin: 'com.google.gms.google-services' // mới thêm dòng
 
 android {
     compileSdkVersion 30
@@ -37,6 +38,7 @@ android {
         applicationId "com.example.indoor_positioning_visitor"
         minSdkVersion 16
         targetSdkVersion 30
+        multiDexEnabled true // mới thêm dòng
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -55,5 +57,9 @@ flutter {
 }
 
 dependencies {
+    implementation "androidx.multidex:multidex:2.0.1" // mới thêm 3 dòng
+    implementation 'com.android.support:multidex:1.0.3'// mới thêm 3 dòng
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'// mới thêm 3 dòng
+    implementation platform('com.google.firebase:firebase-bom:26.8.0')// mới thêm dòng
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
