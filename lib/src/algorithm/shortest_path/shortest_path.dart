@@ -4,12 +4,12 @@ import 'package:indoor_positioning_visitor/src/models/location.dart';
 
 mixin IShortestPath {
   /// Get shortest path from graph [graph] and source node [source]
-  Graph getShortestPath(Graph graph, int destId);
+  Graph solve(Graph graph, int destId);
 }
 
 class ShortestPath implements IShortestPath {
   @override
-  Graph getShortestPath(Graph graph, int destId) {
+  Graph solve(Graph graph, int destId) {
     Node<Location>? source = graph.nodes[destId];
     if (source == null) {
       throw new Exception('No destination source found!');
@@ -18,7 +18,7 @@ class ShortestPath implements IShortestPath {
   }
 
   Graph getShortestPathFromSource(Graph graph, Node<Location> source) {
-    int start = DateTime.now().millisecondsSinceEpoch;
+    // int start = DateTime.now().millisecondsSinceEpoch;
     source.distance = 0;
 
     Set<Node<Location>> settledNodes = {};
@@ -38,8 +38,8 @@ class ShortestPath implements IShortestPath {
       });
       settledNodes.add(current);
     }
-    int end = DateTime.now().millisecondsSinceEpoch;
-    print(end - start);
+    // int end = DateTime.now().millisecondsSinceEpoch;
+    // print(end - start);
     return graph;
   }
 

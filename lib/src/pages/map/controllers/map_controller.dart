@@ -1,62 +1,189 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/graph.dart';
-import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/node.dart'
-    as node;
 import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/shortest_path.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/models/edge.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:indoor_positioning_visitor/src/models/location.dart';
-import 'package:indoor_positioning_visitor/src/models/store.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/api/edge_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/floor_plan_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/location_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
+import 'package:indoor_positioning_visitor/src/services/storage/base_storage.dart';
+import 'package:indoor_positioning_visitor/src/utils/edge_helper.dart';
 import 'package:indoor_positioning_visitor/src/widgets/indoor_map/indoor_map_controller.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MapController extends GetxController {
-  final storePanelController = PanelController();
-  final couponPanelController = PanelController();
+  /// Panel controller for scroll up panel
+  PanelController couponPanelController = PanelController();
+
+  /// Indoor map controller
+  IndoorMapController _mapController = Get.find();
 
   /// Shared data
-  final SharedStates sharedData = Get.find();
+  SharedStates sharedData = Get.find();
 
-  ICouponService _service = Get.find();
-  IStoreService _storeService = Get.find();
+  /// Shortest path algorithm
+  IShortestPath _shortestPathAlgorithm = Get.find();
+
+  /// Service for interacting with FloorPlan API
   IFloorPlanService _floorPlanService = Get.find();
+
+  /// Service for interacting with Coupon API
+  ICouponService _service = Get.find();
+
+  /// Service for interacting with Location API
   ILocationService _locationService = Get.find();
+
+  /// Service for interacting with Edge API
   IEdgeService _edgeService = Get.find();
 
+  /// List edges of all of the building
+  final edges = <Edge>[].obs;
+
+  /// List search of location
   final searchLocationList = <Location>[].obs;
-  final isSearching = false.obs;
+
+  /// Determine whether the search operation is completed
+  final isSearchingLocationList = false.obs;
+
+  /// List coupons to show to visitor from bottom sheet
+  final listCoupon = <Coupon>[].obs;
+
+  /// List floor plan for dropdown list to change floor
+  final listFloorPlan = <FloorPlan>[].obs;
+
+  /// Selected floor for dropdown list
+  var selectedFloor = FloorPlan().obs;
+
+  /// Current position of visitor, determine by locationId
+  final currentPosition = Location(
+    id: 276,
+    x: 149.38747406005859,
+    y: 204.60000228881836,
+    floorPlanId: 12,
+    locationTypeId: 2,
+  ).obs;
+
+  /// Destination position where visitor want to come
+  final destPosition = 0.obs;
+
+  /// Determine whether a path is shown
+  final isShowingDirection = false.obs;
+
+  /// Shortest path for one specific current and destination
+  final shortestPath = <Location>[].obs;
+
+  /// Determine whether the navigation panel is shown or not
+  var isShowNavigationPanel = false.obs;
+
+  /// Determine whether the coupon button is shown or not
+  final isCouponBtnVisible = true.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    getFloorPlan();
+    loadEdgesInBuilding();
+    getCoupons();
+    onLocationChanged();
+  }
+
+  void startShowDirection(int? destLocationId) {
+    if (destLocationId == null) return;
+    destPosition.value = destLocationId;
+    showDirection();
+  }
+
+  void onLocationChanged() {
+    // _mapController.moveToScene(Location(x: 100, y: 100));
+    _mapController.setCurrentMarker(currentPosition.value);
+    currentPosition.listen((location) {
+      showDirection();
+      checkCurrentLocationOnFloor();
+      _mapController.moveToScene(location);
+    });
+  }
+
+  void checkCurrentLocationOnFloor() {
+    if (currentPosition.value.floorPlanId != selectedFloor.value.id) {
+      changeSelectedFloor(
+        listFloorPlan
+            .where((floor) => floor.id == currentPosition.value.floorPlanId)
+            .first,
+      );
+    }
+  }
+
+  void showDirection() {
+    // Incase of edges is empty, end function
+    if (edges.isEmpty) return;
+    // print("[ShowDirection]__________");
+    isShowingDirection.value = true;
+
+    int beginLocationId = currentPosition.value.id!;
+    int endLocationId = destPosition.value;
+
+    // Init graph for finding shortest path from edges
+    Graph graph = Graph.from(edges);
+    // Find all shortest paths to endLocationId
+    _shortestPathAlgorithm.solve(graph, endLocationId);
+    // Get shortest path for current position
+
+    shortestPath.value = graph.getShortestPath(beginLocationId);
+    shortestPath.insert(0, currentPosition.value);
+    // shortestPath.forEach((element) {
+    //   print(element);
+    // });
+    // Set path on map
+    _mapController.setPathOnMap(
+      Graph.getPathOnFloor(shortestPath, selectedFloor.value.id!),
+    );
+    isShowingDirection.value = false;
+  }
+
+  Future<void> setCurrentLocation(Location? location,
+      [pressBtn = false]) async {
+    if (location == null) return;
+    // print("[SetCurrentLocation]");
+    // print(location);
+    currentPosition.value = location;
+    _mapController.setCurrentMarker(location);
+  }
+
+  /// Change selected of floor
+  Future<void> changeSelectedFloor(FloorPlan? floor) async {
+    if (floor?.id == selectedFloor.value.id) return;
+    selectedFloor.value = floor!;
+    loadPlaceOnFloor(floor.id!);
+    _mapController.setPathOnMap(
+      Graph.getPathOnFloor(shortestPath, floor.id!),
+    );
+    if (currentPosition.value.floorPlanId != selectedFloor.value.id) {
+      _mapController.setCurrentMarker(null);
+    }
+  }
+
   Future<void> searchLocations(String keySearch) async {
     if (keySearch.isEmpty) {
       searchLocationList.clear();
       return;
     }
     int? buildingId = sharedData.building.value.id;
-    if (buildingId != null) {
-      if (!isSearching.value) {
-        isSearching.value = true;
-        searchLocationList.value = await _locationService
-            .getLocationByKeySearch(buildingId.toString(), keySearch);
-        print(searchLocationList.length);
-        Timer(Duration(seconds: 1), () => isSearching.value = false);
-      }
+    if (buildingId != null && !isSearchingLocationList.value) {
+      isSearchingLocationList.value = true;
+      searchLocationList.value = await _locationService.getLocationByKeySearch(
+          buildingId.toString(), keySearch);
+      Timer(Duration(seconds: 1), () => isSearchingLocationList.value = false);
     }
   }
-
-  /// [searchValue] for home screen
-  var searchValue = "".obs;
-
-  /// Get list coupons random data
-  final listCoupon = <Coupon>[].obs;
 
   /// Get list Coupon from api
   Future<void> getCoupons() async {
@@ -64,50 +191,13 @@ class MapController extends GetxController {
     listCoupon.value = paging.content!;
   }
 
-  /// Get list stores when search
-  final listStore = <Store>[].obs;
-
-  //gọi locationTypeName, storeName, join list lại
-
-  /// Get list search Store from api by buildingID,searchvalue, floorplanID
-  Future<void> getStore(String value) async {
-    // if (selectedFloorID == null) {
-    //   return;
-    // }
-    changeVisible();
-    storePanelController.open();
-    final paging =
-        await _storeService.getStores(value, selectedFloor.value.id!);
-    listStore.value = paging.content!;
-  }
-
-  /// Get list floorPlan
-  final listFloorPlan = <FloorPlan>[].obs;
-
   /// Get list FloorPlan from api by buildingID
-  Future<List<int>> getFloorPlan(Function() callback) async {
+  Future<List<int>> getFloorPlan() async {
     final paging = await _floorPlanService.getFloorPlans(12);
     listFloorPlan.value = paging.content!;
     selectedFloor.value = listFloorPlan[0];
-    callback.call();
     loadPlaceOnFloor(listFloorPlan[0].id!);
-
     return listFloorPlan.map((element) => element.id!).toList();
-  }
-
-  /// Get selected of floor
-  var selectedFloor = FloorPlan().obs;
-
-  /// Change selected of floor
-  Future<void> changeSelectedFloor(FloorPlan? floor, [pressBtn = false]) async {
-    if (floor?.id == selectedFloor.value.id) return;
-    selectedFloor.value = floor!;
-
-    setCurrentLocation(currentPosition.value, pressBtn);
-    loadPlaceOnFloor(floor.id!);
-    _mapController.setPathOnMap(shortestPath
-        .where((element) => element.floorPlanId == selectedFloor.value.id)
-        .toList());
   }
 
   /// Go to coupon detail of selected
@@ -118,181 +208,53 @@ class MapController extends GetxController {
     });
   }
 
-  final isCouponBtnVisible = true.obs;
-
   void changeVisible() {
     isCouponBtnVisible.value = !isCouponBtnVisible.value;
   }
 
-  IndoorMapController _mapController = Get.find();
-
-  @override
-  void onInit() {
-    super.onInit();
-    getFloorPlan(() => setCurrentLocation(53))
-        .then((value) => loadEdgesInBuilding(value));
-    getCoupons();
-
-    onLocationChanged();
-  }
-
-  final listDemo = <int>[].obs;
-  void testLocationChange() {
-    int index = -1;
-    showDirection(destPosition.value);
-    firstStart = true;
-    Timer.periodic(Duration(milliseconds: 500), (timer) {
-      if (index >= 0 && index < listDemo.length) {
-        setCurrentLocation(listDemo[index]);
-      }
-      index++;
-    });
-  }
-
-  final edges = <Edge>[].obs;
-
-  Future<void> loadEdgesInBuilding(List<int> floorIds) async {
-    final result = await _edgeService.getAll();
-    edges.value = result;
-    // print(edges.length);
+  Future<void> loadEdgesInBuilding() async {
+    int? buildingId = sharedData.building.value.id;
+    if (buildingId != null) {
+      final edgesResult = await BaseStorage.useStorageList<Edge>(
+        apiCallback: () => _edgeService.getByBuildingId(buildingId),
+        transformData: EdgeHelper.splitToSegments,
+        storageBoxName: StorageConstants.edgeBox,
+        key: buildingId,
+      );
+      edges.value = edgesResult;
+    }
   }
 
   Future<void> loadPlaceOnFloor(int floorId) async {
-    _mapController.loadLocationsOnMap([]);
     final locations = await _locationService.getLocationOnFloor(floorId);
-    print(locations.length);
     _mapController.loadLocationsOnMap(locations);
   }
 
-  final currentPosition = 0.obs;
-  Future<void> setCurrentLocation(int id, [pressBtn = false]) async {
-    // if (id == 0) {
-    //   _mapController.setCurrentMarker(null);
-    // }
-    currentPosition.value = id;
-    var position = locations[id]?.value;
-
-    if (position == null) {
-      position = await _locationService.getLocationById(id);
-    }
-    final currentFloor = selectedFloor.value.id;
-    if (currentFloor != position?.floorPlanId && !pressBtn) {
-      try {
-        changeSelectedFloor(listFloorPlan
-            .where(
-              (e) => position?.floorPlanId == e.id!,
-            )
-            .first);
-      } catch (e) {
-        print(e);
-      }
-    }
-    if (currentFloor == null)
-      _mapController.setCurrentMarker(null);
-    else if (currentFloor != position?.floorPlanId)
-      _mapController.setCurrentMarker(null);
-    else {
-      _mapController.setCurrentMarker(position);
-      // _mapController.moveToScene(position);
-    }
-  }
-
-  IShortestPath _shortestPath = Get.find();
-
-  final locations = RxMap<int, node.Node<Location>>({});
-  void onLocationChanged() {
-    currentPosition.listen((id) {
-      // if (isShowingDirection.value) {
-      //   showDirection(destPosition.value);
-      // }
-      setCurrentLocation(id);
-      showDirection(destPosition.value);
-    });
-  }
-
-  final destPosition = 0.obs;
-  final isShowingDirection = false.obs;
-  final shortestPath = <Location>[].obs;
-  bool firstStart = true;
-  Future<void> showDirection(int newDest) async {
-    if (edges.isEmpty) return;
-    int from = currentPosition.value;
-
-    int dest = destPosition.value;
-    // If list of edges is available
-    _mapController.setPathOnMap([]);
-
-    if (newDest != dest && edges.isNotEmpty) {
-      destPosition.value = newDest;
-      Graph g = Graph.from(edges);
-
-      // Run Dijiktra algorithm
-      _shortestPath.getShortestPath(g, destPosition.value);
-
-      //Set locationo
-      locations.value = g.nodes;
-    }
-
-    if (locations.isEmpty) return;
-
-    node.Node<Location>? fromNode = locations[from];
-    if (fromNode == null) return;
-    // Get shortest path
-    final path = fromNode.shortestPath
-        .map(
-          (e) => e.value!,
-        )
-        .toList()
-        .reversed
-        .toList();
-    if (path.isEmpty) return;
-    shortestPath.value = path;
-    if (firstStart) {
-      listDemo.value = path.map((item) => item.id!).toList();
-
-      // try {
-      //   var item = edges
-      //       .where((e) => e.fromLocationId == from || e.toLocationId == from)
-      //       .first;
-      //   if (listDemo[1] != item.fromLocationId &&
-      //       listDemo[1] != item.toLocationId) {
-      //     listDemo.value = listDemo.reversed.toList();
-      //   }
-      // } catch (e) {}
-
-      firstStart = false;
-    }
-
-    if (fromNode.value?.floorPlanId == selectedFloor.value.id) {
-      final list = shortestPath
-          .where((element) => element.floorPlanId == selectedFloor.value.id)
-          .toList();
-      _mapController.setPathOnMap(list);
-    } else {
-      changeSelectedFloor(listFloorPlan
-          .where(
-            (e) => fromNode.value?.floorPlanId == e.id!,
-          )
-          .first);
-    }
-  }
-
-  void startShowDirection(int? destId) {
-    if (destId == null) return;
-    isShowingDirection.value = true;
-    showDirection(destId);
-  }
-
-  /// [isShow] for home screen
-  var isShow = false.obs;
-
   /// Change ishow value with true
   void changeIsShow() {
-    isShow.value = true;
+    isShowNavigationPanel.value = true;
   }
 
   /// Change ishow value with false
   void changeIsShowFalse() {
-    isShow.value = false;
+    isShowNavigationPanel.value = false;
+  }
+
+  /// TEST FUNCTION (Removed when completed)
+  void testLocationChange() {
+    int index = -1;
+    final paths = shortestPath.map((e) => e).toList();
+    Timer.periodic(Duration(milliseconds: 500), (timer) {
+      if (isShowingDirection.isFalse) {
+        if (index >= 0 && index < paths.length) {
+          setCurrentLocation(paths[index]);
+        }
+        if (index == paths.length) {
+          print("cancel");
+          timer.cancel();
+        }
+        index++;
+      }
+    });
   }
 }

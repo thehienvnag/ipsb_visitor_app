@@ -1,16 +1,30 @@
-import 'package:indoor_positioning_visitor/src/models/location.dart';
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'floor_plan.g.dart';
 
 @JsonSerializable()
+@HiveType(typeId: 2)
 class FloorPlan {
-  final int? id, floorNumber, buildingId;
-  final String? floorCode, floorNum, imageUrl;
-  final List<Location>? locations;
+  @HiveField(0)
+  final int? id;
+
+  @HiveField(1)
+  final int? floorNumber;
+
+  @HiveField(2)
+  final int? buildingId;
+
+  @HiveField(3)
+  final String? floorCode;
+
+  @HiveField(4)
+  final String? floorNum;
+
+  @HiveField(5)
+  final String? imageUrl;
 
   FloorPlan({
-    this.locations,
     this.floorNumber,
     this.buildingId,
     this.imageUrl,

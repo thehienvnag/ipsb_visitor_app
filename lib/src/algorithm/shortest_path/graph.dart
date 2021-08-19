@@ -34,4 +34,12 @@ class Graph {
   double getDistance(int id) {
     return nodes[id]?.distance ?? 0;
   }
+
+  List<Location> getShortestPath(int beginLocationId) {
+    final nodeToFind = this.nodes[beginLocationId];
+    return nodeToFind?.getShortestPath() ?? [];
+  }
+
+  static List<Location> getPathOnFloor(List<Location> list, int floorPlanId) =>
+      list.where((e) => e.floorPlanId == floorPlanId).toList();
 }

@@ -1,19 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:indoor_positioning_visitor/src/common/constants.dart';
-import 'package:indoor_positioning_visitor/src/models/location_type.dart';
-import 'package:indoor_positioning_visitor/src/models/store.dart';
-import 'package:json_annotation/json_annotation.dart';
-
+import 'location_type.dart';
+import 'store.dart';
 import 'floor_plan.dart';
+import 'package:hive/hive.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
+
+import 'package:json_annotation/json_annotation.dart';
 
 part 'location.g.dart';
 
 @JsonSerializable()
+@HiveType(typeId: 0)
 class Location {
-  final int? id, locationTypeId, storeId, floorPlanId;
-  final double? x, y;
+  @HiveField(0)
+  final int? id;
+
+  @HiveField(1)
+  final int? locationTypeId;
+
+  @HiveField(2)
+  final int? storeId;
+
+  @HiveField(3)
+  final int? floorPlanId;
+
+  @HiveField(4)
+  final double? x;
+
+  @HiveField(5)
+  final double? y;
+
+  @HiveField(6)
   final LocationType? locationType;
+
+  @HiveField(7)
   final Store? store;
+
+  @HiveField(8)
   final FloorPlan? floorPlan;
 
   Location({
@@ -35,7 +58,7 @@ class Location {
 
   @override
   String toString() {
-    return id.toString();
+    return '{id: $id, x: $x, y: $y, floorPlanId: $floorPlanId}\n';
   }
 
   ImageProvider retrieveStoreImg() {

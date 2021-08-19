@@ -11,17 +11,25 @@ import 'package:indoor_positioning_visitor/src/widgets/image_view/map_marker.dar
 import 'package:indoor_positioning_visitor/src/widgets/place_object.dart';
 
 class IndoorMapController extends GetxController {
-  final TransformationController transformationController =
-      TransformationController();
+  final transformationController = TransformationController();
 
   /// Controller for image view
   ImageViewController _imageViewController = Get.find();
 
+  /// Screen size
+  final screenSize = Size(0, 0).obs;
+
   /// move to scene
   void moveToScene(Location? location) {
     if (location == null) return;
-    transformationController.value = Matrix4.identity()
-      ..translate(location.x!, location.y!);
+    Offset toScene = transformationController.toScene(
+      Offset(-location.x!, -location.y!),
+    );
+    // print("dx: ${toScene.dx + 150}, dy: ${toScene.dy + 150}");
+    transformationController.value.translate(
+      toScene.dx + screenSize.value.width / 2,
+      toScene.dy + screenSize.value.height / 2 - 100,
+    );
   }
 
   /// Get image size from image provider

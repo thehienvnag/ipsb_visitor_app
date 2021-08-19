@@ -19,6 +19,8 @@ class IndoorMap extends GetView<IndoorMapController> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    controller.screenSize.value = screenSize;
     return FutureBuilder<ui.Image>(
       future: controller.getImage(image),
       builder: (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {

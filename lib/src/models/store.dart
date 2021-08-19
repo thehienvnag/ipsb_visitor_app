@@ -1,17 +1,34 @@
+import 'package:hive/hive.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'store.g.dart';
 
 @JsonSerializable()
+@HiveType(typeId: 4)
 class Store {
+  @HiveField(0)
   final int? id;
+
+  @HiveField(1)
   final String? name;
+
+  @HiveField(2)
   final String? description;
+
+  @HiveField(3)
   final String? imageUrl;
+
+  @HiveField(4)
   final int? floorPlanId;
+
+  @HiveField(5)
   final String? productCategoryId;
+
+  @HiveField(6)
   final String? status;
+
+  @HiveField(7)
   final FloorPlan? floorPlan;
 
   Store({

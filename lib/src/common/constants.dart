@@ -43,6 +43,11 @@ class Constants {
   static const String discountTypePercentage = "Percentage";
 }
 
+class StorageConstants {
+  static const floorPlanBox = "floorPlanBox";
+  static const edgeBox = "edgeBox";
+}
+
 class MapKey {
   static const int stairCase = 4;
   static const int elevator = 3;

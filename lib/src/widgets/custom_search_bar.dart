@@ -56,7 +56,7 @@ class MapSearchBar extends GetView<MapController> {
             child: Container(
               child: Obx(() {
                 final listLocation = controller.searchLocationList;
-                if (controller.isSearching.value)
+                if (controller.isSearchingLocationList.value)
                   return Container(
                       padding:
                           const EdgeInsets.only(left: 20, top: 10, bottom: 10),
@@ -226,7 +226,8 @@ class HomeSearchBar extends GetView<HomeController> {
                           title: Text(title),
                           subtitle: Text(description),
                           trailing: OutlinedButton.icon(
-                            onPressed: () => controller.goToCouponDetails(coupon),
+                            onPressed: () =>
+                                controller.goToCouponDetails(coupon),
                             icon: Icon(
                               Icons.local_activity,
                               size: 24,

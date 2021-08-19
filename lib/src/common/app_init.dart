@@ -1,7 +1,14 @@
 import 'package:get/get.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/shortest_path.dart';
 import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
+import 'package:indoor_positioning_visitor/src/models/edge.dart';
+import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
+import 'package:indoor_positioning_visitor/src/models/location.dart';
+import 'package:indoor_positioning_visitor/src/models/location_type.dart';
+import 'package:indoor_positioning_visitor/src/models/storage_list.dart';
+import 'package:indoor_positioning_visitor/src/models/store.dart';
 import 'package:indoor_positioning_visitor/src/services/api/building_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
@@ -19,6 +26,7 @@ class AppInit {
     initMobileAppServices();
     initAlgorithmServices();
     initApiServices();
+    initHiveStorage();
   }
 
   /// Init mobile app services
@@ -32,6 +40,17 @@ class AppInit {
       () => CustomBottombarController(),
       fenix: true,
     );
+  }
+
+  static Future<void> initHiveStorage() async {
+    await Hive.initFlutter();
+    Hive
+      ..registerAdapter<Edge>(EdgeAdapter())
+      ..registerAdapter<Location>(LocationAdapter())
+      ..registerAdapter<LocationType>(LocationTypeAdapter())
+      ..registerAdapter<FloorPlan>(FloorPlanAdapter())
+      ..registerAdapter<Store>(StoreAdapter())
+      ..registerAdapter<StorageList<Edge>>(StorageListAdapter<Edge>(5));
   }
 
   /// Init algorithms services

@@ -22,4 +22,7 @@ class Node<T> {
   void addDestination(Node<T> destNode, double distance) {
     adjacents.putIfAbsent(destNode, () => distance);
   }
+
+  List<T> getShortestPath() =>
+      shortestPath.map((e) => e.value!).toList().reversed.toList();
 }

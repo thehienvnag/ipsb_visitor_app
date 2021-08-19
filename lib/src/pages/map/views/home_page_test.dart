@@ -98,10 +98,6 @@ class HomePage2 extends GetView<MapController> {
         minHeight: 0,
         maxHeight: MediaQuery.of(context).size.height,
         defaultPanelState: PanelState.CLOSED,
-        panelBuilder: (scrollController) => buildStorePanel(
-          scrollController: scrollController,
-          panelController: storePanelController,
-        ),
         body: Container(
           margin: EdgeInsets.only(top: 10),
           decoration: BoxDecoration(
@@ -113,41 +109,6 @@ class HomePage2 extends GetView<MapController> {
           ),
         ),
       ),
-      floatingActionButton: Obx(() {
-        if (controller.searchValue.isEmpty) {
-          return Container(
-            alignment: Alignment.bottomLeft,
-            margin: EdgeInsets.only(left: 30, bottom: 130),
-            width: screenSize.width,
-            child: ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  barrierColor: Colors.transparent,
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) {
-                    return Scaffold(
-                        backgroundColor: Colors.transparent,
-                        body: Obx(() {
-                          return controller.isShow.value
-                              ? bottomSheetEnd(context)
-                              : bottomSheetStart(context);
-                        }));
-                  },
-                );
-              },
-              child: Icon(Icons.card_giftcard_sharp, color: Colors.white),
-              style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-                padding: EdgeInsets.all(20),
-                primary: Colors.blue,
-                onPrimary: Colors.red,
-              ),
-            ),
-          );
-        }
-        return SizedBox();
-      }),
       bottomNavigationBar: BottomNavigationBar(
         unselectedLabelStyle: TextStyle(color: Colors.grey),
         selectedLabelStyle: TextStyle(color: Color(0xff0DB5B4)),
@@ -180,148 +141,6 @@ class HomePage2 extends GetView<MapController> {
               Icons.account_circle,
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildStorePanel({
-    required PanelController panelController,
-    required ScrollController scrollController,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Kết quả tìm kiếm',
-                  style: TextStyle(color: Colors.black, fontSize: 22),
-                ),
-                ClipOval(
-                  child: Material(
-                    color: Colors.grey.shade300,
-                    // Button color
-                    child: InkWell(
-                      splashColor: Colors.blueAccent, // Splash color
-                      onTap: () {
-                        panelController.close();
-                      },
-                      child: SizedBox(
-                        width: 30,
-                        height: 30,
-                        child: Icon(Icons.close),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Expanded(child: Obx(() {
-            var listStore = controller.listStore;
-            if (listStore.isEmpty) {
-              return Container();
-            }
-            return ListView.builder(
-              itemCount: listStore.length,
-              itemBuilder: (context, index) {
-                final store = listStore[index];
-                final floorPlan = store.floorPlan;
-                return GestureDetector(
-                  // onTap: () {
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => StoreDetailScreen(id: model.id.toString()),
-                  //     ),
-                  //   );
-                  // },
-                  child: Container(
-                    margin: EdgeInsets.only(top: 13),
-                    padding: EdgeInsets.only(left: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 90,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(6),
-                            ),
-                            child: Image.network(
-                              store.imageUrl ?? '',
-                              width: 110,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.60,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      floorPlan?.floorCode ?? 'L-NotSet',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    OutlinedButton(
-                                      onPressed: () {
-                                        showModalBottomSheet(
-                                            context: context,
-                                            builder: (builder) {
-                                              return Container(
-                                                color: Colors.white,
-                                                child: Center(
-                                                    child: Text('hello')),
-                                              );
-                                            });
-                                      },
-                                      child: Icon(Icons.directions),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 20,
-                                child: Text(
-                                  store.description ?? 'Description not set',
-                                  style: TextStyle(color: Colors.black87),
-                                ),
-                              ),
-                              Text(
-                                store.status ?? 'Status not set',
-                                style: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
-          })),
         ],
       ),
     );

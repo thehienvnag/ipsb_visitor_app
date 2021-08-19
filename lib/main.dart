@@ -8,7 +8,7 @@ import 'package:indoor_positioning_visitor/src/routes/app_pages.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-void main() async{
+void main() async {
   AppInit.init();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.login,
+      initialRoute: Routes.map,
       getPages: AppPages.routes,
     );
   }
