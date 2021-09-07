@@ -18,6 +18,7 @@ class FeedbackCouponController extends GetxController {
   final filePath = ''.obs;
 
   Future<void> getImage() async {
+    filePath.value = '';
     final picked = await _imagePicker.getImage(source: ImageSource.gallery);
     filePath.value = picked?.path ?? '';
   }

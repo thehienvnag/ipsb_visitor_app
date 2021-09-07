@@ -1,7 +1,9 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/pages/login_phone/controllers/login_phone_controller.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyPhoneScreen extends GetView<LoginPhoneController> {
   TextEditingController otpController = TextEditingController();
@@ -10,18 +12,20 @@ class VerifyPhoneScreen extends GetView<LoginPhoneController> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Color(0xff2AD4D3),
+          //backgroundColor: Color(0xff2AD4D3),
+          backgroundColor: Colors.white,
           title: Text(
-            'Đăng Nhập',
-            style: TextStyle(color: Colors.white),
+            'Sign Up',
+            style: TextStyle(color: Colors.black),
           ),
           leading: IconButton(
             padding: EdgeInsets.only(left: 10),
             icon: Icon(
               Icons.arrow_back_ios,
-              color: Colors.white,
+              color: Colors.black,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -36,64 +40,54 @@ class VerifyPhoneScreen extends GetView<LoginPhoneController> {
                     children: <Widget>[
                       SizedBox(height: 40),
                       Center(
-                          child: Text('Nhập mã xác nhận được gửi về số điện thoại',
+                          child: Text('Verification code has sent to ${controller.phoneNumber.value}. Please enter the text verification code.',
                         style: TextStyle(color: Colors.black87,fontSize: 16),
                       )),
-                      Center(
-                          child: Container(
-                        margin: EdgeInsets.only(top: 20, left: 80),
-                        child: Row(
-                          children: [
-                            Container(
-                                margin: EdgeInsets.only(left: 15),
-                                child: Text(
-                                  '+84 '+ controller.phoneNumber.value,
-                                  style: TextStyle(
-                                    color: Color(0xff2AD4D3),
-                                    fontSize: 20
-                                  ),
-                                )),
-                          ],
-                        ),
-                      )),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        height: 45,
-                        margin: EdgeInsets.only(top: 30, right: 10, left: 10),
-                        child: TextField(
-                          controller: otpController,
-                          keyboardType: TextInputType.number,
-                          cursorHeight: 25,
-                          cursorWidth: 3,
-                          cursorColor: Colors.lightBlueAccent,
-                          decoration: InputDecoration(
-                            hintText: 'Nhập mã xác nhận ở điện thoại',
-                            hintStyle: TextStyle(color: Colors.black45),
-                            contentPadding: EdgeInsets.only(top: 3, left: 10),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4)),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.8,
-                        height: 35,
-                        padding: EdgeInsets.only(top: 7),
-                        child: FlatButton(
-                          onPressed: (){
-                            controller.verifyCodeFromPhone();
-                          },
-                          child: Text(
-                            "Xác thực",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white,fontSize: 18),
+                        height: 60,
+                        margin: EdgeInsets.only(top: 30,),
+                        child: PinCodeTextField(
+                          appContext: context,
+                          length: 6,
+                          //obscureText: true,
+                          //obscuringCharacter: '*',
+                          // obscuringWidget: FlutterLogo(
+                          //   size: 24,
+                          // ),
+                          blinkWhenObscuring: true,
+                          animationType: AnimationType.fade,
+                          pinTheme: PinTheme(
+                            shape: PinCodeFieldShape.box,
+                            borderRadius: BorderRadius.circular(5),
+                            activeColor: Colors.purpleAccent,
+                            inactiveFillColor: Colors.white,
+                            fieldHeight: 50,
+                            fieldWidth: 40,
+                            activeFillColor: Colors.grey.withOpacity(0.3),
+                            inactiveColor: Colors.white,
                           ),
-                          textColor: Colors.white,
+                          cursorColor: Colors.black,
+                          animationDuration: Duration(milliseconds: 300),
+                          enableActiveFill: true,
+                          // controller: textEditingController,
+                          keyboardType: TextInputType.number,
+                          boxShadows: [
+                            BoxShadow(
+                              offset: Offset(0, 1),
+                              color: Colors.black12,
+                              blurRadius: 10,
+                            )
+                          ],
+                          onCompleted: (v) {
+                            controller.verifyCodeFromPhone(v);
+                            print("Completed" + v);
+                          },
+                          onChanged: (value) {
+                            // print(value);
+                          },
+
                         ),
-                        decoration: BoxDecoration(
-                            color: Color(0xff2AD4D3),
-                            borderRadius: BorderRadius.circular(4)),
                       ),
                       Container(
                         width: screenSize.width*0.6,
@@ -101,11 +95,36 @@ class VerifyPhoneScreen extends GetView<LoginPhoneController> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text('Tôi chưa nhận được mã ?  ',
-                              style: TextStyle(fontSize: 16, color: Colors.black),
+                              Text("Did't receive the Code ?",
+                              style: TextStyle(fontSize: 16, color: Colors.black),),
+                              GestureDetector(
+                                onTap: (){
+                                  controller.sendCodeToPhone(controller.phoneNumber.value);
+                                  BotToast.showText(text: "Verifition Code Resend Successfull", duration: const Duration(seconds: 5));
+                                },
+                                child: Text('Resend',
+                                  style: TextStyle(fontSize: 18, color: Colors.blue),
                                 ),
-                              Text('Gửi lại',
-                                style: TextStyle(fontSize: 18, color: Colors.blue),
+                              ),
+                            ],
+                          )),
+                      Container(
+                          width: screenSize.width*0.9,
+                          margin: EdgeInsets.only(top: 20),
+                          alignment: Alignment.topLeft,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text("What do I do if I can't receive the SMS verification code ?  ",
+                                style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 5,),
+                              Text("1. If your phone cannot receive the SMS verification code, please select Accept voice verification code and wait for the (+84) 931-182-303's call.",
+                                style: TextStyle(fontSize: 15, color: Colors.black),
+                              ),
+                              SizedBox(height: 8,),
+                              Text("2. Receiving a voice verification call is free of charge verification.",
+                                style: TextStyle(fontSize: 15, color: Colors.black),
                               ),
                             ],
                           )),

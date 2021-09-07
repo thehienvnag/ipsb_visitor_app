@@ -49,7 +49,8 @@ class LoginEmailPage extends GetView<LoginEmailController> {
                   SizedBox(height: 100),
                   GestureDetector(
                       onTap: () {
-                        controller.loginWithGoogle();
+                        //controller.loginWithGoogle();
+                        Get.toNamed(Routes.updateProfile);
                       },
                       child: GestureDetector(
                         child: Container(
@@ -78,7 +79,8 @@ class LoginEmailPage extends GetView<LoginEmailController> {
                   SizedBox(height: 10),
                   GestureDetector(
                     onTap: (){
-                      Get.toNamed(Routes.loginPhone);
+                      //Get.toNamed(Routes.loginPhone);
+                      sharedStates.buttomSheet(context);
                     },
                     child: GestureDetector(
                       child: Container(
@@ -113,3 +115,4 @@ class LoginEmailPage extends GetView<LoginEmailController> {
     );
   }
 }
+
