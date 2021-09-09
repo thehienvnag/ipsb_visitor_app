@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:animated_floating_buttons/animated_floating_buttons.dart';
 
 class ProductDetailPage extends StatefulWidget {
   @override
@@ -15,17 +15,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     'https://cochiskin.com/wp-content/uploads/2018/05/Tinh-dầu-tràm-trà-The-Body-Shop-‪Tea-Tree-Oil‬.jpg',
     'https://vn-test-11.slatic.net/p/e68fd21ee57840c804edce76afceb957.jpg',
   ];
-
+  final GlobalKey<AnimatedFloatingActionButtonState> key =
+      GlobalKey<AnimatedFloatingActionButtonState>();
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-            //title: Text('Product Detail'),
-            ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add),
+          //title: Text('Product Detail'),
+          backgroundColor: Colors.white,
         ),
+        floatingActionButton: AnimatedFloatingActionButton(
+            //Fab list
+            fabButtons: <Widget>[buildVisitStore(), buildAddShoppingList()],
+            key: key,
+            colorStartAnimation: Colors.blue,
+            colorEndAnimation: Colors.red,
+            animatedIconData: AnimatedIcons.menu_close //To principal button
+            ),
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -249,5 +255,31 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           dotWidth: 10,
           dotHeight: 10,
         ),
+      );
+  Widget buildVisitStore() => FloatingActionButton.extended(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        onPressed: () {},
+        foregroundColor: Colors.white,
+        backgroundColor: Color(0xff3FB1AB),
+        icon: Icon(
+          Icons.location_on_outlined,
+          color: Colors.white,
+        ),
+        label: Text('Visit Store'),
+      );
+  Widget buildAddShoppingList() => FloatingActionButton.extended(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        onPressed: () {},
+        foregroundColor: Colors.white,
+        backgroundColor: Color(0xff3FB1AB),
+        icon: Icon(
+          Icons.add_circle_outline,
+          color: Colors.white,
+        ),
+        label: Text('Add Shopping List'),
       );
 }
