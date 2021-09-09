@@ -15,6 +15,8 @@ import 'package:indoor_positioning_visitor/src/pages/building_store_list/binding
 import 'package:indoor_positioning_visitor/src/pages/building_store_list/views/building_store_list_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/bindings/my_coupon_detail_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupons/bindings/my_coupon_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/product_detail/bindings/product_detail_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/product_detail/views/product_detail_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/profile/bindings/profile_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/profile/views/profile_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/profile_detail/bindings/profile_detail_binding.dart';
@@ -123,6 +125,11 @@ class AppPages {
       name: Routes.setting,
       page: () => SettingPage(),
       binding: SettingBinding(),
+    ),
+    GetPage(
+      name: Routes.productDetail,
+      page: () => ProductDetailPage(),
+      binding: ProductDetailBinding(),
     ),
   ];
 }
