@@ -51,7 +51,7 @@ class LoginEmailPage extends GetView<LoginEmailController> {
                       onTap: () {
                         //controller.loginWithGoogle();
                         //Get.toNamed(Routes.updateProfile);
-                        sharedStates.showBottomSheet(context);
+                        sharedStates.showBottomSheet();
                       },
                       child: GestureDetector(
                         child: Container(
