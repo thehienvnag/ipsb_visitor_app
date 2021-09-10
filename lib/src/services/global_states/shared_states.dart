@@ -191,11 +191,11 @@ class SharedStates extends GetxService {
 
 
 
-  Future<dynamic> showBottomSheet(context){
+  // new version no context
+  Future<dynamic> showBottomSheet(){
     TextEditingController phoneController = TextEditingController();
     TextEditingController passController = TextEditingController();
     LoginEmailController loginController = Get.find();
-    Size screenSize = MediaQuery.of(context).size;
      return Get.bottomSheet(
        SingleChildScrollView(
          child: Container(
@@ -206,9 +206,9 @@ class SharedStates extends GetxService {
                children: <Widget>[
                  Row(
                    children: [
-                     SizedBox(width: screenSize.width*0.4,),
+                     SizedBox(width: 160,),
                      Text("Login",style: TextStyle(fontSize: 20,color: Colors.black.withOpacity(0.8), fontWeight: FontWeight.bold)),
-                     SizedBox(width: screenSize.width*0.26,),
+                     SizedBox(width: 110,),
                      IconButton(
                        icon: Icon(
                          Icons.close,
@@ -216,7 +216,7 @@ class SharedStates extends GetxService {
                          size: 18,
                        ),
                        onPressed: () {
-                         Navigator.pop(context);
+                         Get.back(closeOverlays: true);
                        },
                      )
                    ],
@@ -307,7 +307,7 @@ class SharedStates extends GetxService {
                  SizedBox(height: 10),
                  Row(
                    children: [
-                     SizedBox(width: screenSize.width*0.55,),
+                     SizedBox(width: 220,),
                      Text('Forgot Password ?',style: TextStyle(fontSize: 15,color: Colors.blue)),
                    ],
                  ),
@@ -316,7 +316,7 @@ class SharedStates extends GetxService {
                    style: TextStyle(fontSize: 15, color: Colors.black.withOpacity(0.8)),)),
                  SizedBox(height: 20),
                  Container(
-                   width: screenSize.width*0.5,
+                   width: 250,
                    child: ElevatedButton(
                      style: ElevatedButton.styleFrom(
                        primary: Colors.blue,
