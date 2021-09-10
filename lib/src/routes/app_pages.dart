@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/pages/combo_product_detail/bindings/combo_product_detail_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/combo_product_detail/views/combo_product_detail_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/feedback_coupon/bindings/feedback_coupon_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/feedback_coupon/views/feed_back_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/bindings/home_binding.dart';
@@ -130,6 +132,11 @@ class AppPages {
       name: Routes.productDetail,
       page: () => ProductDetailPage(),
       binding: ProductDetailBinding(),
+    ),
+    GetPage(
+      name: Routes.comboProductDetail,
+      page: () => ComboProductDetailPage(),
+      binding: ComboProductDetailBinding(),
     ),
   ];
 }
