@@ -128,8 +128,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
       ),
     );
   }
-  Widget buildTextField(
-      String labelText, String placeholder, bool isPasswordTextField) {
+  Widget buildTextField(String labelText, String placeholder, bool isPasswordTextField) {
     return Container(
       margin: EdgeInsets.only(left: 20, right: 20),
       child: Padding(

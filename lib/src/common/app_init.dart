@@ -78,8 +78,7 @@ class AppInit {
     // Calling api at couponInUse service
     Get.lazyPut<ICouponInUseService>(() => CouponInUseService(), fenix: true);
     // Calling api at ProductCategory service
-    Get.lazyPut<IProductCategoryService>(() => ProductCategoryService(),
-        fenix: true);
+    Get.lazyPut<IProductCategoryService>(() => ProductCategoryService(), fenix: true);
     Get.lazyPut<IBuildingService>(() => BuildingService(), fenix: true);
   }
 }

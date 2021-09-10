@@ -27,6 +27,8 @@ import 'package:indoor_positioning_visitor/src/pages/setting/bindings/setting_bi
 import 'package:indoor_positioning_visitor/src/pages/setting/views/setting_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/test_algorithm/bindings/test_algorithm_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/test_algorithm/views/test_algorithm_page.dart';
+import 'package:indoor_positioning_visitor/src/pages/update_infomation_signup/bindings/update_profile_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/update_infomation_signup/views/update_profile_page.dart';
 import '../pages/my_coupon_detail/views/my_coupon_detail_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/my_coupons/views/my_coupon_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/notifications/bindings/notifications_binding.dart';
@@ -127,6 +129,11 @@ class AppPages {
       name: Routes.setting,
       page: () => SettingPage(),
       binding: SettingBinding(),
+    ),
+    GetPage(
+      name: Routes.updateProfile,
+      page: () => UpdateProfilePage(),
+      binding: UpdateProfileBinding(),
     ),
     GetPage(
       name: Routes.productDetail,

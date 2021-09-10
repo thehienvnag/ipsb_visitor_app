@@ -14,12 +14,13 @@ class LoginPhoneController extends GetxController {
   // Share states across app
   final SharedStates sharedStates = Get.find();
 
-  // code send to visitor phone
-  final codeSend = "".obs;
 
-  // set code send
-  void setCodeSend(String code){
-    codeSend.value = code;
+  // code send to verify
+  final codeVerifile = "".obs;
+
+  // set code verify
+  void setCodeVerify(String code){
+    codeVerifile.value = code;
   }
 
   // phone of visitor
@@ -31,6 +32,7 @@ class LoginPhoneController extends GetxController {
   }
 
   void sendCodeToPhone(String phone) async {
+    BotToast.showLoading();
     await _auth.verifyPhoneNumber(
       phoneNumber: '+84'+ phone,
       verificationCompleted: (phoneAuthCredential) {
@@ -50,22 +52,25 @@ class LoginPhoneController extends GetxController {
       },
       codeSent: (verificationId, resendingToken) async {
         // verificationID: nó là mã code gì đó dc gửi đi cho bên verifile xử lý
-        setCodeSend(verificationId);
+        setCodeVerify(verificationId);
         setPhone(phone);
+        BotToast.closeAllLoading();
         Get.toNamed(Routes.phoneVerify);
       },
       codeAutoRetrievalTimeout: (verificationId) async {},
     );
   }
 
-  void verifyCodeFromPhone() async {
-    PhoneAuthCredential phoneAuthCredential =
-    PhoneAuthProvider.credential(verificationId: codeSend.value, smsCode: otpController.text);
+  void verifyCodeFromPhone(String code) async {
+
+    PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(verificationId: codeVerifile.value, smsCode: code);
     try {
+      BotToast.showLoading();
       final authCredential = await _auth.signInWithCredential(phoneAuthCredential);
       if(authCredential.user != null){
-        BotToast.showText(text: "Đăng nhập thành công", duration: const Duration(seconds: 5));
-        Get.toNamed(Routes.home);
+        BotToast.closeAllLoading();
+        BotToast.showText(text: "Verification Success", duration: const Duration(seconds: 5));
+        Get.toNamed(Routes.updateProfile);
         print('thông tin đăng nhập bằng sdt nè: ' +authCredential.user.toString() );
       }
     }on FirebaseAuthException catch (e) {

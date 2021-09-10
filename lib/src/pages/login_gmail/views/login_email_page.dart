@@ -33,8 +33,8 @@ class LoginEmailPage extends GetView<LoginEmailController> {
                       Container(
                         width: 290,
                         height: 200,
-                        child:
-                        Image(image: NetworkImage("https://f8.photo.talk.zdn.vn/1651828501473160221/656b4d00bdca4a9413db.jpg")),
+                        child: Text("")
+
                       ),
                       Container(
                         alignment: Alignment.center,
@@ -49,7 +49,9 @@ class LoginEmailPage extends GetView<LoginEmailController> {
                   SizedBox(height: 100),
                   GestureDetector(
                       onTap: () {
-                        controller.loginWithGoogle();
+                        //controller.loginWithGoogle();
+                        //Get.toNamed(Routes.updateProfile);
+                        sharedStates.showBottomSheet(context);
                       },
                       child: GestureDetector(
                         child: Container(
@@ -78,7 +80,8 @@ class LoginEmailPage extends GetView<LoginEmailController> {
                   SizedBox(height: 10),
                   GestureDetector(
                     onTap: (){
-                      Get.toNamed(Routes.loginPhone);
+                      //Get.toNamed(Routes.loginPhone);
+                      sharedStates.bottomSheet(context);
                     },
                     child: GestureDetector(
                       child: Container(
@@ -113,3 +116,4 @@ class LoginEmailPage extends GetView<LoginEmailController> {
     );
   }
 }
+
