@@ -6,7 +6,6 @@ import 'package:indoor_positioning_visitor/src/pages/login_gmail/controllers/log
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 
-
 class LoginEmailPage extends GetView<LoginEmailController> {
   final SharedStates sharedStates = Get.find();
   @override
@@ -17,8 +16,10 @@ class LoginEmailPage extends GetView<LoginEmailController> {
       body: Stack(
         children: <Widget>[
           Image(
-              width: screenSize.width,  height: screenSize.height,
-              image: NetworkImage("https://officespace.vn/wp-content/uploads/2018/08/cho-thue-van-phong-toa-lotte-hanoi-5.jpg")),
+              width: screenSize.width,
+              height: screenSize.height,
+              image: NetworkImage(
+                  "https://officespace.vn/wp-content/uploads/2018/08/cho-thue-van-phong-toa-lotte-hanoi-5.jpg")),
           Container(
             margin: EdgeInsets.only(top: 100),
             child: Padding(
@@ -30,12 +31,7 @@ class LoginEmailPage extends GetView<LoginEmailController> {
                   ),
                   Column(
                     children: <Widget>[
-                      Container(
-                        width: 290,
-                        height: 200,
-                        child: Text("")
-
-                      ),
+                      Container(width: 290, height: 200, child: Text("")),
                       Container(
                         alignment: Alignment.center,
                         width: MediaQuery.of(context).size.width,
@@ -48,38 +44,39 @@ class LoginEmailPage extends GetView<LoginEmailController> {
                   ),
                   SizedBox(height: 100),
                   GestureDetector(
-                      onTap: () {
-                        //controller.loginWithGoogle();
-                        //Get.toNamed(Routes.updateProfile);
-                        sharedStates.showBottomSheet();
-                      },
-                      child: GestureDetector(
-                        child: Container(
-                          height: 45,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 15,
-                          ),
-                          color: Colors.white,
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                FontAwesomeIcons.google,
-                                size: 10.0 * 2.5,
-                                color: Colors.red.withOpacity(0.6),
-                              ),
-                              SizedBox(width: 30),
-                              Text(
-                                'Đăng nhập với Google',
-                                style: TextStyle(color: Colors.black87,fontSize: 16),
-                              ),
-                            ],
-                          ),
+                    onTap: () {
+                      //controller.loginWithGoogle();
+                      //Get.toNamed(Routes.updateProfile);
+                      sharedStates.showLoginBottomSheet();
+                    },
+                    child: GestureDetector(
+                      child: Container(
+                        height: 45,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 15,
+                        ),
+                        color: Colors.white,
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              FontAwesomeIcons.google,
+                              size: 10.0 * 2.5,
+                              color: Colors.red.withOpacity(0.6),
+                            ),
+                            SizedBox(width: 30),
+                            Text(
+                              'Đăng nhập với Google',
+                              style: TextStyle(
+                                  color: Colors.black87, fontSize: 16),
+                            ),
+                          ],
                         ),
                       ),
                     ),
+                  ),
                   SizedBox(height: 10),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       //Get.toNamed(Routes.loginPhone);
                       sharedStates.bottomSheet(context);
                     },
@@ -100,7 +97,8 @@ class LoginEmailPage extends GetView<LoginEmailController> {
                             SizedBox(width: 30),
                             Text(
                               'Đăng nhập với số điện thoại',
-                              style: TextStyle(color: Colors.black87,fontSize: 16),
+                              style: TextStyle(
+                                  color: Colors.black87, fontSize: 16),
                             ),
                           ],
                         ),
@@ -116,4 +114,3 @@ class LoginEmailPage extends GetView<LoginEmailController> {
     );
   }
 }
-

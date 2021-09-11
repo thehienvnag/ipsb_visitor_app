@@ -141,7 +141,7 @@ class AppPages {
       binding: ProductDetailBinding(),
     ),
     GetPage(
-      name: Routes.comboProductDetail,
+      name: Routes.productComboDetail,
       page: () => ComboProductDetailPage(),
       binding: ComboProductDetailBinding(),
     ),

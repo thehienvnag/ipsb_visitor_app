@@ -48,11 +48,25 @@ class StoreDetailsController extends GetxController {
   }
 
   SharedStates shared = Get.find();
-  void gotoStoreDetail(Coupon coupon) {
+  void gotoCouponDetail(Coupon coupon) {
     shared.coupon.value = coupon;
     Get.toNamed(
       Routes.couponDetail,
       parameters: {'couponId': coupon.id.toString()},
+    );
+  }
+
+  void gotoProductDetails() {
+    Get.toNamed(
+      Routes.productDetail,
+      // parameters: {'productId': product.id.toString()},
+    );
+  }
+
+  void gotoProductComboDetails() {
+    Get.toNamed(
+      Routes.productComboDetail,
+      // parameters: {'productId': product.id.toString()},
     );
   }
 }

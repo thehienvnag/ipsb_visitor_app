@@ -1,12 +1,15 @@
+import 'package:animated_floating_buttons/widgets/animated_floating_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:indoor_positioning_visitor/src/pages/map/controllers/map_controller.dart';
 import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
 import 'package:indoor_positioning_visitor/src/widgets/custom_search_bar.dart';
 import 'package:indoor_positioning_visitor/src/widgets/indoor_map/indoor_map.dart';
 import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
+import 'package:indoor_positioning_visitor/src/widgets/user_welcome.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MapPage extends GetView<MapController> {
@@ -21,6 +24,19 @@ class MapPage extends GetView<MapController> {
         child: Stack(
           children: [
             buildMap(),
+            Container(
+              height: 95,
+              decoration: BoxDecoration(
+                boxShadow: [AppBoxShadow.boxShadowLight],
+                color: Colors.white,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 5),
+              child: UserWelcome(
+                textColor: Colors.black,
+              ),
+            ),
             Obx(
               () => MapSearchBar(
                 items: controller.listFloorPlan,
@@ -34,13 +50,14 @@ class MapPage extends GetView<MapController> {
         if (!controller.isCouponBtnVisible.value) {
           return Container();
         }
-        return Container(
-          alignment: Alignment.bottomLeft,
-          margin: EdgeInsets.only(left: 30, bottom: 10),
-          width: screenSize.width,
-          child: Row(
-            children: [
-              ElevatedButton(
+        return AnimatedFloatingActionButton(
+            fabButtons: <Widget>[
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  shape: CircleBorder(),
+                  padding: EdgeInsets.all(15),
+                  backgroundColor: Colors.white,
+                ),
                 onPressed: () {
                   controller.changeVisible();
                   showDialog(
@@ -52,27 +69,33 @@ class MapPage extends GetView<MapController> {
                     },
                   );
                 },
-                child: Icon(Icons.card_giftcard_sharp, color: Colors.white),
-                style: ElevatedButton.styleFrom(
-                  shape: CircleBorder(),
-                  padding: EdgeInsets.all(20),
-                  primary: Colors.blue,
-                  onPrimary: Colors.red,
+                child: Icon(
+                  Icons.local_activity_outlined,
+                  color: AppColors.primary,
+                  size: 30,
                 ),
               ),
-              ElevatedButton(
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  shape: CircleBorder(
+                      // side: BorderSide(color: Colors.purpleAccent, width: 2),
+                      ),
+                  padding: EdgeInsets.all(15),
+                  backgroundColor: Colors.white,
+                ),
                 onPressed: () => controller.testLocationChange(),
-                child: Icon(Icons.run_circle, color: Colors.white),
-                style: ElevatedButton.styleFrom(
-                  shape: CircleBorder(),
-                  padding: EdgeInsets.all(20),
-                  primary: Colors.blue,
-                  onPrimary: Colors.red,
+                child: Icon(
+                  Icons.directions,
+                  color: AppColors.primary,
+                  size: 30,
                 ),
-              ),
+              )
             ],
-          ),
-        );
+            key: key,
+            colorStartAnimation: AppColors.primary,
+            colorEndAnimation: Colors.pinkAccent,
+            animatedIconData: AnimatedIcons.menu_close //To principal button
+            );
       }),
       bottomNavigationBar: CustomBottombar(),
     );

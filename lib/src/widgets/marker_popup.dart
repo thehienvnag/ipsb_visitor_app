@@ -69,6 +69,9 @@ class MarkerPopup extends GetView<ImageViewController> {
                   Container(
                     margin: const EdgeInsets.only(left: 20),
                     child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        primary: const Color(0xff344CDD),
+                      ),
                       onPressed: () => Get.toNamed(Routes.storeDetails,
                           parameters: {
                             'id': state.location!.storeId.toString()
@@ -85,6 +88,7 @@ class MarkerPopup extends GetView<ImageViewController> {
                       child: Icon(
                         Icons.directions,
                         size: 32,
+                        color: const Color(0xff344CDD),
                       ),
                     ),
                   ),

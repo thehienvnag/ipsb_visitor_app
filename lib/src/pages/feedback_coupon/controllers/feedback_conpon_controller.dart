@@ -19,7 +19,7 @@ class FeedbackCouponController extends GetxController {
 
   Future<void> getImage() async {
     filePath.value = '';
-    final picked = await _imagePicker.getImage(source: ImageSource.gallery);
+    final picked = await _imagePicker.pickImage(source: ImageSource.gallery);
     filePath.value = picked?.path ?? '';
   }
 
@@ -42,7 +42,7 @@ class FeedbackCouponController extends GetxController {
   var couponId = 0.obs;
 
   Future<void> sendFeedback() async {
-    CouponInUse conpon =  sharedStates.couponInUse.value;
+    CouponInUse conpon = sharedStates.couponInUse.value;
     final dateTime = DateTime.now();
     CouponInUse couponInUse = CouponInUse(
         id: conpon.id,
@@ -56,12 +56,13 @@ class FeedbackCouponController extends GetxController {
         feedBackDate: dateTime,
         rateScore: rating.value);
     BotToast.showLoading();
-    final result = await couponInUseService.putFeedbackCouponInUse(couponInUse, filePath.value, conpon.id!);
+    final result = await couponInUseService.putFeedbackCouponInUse(
+        couponInUse, filePath.value, conpon.id!);
 
     BotToast.closeAllLoading();
     if (result != null) {
       BotToast.showText(text: "Đánh giá thành công");
-      Timer(Duration(seconds: 2),(){
+      Timer(Duration(seconds: 2), () {
         Get.toNamed(Routes.myCoupon);
       });
     }

@@ -39,12 +39,8 @@ mixin IApiHelper {
   );
 
   /// Put 1 to API [endpoint] providing [data] with one file [files]
-  Future<Response> putOneWithOneFile(
-    String endpoint,
-    Map<String, dynamic> data,
-    MultipartFile file,
-      String fileName
-  );
+  Future<Response> putOneWithOneFile(String endpoint, Map<String, dynamic> data,
+      MultipartFile file, String fileName);
 
   /// Put 1 to API [endpoint] providing [data] with many files [files]
   Future<Response> putOneWithFiles(
@@ -123,11 +119,8 @@ class ApiHelper extends GetConnect with IApiHelper {
   }
 
   @override
-  Future<Response> putOneWithOneFile(
-    String endpoint,
-    Map<String, dynamic> data,
-    MultipartFile file, String fileName
-  ) {
+  Future<Response> putOneWithOneFile(String endpoint, Map<String, dynamic> data,
+      MultipartFile file, String fileName) {
     var form = FormData(data);
     form.files.add(MapEntry(fileName, file));
 

@@ -32,9 +32,9 @@ class AppInit {
   /// Init mobile app services
   static void initMobileAppServices() {
     // Get image from file system
-    Get.lazyPut<ImagePicker>(() => ImagePicker());
+    Get.lazyPut<ImagePicker>(() => ImagePicker(), fenix: true);
     // Shared states between widget
-    Get.lazyPut<SharedStates>(() => SharedStates());
+    Get.lazyPut<SharedStates>(() => SharedStates(), fenix: true);
     // Bottom bar
     Get.lazyPut<CustomBottombarController>(
       () => CustomBottombarController(),
@@ -78,7 +78,8 @@ class AppInit {
     // Calling api at couponInUse service
     Get.lazyPut<ICouponInUseService>(() => CouponInUseService(), fenix: true);
     // Calling api at ProductCategory service
-    Get.lazyPut<IProductCategoryService>(() => ProductCategoryService(), fenix: true);
+    Get.lazyPut<IProductCategoryService>(() => ProductCategoryService(),
+        fenix: true);
     Get.lazyPut<IBuildingService>(() => BuildingService(), fenix: true);
   }
 }

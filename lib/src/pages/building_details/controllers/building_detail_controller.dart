@@ -22,13 +22,15 @@ class BuildingDetailController extends GetxController {
 
   /// Get list Store from api by buildingID
   Future<void> getStore(String buildingId) async {
-    final paging = await _storeService.getStoresByBuilding(int.parse(buildingId));
+    final paging =
+        await _storeService.getStoresByBuilding(int.parse(buildingId));
     listStore.value = paging.content!;
   }
 
   /// Get building details
   Future<void> getBuildingDetails(String buildingId) async {
-    final result = await _buildingService.getBuildingById(int.parse(buildingId));
+    final result =
+        await _buildingService.getBuildingById(int.parse(buildingId));
     if (result != null) {
       building.value = result;
     }
@@ -47,9 +49,9 @@ class BuildingDetailController extends GetxController {
 
     LocationData myLocation;
     myLocation = await location.getLocation();
-    var addresses = await geoCode.reverseGeocoding(latitude: myLocation.latitude!.toDouble(), longitude: myLocation.longitude!.toDouble());
-    currentAddress.value = (addresses.streetAddress.toString() + " " + addresses.city.toString()+ " " + addresses.region.toString()+ " " + addresses.countryName.toString());
-    print('hello: '+ addresses.toString()+"/ địa chỉ nè : " + addresses.streetAddress.toString() + " " + addresses.city.toString()+ " " + addresses.region.toString()+ " " + addresses.countryName.toString());
+    // var addresses = await geoCode.reverseGeocoding(latitude: myLocation.latitude!.toDouble(), longitude: myLocation.longitude!.toDouble());
+    // currentAddress.value = (addresses.streetAddress.toString() + " " + addresses.city.toString()+ " " + addresses.region.toString()+ " " + addresses.countryName.toString());
+    // print('hello: '+ addresses.toString()+"/ địa chỉ nè : " + addresses.streetAddress.toString() + " " + addresses.city.toString()+ " " + addresses.region.toString()+ " " + addresses.countryName.toString());
   }
 
   // var distanceTwoPoin = "".obs;
@@ -66,7 +68,6 @@ class BuildingDetailController extends GetxController {
   //   print("nè nè : " + (distance / 1000).toString());
   // }
 
-
   @override
   void onInit() {
     super.onInit();
@@ -79,10 +80,11 @@ class BuildingDetailController extends GetxController {
   }
 }
 
-class MapUtils{
+class MapUtils {
   MapUtils._();
-  static Future<void> openMap(String currentLocation, String location) async{
-    String googleUrl = 'https://www.google.com/maps/dir/${currentLocation}/${location}';
+  static Future<void> openMap(String currentLocation, String location) async {
+    String googleUrl =
+        'https://www.google.com/maps/dir/${currentLocation}/${location}';
     if (await canLaunch(googleUrl)) {
       await launch(googleUrl);
     } else {

@@ -23,7 +23,13 @@ class SettingPage extends GetView<SettingController> {
         elevation: 1,
         title: Column(
           children: [
-            Text("Cài đặt", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500,color: Colors.black.withOpacity(0.7)),),
+            Text(
+              "Cài đặt",
+              style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black.withOpacity(0.7)),
+            ),
           ],
         ),
       ),
@@ -31,7 +37,9 @@ class SettingPage extends GetView<SettingController> {
         padding: EdgeInsets.only(left: 16, top: 25, right: 16),
         child: ListView(
           children: [
-            SizedBox(height: 15,),
+            SizedBox(
+              height: 15,
+            ),
             Row(
               children: [
                 Icon(
@@ -91,6 +99,7 @@ class SettingPage extends GetView<SettingController> {
       ),
     );
   }
+
   Row buildNotificationOptionRow(String title, bool isActive) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -190,6 +199,7 @@ class SettingPage extends GetView<SettingController> {
       ),
     );
   }
+
   GestureDetector buildAccount2(BuildContext context, String title) {
     return GestureDetector(
       // onTap: () {
@@ -219,4 +229,4 @@ class SettingPage extends GetView<SettingController> {
       ),
     );
   }
-  }
+}

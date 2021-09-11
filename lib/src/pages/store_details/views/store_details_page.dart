@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 
 import 'package:indoor_positioning_visitor/src/pages/store_details/controllers/store_details_controller.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
@@ -16,7 +17,7 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           backgroundColor: Colors.white,
           body: Column(
@@ -33,6 +34,7 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                           height: 200,
                           decoration: BoxDecoration(
                             image: Utils.resolveDecoImg(store.imageUrl),
+                            boxShadow: [AppBoxShadow.boxShadow],
                           ),
                         ),
                         Positioned(
@@ -52,7 +54,7 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                       ],
                     ),
                     Container(
-                      margin: const EdgeInsets.only(left: 14, top: 10),
+                      margin: const EdgeInsets.only(left: 14, top: 20),
                       padding: const EdgeInsets.only(
                         top: 5,
                         left: 10,
@@ -91,19 +93,32 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                 );
               }),
               Container(
+                padding: const EdgeInsets.only(bottom: 10),
+                // margin: const EdgeInsets.only(bottom: 10),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.grey.shade400, width: 0.5),
+                  ),
+                ),
                 child: TabBar(
                   indicatorColor: Colors.green,
                   tabs: [
                     Container(
                       width: 100,
                       child: Tab(
-                        text: "SẢN PHẨM",
+                        text: "PRODUCTS",
                       ),
                     ),
                     Container(
                       width: 100,
                       child: Tab(
-                        text: "VÉ ƯU ĐÃI",
+                        text: "COMBOS",
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      child: Tab(
+                        text: "COUPONS",
                       ),
                     ),
                   ],
@@ -121,6 +136,7 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                 child: TabBarView(
                   children: [
                     _buildProducts(),
+                    _buildCombos(),
                     _buildCoupons(),
                   ],
                 ),
@@ -133,71 +149,169 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
   }
 
   Widget _buildProducts() {
-    return Obx(() {
-      final products = controller.listProduct;
-      return AnimationLimiter(
-        child: GridView.count(
-          childAspectRatio: 4 / 6,
-          crossAxisCount: 2,
-          children: List.generate(
-            products.length,
-            (int index) {
-              final product = products[index];
-              return AnimateWrapper(
-                index: index,
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 2, vertical: 4),
-                  child: Card(
-                    child: Container(
-                      width: 200,
-                      padding: const EdgeInsets.only(bottom: 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            height: 170,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              image: DecorationImage(
-                                image: NetworkImage(product.imageUrl ?? ''),
-                                fit: BoxFit.cover,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: Column(
+        children: [
+          Expanded(
+            child: Obx(() {
+              final products = controller.listProduct;
+              return AnimationLimiter(
+                child: GridView.count(
+                  childAspectRatio: 4 / 6,
+                  crossAxisCount: 2,
+                  children: List.generate(
+                    products.length,
+                    (int index) {
+                      final product = products[index];
+                      return GestureDetector(
+                        onTap: () => controller.gotoProductDetails(),
+                        child: AnimateWrapper(
+                          index: index,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 3, vertical: 4),
+                            child: Card(
+                              child: Container(
+                                width: 200,
+                                padding: const EdgeInsets.only(bottom: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      height: 170,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              product.imageUrl ?? ''),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    ListTile(
+                                      title: Text(
+                                        Formatter.shorten(product.name, 10),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        Formatter.shorten(product.description),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 10, left: 16),
+                                      child: Text(
+                                        Formatter.price(product.price),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                          ListTile(
-                            title: Text(
-                              Formatter.shorten(product.name),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),
-                            ),
-                            subtitle: Text(
-                              Formatter.shorten(product.description),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 10, left: 16),
-                            child: Text(
-                              Formatter.price(product.price),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               );
-            },
+            }),
           ),
-        ),
-      );
-    });
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCombos() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: Column(
+        children: [
+          Expanded(
+            child: Obx(() {
+              final products = controller.listProduct;
+              return AnimationLimiter(
+                child: GridView.count(
+                  childAspectRatio: 4 / 6,
+                  crossAxisCount: 2,
+                  children: List.generate(
+                    products.length,
+                    (int index) {
+                      final product = products[index];
+                      return GestureDetector(
+                        onTap: () => controller.gotoProductComboDetails(),
+                        child: AnimateWrapper(
+                          index: index,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 3, vertical: 4),
+                            child: Card(
+                              child: Container(
+                                width: 200,
+                                padding: const EdgeInsets.only(bottom: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      height: 170,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              product.imageUrl ?? ''),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    ListTile(
+                                      title: Text(
+                                        Formatter.shorten(product.name, 10),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        Formatter.shorten(product.description),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 10, left: 16),
+                                      child: Text(
+                                        Formatter.price(product.price),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildCoupons() {
@@ -208,7 +322,7 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
         itemBuilder: (context, index) {
           final coupon = coupons[index];
           return GestureDetector(
-            onTap: () => controller.gotoStoreDetail(coupon),
+            onTap: () => controller.gotoCouponDetail(coupon),
             child: AnimateWrapper(
               index: index,
               child: Container(

@@ -75,7 +75,7 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                       SizedBox(height: 10),
                       Center(
                         child: Text(
-                          'Đưa mã này cho nhân viên quét để kích hoạt',
+                          'Đưa mã này cho nhân viên quét kích hoạt',
                           style: TextStyle(
                             color: Colors.black54,
                             fontSize: 16,
@@ -117,7 +117,7 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                               ),
                               ListItemModel(
                                   label:
-                                      "Khi thanh toán chỉ áp dụng duy nhất 1 mã (bao gồm khách đi lẻ và đi theo nhóm"),
+                                      "Khi thanh toán chỉ áp dụng duy nhất 1 mã"),
                               ListItemModel(
                                   label:
                                       "Áp dụng cho nhiều sản phẩm trong cùng hóa đơn"),
@@ -130,35 +130,35 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                         bulletSize: 3,
                       ),
                     ),
-                      Container(
-                        width: screenSize.width * 0.75,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: Row(
-                                children: [
-                                  Icon(Icons.directions, color: Colors.white),
-                                  Text('Chỉ đường'),
-                                ],
-                              ),
+                    Container(
+                      width: screenSize.width * 0.75,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Row(
+                              children: [
+                                Icon(Icons.directions, color: Colors.white),
+                                Text('Chỉ đường'),
+                              ],
                             ),
-                            SizedBox(
-                              width: 6,
+                          ),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          OutlinedButton.icon(
+                            onPressed: () {},
+                            label: Row(
+                              children: [
+                                Text('Gọi cửa hàng'),
+                              ],
                             ),
-                            OutlinedButton.icon(
-                              onPressed: () {},
-                              label: Row(
-                                children: [
-                                  Text('Gọi cửa hàng'),
-                                ],
-                              ),
-                              icon: Icon(Icons.phone),
-                            ),
-                          ],
-                        ),
+                            icon: Icon(Icons.phone),
+                          ),
+                        ],
                       ),
+                    ),
                   ],
                 ),
               ),
@@ -167,9 +167,7 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
         ],
       ),
     );
-
   }
-
 
   Widget buildTextField(BuildContext context) => TextField(
         //controller: controller,

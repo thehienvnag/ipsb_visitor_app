@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:animated_floating_buttons/animated_floating_buttons.dart';
 
@@ -21,15 +22,30 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          //title: Text('Product Detail'),
-          backgroundColor: Colors.white,
+          // leading: ,
+          centerTitle: true,
+          title: Text(
+            'PRODUCT DETAILS',
+            // style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: AppColors.primary,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: AppColors.gradientColor,
+                begin: const FractionalOffset(0.2, 0.0),
+                end: const FractionalOffset(0.4, 0.0),
+                stops: [0.0, 1.0],
+              ),
+            ),
+          ),
         ),
         floatingActionButton: AnimatedFloatingActionButton(
             //Fab list
             fabButtons: <Widget>[buildVisitStore(), buildAddShoppingList()],
             key: key,
-            colorStartAnimation: Colors.blue,
-            colorEndAnimation: Colors.red,
+            colorStartAnimation: AppColors.primary,
+            colorEndAnimation: Colors.pinkAccent,
             animatedIconData: AnimatedIcons.menu_close //To principal button
             ),
         body: SingleChildScrollView(
@@ -82,11 +98,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 child: Container(
                   margin: EdgeInsets.only(top: 18, bottom: 8, left: 20),
                   child: Text(
-                    'Variations',
+                    'VARIANTS',
                     style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20,
-                        letterSpacing: 1),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      letterSpacing: 1,
+                      fontFamily: Fonts.montserrat,
+                    ),
                   ),
                 ),
               ),
@@ -110,7 +128,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
-                        color: Color(0xff3FB1AB),
+                        color: AppColors.primary,
                       ),
                     ),
                   ),
@@ -131,7 +149,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
-                        color: Color(0xff3FB1AB),
+                        color: AppColors.primary,
                       ),
                     ),
                   ),
@@ -152,7 +170,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
-                        color: Color(0xff3FB1AB),
+                        color: AppColors.primary,
                       ),
                     ),
                   ),
@@ -173,7 +191,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
-                        color: Color(0xff3FB1AB),
+                        color: AppColors.primary,
                       ),
                     ),
                   ),
@@ -258,28 +276,28 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       );
   Widget buildVisitStore() => FloatingActionButton.extended(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(4),
         ),
         onPressed: () {},
         foregroundColor: Colors.white,
-        backgroundColor: Color(0xff3FB1AB),
+        backgroundColor: AppColors.secondary,
         icon: Icon(
-          Icons.location_on_outlined,
+          Icons.directions,
           color: Colors.white,
         ),
-        label: Text('Visit Store'),
+        label: Text('DIRECTIONS'),
       );
   Widget buildAddShoppingList() => FloatingActionButton.extended(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(4),
         ),
         onPressed: () {},
         foregroundColor: Colors.white,
-        backgroundColor: Color(0xff3FB1AB),
+        backgroundColor: AppColors.secondary,
         icon: Icon(
-          Icons.add_circle_outline,
+          Icons.add,
           color: Colors.white,
         ),
-        label: Text('Add Shopping List'),
+        label: Text('ADD SHOPPING LIST'),
       );
 }

@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:animated_floating_buttons/animated_floating_buttons.dart';
 
@@ -22,15 +23,30 @@ class _ComboProductDetailPageState extends State<ComboProductDetailPage> {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          //title: Text('Product Detail'),
-          backgroundColor: Colors.white,
+          // leading: ,
+          centerTitle: true,
+          title: Text(
+            'COMBO',
+            // style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: AppColors.primary,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: AppColors.gradientColor,
+                begin: const FractionalOffset(0.2, 0.0),
+                end: const FractionalOffset(0.4, 0.0),
+                stops: [0.0, 1.0],
+              ),
+            ),
+          ),
         ),
         floatingActionButton: AnimatedFloatingActionButton(
             //Fab list
             fabButtons: <Widget>[buildVisitStore(), buildAddShoppingList()],
             key: key,
-            colorStartAnimation: Colors.blue,
-            colorEndAnimation: Colors.red,
+            colorStartAnimation: AppColors.primary,
+            colorEndAnimation: Colors.pinkAccent,
             animatedIconData: AnimatedIcons.menu_close //To principal button
             ),
         body: SingleChildScrollView(
@@ -60,12 +76,22 @@ class _ComboProductDetailPageState extends State<ComboProductDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(left: 20, top: 20),
-                    width: 200,
+                    margin: EdgeInsets.only(left: 10, top: 20),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
+                    width: 220,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade400),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
                     child: Text(
                       'Tea Tree Oil - The Body Shop',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w800, fontSize: 22),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 22,
+                      ),
                     ),
                   ),
                   Container(
@@ -79,7 +105,7 @@ class _ComboProductDetailPageState extends State<ComboProductDetailPage> {
                 ],
               ),
               Container(
-                margin: const EdgeInsets.only(top: 27, right: 13, left: 13),
+                margin: const EdgeInsets.only(top: 27, right: 9, left: 9),
                 padding: const EdgeInsets.only(
                   top: 10,
                   left: 10,
@@ -96,18 +122,17 @@ class _ComboProductDetailPageState extends State<ComboProductDetailPage> {
                     Container(
                       margin:
                           const EdgeInsets.only(top: 10, right: 13, left: 13),
-                      padding: const EdgeInsets.only(
-                        top: 7,
-                        left: 10,
-                        right: 10,
-                        bottom: 7,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 2,
                       ),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black26, width: 1),
                         borderRadius: BorderRadius.circular(4),
-                        color: Color(0xff3FB1AB),
+                        color: AppColors.primary,
                       ),
                       child: Container(
+                        padding: const EdgeInsets.all(5),
                         child: Text(
                           'Total 3 Items in combo',
                           style: TextStyle(
@@ -261,7 +286,7 @@ class _ComboProductDetailPageState extends State<ComboProductDetailPage> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 27, right: 13, left: 13),
+                margin: const EdgeInsets.only(top: 27, right: 9, left: 9),
                 padding: const EdgeInsets.only(
                   top: 10,
                   left: 10,
@@ -339,28 +364,28 @@ class _ComboProductDetailPageState extends State<ComboProductDetailPage> {
 
   Widget buildVisitStore() => FloatingActionButton.extended(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(4),
         ),
         onPressed: () {},
         foregroundColor: Colors.white,
-        backgroundColor: Color(0xff3FB1AB),
+        backgroundColor: AppColors.secondary,
         icon: Icon(
-          Icons.location_on_outlined,
+          Icons.directions,
           color: Colors.white,
         ),
-        label: Text('Visit Store'),
+        label: Text('DIRECTIONS'),
       );
   Widget buildAddShoppingList() => FloatingActionButton.extended(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(4),
         ),
         onPressed: () {},
         foregroundColor: Colors.white,
-        backgroundColor: Color(0xff3FB1AB),
+        backgroundColor: AppColors.secondary,
         icon: Icon(
-          Icons.add_circle_outline,
+          Icons.add,
           color: Colors.white,
         ),
-        label: Text('Add Shopping List'),
+        label: Text('ADD SHOPPING LIST'),
       );
 }

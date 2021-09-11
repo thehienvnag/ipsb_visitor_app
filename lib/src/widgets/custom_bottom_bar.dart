@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
@@ -24,7 +25,7 @@ class BottomItem extends SalomonBottomBarItem {
     required this.route,
     required this.text,
     required this.icon,
-    this.color = Colors.blueAccent,
+    this.color = AppColors.primary,
   }) : super(
           title: Text(text),
           icon: icon,
@@ -72,7 +73,7 @@ class CustomBottombar extends GetView<CustomBottombarController> {
             BoxShadow(
               color: Colors.grey.shade200,
               blurRadius: 4.0,
-              offset: Offset(0, 0),
+              offset: Offset(-2, 0),
             ),
           ],
         ),

@@ -12,6 +12,7 @@ import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
 import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
+import 'package:indoor_positioning_visitor/src/widgets/user_welcome.dart';
 
 class MyCouponDetailPage extends GetView<MyCouponDetailController> {
   final dateTime = DateTime.now();
@@ -170,7 +171,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                 ),
                                 ListItemModel(
                                     label:
-                                        "Khi thanh toán chỉ áp dụng duy nhất 1 mã (bao gồm khách đi lẻ và đi theo nhóm"),
+                                        "Khi thanh toán chỉ áp dụng duy nhất 1 mã"),
                                 ListItemModel(
                                     label:
                                         "Áp dụng cho nhiều sản phẩm trong cùng hóa đơn"),
@@ -186,7 +187,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                     ],
                   ),
                   Container(
-                    height: 140,
+                    height: 150,
                     padding: const EdgeInsets.only(bottom: 15),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -238,38 +239,51 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
             icon: Icon(Icons.qr_code),
             label: Text('SỬ DỤNG'),
           ),
-        if (state == 2) couponInUse.feedbackContent == null ? Container(
-          child: ElevatedButton(
-            onPressed: () {
-              sharedData.couponInUse.value = couponInUse;
-              Get.toNamed(Routes.feedbackCoupon);
-              },
-            child: Row(
-              children: [
-                Icon(Icons.library_add_check_rounded, color: Colors.white),
-                Text('Feedback'),
-              ],
-            ),
-          ),
-        ) :
-        Container(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                primary: Colors.lightGreen,
-               ),
-            onPressed: () {
-              // sharedData.couponInUse.value = couponInUse;
-              // Get.toNamed(Routes.feedbackCoupon);
-
-            },
-            child: Row(
-              children: [
-                Icon(Icons.library_add_check_rounded, color: Colors.white),
-                Text('  Đã feedback'),
-              ],
-            ),
-          ),
-        ),
+        if (state == 2)
+          couponInUse.feedbackContent == null
+              ? Container(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: AppColors.primary,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 10,
+                      ),
+                    ),
+                    onPressed: () {
+                      sharedData.couponInUse.value = couponInUse;
+                      Get.toNamed(Routes.feedbackCoupon);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.library_add_check_rounded,
+                            color: Colors.white),
+                        Container(
+                          margin: const EdgeInsets.only(left: 10),
+                          child: Text('Give feedback'),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : Container(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.lightGreen,
+                    ),
+                    onPressed: () {
+                      // sharedData.couponInUse.value = couponInUse;
+                      // Get.toNamed(Routes.feedbackCoupon);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.library_add_check_rounded,
+                            color: Colors.white),
+                        Text('  Đã feedback'),
+                      ],
+                    ),
+                  ),
+                ),
         SvgPicture.asset(
           state == 3 ? ConstImg.couponSaved : ConstImg.couponExpired,
           semanticsLabel: 'Acme Logo',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:indoor_positioning_visitor/src/pages/map/controllers/map_controller.dart';
 import 'package:menu_button/menu_button.dart';
 
@@ -47,12 +48,12 @@ class CustomMenuButton extends GetView<MapController> {
           children: <Widget>[
             Icon(
               Icons.map_rounded,
-              color: Colors.blueAccent,
+              color: AppColors.primary,
             ),
             Flexible(
               child: Text(
                 'Tầng ${selected?.floorCode ?? ''}',
-                style: TextStyle(color: Colors.blueAccent),
+                style: TextStyle(color: AppColors.primary),
               ),
             ),
           ],

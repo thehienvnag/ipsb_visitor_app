@@ -20,5 +20,5 @@ class Routes {
   static const String updateProfile = "/updateProfile";
 
   static const String productDetail = "/productDetail";
-  static const String comboProductDetail = "/comboProductDetail";
+  static const String productComboDetail = "/comboProductDetail";
 }
