@@ -10,7 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'location.g.dart';
 
 @JsonSerializable()
-@HiveType(typeId: 0)
+@HiveType(typeId: AppHiveType.location)
 class Location {
   @HiveField(0)
   final int? id;

@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:indoor_positioning_visitor/src/models/storage_list.dart';
 
-class BaseStorage {
+class HiveStorage {
   static Future<List<T>> useStorageList<T>({
     required Future<List<T>> Function() apiCallback,
     required String storageBoxName,

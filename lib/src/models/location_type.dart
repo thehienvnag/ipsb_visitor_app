@@ -1,10 +1,11 @@
 import 'package:hive/hive.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'location_type.g.dart';
 
 @JsonSerializable()
-@HiveType(typeId: 1)
+@HiveType(typeId: AppHiveType.locationType)
 class LocationType {
   @HiveField(0)
   final int? id;

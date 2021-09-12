@@ -113,11 +113,14 @@ dependencies:
 
 
 
-  # Sqlite for local db
+  # Hive for local db
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   path_provider: ^2.0.2
 
+  # Secure storage for storing credentials
+  flutter_secure_storage: ^4.2.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

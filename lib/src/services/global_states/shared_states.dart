@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/common/constants.dart';
+import 'package:indoor_positioning_visitor/src/models/account.dart';
 import 'package:indoor_positioning_visitor/src/models/building.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
@@ -27,6 +28,9 @@ class SharedStates extends GetxService {
 
   // User login in app
   User? user;
+
+  /// Account info
+  final userLoggedIn = Account().obs;
 
   // Function call login screen
   void bottomSheet(context) {

@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
-
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:indoor_positioning_visitor/src/common/constants.dart';
@@ -25,6 +25,16 @@ class Utils {
       errorBuilder: (context, error, stackTrace) =>
           Image.asset(Constants.imageErr),
     );
+  }
+
+  static ImageProvider<Object> resolveFileImg(String? url, String? altUrl) {
+    if ((url == null || url.isEmpty) && (altUrl == null || altUrl.isEmpty)) {
+      throw Exception("Required file image or alternative image");
+    }
+    if (url != null && url.isNotEmpty) {
+      return FileImage(File(url));
+    }
+    return AssetImage(altUrl!);
   }
 
   static DecorationImage resolveDecoImg(String? url,

@@ -1,11 +1,12 @@
 import 'package:hive/hive.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:indoor_positioning_visitor/src/models/location.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'edge.g.dart';
 
 @JsonSerializable()
-@HiveType(typeId: 3)
+@HiveType(typeId: AppHiveType.edge)
 class Edge {
   @HiveField(0)
   final int? id;

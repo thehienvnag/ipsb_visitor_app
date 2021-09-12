@@ -1,11 +1,12 @@
 import 'package:hive/hive.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'store.g.dart';
 
 @JsonSerializable()
-@HiveType(typeId: 4)
+@HiveType(typeId: AppHiveType.store)
 class Store {
   @HiveField(0)
   final int? id;

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/shortest_path.dart';
+import 'package:indoor_positioning_visitor/src/common/constants.dart';
 import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
 import 'package:indoor_positioning_visitor/src/models/edge.dart';
 import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
@@ -9,6 +10,7 @@ import 'package:indoor_positioning_visitor/src/models/location.dart';
 import 'package:indoor_positioning_visitor/src/models/location_type.dart';
 import 'package:indoor_positioning_visitor/src/models/storage_list.dart';
 import 'package:indoor_positioning_visitor/src/models/store.dart';
+import 'package:indoor_positioning_visitor/src/services/api/account_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/building_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
@@ -18,6 +20,7 @@ import 'package:indoor_positioning_visitor/src/services/api/location_service.dar
 import 'package:indoor_positioning_visitor/src/services/api/product_category_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/product_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
+import 'package:indoor_positioning_visitor/src/services/global_states/auth_services.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
 
@@ -50,7 +53,9 @@ class AppInit {
       ..registerAdapter<LocationType>(LocationTypeAdapter())
       ..registerAdapter<FloorPlan>(FloorPlanAdapter())
       ..registerAdapter<Store>(StoreAdapter())
-      ..registerAdapter<StorageList<Edge>>(StorageListAdapter<Edge>(5));
+      ..registerAdapter<StorageList<Edge>>(
+        StorageListAdapter<Edge>(typeId: AppHiveType.storageListEdge),
+      );
   }
 
   /// Init algorithms services
@@ -63,6 +68,8 @@ class AppInit {
   static void initApiServices() {
     // Use for calling api
     Get.lazyPut<IApiHelper>(() => ApiHelper(), fenix: true);
+    // Calling api at account service
+    Get.lazyPut<IAccountService>(() => AccountService(), fenix: true);
     // Calling api at edge service
     Get.lazyPut<IEdgeService>(() => EdgeService(), fenix: true);
     // Calling api at location service

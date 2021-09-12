@@ -71,7 +71,7 @@ class ProfileIcon extends StatelessWidget {
         child: CircleAvatar(
           backgroundColor: Colors.grey[100],
           child: Image.asset("assets/images/profile.png"),
-          radius: 19,
+          radius: 30,
         ),
       ),
     );

@@ -8,6 +8,8 @@ part of 'account.dart';
 
 Account _$AccountFromJson(Map<String, dynamic> json) {
   return Account(
+    accessToken: json['accessToken'] as String?,
+    refreshToken: json['refreshToken'] as String?,
     id: json['id'] as int?,
     name: json['name'] as String?,
     role: json['role'] as String?,
@@ -25,5 +27,7 @@ Map<String, dynamic> _$AccountToJson(Account instance) => <String, dynamic>{
       'imageUrl': instance.imageUrl,
       'phone': instance.phone,
       'email': instance.email,
+      'accessToken': instance.accessToken,
+      'refreshToken': instance.refreshToken,
       'status': instance.status,
     };

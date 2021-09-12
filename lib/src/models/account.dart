@@ -10,18 +10,23 @@ class Account {
       imageUrl,
       phone,
       email,
+      accessToken,
+      refreshToken,
       status;
 
-  factory Account.fromJson(Map<String, dynamic> json) => _$AccountFromJson(json);
+  factory Account.fromJson(Map<String, dynamic> json) =>
+      _$AccountFromJson(json);
 
   Account({
+    this.accessToken,
+    this.refreshToken,
     this.id,
     this.name,
     this.role,
     this.imageUrl,
     this.phone,
     this.email,
-    this.status
+    this.status,
   });
 
   Map<String, dynamic> toJson() => _$AccountToJson(this);

@@ -95,3 +95,12 @@ class ConstImg {
   static const String couponSaved = "assets/images/saved.svg";
   static const String couponExpired = "assets/images/expired.svg";
 }
+
+class AppHiveType {
+  static const int location = 0;
+  static const int locationType = 1;
+  static const int floorPlan = 2;
+  static const int edge = 3;
+  static const int store = 4;
+  static const int storageListEdge = 5;
+}

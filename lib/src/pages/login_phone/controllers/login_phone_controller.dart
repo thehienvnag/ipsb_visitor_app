@@ -4,33 +4,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
+import 'package:indoor_positioning_visitor/src/services/global_states/auth_services.dart';
 
 class LoginPhoneController extends GetxController {
   TextEditingController otpController = TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // Share states across app
-  final SharedStates sharedStates = Get.find();
-
-  // code send to verify
+  /// Code send to verify
   final codeVerifile = "".obs;
 
-  // set code verify
+  /// Set code verify
   void setCodeVerify(String code) {
     codeVerifile.value = code;
   }
 
-  // phone of visitor
+  /// Phone of visitor
   final phoneNumber = "".obs;
 
-  // set phone
+  /// Set phone
   void setPhone(String phone) {
     phoneNumber.value = phone;
   }
 
   void sendCodeToPhone(String phone) async {
-    BotToast.showLoading();
     await _auth.verifyPhoneNumber(
       phoneNumber: '+84' + phone,
       verificationCompleted: (phoneAuthCredential) {
@@ -77,15 +73,15 @@ class LoginPhoneController extends GetxController {
           duration: const Duration(seconds: 5),
           contentColor: Colors.white,
         );
+        AuthServices.loginWithFirebase(authCredential.user!);
         Get.toNamed(Routes.updateProfile);
-        print('thông tin đăng nhập bằng sdt nè: ' +
-            authCredential.user.toString());
       }
     } on FirebaseAuthException catch (e) {
       BotToast.showText(
-          text: "Error during process: " + e.message.toString(),
-          textStyle: TextStyle(fontSize: 16),
-          duration: const Duration(seconds: 7));
+        text: "Error during process: " + e.message.toString(),
+        textStyle: TextStyle(fontSize: 16),
+        duration: const Duration(seconds: 7),
+      );
     }
   }
 }

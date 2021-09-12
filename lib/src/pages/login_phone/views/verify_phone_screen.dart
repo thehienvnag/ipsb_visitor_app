@@ -40,10 +40,11 @@ class VerifyPhoneScreen extends GetView<LoginPhoneController> {
               children: <Widget>[
                 SizedBox(height: 40),
                 Center(
-                    child: Text(
-                  'Verification code has sent to ${controller.phoneNumber.value}. Please enter the text verification code.',
-                  style: TextStyle(color: Colors.black87, fontSize: 16),
-                )),
+                  child: Text(
+                    'Verification code has sent to ${controller.phoneNumber.value}. Please enter the text verification code.',
+                    style: TextStyle(color: Colors.black87, fontSize: 16),
+                  ),
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.8,
                   height: 60,
@@ -85,7 +86,6 @@ class VerifyPhoneScreen extends GetView<LoginPhoneController> {
                     ],
                     onCompleted: (v) {
                       controller.verifyCodeFromPhone(v);
-                      print("Completed" + v);
                     },
                     onChanged: (value) {
                       // print(value);

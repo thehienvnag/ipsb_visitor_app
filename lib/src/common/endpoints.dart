@@ -35,4 +35,13 @@ class Endpoints {
 
   /// ProductCategory enpoint version /api/v1
   static const productCategory = '$apiVer1/product-categories';
+
+  /// Account enpoint version /api/v1
+  static const accounts = '$apiVer1/accounts';
+
+  /// Login via firebase endpoint version /api/v1
+  static const loginFirebase = '$apiVer1/auth/login-firebase';
+
+  /// Refresh token endpoint version /api/v1
+  static const refreshToken = '$apiVer1/auth/refresh-token';
 }

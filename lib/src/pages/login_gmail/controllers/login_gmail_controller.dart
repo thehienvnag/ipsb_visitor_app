@@ -5,22 +5,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
+import 'package:indoor_positioning_visitor/src/services/global_states/auth_services.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 
 class LoginEmailController extends GetxController {
-
   // Share states across app
   final SharedStates sharedStates = Get.find();
 
   GoogleSignIn? _googleSignIn;
-  User? _user;
 
   // Show password
   final isShowPass = true.obs;
 
   // Save change show password
-  void changeIshowPass(){
+  void changeIshowPass() {
     isShowPass.value = !isShowPass.value;
   }
 
@@ -30,62 +28,61 @@ class LoginEmailController extends GetxController {
       _googleSignIn = GoogleSignIn();
       GoogleSignInAccount? googleSignInAccount = await _googleSignIn!.signIn();
       GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount!.authentication;
+          await googleSignInAccount!.authentication;
 
       AuthCredential credential = GoogleAuthProvider.credential(
-          idToken: googleSignInAuthentication.idToken,
-          accessToken: googleSignInAuthentication.accessToken);
+        idToken: googleSignInAuthentication.idToken,
+        accessToken: googleSignInAuthentication.accessToken,
+      );
 
-      UserCredential result = await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential result =
+          await FirebaseAuth.instance.signInWithCredential(credential);
 
-      _user = result.user;
       BotToast.closeAllLoading();
-      if(_user.toString().isNotEmpty){
-        BotToast.showText(text: "Sign In Successfull");
-        sharedStates.user = _user;
-        Get.toNamed(Routes.home);
-      }else{
-        Get.toNamed(Routes.login);
+      if (result.user != null) {
+        /// Login with firebase
+        bool successLogin = await AuthServices.loginWithFirebase(result.user!);
+        if (successLogin) {
+          BotToast.showText(text: "Sign In Successfull");
+          Get.back();
+        }
       }
     } catch (e) {
-      log("Lỗi: "+ e.toString());
+      log("Lỗi: " + e.toString());
       BotToast.closeAllLoading();
       BotToast.showText(text: "Sign In Failed");
-      Get.toNamed(Routes.login);
     }
-    print("Thông tin nè: " +_user.toString());
   }
 
-  void checkLoginWithPhoneAndPass(String phone, String pass){
-    try{
+  void checkLoginWithPhoneAndPass(String phone, String pass) {
+    try {
       BotToast.showLoading();
-      if(phone.isNotEmpty && pass.isNotEmpty){
+      if (phone.isNotEmpty && pass.isNotEmpty) {
         // lưu DB and User here
 
         BotToast.closeAllLoading();
-        BotToast.showText(text: "Sign In Successfull",
+        BotToast.showText(
+            text: "Sign In Successfull",
             textStyle: TextStyle(fontSize: 16),
             duration: const Duration(seconds: 5));
         //Get.toNamed(Routes.home);
-      }else{
-        BotToast.showText(text: "Required Information!",
+      } else {
+        BotToast.showText(
+            text: "Required Information!",
             textStyle: TextStyle(fontSize: 16),
             duration: const Duration(seconds: 7));
         BotToast.closeAllLoading();
       }
-    }catch (e) {
-      log("Lỗi: "+ e.toString());
+    } catch (e) {
+      log("Lỗi: " + e.toString());
       BotToast.closeAllLoading();
       BotToast.showText(text: "Your phone or password wrong ! Login In Failed");
-      Get.toNamed(Routes.login);
     }
   }
-
 
   Future<void> logOut() async {
     await FirebaseAuth.instance.signOut();
     await _googleSignIn!.signOut();
     BotToast.showText(text: "Logout Successfully");
   }
-
 }

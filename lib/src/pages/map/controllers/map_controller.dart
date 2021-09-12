@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/graph.dart';
 import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/shortest_path.dart';
 import 'package:indoor_positioning_visitor/src/common/constants.dart';
@@ -15,7 +14,7 @@ import 'package:indoor_positioning_visitor/src/services/api/floor_plan_service.d
 import 'package:indoor_positioning_visitor/src/services/api/location_service.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
-import 'package:indoor_positioning_visitor/src/services/storage/base_storage.dart';
+import 'package:indoor_positioning_visitor/src/services/storage/hive_storage.dart';
 import 'package:indoor_positioning_visitor/src/utils/edge_helper.dart';
 import 'package:indoor_positioning_visitor/src/widgets/indoor_map/indoor_map_controller.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -215,7 +214,7 @@ class MapController extends GetxController {
   Future<void> loadEdgesInBuilding() async {
     int? buildingId = sharedData.building.value.id;
     if (buildingId != null) {
-      final edgesResult = await BaseStorage.useStorageList<Edge>(
+      final edgesResult = await HiveStorage.useStorageList<Edge>(
         apiCallback: () => _edgeService.getByBuildingId(buildingId),
         transformData: EdgeHelper.splitToSegments,
         storageBoxName: StorageConstants.edgeBox,

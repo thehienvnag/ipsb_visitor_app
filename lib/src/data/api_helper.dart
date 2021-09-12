@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:indoor_positioning_visitor/src/common/constants.dart';
+import 'package:indoor_positioning_visitor/src/services/global_states/auth_services.dart';
 
 mixin IApiHelper {
   // Get all from an API [endpoint] using [uri] and [query]
@@ -58,6 +60,8 @@ mixin IApiHelper {
 
 /// Class for calling HTTP methods
 class ApiHelper extends GetConnect with IApiHelper {
+  /// Auth services
+  // final IAuthService _authService = Get.find();
   @override
   void onInit() {
     super.onInit();
@@ -65,6 +69,13 @@ class ApiHelper extends GetConnect with IApiHelper {
     // Set baseUrl & timeout for API call
     httpClient.baseUrl = Constants.baseUrl;
     httpClient.timeout = Constants.timeout;
+
+    // Request modifier: [Add bearer token]
+    httpClient.addRequestModifier((Request request) async {
+      request.headers["Authorization"] = await AuthServices.getAuthHeader();
+      print("Token: " + request.headers["Authorization"].toString());
+      return request;
+    });
   }
 
   @override
