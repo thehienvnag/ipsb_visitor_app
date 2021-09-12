@@ -25,6 +25,8 @@ import 'package:indoor_positioning_visitor/src/pages/profile_detail/bindings/pro
 import 'package:indoor_positioning_visitor/src/pages/profile_detail/views/profile_detail_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/setting/bindings/setting_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/setting/views/setting_page.dart';
+import 'package:indoor_positioning_visitor/src/pages/shopping_list/bindings/shopping_list_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/shopping_list/views/shopping_list_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/test_algorithm/bindings/test_algorithm_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/test_algorithm/views/test_algorithm_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/update_infomation_signup/bindings/update_profile_binding.dart';
@@ -144,6 +146,11 @@ class AppPages {
       name: Routes.productComboDetail,
       page: () => ComboProductDetailPage(),
       binding: ComboProductDetailBinding(),
+    ),
+    GetPage(
+      name: Routes.shoppingList,
+      page: () => ShoppingListPage(),
+      binding: ShoppingListBinding(),
     ),
   ];
 }

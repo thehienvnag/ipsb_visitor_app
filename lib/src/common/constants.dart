@@ -68,6 +68,7 @@ class AppBoxShadow {
 class AppColors {
   static const Color primary = const Color(0xffFF6F66);
   static const Color secondary = const Color(0xffA48EAA);
+  static const Color colorBlue = const Color(0xff64B0E7);
   static const List<Color> gradientColor = [
     Color(0xff64B0E7),
     Color(0xff64B0E7)
