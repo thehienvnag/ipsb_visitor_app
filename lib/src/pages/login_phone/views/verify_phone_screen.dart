@@ -1,8 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:com.ipsb.visitor_app/src/common/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/pages/login_phone/controllers/login_phone_controller.dart';
+import 'package:com.ipsb.visitor_app/src/pages/login_phone/controllers/login_phone_controller.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyPhoneScreen extends GetView<LoginPhoneController> {
@@ -58,18 +59,20 @@ class VerifyPhoneScreen extends GetView<LoginPhoneController> {
                     //obscuringCharacter: '*',
                     // obscuringWidget: FlutterLogo(
                     //   size: 24,
-                    // ),
+                    // )
 
                     blinkWhenObscuring: true,
                     animationType: AnimationType.fade,
                     pinTheme: PinTheme(
                       shape: PinCodeFieldShape.box,
                       borderRadius: BorderRadius.circular(5),
-                      activeColor: Colors.purpleAccent,
+                      activeColor: Colors.black26,
+                      borderWidth: 1,
+                      selectedFillColor: Colors.white,
                       inactiveFillColor: Colors.white,
                       fieldHeight: 50,
                       fieldWidth: 40,
-                      activeFillColor: Colors.grey.withOpacity(0.3),
+                      activeFillColor: Colors.orange[50],
                       inactiveColor: Colors.white,
                     ),
                     cursorColor: Colors.black,
@@ -135,14 +138,7 @@ class VerifyPhoneScreen extends GetView<LoginPhoneController> {
                           height: 5,
                         ),
                         Text(
-                          "1. If your phone cannot receive the SMS verification code, please select Accept voice verification code and wait for the (+84) 931-182-303's call.",
-                          style: TextStyle(fontSize: 15, color: Colors.black),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          "2. Receiving a voice verification call is free of charge verification.",
+                          "- Click on Resend button that we would send you a new SMS verification code.",
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
                       ],

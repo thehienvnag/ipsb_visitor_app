@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/auth_services.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/auth_services.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
 
 class LoginEmailController extends GetxController {
   // Share states across app
@@ -38,7 +38,6 @@ class LoginEmailController extends GetxController {
       UserCredential result =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
-      BotToast.closeAllLoading();
       if (result.user != null) {
         /// Login with firebase
         bool successLogin = await AuthServices.loginWithFirebase(result.user!);
@@ -49,9 +48,9 @@ class LoginEmailController extends GetxController {
       }
     } catch (e) {
       log("Lỗi: " + e.toString());
-      BotToast.closeAllLoading();
       BotToast.showText(text: "Sign In Failed");
     }
+    BotToast.closeAllLoading();
   }
 
   void checkLoginWithPhoneAndPass(String phone, String pass) {
@@ -60,7 +59,6 @@ class LoginEmailController extends GetxController {
       if (phone.isNotEmpty && pass.isNotEmpty) {
         // lưu DB and User here
 
-        BotToast.closeAllLoading();
         BotToast.showText(
             text: "Sign In Successfull",
             textStyle: TextStyle(fontSize: 16),
@@ -71,13 +69,13 @@ class LoginEmailController extends GetxController {
             text: "Required Information!",
             textStyle: TextStyle(fontSize: 16),
             duration: const Duration(seconds: 7));
-        BotToast.closeAllLoading();
       }
     } catch (e) {
       log("Lỗi: " + e.toString());
-      BotToast.closeAllLoading();
+
       BotToast.showText(text: "Your phone or password wrong ! Login In Failed");
     }
+    BotToast.closeAllLoading();
   }
 
   Future<void> logOut() async {

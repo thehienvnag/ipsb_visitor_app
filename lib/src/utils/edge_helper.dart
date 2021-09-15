@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:indoor_positioning_visitor/src/models/edge.dart';
-import 'package:indoor_positioning_visitor/src/models/location.dart';
+import 'package:com.ipsb.visitor_app/src/models/edge.dart';
+import 'package:com.ipsb.visitor_app/src/models/location.dart';
 
 const double cmToMeter = 3.5;
 const double meterToPixel = 10.8;

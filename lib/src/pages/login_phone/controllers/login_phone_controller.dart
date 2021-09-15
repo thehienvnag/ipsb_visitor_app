@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/auth_services.dart';
+import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/auth_services.dart';
 
 class LoginPhoneController extends GetxController {
   TextEditingController otpController = TextEditingController();
@@ -67,14 +67,14 @@ class LoginPhoneController extends GetxController {
       final authCredential =
           await _auth.signInWithCredential(phoneAuthCredential);
       if (authCredential.user != null) {
-        BotToast.closeAllLoading();
         BotToast.showText(
           text: "Verification Success",
           duration: const Duration(seconds: 5),
           contentColor: Colors.white,
         );
-        AuthServices.loginWithFirebase(authCredential.user!);
-        Get.toNamed(Routes.updateProfile);
+        if (await AuthServices.loginWithFirebase(authCredential.user!)) {
+          Get.toNamed(Routes.updateProfile);
+        }
       }
     } on FirebaseAuthException catch (e) {
       BotToast.showText(
@@ -83,5 +83,6 @@ class LoginPhoneController extends GetxController {
         duration: const Duration(seconds: 7),
       );
     }
+    BotToast.closeAllLoading();
   }
 }

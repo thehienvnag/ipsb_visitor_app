@@ -2,9 +2,9 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/widgets/image_view/image_view.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/image_view/image_view.dart';
 
-import 'package:indoor_positioning_visitor/src/widgets/indoor_map/indoor_map_controller.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
 
 class IndoorMap extends GetView<IndoorMapController> {
   /// Provide a provider of image for display

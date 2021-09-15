@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/auth_services.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
+import 'package:com.ipsb.visitor_app/src/models/coupon_in_use.dart';
+import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/coupon_in_use_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
 
 class MyCouponDetailController extends GetxController {
   /// save coupon for visitor
@@ -46,8 +47,11 @@ class MyCouponDetailController extends GetxController {
   Future<void> getCouponInUse() async {
     final couponId = Get.parameters['couponId'];
     if (couponId == null) return;
-
-    final result = await couponInUseService.getByVisitorIdAndCouponId(9, int.parse(couponId),);
+    if (!AuthServices.isLoggedIn()) return;
+    final result = await couponInUseService.getByVisitorIdAndCouponId(
+      AuthServices.userLoggedIn.value.id!,
+      int.parse(couponId),
+    );
     if (result == null) return;
     if (result.status == couponInUse.value.status) {
       return;
@@ -79,11 +83,15 @@ class MyCouponDetailController extends GetxController {
   }
 
   Future<void> saveCouponInUse(int? couponId) async {
+    if (!AuthServices.isLoggedIn()) {
+      sharedStates.showLoginBottomSheet();
+      return;
+    }
     if (couponId == null) return;
     final dateTime = DateTime.now();
     CouponInUse input = CouponInUse(
       couponId: couponId,
-      visitorId: 9,
+      visitorId: AuthServices.userLoggedIn.value.id,
       redeemDate: dateTime,
       status: "Active",
     );

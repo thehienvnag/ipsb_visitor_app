@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
+import 'package:com.ipsb.visitor_app/src/models/coupon_in_use.dart';
+import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/coupon_in_use_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
 
 class FeedbackCouponController extends GetxController {
   ICouponInUseService couponInUseService = Get.find();
@@ -42,25 +42,25 @@ class FeedbackCouponController extends GetxController {
   var couponId = 0.obs;
 
   Future<void> sendFeedback() async {
-    CouponInUse conpon = sharedStates.couponInUse.value;
+    CouponInUse coupon = sharedStates.couponInUse.value;
     final dateTime = DateTime.now();
     CouponInUse couponInUse = CouponInUse(
-        id: conpon.id,
-        applyDate: conpon.applyDate,
-        visitorId: conpon.visitorId,
-        couponId: conpon.couponId,
-        redeemDate: conpon.redeemDate,
-        status: conpon.status,
+        id: coupon.id,
+        applyDate: coupon.applyDate,
+        visitorId: coupon.visitorId,
+        couponId: coupon.couponId,
+        redeemDate: coupon.redeemDate,
+        status: coupon.status,
         feedbackContent: feedbackContent.value,
         feedbackImage: filePath.value,
         feedBackDate: dateTime,
         rateScore: rating.value);
     BotToast.showLoading();
     final result = await couponInUseService.putFeedbackCouponInUse(
-        couponInUse, filePath.value, conpon.id!);
+        couponInUse, filePath.value, coupon.id!);
 
     BotToast.closeAllLoading();
-    if (result != null) {
+    if (result) {
       BotToast.showText(text: "Đánh giá thành công");
       Timer(Duration(seconds: 2), () {
         Get.toNamed(Routes.myCoupon);

@@ -1,6 +1,6 @@
-import 'package:indoor_positioning_visitor/src/common/endpoints.dart';
-import 'package:indoor_positioning_visitor/src/models/edge.dart';
-import 'package:indoor_positioning_visitor/src/services/api/base_service.dart';
+import 'package:com.ipsb.visitor_app/src/common/endpoints.dart';
+import 'package:com.ipsb.visitor_app/src/models/edge.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/base_service.dart';
 
 mixin IEdgeService {
   /// Get list of edges from a floor plan

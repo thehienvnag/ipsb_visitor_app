@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/services/api/location_service.dart';
-import 'package:indoor_positioning_visitor/src/widgets/indoor_map/indoor_map_controller.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/location_service.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
 
 class TestAlgorithmController extends GetxController {
   /// Inject EdgeService

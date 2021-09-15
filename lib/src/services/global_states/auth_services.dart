@@ -1,12 +1,11 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
-import 'package:indoor_positioning_visitor/src/models/account.dart';
-import 'package:indoor_positioning_visitor/src/services/api/account_service.dart';
-import 'package:indoor_positioning_visitor/src/services/storage/secure_storage.dart';
+import 'package:com.ipsb.visitor_app/src/models/account.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/account_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/storage/secure_storage.dart';
 
 class AuthServices {
   /// Retry count
@@ -35,18 +34,12 @@ class AuthServices {
   static Future<Response> handleUnauthorized(
     Future<Response> Function() callback,
   ) async {
-    late Response res;
-    int currentRetry = retry;
-    for (int i = currentRetry; i > 0; i--) {
+    Response res = await callback.call();
+    if (res.unauthorized && await resfreshToken()) {
       res = await callback.call();
-      if (!res.unauthorized) {
-        if (res.statusCode == HttpStatus.forbidden) {
-          AuthServiceHelper.showForbiddenDialog();
-        }
-        break;
-      }
-      print("Unauthorized, retryCount: $i");
-      if (await resfreshToken()) break;
+    }
+    if (res.statusCode == HttpStatus.forbidden) {
+      AuthServiceHelper.showForbiddenDialog();
     }
     return res;
   }
@@ -75,9 +68,30 @@ class AuthServices {
         SecureStorage.refreshTokenKey,
         accountInfo.refreshToken,
       );
+      SecureStorage.save(
+        SecureStorage.accountId,
+        accountInfo.id.toString(),
+      );
       return true;
     }
     return false;
+  }
+
+  /// Save auth info
+  static void logout() {
+    userLoggedIn.value = Account();
+    SecureStorage.delete(SecureStorage.refreshTokenKey);
+    SecureStorage.delete(SecureStorage.refreshTokenKey);
+    SecureStorage.delete(SecureStorage.accountId);
+  }
+
+  static void initUserFromPrevLogin() async {
+    IAccountService accountService = Get.find();
+    String? idStr = await SecureStorage.read(SecureStorage.accountId);
+    if (idStr == null) return;
+    int id = int.parse(idStr);
+    final accountInfo = await accountService.getById(id);
+    saveAuthInfo(accountInfo);
   }
 }
 

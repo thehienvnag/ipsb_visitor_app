@@ -1,28 +1,28 @@
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/shortest_path.dart';
-import 'package:indoor_positioning_visitor/src/common/constants.dart';
-import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
-import 'package:indoor_positioning_visitor/src/models/edge.dart';
-import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
-import 'package:indoor_positioning_visitor/src/models/location.dart';
-import 'package:indoor_positioning_visitor/src/models/location_type.dart';
-import 'package:indoor_positioning_visitor/src/models/storage_list.dart';
-import 'package:indoor_positioning_visitor/src/models/store.dart';
-import 'package:indoor_positioning_visitor/src/services/api/account_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/building_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/edge_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/floor_plan_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/location_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/product_category_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/product_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/auth_services.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
-import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
+import 'package:com.ipsb.visitor_app/src/algorithm/shortest_path/shortest_path.dart';
+import 'package:com.ipsb.visitor_app/src/common/constants.dart';
+import 'package:com.ipsb.visitor_app/src/data/api_helper.dart';
+import 'package:com.ipsb.visitor_app/src/models/edge.dart';
+import 'package:com.ipsb.visitor_app/src/models/floor_plan.dart';
+import 'package:com.ipsb.visitor_app/src/models/location.dart';
+import 'package:com.ipsb.visitor_app/src/models/location_type.dart';
+import 'package:com.ipsb.visitor_app/src/models/storage_list.dart';
+import 'package:com.ipsb.visitor_app/src/models/store.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/account_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/building_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/coupon_in_use_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/coupon_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/edge_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/floor_plan_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/location_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/product_category_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/product_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/store_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/auth_services.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/custom_bottom_bar.dart';
 
 class AppInit {
   static void init() {
@@ -30,6 +30,7 @@ class AppInit {
     initAlgorithmServices();
     initApiServices();
     initHiveStorage();
+    initUserProfile();
   }
 
   /// Init mobile app services
@@ -88,5 +89,9 @@ class AppInit {
     Get.lazyPut<IProductCategoryService>(() => ProductCategoryService(),
         fenix: true);
     Get.lazyPut<IBuildingService>(() => BuildingService(), fenix: true);
+  }
+
+  static void initUserProfile() {
+    AuthServices.initUserFromPrevLogin();
   }
 }

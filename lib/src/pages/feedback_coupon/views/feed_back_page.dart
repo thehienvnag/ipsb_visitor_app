@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/common/constants.dart';
-import 'package:indoor_positioning_visitor/src/pages/feedback_coupon/controllers/feedback_conpon_controller.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
-import 'package:indoor_positioning_visitor/src/widgets/rounded_button.dart';
+import 'package:com.ipsb.visitor_app/src/common/constants.dart';
+import 'package:com.ipsb.visitor_app/src/pages/feedback_coupon/controllers/feedback_conpon_controller.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/rounded_button.dart';
 
 class FeedbackCouponPage extends GetView<FeedbackCouponController> {
   // final SharedStates sharedData = Get.find();

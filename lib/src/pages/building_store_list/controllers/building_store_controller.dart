@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/product_category.dart';
-import 'package:indoor_positioning_visitor/src/models/store.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/api/product_category_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
+import 'package:com.ipsb.visitor_app/src/models/product_category.dart';
+import 'package:com.ipsb.visitor_app/src/models/store.dart';
+import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/product_category_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/store_service.dart';
 
 class BuildingStoreController extends GetxController {
   IStoreService _storeService = Get.find();

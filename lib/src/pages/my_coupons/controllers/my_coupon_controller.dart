@@ -1,10 +1,9 @@
+import 'package:com.ipsb.visitor_app/src/services/global_states/auth_services.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
-
-
+import 'package:com.ipsb.visitor_app/src/models/coupon.dart';
+import 'package:com.ipsb.visitor_app/src/models/coupon_in_use.dart';
+import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/coupon_in_use_service.dart';
 
 class MyCouponController extends GetxController {
   ICouponInUseService _service = Get.find();
@@ -14,7 +13,10 @@ class MyCouponController extends GetxController {
 
   /// Set list coupon of visitor save before
   Future<void> getCouponInUse() async {
-    final paging = await _service.getCouponInUseByVisitorId(9);
+    if (!AuthServices.isLoggedIn()) return;
+    final paging = await _service.getCouponInUseByVisitorId(
+      AuthServices.userLoggedIn.value.id!,
+    );
     listCouponInUse.value = paging.content!;
   }
 

@@ -1,4 +1,4 @@
-import 'package:indoor_positioning_visitor/src/common/constants.dart';
+import 'package:com.ipsb.visitor_app/src/common/constants.dart';
 import 'package:intl/intl.dart';
 
 class Formatter {

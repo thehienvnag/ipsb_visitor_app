@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/pages/product_detail/controllers/product_detail_controller.dart';
+import 'package:com.ipsb.visitor_app/src/pages/product_detail/controllers/product_detail_controller.dart';
 
 class ProductDetailBinding extends Bindings {
   @override

@@ -1,11 +1,13 @@
-import 'package:indoor_positioning_visitor/src/common/endpoints.dart';
-import 'package:indoor_positioning_visitor/src/models/account.dart';
+import 'package:com.ipsb.visitor_app/src/common/endpoints.dart';
+import 'package:com.ipsb.visitor_app/src/models/account.dart';
 
 import 'base_service.dart';
 
 mixin IAccountService {
   Future<Account?> loginWithFirebase(String idToken);
   Future<Account?> refreshToken(String refreshToken);
+  Future<Account?> getById(int id);
+  Future<bool> updateProfile(int id, Map<String, String> data, String filePath);
 }
 
 class AccountService extends BaseService<Account> with IAccountService {
@@ -21,11 +23,22 @@ class AccountService extends BaseService<Account> with IAccountService {
 
   @override
   Future<Account?> loginWithFirebase(String idToken) async {
-    return postPure(Endpoints.loginFirebase, {"idToken": idToken});
+    return postNoAuth(Endpoints.loginFirebase, {"idToken": idToken});
   }
 
   @override
   Future<Account?> refreshToken(String refreshToken) {
-    return postPure(Endpoints.refreshToken, {"refreshToken": refreshToken});
+    return postNoAuth(Endpoints.refreshToken, {"refreshToken": refreshToken});
+  }
+
+  @override
+  Future<Account?> getById(int id) {
+    return getByIdBase(id);
+  }
+
+  @override
+  Future<bool> updateProfile(
+      int id, Map<String, String> data, String filePath) {
+    return putWithOneFileBase(data, filePath, id);
   }
 }

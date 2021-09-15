@@ -1,7 +1,9 @@
-import 'package:avatar_glow/avatar_glow.dart';
+import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/auth_services.dart';
+import 'package:com.ipsb.visitor_app/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
 
 class UserWelcome extends StatelessWidget {
   final Color textColor;
@@ -63,15 +65,25 @@ class ProfileIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        _sharedStates.showLoginBottomSheet();
+        if (!AuthServices.isLoggedIn()) {
+          _sharedStates.showLoginBottomSheet();
+        } else {
+          Get.toNamed(Routes.profile);
+        }
       },
       icon: Material(
-        elevation: 4,
-        shape: CircleBorder(),
-        child: CircleAvatar(
-          backgroundColor: Colors.grey[100],
-          child: Image.asset("assets/images/profile.png"),
-          radius: 30,
+        elevation: 6,
+        shape:
+            CircleBorder(side: BorderSide(color: Colors.white10, width: 0.5)),
+        child: Obx(
+          () => CircleAvatar(
+            backgroundColor: Colors.grey[100],
+            backgroundImage: Utils.resolveNetworkImg(
+              AuthServices.userLoggedIn.value.imageUrl,
+              "assets/images/profile.png",
+            ),
+            radius: 30,
+          ),
         ),
       ),
     );

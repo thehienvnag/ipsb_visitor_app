@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:indoor_positioning_visitor/src/common/constants.dart';
-import 'package:indoor_positioning_visitor/src/models/storage_list.dart';
+import 'package:com.ipsb.visitor_app/src/common/constants.dart';
+import 'package:com.ipsb.visitor_app/src/models/storage_list.dart';
 
 class HiveStorage {
   static Future<List<T>> useStorageList<T>({

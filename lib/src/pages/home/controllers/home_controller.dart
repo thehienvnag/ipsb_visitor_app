@@ -4,17 +4,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:geocode/geocode.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/building.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon.dart';
-import 'package:indoor_positioning_visitor/src/models/product_category.dart';
+import 'package:com.ipsb.visitor_app/src/models/building.dart';
+import 'package:com.ipsb.visitor_app/src/models/coupon.dart';
+import 'package:com.ipsb.visitor_app/src/models/product_category.dart';
 
-import 'package:indoor_positioning_visitor/src/models/store.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/api/building_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
-import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
+import 'package:com.ipsb.visitor_app/src/models/store.dart';
+import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/building_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/coupon_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/store_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
+import 'package:com.ipsb.visitor_app/src/utils/formatter.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 
@@ -105,17 +105,21 @@ class HomeController extends GetxController {
       Timer(Duration(seconds: 1), () => isSearching.value = false);
     }
   }
+
   var distanceTwoPoin = "".obs;
 
- Future<String> getDistanceBetweenTwoLocation(String buildingAddress) async {
+  Future<String> getDistanceBetweenTwoLocation(String buildingAddress) async {
     Location location = new Location();
     GeoCode geoCode = GeoCode();
     LocationData myLocation;
     myLocation = await location.getLocation();
-    Coordinates coordinates = await geoCode.forwardGeocoding(address: buildingAddress);
+    Coordinates coordinates =
+        await geoCode.forwardGeocoding(address: buildingAddress);
     double distance = Geolocator.distanceBetween(
-        myLocation.latitude!.toDouble(), myLocation.longitude!.toDouble(),
-        coordinates.latitude!.toDouble(),coordinates.longitude!.toDouble());
+        myLocation.latitude!.toDouble(),
+        myLocation.longitude!.toDouble(),
+        coordinates.latitude!.toDouble(),
+        coordinates.longitude!.toDouble());
     final formatter = new NumberFormat("###,###,###,###");
     distanceTwoPoin.value = formatter.format(distance / 1000) + ' Km';
     print("nè nè : " + formatter.format(distance / 1000) + ' Km');
@@ -123,15 +127,13 @@ class HomeController extends GetxController {
   }
 
   String getDistanceDisplay(String address) {
-   var valueDistan = "";
-    getDistanceBetweenTwoLocation(address).then((value)  {
-    valueDistan = value;
+    var valueDistan = "";
+    getDistanceBetweenTwoLocation(address).then((value) {
+      valueDistan = value;
     });
     print("hello: " + valueDistan);
-   return valueDistan;
+    return valueDistan;
   }
-
-
 }
 
 final categories = [

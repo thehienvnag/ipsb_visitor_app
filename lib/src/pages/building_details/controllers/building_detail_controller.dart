@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/building.dart';
-import 'package:indoor_positioning_visitor/src/models/store.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/api/building_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/store_service.dart';
+import 'package:com.ipsb.visitor_app/src/models/building.dart';
+import 'package:com.ipsb.visitor_app/src/models/store.dart';
+import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/building_service.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/store_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:location/location.dart';
 import 'package:geocode/geocode.dart';

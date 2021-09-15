@@ -2,14 +2,14 @@ import 'package:animated_floating_buttons/widgets/animated_floating_action_butto
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/common/constants.dart';
-import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
-import 'package:indoor_positioning_visitor/src/pages/map/controllers/map_controller.dart';
-import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
-import 'package:indoor_positioning_visitor/src/widgets/custom_search_bar.dart';
-import 'package:indoor_positioning_visitor/src/widgets/indoor_map/indoor_map.dart';
-import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
-import 'package:indoor_positioning_visitor/src/widgets/user_welcome.dart';
+import 'package:com.ipsb.visitor_app/src/common/constants.dart';
+import 'package:com.ipsb.visitor_app/src/models/floor_plan.dart';
+import 'package:com.ipsb.visitor_app/src/pages/map/controllers/map_controller.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/custom_bottom_bar.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/custom_search_bar.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/indoor_map/indoor_map.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/ticket_box.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/user_welcome.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MapPage extends GetView<MapController> {

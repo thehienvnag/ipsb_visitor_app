@@ -1,13 +1,14 @@
-import 'package:indoor_positioning_visitor/src/common/endpoints.dart';
-import 'package:indoor_positioning_visitor/src/models/paging.dart';
-import 'package:indoor_positioning_visitor/src/models/product_category.dart';
-import 'package:indoor_positioning_visitor/src/services/api/base_service.dart';
+import 'package:com.ipsb.visitor_app/src/common/endpoints.dart';
+import 'package:com.ipsb.visitor_app/src/models/paging.dart';
+import 'package:com.ipsb.visitor_app/src/models/product_category.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/base_service.dart';
 
 mixin IProductCategoryService {
   Future<Paging<ProductCategory>> getProductCategory();
 }
 
-class ProductCategoryService extends BaseService<ProductCategory> implements IProductCategoryService {
+class ProductCategoryService extends BaseService<ProductCategory>
+    implements IProductCategoryService {
   @override
   String endpoint() {
     return Endpoints.productCategory;
@@ -22,6 +23,4 @@ class ProductCategoryService extends BaseService<ProductCategory> implements IPr
   Future<Paging<ProductCategory>> getProductCategory() {
     return getPagingBase({});
   }
-
-
 }

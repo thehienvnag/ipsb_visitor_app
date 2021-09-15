@@ -1,7 +1,7 @@
-import 'package:indoor_positioning_visitor/src/common/endpoints.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon.dart';
-import 'package:indoor_positioning_visitor/src/models/paging.dart';
-import 'package:indoor_positioning_visitor/src/services/api/base_service.dart';
+import 'package:com.ipsb.visitor_app/src/common/endpoints.dart';
+import 'package:com.ipsb.visitor_app/src/models/coupon.dart';
+import 'package:com.ipsb.visitor_app/src/models/paging.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/base_service.dart';
 
 mixin ICouponService {
   Future<List<Coupon>> getCouponsByStoreId(int storeId);

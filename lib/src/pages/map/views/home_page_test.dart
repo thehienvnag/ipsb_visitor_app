@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
-import 'package:indoor_positioning_visitor/src/pages/map/controllers/map_controller.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
+import 'package:com.ipsb.visitor_app/src/models/floor_plan.dart';
+import 'package:com.ipsb.visitor_app/src/pages/map/controllers/map_controller.dart';
+import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/ticket_box.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 

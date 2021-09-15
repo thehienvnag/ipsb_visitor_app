@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/common/constants.dart';
+import 'package:com.ipsb.visitor_app/src/common/constants.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
+import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
 
 class CustomBottombarController extends GetxController {
   final SharedStates states = Get.find();
@@ -53,11 +53,6 @@ final items = [
     text: 'Notifications',
     icon: Icon(Icons.notifications),
     route: Routes.notifications,
-  ),
-  BottomItem(
-    text: 'Profile',
-    icon: Icon(Icons.person),
-    route: Routes.profile,
   ),
 ];
 

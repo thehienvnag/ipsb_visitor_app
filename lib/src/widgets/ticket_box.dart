@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart';
 
-import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
+import 'package:com.ipsb.visitor_app/src/utils/formatter.dart';
 
 class TicketBox extends StatelessWidget {
   final double margin;

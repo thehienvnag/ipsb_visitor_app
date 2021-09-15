@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/pages/notifications/controllers/notifications_controller.dart';
-import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
+import 'package:com.ipsb.visitor_app/src/pages/notifications/controllers/notifications_controller.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/custom_bottom_bar.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class NotificationsPage extends GetView<NotificationsController> {

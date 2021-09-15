@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:indoor_positioning_visitor/src/common/constants.dart';
+import 'package:com.ipsb.visitor_app/src/common/constants.dart';
 
 class Utils {
   static double calDistance(Offset p1, Offset p2) {
@@ -33,6 +33,16 @@ class Utils {
     }
     if (url != null && url.isNotEmpty) {
       return FileImage(File(url));
+    }
+    return AssetImage(altUrl!);
+  }
+
+  static ImageProvider<Object> resolveNetworkImg(String? url, String? altUrl) {
+    if ((url == null || url.isEmpty) && (altUrl == null || altUrl.isEmpty)) {
+      throw Exception("Required image or alternative image");
+    }
+    if (url != null && url.isNotEmpty) {
+      return NetworkImage(url);
     }
     return AssetImage(altUrl!);
   }

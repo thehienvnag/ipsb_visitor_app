@@ -1,4 +1,4 @@
-import 'package:indoor_positioning_visitor/src/models/store.dart';
+import 'package:com.ipsb.visitor_app/src/models/store.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'coupon.g.dart';

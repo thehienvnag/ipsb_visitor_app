@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:indoor_positioning_visitor/src/common/constants.dart';
+import 'package:com.ipsb.visitor_app/src/common/constants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:animated_floating_buttons/animated_floating_buttons.dart';
 

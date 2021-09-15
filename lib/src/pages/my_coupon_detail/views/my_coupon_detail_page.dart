@@ -4,15 +4,15 @@ import 'package:flutter_bullet_list/flutter_bullet_list.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:indoor_positioning_visitor/src/common/constants.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
-import 'package:indoor_positioning_visitor/src/pages/my_coupon_detail/controllers/my_coupon_detail_controller.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
+import 'package:com.ipsb.visitor_app/src/common/constants.dart';
+import 'package:com.ipsb.visitor_app/src/models/coupon_in_use.dart';
+import 'package:com.ipsb.visitor_app/src/pages/my_coupon_detail/controllers/my_coupon_detail_controller.dart';
+import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
 
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
-import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
-import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
-import 'package:indoor_positioning_visitor/src/widgets/user_welcome.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
+import 'package:com.ipsb.visitor_app/src/utils/formatter.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/ticket_box.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/user_welcome.dart';
 
 class MyCouponDetailPage extends GetView<MyCouponDetailController> {
   final dateTime = DateTime.now();

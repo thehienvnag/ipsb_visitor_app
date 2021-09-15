@@ -1,11 +1,13 @@
+import 'package:com.ipsb.visitor_app/src/services/global_states/auth_services.dart';
+import 'package:com.ipsb.visitor_app/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/pages/profile/controllers/profile_controller.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
-import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
+import 'package:com.ipsb.visitor_app/src/pages/profile/controllers/profile_controller.dart';
+import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
+import 'package:com.ipsb.visitor_app/src/widgets/custom_bottom_bar.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   final SharedStates sharedStates = Get.find();
@@ -17,59 +19,61 @@ class ProfilePage extends GetView<ProfileController> {
       body: Column(
         children: <Widget>[
           SizedBox(height: 10.0 * 5),
-          Column(
-            children: <Widget>[
-              Container(
-                height: 10.0 * 10,
-                width: 10.0 * 10,
-                margin: EdgeInsets.only(top: 10.0 * 3),
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      child: sharedStates.user != null
-                          ? Image.network(
-                              sharedStates.user!.photoURL.toString())
-                          : Image.asset('assets/images/profile.png'),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.toNamed(Routes.profileDetail);
-                      },
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: Container(
-                          height: 35,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff344CDD),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                            heightFactor: 10.0 * 1.5,
-                            widthFactor: 10.0 * 1.5,
-                            child: Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                              size: 25,
+          Obx(() {
+            String imageUrl = AuthServices.userLoggedIn.value.imageUrl ?? "";
+            String name =
+                AuthServices.userLoggedIn.value.name ?? "User profile";
+            return Column(
+              children: <Widget>[
+                Container(
+                  height: 10.0 * 10,
+                  width: 10.0 * 10,
+                  margin: EdgeInsets.only(top: 10.0 * 3),
+                  child: Stack(
+                    children: <Widget>[
+                      CircleAvatar(
+                        backgroundImage: Utils.resolveNetworkImg(
+                            imageUrl, 'assets/images/profile.png'),
+                        radius: 100,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed(Routes.profileDetail);
+                        },
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: Container(
+                            height: 35,
+                            width: 35,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: Colors.black26, width: 1.5)),
+                            child: Center(
+                              heightFactor: 10.0 * 1.5,
+                              widthFactor: 10.0 * 1.5,
+                              child: Icon(
+                                Icons.edit,
+                                // color: Colors.white,
+                                size: 25,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                  sharedStates.user != null
-                      ? sharedStates.user!.displayName.toString()
-                      : "Name not set",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  )),
-            ],
-          ),
+                SizedBox(height: 20),
+                Text(name,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    )),
+              ],
+            );
+          }),
           SizedBox(height: 20),
           GestureDetector(
             onTap: () {

@@ -35,8 +35,8 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.indoor_positioning_visitor"
-        minSdkVersion 18
+        applicationId "com.ipsb.visitor_app"
+        minSdkVersion 21
         targetSdkVersion 30
         multiDexEnabled true // mới thêm dòng
         versionCode flutterVersionCode.toInteger()

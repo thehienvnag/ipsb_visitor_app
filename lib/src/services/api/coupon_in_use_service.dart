@@ -1,13 +1,14 @@
-import 'package:indoor_positioning_visitor/src/common/endpoints.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
-import 'package:indoor_positioning_visitor/src/models/paging.dart';
-import 'package:indoor_positioning_visitor/src/services/api/base_service.dart';
+import 'package:com.ipsb.visitor_app/src/common/endpoints.dart';
+import 'package:com.ipsb.visitor_app/src/models/coupon_in_use.dart';
+import 'package:com.ipsb.visitor_app/src/models/paging.dart';
+import 'package:com.ipsb.visitor_app/src/services/api/base_service.dart';
 
 mixin ICouponInUseService {
   Future<Paging<CouponInUse>> getCouponInUseByVisitorId(int visitorId);
   Future<CouponInUse?> getByVisitorIdAndCouponId(int visitorId, int couponId);
   Future<CouponInUse?> createCouponInUse(CouponInUse couponInUse);
-  Future<bool> putFeedbackCouponInUse(CouponInUse couponInUse, String filePath, int id);
+  Future<bool> putFeedbackCouponInUse(
+      CouponInUse couponInUse, String filePath, int id);
 }
 
 class CouponInUseService extends BaseService<CouponInUse>
@@ -45,7 +46,8 @@ class CouponInUseService extends BaseService<CouponInUse>
   }
 
   @override
-  Future<bool> putFeedbackCouponInUse(CouponInUse couponInUse, String filePath, int id) {
+  Future<bool> putFeedbackCouponInUse(
+      CouponInUse couponInUse, String filePath, int id) {
     return putWithOneFileBase(couponInUse.toJson(), filePath, id);
   }
 }

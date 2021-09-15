@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/pages/profile_detail/controllers/profile_detail_controller.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
+import 'package:com.ipsb.visitor_app/src/pages/profile_detail/controllers/profile_detail_controller.dart';
+import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
 
 class ProfileDetailPage extends GetView<ProfileDetailController> {
   final SharedStates sharedStates = Get.find();
@@ -28,7 +28,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
           children: [
             Text(
               'Cập nhật thông tin',
-                style: TextStyle(color: Colors.black87),
+              style: TextStyle(color: Colors.black87),
             ),
           ],
         ),
@@ -45,9 +45,9 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                 child: Stack(
                   children: [
                     Container(
-                      width: 130,
-                      height: 130,
-                      decoration: BoxDecoration(
+                        width: 130,
+                        height: 130,
+                        decoration: BoxDecoration(
                           border: Border.all(
                               width: 4,
                               color: Theme.of(context).scaffoldBackgroundColor),
@@ -60,14 +60,14 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                           ],
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: sharedStates.user != null ?
-                              NetworkImage(sharedStates.user!.photoURL.toString())
-                                  : NetworkImage('https://mcss.co.za/images/Member-Login.jpg'),
-                    ),
-                      )
-                    ),
-
+                            fit: BoxFit.cover,
+                            image: sharedStates.user != null
+                                ? NetworkImage(
+                                    sharedStates.user!.photoURL.toString())
+                                : NetworkImage(
+                                    'https://mcss.co.za/images/Member-Login.jpg'),
+                          ),
+                        )),
                     Positioned(
                         bottom: 0,
                         right: 0,
@@ -93,9 +93,24 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
               SizedBox(
                 height: 35,
               ),
-              buildTextField("Name",sharedStates.user != null ? sharedStates.user!.displayName.toString() : "Not sigin", false),
-              buildTextField("Địa chỉ Email",sharedStates.user != null ? sharedStates.user!.email.toString()  : "Not sigin", false),
-              buildTextField("Số điện thoại",sharedStates.user != null ? sharedStates.user!.phoneNumber.toString()  : "Not sigin", false),
+              buildTextField(
+                  "Name",
+                  sharedStates.user != null
+                      ? sharedStates.user!.displayName.toString()
+                      : "Not sigin",
+                  false),
+              buildTextField(
+                  "Địa chỉ Email",
+                  sharedStates.user != null
+                      ? sharedStates.user!.email.toString()
+                      : "Not sigin",
+                  false),
+              buildTextField(
+                  "Số điện thoại",
+                  sharedStates.user != null
+                      ? sharedStates.user!.phoneNumber.toString()
+                      : "Not sigin",
+                  false),
               buildTextField("Địa chỉ (Không bắt buộc)", "", false),
               SizedBox(
                 height: 35,
@@ -114,7 +129,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                     child: Text(
                       "Lưu thông tin",
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white,fontSize: 20),
+                      style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
                 ),
@@ -128,7 +143,9 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
       ),
     );
   }
-  Widget buildTextField(String labelText, String placeholder, bool isPasswordTextField) {
+
+  Widget buildTextField(
+      String labelText, String placeholder, bool isPasswordTextField) {
     return Container(
       margin: EdgeInsets.only(left: 20, right: 20),
       child: Padding(
@@ -138,16 +155,16 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
           decoration: InputDecoration(
               suffixIcon: isPasswordTextField
                   ? IconButton(
-                onPressed: () {
-                  // setState(() {
-                  //   showPassword = !showPassword;
-                  // });
-                },
-                icon: Icon(
-                  Icons.remove_red_eye,
-                  color: Colors.grey,
-                ),
-              )
+                      onPressed: () {
+                        // setState(() {
+                        //   showPassword = !showPassword;
+                        // });
+                      },
+                      icon: Icon(
+                        Icons.remove_red_eye,
+                        color: Colors.grey,
+                      ),
+                    )
                   : null,
               contentPadding: EdgeInsets.only(bottom: 3),
               labelText: labelText,
