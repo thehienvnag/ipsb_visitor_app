@@ -131,9 +131,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   # The following provides annotations help convert json to object
-  json_serializable: ^5.0.1
+  json_serializable: ^4.1.3
   # The following helps generate .part code
-  build_runner: ^2.1.2
+  build_runner: ^1.0.0
   # Hive generator
   hive_generator: ^1.1.0
   #Signin button
