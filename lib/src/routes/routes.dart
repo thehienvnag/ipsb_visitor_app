@@ -23,4 +23,5 @@ class Routes {
   static const String productComboDetail = "/comboProductDetail";
   static const String shoppingList = "/shoppingList";
   static const String createShoppingList = "/createShoppingList";
+  static const String shoppingListDetail = "/shoppingListDetail";
 }
