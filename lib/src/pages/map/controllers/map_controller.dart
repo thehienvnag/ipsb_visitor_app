@@ -1,22 +1,22 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:visitor_app/src/algorithm/shortest_path/graph.dart';
-import 'package:visitor_app/src/algorithm/shortest_path/shortest_path.dart';
-import 'package:visitor_app/src/common/constants.dart';
-import 'package:visitor_app/src/models/coupon.dart';
-import 'package:visitor_app/src/models/edge.dart';
-import 'package:visitor_app/src/models/floor_plan.dart';
-import 'package:visitor_app/src/models/location.dart';
-import 'package:visitor_app/src/routes/routes.dart';
-import 'package:visitor_app/src/services/api/edge_service.dart';
-import 'package:visitor_app/src/services/api/floor_plan_service.dart';
-import 'package:visitor_app/src/services/api/location_service.dart';
-import 'package:visitor_app/src/services/global_states/shared_states.dart';
-import 'package:visitor_app/src/services/api/coupon_service.dart';
-import 'package:visitor_app/src/services/storage/hive_storage.dart';
-import 'package:visitor_app/src/utils/edge_helper.dart';
-import 'package:visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
+import 'package:ipsb_visitor_app/src/algorithm/shortest_path/graph.dart';
+import 'package:ipsb_visitor_app/src/algorithm/shortest_path/shortest_path.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/models/coupon.dart';
+import 'package:ipsb_visitor_app/src/models/edge.dart';
+import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
+import 'package:ipsb_visitor_app/src/models/location.dart';
+import 'package:ipsb_visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/services/api/edge_service.dart';
+import 'package:ipsb_visitor_app/src/services/api/floor_plan_service.dart';
+import 'package:ipsb_visitor_app/src/services/api/location_service.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
+import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
+import 'package:ipsb_visitor_app/src/utils/edge_helper.dart';
+import 'package:ipsb_visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MapController extends GetxController {

@@ -1,4 +1,4 @@
-import 'package:visitor_app/src/models/coupon.dart';
+import 'package:ipsb_visitor_app/src/models/coupon.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 

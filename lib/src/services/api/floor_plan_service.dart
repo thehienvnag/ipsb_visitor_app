@@ -1,7 +1,7 @@
-import 'package:visitor_app/src/common/endpoints.dart';
-import 'package:visitor_app/src/models/floor_plan.dart';
-import 'package:visitor_app/src/models/paging.dart';
-import 'package:visitor_app/src/services/api/base_service.dart';
+import 'package:ipsb_visitor_app/src/common/endpoints.dart';
+import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
+import 'package:ipsb_visitor_app/src/models/paging.dart';
+import 'package:ipsb_visitor_app/src/services/api/base_service.dart';
 
 mixin IFloorPlanService {
   Future<Paging<FloorPlan>> getFloorPlans(int buildingId);

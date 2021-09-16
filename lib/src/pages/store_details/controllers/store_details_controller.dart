@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
-import 'package:visitor_app/src/models/coupon.dart';
-import 'package:visitor_app/src/models/product.dart';
-import 'package:visitor_app/src/models/store.dart';
-import 'package:visitor_app/src/routes/routes.dart';
-import 'package:visitor_app/src/services/api/coupon_service.dart';
-import 'package:visitor_app/src/services/api/product_service.dart';
-import 'package:visitor_app/src/services/api/store_service.dart';
-import 'package:visitor_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_visitor_app/src/models/coupon.dart';
+import 'package:ipsb_visitor_app/src/models/product.dart';
+import 'package:ipsb_visitor_app/src/models/store.dart';
+import 'package:ipsb_visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
+import 'package:ipsb_visitor_app/src/services/api/product_service.dart';
+import 'package:ipsb_visitor_app/src/services/api/store_service.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 
 final dateTime = DateTime.now();
 

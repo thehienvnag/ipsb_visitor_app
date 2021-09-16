@@ -1,4 +1,4 @@
-import 'package:visitor_app/src/pages/shopping_list/controllers/shopping_list_controller.dart';
+import 'package:ipsb_visitor_app/src/pages/shopping_list/controllers/shopping_list_controller.dart';
 import 'package:get/get.dart';
 
 class ShoppingListBinding extends Bindings {

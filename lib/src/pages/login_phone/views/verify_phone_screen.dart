@@ -1,9 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:visitor_app/src/pages/login_phone/controllers/login_phone_controller.dart';
+import 'package:ipsb_visitor_app/src/pages/login_phone/controllers/login_phone_controller.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyPhoneScreen extends GetView<LoginPhoneController> {

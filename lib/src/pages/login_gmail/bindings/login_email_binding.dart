@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:visitor_app/src/pages/login_gmail/controllers/login_gmail_controller.dart';
+import 'package:ipsb_visitor_app/src/pages/login_gmail/controllers/login_gmail_controller.dart';
 
 class LoginEmailBinding extends Bindings {
   @override

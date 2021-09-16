@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:visitor_app/src/common/constants.dart';
-import 'package:visitor_app/src/widgets/current_location.dart';
-import 'package:visitor_app/src/widgets/image_view/image_view_controller.dart';
-import 'package:visitor_app/src/widgets/image_view/map_marker.dart';
-import 'package:visitor_app/src/widgets/path_painter.dart';
-import 'package:visitor_app/src/widgets/marker_popup.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/widgets/current_location.dart';
+import 'package:ipsb_visitor_app/src/widgets/image_view/image_view_controller.dart';
+import 'package:ipsb_visitor_app/src/widgets/image_view/map_marker.dart';
+import 'package:ipsb_visitor_app/src/widgets/path_painter.dart';
+import 'package:ipsb_visitor_app/src/widgets/marker_popup.dart';
 
 class ImageView extends GetView<ImageViewController> {
   final double width, height;

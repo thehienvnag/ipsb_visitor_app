@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
-import 'package:visitor_app/src/models/account.dart';
-import 'package:visitor_app/src/services/api/account_service.dart';
-import 'package:visitor_app/src/services/storage/secure_storage.dart';
+import 'package:ipsb_visitor_app/src/models/account.dart';
+import 'package:ipsb_visitor_app/src/services/api/account_service.dart';
+import 'package:ipsb_visitor_app/src/services/storage/secure_storage.dart';
 
 class AuthServices {
   /// Retry count

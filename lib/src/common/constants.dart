@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:visitor_app/src/models/location.dart';
+import 'package:ipsb_visitor_app/src/models/location.dart';
 
 class Constants {
   /// Location type is lift

@@ -1,9 +1,9 @@
-import 'package:visitor_app/src/routes/routes.dart';
-import 'package:visitor_app/src/services/global_states/auth_services.dart';
-import 'package:visitor_app/src/utils/utils.dart';
+import 'package:ipsb_visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
+import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:visitor_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 
 class UserWelcome extends StatelessWidget {
   final Color textColor;

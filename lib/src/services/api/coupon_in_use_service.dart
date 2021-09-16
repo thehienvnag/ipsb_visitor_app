@@ -1,7 +1,7 @@
-import 'package:visitor_app/src/common/endpoints.dart';
-import 'package:visitor_app/src/models/coupon_in_use.dart';
-import 'package:visitor_app/src/models/paging.dart';
-import 'package:visitor_app/src/services/api/base_service.dart';
+import 'package:ipsb_visitor_app/src/common/endpoints.dart';
+import 'package:ipsb_visitor_app/src/models/coupon_in_use.dart';
+import 'package:ipsb_visitor_app/src/models/paging.dart';
+import 'package:ipsb_visitor_app/src/services/api/base_service.dart';
 
 mixin ICouponInUseService {
   Future<Paging<CouponInUse>> getCouponInUseByVisitorId(int visitorId);

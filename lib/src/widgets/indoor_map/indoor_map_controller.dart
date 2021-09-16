@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:visitor_app/src/models/location.dart';
-import 'package:visitor_app/src/widgets/current_location.dart';
+import 'package:ipsb_visitor_app/src/models/location.dart';
+import 'package:ipsb_visitor_app/src/widgets/current_location.dart';
 import 'dart:ui' as ui;
 
-import 'package:visitor_app/src/widgets/image_view/image_view_controller.dart';
-import 'package:visitor_app/src/widgets/image_view/map_marker.dart';
-import 'package:visitor_app/src/widgets/place_object.dart';
+import 'package:ipsb_visitor_app/src/widgets/image_view/image_view_controller.dart';
+import 'package:ipsb_visitor_app/src/widgets/image_view/map_marker.dart';
+import 'package:ipsb_visitor_app/src/widgets/place_object.dart';
 
 class IndoorMapController extends GetxController {
   final transformationController = TransformationController();

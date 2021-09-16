@@ -8,9 +8,12 @@ class Paging<T> {
   late final List<T>? content;
   List<dynamic>? rawContent;
 
-  factory Paging.defaultInstance() {
-    return Paging();
+  static Paging<T> defaultInstance<T>() {
+    final paging = Paging<T>();
+    paging.content = null;
+    return paging;
   }
+
   Paging({
     this.totalCount = 0,
     this.pageSize = 0,

@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:visitor_app/src/common/constants.dart';
-import 'package:visitor_app/src/pages/update_infomation_signup/controllers/update_profile_controller.dart';
-import 'package:visitor_app/src/services/global_states/shared_states.dart';
-import 'package:visitor_app/src/utils/utils.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/pages/update_infomation_signup/controllers/update_profile_controller.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_visitor_app/src/utils/utils.dart';
 
 class UpdateProfilePage extends GetView<UpdateProfileController> {
   final SharedStates sharedStates = Get.find();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:visitor_app/src/pages/map/controllers/map_controller.dart';
+import 'package:ipsb_visitor_app/src/pages/map/controllers/map_controller.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 class TestAlgorithmPage extends GetView<MapController> {

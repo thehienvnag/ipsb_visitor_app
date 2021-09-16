@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
-import 'package:visitor_app/src/common/constants.dart';
-import 'package:visitor_app/src/services/global_states/auth_services.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 
 mixin IApiHelper {
   // Get all from an API [endpoint] using [uri] and [query]

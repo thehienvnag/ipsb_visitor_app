@@ -1,5 +1,5 @@
-import 'package:visitor_app/src/common/constants.dart';
-import 'package:visitor_app/src/pages/shopping_list/controllers/shopping_list_controller.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/pages/shopping_list/controllers/shopping_list_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

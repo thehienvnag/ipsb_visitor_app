@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:visitor_app/src/pages/test_algorithm/controllers/test_algorithm_controller.dart';
-import 'package:visitor_app/src/widgets/image_view/image_view_controller.dart';
-import 'package:visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
+import 'package:ipsb_visitor_app/src/pages/test_algorithm/controllers/test_algorithm_controller.dart';
+import 'package:ipsb_visitor_app/src/widgets/image_view/image_view_controller.dart';
+import 'package:ipsb_visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
 
 class TestAlgorithmBinding extends Bindings {
   @override

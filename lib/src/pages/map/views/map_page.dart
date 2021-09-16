@@ -2,14 +2,14 @@ import 'package:animated_floating_buttons/widgets/animated_floating_action_butto
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:visitor_app/src/common/constants.dart';
-import 'package:visitor_app/src/models/floor_plan.dart';
-import 'package:visitor_app/src/pages/map/controllers/map_controller.dart';
-import 'package:visitor_app/src/widgets/custom_bottom_bar.dart';
-import 'package:visitor_app/src/widgets/custom_search_bar.dart';
-import 'package:visitor_app/src/widgets/indoor_map/indoor_map.dart';
-import 'package:visitor_app/src/widgets/ticket_box.dart';
-import 'package:visitor_app/src/widgets/user_welcome.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
+import 'package:ipsb_visitor_app/src/pages/map/controllers/map_controller.dart';
+import 'package:ipsb_visitor_app/src/widgets/custom_bottom_bar.dart';
+import 'package:ipsb_visitor_app/src/widgets/custom_search_bar.dart';
+import 'package:ipsb_visitor_app/src/widgets/indoor_map/indoor_map.dart';
+import 'package:ipsb_visitor_app/src/widgets/ticket_box.dart';
+import 'package:ipsb_visitor_app/src/widgets/user_welcome.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MapPage extends GetView<MapController> {

@@ -2,11 +2,11 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:visitor_app/src/common/app_init.dart';
-import 'package:visitor_app/src/common/constants.dart';
-import 'package:visitor_app/src/common/strings.dart';
-import 'package:visitor_app/src/routes/app_pages.dart';
-import 'package:visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/common/app_init.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/common/strings.dart';
+import 'package:ipsb_visitor_app/src/routes/app_pages.dart';
+import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

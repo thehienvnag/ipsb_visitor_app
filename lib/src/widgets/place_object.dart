@@ -2,10 +2,10 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 import 'package:get/get.dart';
-import 'package:visitor_app/src/common/constants.dart';
-import 'package:visitor_app/src/models/location.dart';
-import 'package:visitor_app/src/utils/utils.dart';
-import 'package:visitor_app/src/widgets/image_view/image_view_controller.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/models/location.dart';
+import 'package:ipsb_visitor_app/src/utils/utils.dart';
+import 'package:ipsb_visitor_app/src/widgets/image_view/image_view_controller.dart';
 
 class PlaceObject extends GetView<ImageViewController> {
   final Location location;

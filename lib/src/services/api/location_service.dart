@@ -1,7 +1,7 @@
-import 'package:visitor_app/src/common/constants.dart';
-import 'package:visitor_app/src/common/endpoints.dart';
-import 'package:visitor_app/src/models/location.dart';
-import 'package:visitor_app/src/services/api/base_service.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/common/endpoints.dart';
+import 'package:ipsb_visitor_app/src/models/location.dart';
+import 'package:ipsb_visitor_app/src/services/api/base_service.dart';
 
 mixin ILocationService {
   /// Get all stairs and lifts location from a [floorPlanId]

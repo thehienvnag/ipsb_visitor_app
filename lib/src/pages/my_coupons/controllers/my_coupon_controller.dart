@@ -1,9 +1,9 @@
-import 'package:visitor_app/src/services/global_states/auth_services.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:get/get.dart';
-import 'package:visitor_app/src/models/coupon.dart';
-import 'package:visitor_app/src/models/coupon_in_use.dart';
-import 'package:visitor_app/src/routes/routes.dart';
-import 'package:visitor_app/src/services/api/coupon_in_use_service.dart';
+import 'package:ipsb_visitor_app/src/models/coupon.dart';
+import 'package:ipsb_visitor_app/src/models/coupon_in_use.dart';
+import 'package:ipsb_visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/services/api/coupon_in_use_service.dart';
 
 class MyCouponController extends GetxController {
   ICouponInUseService _service = Get.find();

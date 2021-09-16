@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:visitor_app/src/common/constants.dart';
-import 'package:visitor_app/src/models/storage_list.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/models/storage_list.dart';
 
 class HiveStorage {
   static Future<List<T>> useStorageList<T>({

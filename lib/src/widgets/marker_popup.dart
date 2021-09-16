@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:visitor_app/src/common/constants.dart';
-import 'package:visitor_app/src/pages/map/controllers/map_controller.dart';
-import 'package:visitor_app/src/routes/routes.dart';
-import 'package:visitor_app/src/utils/formatter.dart';
-import 'package:visitor_app/src/utils/utils.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/pages/map/controllers/map_controller.dart';
+import 'package:ipsb_visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/utils/formatter.dart';
+import 'package:ipsb_visitor_app/src/utils/utils.dart';
 
-import 'package:visitor_app/src/widgets/image_view/image_view_controller.dart';
+import 'package:ipsb_visitor_app/src/widgets/image_view/image_view_controller.dart';
 
 class MarkerPopup extends GetView<ImageViewController> {
   static const double serviceWidth = 320;

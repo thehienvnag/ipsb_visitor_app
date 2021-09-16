@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:visitor_app/src/services/global_states/auth_services.dart';
-import 'package:visitor_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 
 class LoginEmailController extends GetxController {
   // Share states across app

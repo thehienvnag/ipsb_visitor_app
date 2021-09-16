@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:visitor_app/src/pages/map/controllers/map_controller.dart';
-import 'package:visitor_app/src/pages/my_coupons/controllers/my_coupon_controller.dart';
-import 'package:visitor_app/src/widgets/image_view/image_view_controller.dart';
-import 'package:visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
+import 'package:ipsb_visitor_app/src/pages/map/controllers/map_controller.dart';
+import 'package:ipsb_visitor_app/src/pages/my_coupons/controllers/my_coupon_controller.dart';
+import 'package:ipsb_visitor_app/src/widgets/image_view/image_view_controller.dart';
+import 'package:ipsb_visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
 
 class MapBinding extends Bindings {
   @override

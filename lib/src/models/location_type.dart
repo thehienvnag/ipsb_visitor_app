@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'location_type.g.dart';
