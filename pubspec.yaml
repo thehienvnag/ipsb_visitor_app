@@ -78,8 +78,17 @@ dependencies:
   # Smooth page indicator
   smooth_page_indicator: ^1.0.0+2
 
-  #animated floating buttons 
+  # Dropdown plus
+  dropdown_plus: ^0.0.9
+
+  # Date time picker
+  date_time_picker: ^2.1.0
+
+  # Animated floating buttons 
   animated_floating_buttons: ^0.0.1
+
+  # Flutter slidable
+  flutter_slidable: ^0.6.0
 
   # Menu button
   menu_button: ^1.4.2+1

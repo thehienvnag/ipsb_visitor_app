@@ -145,5 +145,15 @@ class AppPages {
       page: () => ComboProductDetailPage(),
       binding: ComboProductDetailBinding(),
     ),
+    GetPage(
+      name: Routes.shoppingList,
+      page: () => ShoppingListPage(),
+      binding: ShoppingListBinding(),
+    ),
+    GetPage(
+      name: Routes.createShoppingList,
+      page: () => CreateShoppingListPage(),
+      binding: CreateShoppingListBinding(),
+    ),
   ];
 }
