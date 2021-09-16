@@ -1,6 +1,6 @@
-import 'package:com.ipsb.visitor_app/src/algorithm/shortest_path/graph.dart';
-import 'package:com.ipsb.visitor_app/src/algorithm/shortest_path/node.dart';
-import 'package:com.ipsb.visitor_app/src/models/location.dart';
+import 'package:visitor_app/src/algorithm/shortest_path/graph.dart';
+import 'package:visitor_app/src/algorithm/shortest_path/node.dart';
+import 'package:visitor_app/src/models/location.dart';
 
 mixin IShortestPath {
   /// Get shortest path from graph [graph] and source node [source]

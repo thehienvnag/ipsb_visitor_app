@@ -2,12 +2,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:com.ipsb.visitor_app/src/common/constants.dart';
-import 'package:com.ipsb.visitor_app/src/pages/home/controllers/home_controller.dart';
-import 'package:com.ipsb.visitor_app/src/utils/formatter.dart';
-import 'package:com.ipsb.visitor_app/src/widgets/custom_bottom_bar.dart';
-import 'package:com.ipsb.visitor_app/src/widgets/custom_search_bar.dart';
-import 'package:com.ipsb.visitor_app/src/widgets/user_welcome.dart';
+import 'package:visitor_app/src/common/constants.dart';
+import 'package:visitor_app/src/pages/home/controllers/home_controller.dart';
+import 'package:visitor_app/src/utils/formatter.dart';
+import 'package:visitor_app/src/widgets/custom_bottom_bar.dart';
+import 'package:visitor_app/src/widgets/custom_search_bar.dart';
+import 'package:visitor_app/src/widgets/user_welcome.dart';
 
 class HomePage extends GetView<HomeController> {
   @override

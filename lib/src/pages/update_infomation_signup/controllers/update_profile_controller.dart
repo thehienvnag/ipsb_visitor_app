@@ -1,13 +1,13 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:com.ipsb.visitor_app/src/services/api/account_service.dart';
-import 'package:com.ipsb.visitor_app/src/services/global_states/auth_services.dart';
+import 'package:visitor_app/src/services/api/account_service.dart';
+import 'package:visitor_app/src/services/global_states/auth_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
-import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
+import 'package:visitor_app/src/routes/routes.dart';
+import 'package:visitor_app/src/services/global_states/shared_states.dart';
 
 class UpdateProfileController extends GetxController {
   final SharedStates sharedStates = Get.find();

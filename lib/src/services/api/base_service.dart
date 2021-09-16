@@ -2,10 +2,10 @@ import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
 
-import 'package:com.ipsb.visitor_app/src/data/api_helper.dart';
-import 'package:com.ipsb.visitor_app/src/data/file_upload_utils.dart';
-import 'package:com.ipsb.visitor_app/src/models/paging.dart';
-import 'package:com.ipsb.visitor_app/src/services/global_states/auth_services.dart';
+import 'package:visitor_app/src/data/api_helper.dart';
+import 'package:visitor_app/src/data/file_upload_utils.dart';
+import 'package:visitor_app/src/models/paging.dart';
+import 'package:visitor_app/src/services/global_states/auth_services.dart';
 
 abstract class BaseService<T> {
   IApiHelper _apiHelper = Get.find();

@@ -1,5 +1,5 @@
-import 'package:com.ipsb.visitor_app/src/common/endpoints.dart';
-import 'package:com.ipsb.visitor_app/src/models/account.dart';
+import 'package:visitor_app/src/common/endpoints.dart';
+import 'package:visitor_app/src/models/account.dart';
 
 import 'base_service.dart';
 

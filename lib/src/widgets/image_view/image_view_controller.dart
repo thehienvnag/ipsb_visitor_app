@@ -3,11 +3,11 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:com.ipsb.visitor_app/src/common/constants.dart';
-import 'package:com.ipsb.visitor_app/src/models/location.dart';
+import 'package:visitor_app/src/common/constants.dart';
+import 'package:visitor_app/src/models/location.dart';
 
-import 'package:com.ipsb.visitor_app/src/widgets/image_view/map_marker.dart';
-import 'package:com.ipsb.visitor_app/src/widgets/marker_popup.dart';
+import 'package:visitor_app/src/widgets/image_view/map_marker.dart';
+import 'package:visitor_app/src/widgets/marker_popup.dart';
 
 import '../current_location.dart';
 

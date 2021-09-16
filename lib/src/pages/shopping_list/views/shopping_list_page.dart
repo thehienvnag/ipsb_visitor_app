@@ -1,9 +1,9 @@
+import 'package:visitor_app/src/common/constants.dart';
+import 'package:visitor_app/src/pages/shopping_list/controllers/shopping_list_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:indoor_positioning_visitor/src/common/constants.dart';
-import 'package:indoor_positioning_visitor/src/pages/shopping_list/controllers/shopping_list_controller.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ShoppingListPage extends GetView<ShoppingListController> {

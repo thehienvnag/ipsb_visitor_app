@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:com.ipsb.visitor_app/src/pages/login_phone/controllers/login_phone_controller.dart';
+import 'package:visitor_app/src/pages/login_phone/controllers/login_phone_controller.dart';
 
 class LoginPhoneBinding extends Bindings {
   @override

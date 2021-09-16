@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:com.ipsb.visitor_app/src/pages/building_details/controllers/building_detail_controller.dart';
-import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
-import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
-import 'package:com.ipsb.visitor_app/src/utils/formatter.dart';
-import 'package:com.ipsb.visitor_app/src/widgets/rounded_button.dart';
+import 'package:visitor_app/src/pages/building_details/controllers/building_detail_controller.dart';
+import 'package:visitor_app/src/routes/routes.dart';
+import 'package:visitor_app/src/services/global_states/shared_states.dart';
+import 'package:visitor_app/src/utils/formatter.dart';
+import 'package:visitor_app/src/widgets/rounded_button.dart';
 
 class BuildingDetailPage extends GetView<BuildingDetailController> {
   final SharedStates sharedData = Get.find();

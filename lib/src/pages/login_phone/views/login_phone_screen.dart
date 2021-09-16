@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:com.ipsb.visitor_app/src/common/constants.dart';
-import 'package:com.ipsb.visitor_app/src/pages/login_gmail/controllers/login_gmail_controller.dart';
-import 'package:com.ipsb.visitor_app/src/pages/login_phone/controllers/login_phone_controller.dart';
+import 'package:visitor_app/src/common/constants.dart';
+import 'package:visitor_app/src/pages/login_gmail/controllers/login_gmail_controller.dart';
+import 'package:visitor_app/src/pages/login_phone/controllers/login_phone_controller.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class LoginPhonePage extends GetView<LoginPhoneController> {

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:com.ipsb.visitor_app/src/models/coupon.dart';
+import 'package:visitor_app/src/models/coupon.dart';
 
 class ShowCouponQRController extends GetxController {
   String genCode(Coupon coupon, int? couponInUseId) {

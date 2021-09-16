@@ -1,9 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:com.ipsb.visitor_app/src/services/global_states/auth_services.dart';
+import 'package:visitor_app/src/services/global_states/auth_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
+import 'package:visitor_app/src/routes/routes.dart';
 
 class ProfileController extends GetxController {
   Future<void> logOut() async {

@@ -1,7 +1,7 @@
-import 'package:com.ipsb.visitor_app/src/common/endpoints.dart';
-import 'package:com.ipsb.visitor_app/src/models/paging.dart';
-import 'package:com.ipsb.visitor_app/src/models/product_category.dart';
-import 'package:com.ipsb.visitor_app/src/services/api/base_service.dart';
+import 'package:visitor_app/src/common/endpoints.dart';
+import 'package:visitor_app/src/models/paging.dart';
+import 'package:visitor_app/src/models/product_category.dart';
+import 'package:visitor_app/src/services/api/base_service.dart';
 
 mixin IProductCategoryService {
   Future<Paging<ProductCategory>> getProductCategory();

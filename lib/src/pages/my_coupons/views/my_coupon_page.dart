@@ -1,15 +1,15 @@
-import 'package:com.ipsb.visitor_app/src/services/global_states/auth_services.dart';
-import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
+import 'package:visitor_app/src/services/global_states/auth_services.dart';
+import 'package:visitor_app/src/services/global_states/shared_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
 import 'package:get/get.dart';
-import 'package:com.ipsb.visitor_app/src/common/constants.dart';
-import 'package:com.ipsb.visitor_app/src/models/coupon_in_use.dart';
-import 'package:com.ipsb.visitor_app/src/widgets/animate_wrapper.dart';
-import 'package:com.ipsb.visitor_app/src/widgets/custom_bottom_bar.dart';
-import 'package:com.ipsb.visitor_app/src/widgets/ticket_box.dart';
-import 'package:com.ipsb.visitor_app/src/pages/my_coupons/controllers/my_coupon_controller.dart';
-import 'package:com.ipsb.visitor_app/src/widgets/user_welcome.dart';
+import 'package:visitor_app/src/common/constants.dart';
+import 'package:visitor_app/src/models/coupon_in_use.dart';
+import 'package:visitor_app/src/widgets/animate_wrapper.dart';
+import 'package:visitor_app/src/widgets/custom_bottom_bar.dart';
+import 'package:visitor_app/src/widgets/ticket_box.dart';
+import 'package:visitor_app/src/pages/my_coupons/controllers/my_coupon_controller.dart';
+import 'package:visitor_app/src/widgets/user_welcome.dart';
 
 class MyCouponPage extends GetView<MyCouponController> {
   final dateTime = DateTime.now();

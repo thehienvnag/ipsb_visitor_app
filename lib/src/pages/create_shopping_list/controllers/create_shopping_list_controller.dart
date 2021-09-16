@@ -1,6 +1,6 @@
+import 'package:visitor_app/src/models/building.dart';
+import 'package:visitor_app/src/services/api/building_service.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/building.dart';
-import 'package:indoor_positioning_visitor/src/services/api/building_service.dart';
 
 class CreateShoppingListController extends GetxController {
   final buildings = <Building>[].obs;

@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:com.ipsb.visitor_app/src/common/constants.dart';
-import 'package:com.ipsb.visitor_app/src/models/location.dart';
+import 'package:visitor_app/src/common/constants.dart';
+import 'package:visitor_app/src/models/location.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'edge.g.dart';

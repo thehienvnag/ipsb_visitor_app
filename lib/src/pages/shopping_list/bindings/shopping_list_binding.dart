@@ -1,5 +1,5 @@
+import 'package:visitor_app/src/pages/shopping_list/controllers/shopping_list_controller.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/pages/shopping_list/controllers/shopping_list_controller.dart';
 
 class ShoppingListBinding extends Bindings {
   @override

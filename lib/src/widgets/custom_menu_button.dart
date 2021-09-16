@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:com.ipsb.visitor_app/src/common/constants.dart';
-import 'package:com.ipsb.visitor_app/src/pages/map/controllers/map_controller.dart';
+import 'package:visitor_app/src/common/constants.dart';
+import 'package:visitor_app/src/pages/map/controllers/map_controller.dart';
 import 'package:menu_button/menu_button.dart';
 
-import 'package:com.ipsb.visitor_app/src/models/floor_plan.dart';
+import 'package:visitor_app/src/models/floor_plan.dart';
 
 class CustomMenuButton extends GetView<MapController> {
   final FloorPlan? selected;

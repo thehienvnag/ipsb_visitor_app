@@ -1,4 +1,4 @@
-import 'package:com.ipsb.visitor_app/src/common/constants.dart';
+import 'package:visitor_app/src/common/constants.dart';
 
 class Node<T> {
   /// Node id

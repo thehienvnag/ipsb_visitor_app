@@ -1,4 +1,4 @@
-import 'package:com.ipsb.visitor_app/src/models/floor_plan.dart';
+import 'package:visitor_app/src/models/floor_plan.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'building.g.dart';

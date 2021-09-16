@@ -4,17 +4,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:geocode/geocode.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:com.ipsb.visitor_app/src/models/building.dart';
-import 'package:com.ipsb.visitor_app/src/models/coupon.dart';
-import 'package:com.ipsb.visitor_app/src/models/product_category.dart';
+import 'package:visitor_app/src/models/building.dart';
+import 'package:visitor_app/src/models/coupon.dart';
+import 'package:visitor_app/src/models/product_category.dart';
 
-import 'package:com.ipsb.visitor_app/src/models/store.dart';
-import 'package:com.ipsb.visitor_app/src/routes/routes.dart';
-import 'package:com.ipsb.visitor_app/src/services/api/building_service.dart';
-import 'package:com.ipsb.visitor_app/src/services/api/coupon_service.dart';
-import 'package:com.ipsb.visitor_app/src/services/api/store_service.dart';
-import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
-import 'package:com.ipsb.visitor_app/src/utils/formatter.dart';
+import 'package:visitor_app/src/models/store.dart';
+import 'package:visitor_app/src/routes/routes.dart';
+import 'package:visitor_app/src/services/api/building_service.dart';
+import 'package:visitor_app/src/services/api/coupon_service.dart';
+import 'package:visitor_app/src/services/api/store_service.dart';
+import 'package:visitor_app/src/services/global_states/shared_states.dart';
+import 'package:visitor_app/src/utils/formatter.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 

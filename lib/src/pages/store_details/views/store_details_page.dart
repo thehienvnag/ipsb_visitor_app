@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
 import 'package:get/get.dart';
-import 'package:com.ipsb.visitor_app/src/common/constants.dart';
+import 'package:visitor_app/src/common/constants.dart';
 
-import 'package:com.ipsb.visitor_app/src/pages/store_details/controllers/store_details_controller.dart';
-import 'package:com.ipsb.visitor_app/src/utils/formatter.dart';
-import 'package:com.ipsb.visitor_app/src/utils/utils.dart';
-import 'package:com.ipsb.visitor_app/src/widgets/rounded_button.dart';
-import 'package:com.ipsb.visitor_app/src/widgets/animate_wrapper.dart';
+import 'package:visitor_app/src/pages/store_details/controllers/store_details_controller.dart';
+import 'package:visitor_app/src/utils/formatter.dart';
+import 'package:visitor_app/src/utils/utils.dart';
+import 'package:visitor_app/src/widgets/rounded_button.dart';
+import 'package:visitor_app/src/widgets/animate_wrapper.dart';
 
 class StoreDetailsPage extends GetView<StoreDetailsController> {
   @override

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:com.ipsb.visitor_app/src/pages/update_infomation_signup/controllers/update_profile_controller.dart';
+import 'package:visitor_app/src/pages/update_infomation_signup/controllers/update_profile_controller.dart';
 
 class UpdateProfileBinding extends Bindings {
   @override

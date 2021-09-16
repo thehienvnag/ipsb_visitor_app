@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:com.ipsb.visitor_app/src/pages/map/controllers/map_controller.dart';
-import 'package:com.ipsb.visitor_app/src/utils/formatter.dart';
-import 'package:com.ipsb.visitor_app/src/widgets/user_welcome.dart';
+import 'package:visitor_app/src/pages/map/controllers/map_controller.dart';
+import 'package:visitor_app/src/utils/formatter.dart';
+import 'package:visitor_app/src/widgets/user_welcome.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
-import 'package:com.ipsb.visitor_app/src/models/floor_plan.dart';
-import 'package:com.ipsb.visitor_app/src/pages/home/controllers/home_controller.dart';
+import 'package:visitor_app/src/models/floor_plan.dart';
+import 'package:visitor_app/src/pages/home/controllers/home_controller.dart';
 
 import 'custom_menu_button.dart';
 

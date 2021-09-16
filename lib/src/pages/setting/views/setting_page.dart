@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:com.ipsb.visitor_app/src/pages/setting/controllers/setting_controller.dart';
+import 'package:visitor_app/src/pages/setting/controllers/setting_controller.dart';
 
 class SettingPage extends GetView<SettingController> {
   @override

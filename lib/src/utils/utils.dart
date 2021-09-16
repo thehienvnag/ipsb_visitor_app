@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:com.ipsb.visitor_app/src/common/constants.dart';
+import 'package:visitor_app/src/common/constants.dart';
 
 class Utils {
   static double calDistance(Offset p1, Offset p2) {

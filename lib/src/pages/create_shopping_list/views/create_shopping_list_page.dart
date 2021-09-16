@@ -1,11 +1,10 @@
+import 'package:visitor_app/src/common/constants.dart';
+import 'package:visitor_app/src/pages/create_shopping_list/controllers/create_shopping_list_controller.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:flutter/material.dart';
-import 'package:indoor_positioning_visitor/src/common/constants.dart';
-import 'package:indoor_positioning_visitor/src/models/building.dart';
-import 'package:indoor_positioning_visitor/src/pages/create_shopping_list/controllers/create_shopping_list_controller.dart';
 import 'package:dropdown_plus/dropdown_plus.dart';
 
 class CreateShoppingListPage extends GetView<CreateShoppingListController> {

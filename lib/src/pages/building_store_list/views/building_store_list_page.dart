@@ -2,8 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:com.ipsb.visitor_app/src/pages/building_store_list/controllers/building_store_controller.dart';
-import 'package:com.ipsb.visitor_app/src/services/global_states/shared_states.dart';
+import 'package:visitor_app/src/pages/building_store_list/controllers/building_store_controller.dart';
+import 'package:visitor_app/src/services/global_states/shared_states.dart';
 
 class BuildingStorePage extends GetView<BuildingStoreController> {
   final SharedStates sharedData = Get.find();

@@ -3,7 +3,7 @@ import 'location_type.dart';
 import 'store.dart';
 import 'floor_plan.dart';
 import 'package:hive/hive.dart';
-import 'package:com.ipsb.visitor_app/src/common/constants.dart';
+import 'package:visitor_app/src/common/constants.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 

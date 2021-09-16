@@ -1,4 +1,4 @@
-name: com.ipsb.visitor_app
+name: visitor_app
 description: IPSB Visitor App.
 
 # The following line prevents the package from being accidentally published to
@@ -84,7 +84,7 @@ dependencies:
   # Date time picker
   date_time_picker: ^2.1.0
 
-  # Animated floating buttons 
+  # Animated floating buttons
   animated_floating_buttons: ^0.0.1
 
   # Flutter slidable
@@ -119,9 +119,6 @@ dependencies:
   # UI for phone verify
   pin_code_fields: ^7.3.0
 
-
-
-
   # Hive for local db
   hive: ^2.0.4
   hive_flutter: ^1.1.0
@@ -129,7 +126,7 @@ dependencies:
 
   # Secure storage for storing credentials
   flutter_secure_storage: ^4.2.1
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

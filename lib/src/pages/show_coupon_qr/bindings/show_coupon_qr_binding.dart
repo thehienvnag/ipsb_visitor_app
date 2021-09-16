@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:com.ipsb.visitor_app/src/pages/show_coupon_qr/controllers/show_coupon_qr_controller.dart';
+import 'package:visitor_app/src/pages/show_coupon_qr/controllers/show_coupon_qr_controller.dart';
 
 class ShowCouponQRBinding extends Bindings {
   @override

@@ -1,6 +1,6 @@
-import 'package:com.ipsb.visitor_app/src/algorithm/shortest_path/node.dart';
-import 'package:com.ipsb.visitor_app/src/models/edge.dart';
-import 'package:com.ipsb.visitor_app/src/models/location.dart';
+import 'package:visitor_app/src/algorithm/shortest_path/node.dart';
+import 'package:visitor_app/src/models/edge.dart';
+import 'package:visitor_app/src/models/location.dart';
 
 class Graph {
   final Map<int, Node<Location>> nodes = {};
