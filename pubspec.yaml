@@ -78,6 +78,12 @@ dependencies:
   # Smooth page indicator
   smooth_page_indicator: ^1.0.0+2
 
+  # Dropdown plus
+  dropdown_plus: ^0.0.9
+
+  # Date time picker
+  date_time_picker: ^2.1.0
+
   # Animated floating buttons 
   animated_floating_buttons: ^0.0.1
 

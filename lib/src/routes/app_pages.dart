@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/pages/combo_product_detail/bindings/combo_product_detail_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/combo_product_detail/views/combo_product_detail_page.dart';
+import 'package:indoor_positioning_visitor/src/pages/create_shopping_list/bindings/create_shopping_list_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/create_shopping_list/views/create_shopping_list_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/feedback_coupon/bindings/feedback_coupon_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/feedback_coupon/views/feed_back_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/bindings/home_binding.dart';
@@ -151,6 +153,11 @@ class AppPages {
       name: Routes.shoppingList,
       page: () => ShoppingListPage(),
       binding: ShoppingListBinding(),
+    ),
+    GetPage(
+      name: Routes.createShoppingList,
+      page: () => CreateShoppingListPage(),
+      binding: CreateShoppingListBinding(),
     ),
   ];
 }
