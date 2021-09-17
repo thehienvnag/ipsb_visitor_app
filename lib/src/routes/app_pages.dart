@@ -29,6 +29,8 @@ import 'package:ipsb_visitor_app/src/pages/profile_detail/bindings/profile_detai
 import 'package:ipsb_visitor_app/src/pages/profile_detail/views/profile_detail_page.dart';
 import 'package:ipsb_visitor_app/src/pages/setting/bindings/setting_binding.dart';
 import 'package:ipsb_visitor_app/src/pages/setting/views/setting_page.dart';
+import 'package:ipsb_visitor_app/src/pages/shopping_list_detail/bindings/shopping_list_detail_binding.dart';
+import 'package:ipsb_visitor_app/src/pages/shopping_list_detail/views/shopping_list_detail_page.dart';
 import 'package:ipsb_visitor_app/src/pages/test_algorithm/bindings/test_algorithm_binding.dart';
 import 'package:ipsb_visitor_app/src/pages/test_algorithm/views/test_algorithm_page.dart';
 import 'package:ipsb_visitor_app/src/pages/update_infomation_signup/bindings/update_profile_binding.dart';
@@ -158,6 +160,11 @@ class AppPages {
       name: Routes.createShoppingList,
       page: () => CreateShoppingListPage(),
       binding: CreateShoppingListBinding(),
+    ),
+    GetPage(
+      name: Routes.shoppingListDetail,
+      page: () => ShoppingListDetailsPage(),
+      binding: ShoppingListDetailsBinding(),
     ),
   ];
 }
