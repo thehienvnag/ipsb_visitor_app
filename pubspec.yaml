@@ -127,6 +127,9 @@ dependencies:
   # Secure storage for storing credentials
   flutter_secure_storage: ^4.2.1
 
+  #Bottom sheet modal
+  modal_bottom_sheet: ^2.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
