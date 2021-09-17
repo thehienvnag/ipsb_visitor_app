@@ -50,9 +50,9 @@ final items = [
     route: Routes.myCoupon,
   ),
   BottomItem(
-    text: 'Notifications',
-    icon: Icon(Icons.notifications),
-    route: Routes.notifications,
+    text: 'Shopping',
+    icon: Icon(Icons.shopping_cart),
+    route: Routes.shoppingList,
   ),
 ];
 

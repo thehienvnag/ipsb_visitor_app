@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:ipsb_visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/widgets/custom_bottom_bar.dart';
 
 class ShoppingListPage extends GetView<ShoppingListController> {
   @override
@@ -12,19 +14,21 @@ class ShoppingListPage extends GetView<ShoppingListController> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: AppColors.colorBlue,
+        backgroundColor: Colors.white,
         title: Container(
           alignment: Alignment.center,
-          child: Text('Shopping List'),
+          child: Text(
+            'Shopping List',
+            style: TextStyle(color: Colors.black),
+          ),
         ),
-        titleTextStyle: TextStyle(color: Colors.white),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primary,
         child: Icon(
           Icons.add,
         ),
-        onPressed: () {},
+        onPressed: () => Get.toNamed(Routes.createShoppingList),
       ),
       body: SingleChildScrollView(
         child: Column(children: [
@@ -34,6 +38,7 @@ class ShoppingListPage extends GetView<ShoppingListController> {
           )
         ]),
       ),
+      bottomNavigationBar: CustomBottombar(),
     );
   }
 
@@ -140,72 +145,74 @@ class ShoppingListPage extends GetView<ShoppingListController> {
         // )
       ],
       actionExtentRatio: 0.15,
-      child: Container(
-        margin: const EdgeInsets.only(top: 25, left: 20, right: 20),
-        padding: const EdgeInsets.only(
-          top: 10,
-          left: 15,
-          right: 15,
-          bottom: 10,
-        ),
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          //border: Border.all(color: Colors.black26, width: 1),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(right: 15),
-                  height: 52,
-                  width: 50,
-                  child: Image.network(
-                      'https://image.flaticon.com/icons/png/512/2331/2331970.png'),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Weekend List',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18,
-                        color: Colors.black,
+      child: GestureDetector(
+        onTap: () => Get.toNamed(Routes.shoppingListDetail),
+        child: Container(
+          margin: const EdgeInsets.only(top: 25, left: 20, right: 20),
+          padding: const EdgeInsets.only(
+            top: 10,
+            left: 15,
+            right: 15,
+            bottom: 10,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            //border: Border.all(color: Colors.black26, width: 1),
+            borderRadius: BorderRadius.circular(2),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 15),
+                    height: 45,
+                    width: 47,
+                    child: Image.network(
+                        'https://image.flaticon.com/icons/png/512/2331/2331970.png'),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Weekend List',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'Vincom Thủ Đức',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: Colors.grey,
+                      Text(
+                        'Vincom Thủ Đức',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'Shopping Date: 8/11/2021',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 15,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                //border: Border.all(color: Colors.black26, width: 1),
-                shape: BoxShape.circle,
-                color: Color(0xff64B0E7),
+                      // Text(
+                      //   'Shopping Date: 8/11/2021',
+                      //   style: TextStyle(
+                      //     fontWeight: FontWeight.w400,
+                      //     fontSize: 15,
+                      //     color: Colors.grey,
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ],
               ),
-            ),
-          ],
+              Text(
+                '8/11/2021',
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 15,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

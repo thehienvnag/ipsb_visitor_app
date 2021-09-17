@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/models/product.dart';
+import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/pages/shopping_list_detail/controllers/shopping_list_detail_controller.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:ipsb_visitor_app/src/widgets/rounded_button.dart';
@@ -11,11 +13,20 @@ class ShoppingListDetailsPage extends GetView<ShoppingListDetailController> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: AppColors.colorBlue,
-        title: Container(
-          alignment: Alignment.center,
-          child: Text('Weekend List'),
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: Icon(
+            Icons.chevron_left_outlined,
+            color: Colors.black,
+            size: 40,
+          ),
         ),
+        title: Text(
+          'Weekend List',
+          style: TextStyle(color: Colors.black),
+        ),
+        centerTitle: true,
         titleTextStyle: TextStyle(color: Colors.white),
       ),
       body: SingleChildScrollView(
@@ -101,7 +112,10 @@ class ShoppingListDetailsPage extends GetView<ShoppingListDetailController> {
                 ],
               ),
             ),
-            MyStatefulWidget()
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              child: ShoppingItems(),
+            )
           ],
         ),
       ),
@@ -121,26 +135,30 @@ class Item {
   bool isExpanded;
 }
 
-List<Item> generateItems(int numberOfItems) {
-  return List<Item>.generate(numberOfItems, (int index) {
-    return Item(
-      //headerValue: 'Panel $index',
-      headerValue: 'Highlands Coffee',
-      //expandedValue: 'This is item number $index',
-      expandedValue: 'Trà Đào Cam Xả',
+List<Store> generateItems(int numberOfItems) {
+  return List<Store>.generate(numberOfItems, (int index) {
+    return Store(
+      name: "Highland Coffee",
+      description: "Thương hiệu cafe chất lượng cao",
+      imageUrl: 'https://img.vn/uploads/danhmuc/highland-1564630760-rch7n.jpg',
+      products: [
+        Product(name: "Trà đào cam sả", price: 40000),
+        Product(name: "Trà đào cam sả", price: 40000),
+        Product(name: "Trà đào cam sả", price: 40000),
+      ],
     );
   });
 }
 
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+class ShoppingItems extends StatefulWidget {
+  const ShoppingItems({Key? key}) : super(key: key);
 
   @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+  State<ShoppingItems> createState() => _ShoppingItemsState();
 }
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  final List<Item> _data = generateItems(2);
+class _ShoppingItemsState extends State<ShoppingItems> {
+  final List<Store> _data = generateItems(2);
 
   @override
   Widget build(BuildContext context) {
@@ -158,15 +176,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           _data[index].isExpanded = !isExpanded;
         });
       },
-      children: _data.map<ExpansionPanel>((Item item) {
+      children: _data.map<ExpansionPanel>((Store item) {
         return ExpansionPanel(
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
               leading: Container(
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(
-                          'https://img.vn/uploads/danhmuc/highland-1564630760-rch7n.jpg'),
+                      image: NetworkImage(item.imageUrl!),
                     ),
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10)),
@@ -174,7 +191,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 width: 52,
               ),
               title: Text(
-                item.headerValue,
+                item.name!,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 18,
@@ -184,8 +201,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               subtitle: Container(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  Formatter.shorten(
-                      'Thương Hiệu Cà Phê Tự Hào Sinh Ra Từ Đất Việt.', 25),
+                  Formatter.shorten(item.description, 25),
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 15,
@@ -195,19 +211,23 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               ),
             );
           },
-          body: ListTile(
-              title: Text(item.expandedValue),
-              subtitle:
-                  const Text('To delete this panel, tap the trash can icon'),
-              trailing: const Icon(Icons.delete),
-              onTap: () {
-                setState(() {
-                  _data.removeWhere((Item currentItem) => item == currentItem);
-                });
-              }),
+          body: Column(
+            children: [
+              ...item.products?.map((e) => buildItem(e)).toList() ?? []
+            ],
+          ),
           isExpanded: item.isExpanded,
         );
       }).toList(),
+    );
+  }
+
+  Widget buildItem(Product item) {
+    return ListTile(
+      title: Text(item.name!),
+      subtitle: Text(Formatter.price(item.price)),
+      trailing: const Icon(Icons.delete),
+      onTap: () {},
     );
   }
 }

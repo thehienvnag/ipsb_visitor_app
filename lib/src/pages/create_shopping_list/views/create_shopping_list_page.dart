@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/pages/create_shopping_list/controllers/create_shopping_list_controller.dart';
 import 'package:date_time_picker/date_time_picker.dart';
@@ -18,6 +19,14 @@ class CreateShoppingListPage extends GetView<CreateShoppingListController> {
           child: Text(
             'Create Shopping List',
             style: TextStyle(color: Colors.black),
+          ),
+        ),
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: Icon(
+            Icons.chevron_left_outlined,
+            color: Colors.black,
+            size: 40,
           ),
         ),
       ),
