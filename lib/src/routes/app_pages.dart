@@ -164,8 +164,8 @@ class AppPages {
     ),
     GetPage(
       name: Routes.shoppingListDetail,
-      //page: () => ShoppingListDetailsPage(),
-      page: () => View2(),
+      page: () => ShoppingListDetailsPage(),
+      //page: () => View2(),
       binding: ShoppingListDetailsBinding(),
     ),
   ];

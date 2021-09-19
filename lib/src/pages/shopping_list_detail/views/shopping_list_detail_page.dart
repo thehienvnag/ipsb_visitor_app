@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/models/product.dart';
@@ -338,33 +339,83 @@ class _ShoppingItemsState extends State<ShoppingItems> {
       children: _data.map<ExpansionPanel>((Store item) {
         return ExpansionPanel(
           headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              leading: Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(item.imageUrl!),
+            return Slidable(
+              actionPane: SlidableScrollActionPane(),
+              secondaryActions: <Widget>[
+                Transform.translate(
+                  offset: Offset(-4, 0),
+                  child: Container(
+                    child: IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: Text('Delete?'),
+                            content: Text('Are you sure to delete?'),
+                            actions: [
+                              TextButton(
+                                child: Text(
+                                  'No',
+                                  style: TextStyle(
+                                      color: AppColors.colorBlue, fontSize: 18),
+                                ),
+                                onPressed: () {
+                                  Get.back();
+                                },
+                              ),
+                              TextButton(
+                                child: Text(
+                                  'Yes',
+                                  style: TextStyle(
+                                      color: AppColors.primary, fontSize: 18),
+                                ),
+                                onPressed: () {},
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      icon: Container(
+                        child: Icon(
+                          Icons.delete,
+                          color: AppColors.primary,
+                          size: 30,
+                        ),
+                      ),
                     ),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
-                height: 50,
-                width: 52,
-              ),
-              title: Text(
-                item.name!,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
-                  color: Colors.black87,
+                  ),
                 ),
-              ),
-              subtitle: Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  Formatter.shorten(item.description, 25),
+              ],
+              actionExtentRatio: 0.15,
+              child: ListTile(
+                leading: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(item.imageUrl!),
+                      ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10)),
+                  height: 50,
+                  width: 52,
+                ),
+                title: Text(
+                  item.name!,
                   style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
                     color: Colors.black87,
+                  ),
+                ),
+                subtitle: Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    Formatter.shorten(item.description, 25),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                      color: Colors.black87,
+                    ),
                   ),
                 ),
               ),

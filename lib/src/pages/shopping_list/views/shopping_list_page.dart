@@ -137,12 +137,6 @@ class ShoppingListPage extends GetView<ShoppingListController> {
             ),
           ),
         ),
-        // IconSlideAction(
-        //   caption: 'Delete',
-        //   //color: AppColors.primary,
-        //   icon: Icons.delete,
-        //   onTap: () => print('Delete'),
-        // )
       ],
       actionExtentRatio: 0.15,
       child: GestureDetector(
@@ -191,14 +185,6 @@ class ShoppingListPage extends GetView<ShoppingListController> {
                           color: Colors.grey,
                         ),
                       ),
-                      // Text(
-                      //   'Shopping Date: 8/11/2021',
-                      //   style: TextStyle(
-                      //     fontWeight: FontWeight.w400,
-                      //     fontSize: 15,
-                      //     color: Colors.grey,
-                      //   ),
-                      // ),
                     ],
                   ),
                 ],
