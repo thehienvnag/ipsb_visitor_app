@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(fontFamily: Fonts.montserrat),
       navigatorObservers: [BotToastNavigatorObserver()],
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.shoppingList,
+      initialRoute: Routes.shoppingListDetail,
       getPages: AppPages.routes,
     );
   }
