@@ -5,6 +5,7 @@ import 'package:ipsb_visitor_app/src/services/api/base_service.dart';
 
 mixin IProductService {
   Future<List<Product>> getProductsByStoreId(int storeId);
+  Future<List<Product>> searchByBuildingId(int buildingId, [String? search]);
 }
 
 class ProductService extends BaseService<Product> implements IProductService {
@@ -25,5 +26,20 @@ class ProductService extends BaseService<Product> implements IProductService {
         'storeId': storeId.toString(),
       },
     );
+  }
+
+  @override
+  Future<List<Product>> searchByBuildingId(int buildingId, [String? search]) {
+    final params = {
+      "pageSize": "5",
+      "buildingId": buildingId.toString(),
+      "status": "Active",
+    };
+    if (search != null) {
+      params.putIfAbsent("name", () => search);
+      params.putIfAbsent("isAll", () => "true");
+    }
+
+    return getAllBase(params);
   }
 }

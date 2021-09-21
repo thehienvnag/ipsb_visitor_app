@@ -21,7 +21,7 @@ class MapSearchBar extends GetView<MapController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 54),
+      margin: const EdgeInsets.only(top: 48),
       child: FloatingSearchBar(
         hint: 'Tìm cửa hàng, địa điểm...',
         scrollPadding: const EdgeInsets.only(top: 10, bottom: 56),

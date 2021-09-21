@@ -6,8 +6,17 @@ class CreateShoppingListController extends GetxController {
   final selectedBuilding = Building().obs;
   final IBuildingService buildingService = Get.find();
 
-  Future<List<Building>> loadBuilding() async {
-    return buildingService.getBuildings();
+  final shoppingListName = "".obs;
+  final shoppingListBuilding = 0.obs;
+  final shoppingDate = "".obs;
+
+  Future<List<Building>> loadBuilding([String? search]) async {
+    return buildingService.searchBuildings(search);
+  }
+
+  void setShoppingBuilding(Building? building) {
+    if (building == null) shoppingListBuilding.value = 0;
+    shoppingListBuilding.value = building!.id!;
   }
 
   @override

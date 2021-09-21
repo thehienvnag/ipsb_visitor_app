@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/algorithm/shortest_path/graph.dart';
@@ -8,6 +9,8 @@ import 'package:ipsb_visitor_app/src/models/coupon.dart';
 import 'package:ipsb_visitor_app/src/models/edge.dart';
 import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
 import 'package:ipsb_visitor_app/src/models/location.dart';
+import 'package:ipsb_visitor_app/src/models/product.dart';
+import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/edge_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/floor_plan_service.dart';
@@ -16,6 +19,7 @@ import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
 import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 import 'package:ipsb_visitor_app/src/utils/edge_helper.dart';
+import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:ipsb_visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -86,6 +90,15 @@ class MapController extends GetxController {
   /// Determine whether the coupon button is shown or not
   final isCouponBtnVisible = true.obs;
 
+  /// Determine whether to show Shopping bottom sheet
+  final shoppingListVisble = false.obs;
+
+  /// Determine whether shopping is starting
+  final startShopping = false.obs;
+
+  /// List store in turn of distance
+  final listStoreShopping = <Store>[].obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -93,6 +106,110 @@ class MapController extends GetxController {
     loadEdgesInBuilding();
     getCoupons();
     onLocationChanged();
+    loadShoppingList();
+  }
+
+  void loadShoppingList() {
+    if (sharedData.shoppingList.value.id == null) return;
+    shoppingListVisble.value = true;
+  }
+
+  void beginShopping() {
+    startShopping.value = true;
+    int beginLocationId = currentPosition.value.id!;
+    Graph graph = Graph.from(edges);
+    final listStores = sharedData.shoppingList.value.getListStores();
+    listStores.forEach((e) {
+      int endLocationId = e.locations![0].id!;
+      // Find all shortest paths to endLocationId
+      _shortestPathAlgorithm.solve(graph, endLocationId);
+      double distance = 0;
+      List<Location> path = graph.getShortestPath(beginLocationId);
+      int i = 0;
+      path.forEach((e) {
+        if (i < path.length - 1) {
+          final p1 = Offset(e.x!, e.y!);
+          final p2 = Offset(path[i + 1].x!, path[i + 1].y!);
+          distance +=
+              Utils.calDistance(p1, p2) / 30; // 30 is real scale of floor map
+        }
+        i++;
+      });
+      e.distance = distance;
+    });
+    listStores.sort((a, b) => a.distance!.compareTo(b.distance!));
+    listStoreShopping.value = listStores;
+    _mapController.setShoppingPoints(
+      listStores
+          .where((e) => e.locations![0].floorPlanId == selectedFloor.value.id)
+          .toList(),
+    );
+    showDirectionForShopping();
+  }
+
+  void showDirectionForShopping() {
+    if (!shoppingListVisble.value) return;
+    List<Location> pathsOnMap = [];
+    final initial = solveForShortestPath(
+      currentPosition.value.id!,
+      listStoreShopping[0].locations![0].id!,
+    );
+    pathsOnMap.addAll(initial);
+    int pos = 0;
+    listStoreShopping.forEach((e) {
+      if (pos < listStoreShopping.length - 1) {
+        Location p1 = e.locations![pos];
+        Location p2 = e.locations![pos + 1];
+        final pathTo = solveForShortestPath(
+          p1.id!,
+          p2.id!,
+        );
+        pathsOnMap.addAll(pathTo);
+      }
+      pos++;
+    });
+    shortestPath.value = pathsOnMap;
+    _mapController.setPathOnMap(
+      Graph.getPathOnFloor(shortestPath, selectedFloor.value.id!),
+    );
+  }
+
+  bool checkComplete(int storeId) {
+    bool result = false;
+    try {
+      final store = listStoreShopping.firstWhere((e) => e.id == storeId);
+      result = store.complete;
+    } catch (e) {}
+    return result;
+  }
+
+  void onProductSelected(Product product, int storeId) {
+    listStoreShopping.value = listStoreShopping.map((e) {
+      if (e.id == storeId) {
+        e.products!.forEach((pro) {
+          if (pro.id == product.id) {
+            pro.checked = !pro.checked;
+          }
+        });
+        if (e.products!.every((pro) => pro.checked)) {
+          e.complete = true;
+        } else {
+          e.complete = false;
+        }
+      }
+      return e;
+    }).toList();
+    _mapController.setShoppingPoints(
+      listStoreShopping
+          .where((e) => e.locations![0].floorPlanId == selectedFloor.value.id)
+          .toList(),
+    );
+  }
+
+  void closeShopping() {
+    shoppingListVisble.value = false;
+    _mapController.setShoppingPoints([]);
+    _mapController.setPathOnMap([]);
   }
 
   void startShowDirection(int? destLocationId) {
@@ -106,6 +223,7 @@ class MapController extends GetxController {
     _mapController.setCurrentMarker(currentPosition.value);
     currentPosition.listen((location) {
       showDirection();
+      showDirectionForShopping();
       checkCurrentLocationOnFloor();
       _mapController.moveToScene(location);
     });
@@ -121,26 +239,29 @@ class MapController extends GetxController {
     }
   }
 
+  List<Location> solveForShortestPath(int beginId, int endId) {
+    // Init graph for finding shortest path from edges
+    Graph graph = Graph.from(edges);
+    // Find all shortest paths to endLocationId
+    _shortestPathAlgorithm.solve(graph, endId);
+    // Get shortest path for current position
+
+    final paths = graph.getShortestPath(beginId);
+    paths.insert(0, currentPosition.value);
+    return paths;
+  }
+
   void showDirection() {
     // Incase of edges is empty, end function
     if (edges.isEmpty) return;
-    // print("[ShowDirection]__________");
+    if (shoppingListVisble.value) return;
     isShowingDirection.value = true;
 
     int beginLocationId = currentPosition.value.id!;
     int endLocationId = destPosition.value;
 
-    // Init graph for finding shortest path from edges
-    Graph graph = Graph.from(edges);
-    // Find all shortest paths to endLocationId
-    _shortestPathAlgorithm.solve(graph, endLocationId);
-    // Get shortest path for current position
+    shortestPath.value = solveForShortestPath(beginLocationId, endLocationId);
 
-    shortestPath.value = graph.getShortestPath(beginLocationId);
-    shortestPath.insert(0, currentPosition.value);
-    // shortestPath.forEach((element) {
-    //   print(element);
-    // });
     // Set path on map
     _mapController.setPathOnMap(
       Graph.getPathOnFloor(shortestPath, selectedFloor.value.id!),
@@ -214,13 +335,14 @@ class MapController extends GetxController {
   Future<void> loadEdgesInBuilding() async {
     int? buildingId = sharedData.building.value.id;
     if (buildingId != null) {
-      final edgesResult = await HiveStorage.useStorageList<Edge>(
-        apiCallback: () => _edgeService.getByBuildingId(buildingId),
-        transformData: EdgeHelper.splitToSegments,
-        storageBoxName: StorageConstants.edgeBox,
-        key: buildingId,
-      );
-      edges.value = edgesResult;
+      // final edgesResult = await HiveStorage.useStorageList<Edge>(
+      //   apiCallback: () => _edgeService.getByBuildingId(buildingId),
+      //   transformData: EdgeHelper.splitToSegments,
+      //   storageBoxName: StorageConstants.edgeBox,
+      //   key: buildingId,
+      // );
+      final dataFromAPI = await _edgeService.getByBuildingId(buildingId);
+      edges.value = EdgeHelper.splitToSegments(dataFromAPI);
     }
   }
 
@@ -241,19 +363,21 @@ class MapController extends GetxController {
 
   /// TEST FUNCTION (Removed when completed)
   void testLocationChange() {
-    int index = -1;
-    final paths = shortestPath.map((e) => e).toList();
-    Timer.periodic(Duration(milliseconds: 500), (timer) {
-      if (isShowingDirection.isFalse) {
-        if (index >= 0 && index < paths.length) {
-          setCurrentLocation(paths[index]);
+    if (shoppingListVisble.isFalse) {
+      int index = -1;
+      final paths = shortestPath.map((e) => e).toList();
+      Timer.periodic(Duration(milliseconds: 500), (timer) {
+        if (isShowingDirection.isFalse) {
+          if (index >= 0 && index < paths.length) {
+            setCurrentLocation(paths[index]);
+          }
+          if (index == paths.length) {
+            print("cancel");
+            timer.cancel();
+          }
+          index++;
         }
-        if (index == paths.length) {
-          print("cancel");
-          timer.cancel();
-        }
-        index++;
-      }
-    });
+      });
+    } else {}
   }
 }

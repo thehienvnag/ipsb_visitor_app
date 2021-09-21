@@ -5,6 +5,7 @@ import 'package:ipsb_visitor_app/src/services/api/base_service.dart';
 mixin IBuildingService {
   Future<Building?> getBuildingById(int id);
   Future<List<Building>> getBuildings();
+  Future<List<Building>> searchBuildings([String? search]);
 }
 
 class BuildingService extends BaseService<Building>
@@ -27,5 +28,18 @@ class BuildingService extends BaseService<Building>
   @override
   Future<List<Building>> getBuildings() {
     return getAllBase({"pageSize": "5"});
+  }
+
+  @override
+  Future<List<Building>> searchBuildings([String? search]) {
+    final params = {
+      "pageSize": "5",
+      "status": "Active",
+    };
+    if (search != null) {
+      params.putIfAbsent("name", () => search);
+      params.putIfAbsent("isAll", () => "true");
+    }
+    return getAllBase(params);
   }
 }

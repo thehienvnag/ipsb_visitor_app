@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
+import 'package:ipsb_visitor_app/src/models/location.dart';
 import 'package:ipsb_visitor_app/src/models/product.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -33,8 +34,19 @@ class Store {
   @HiveField(7)
   final FloorPlan? floorPlan;
 
-  final List<Product>? products;
+  final List<Location>? locations;
+
+  List<Product>? products;
+
+  @JsonKey(ignore: true)
   bool isExpanded;
+
+  @JsonKey(ignore: true)
+  bool complete;
+
+  @JsonKey(ignore: true)
+  double? distance;
+
   Store({
     this.products,
     this.floorPlan,
@@ -45,7 +57,10 @@ class Store {
     this.floorPlanId,
     this.productCategoryId,
     this.status,
+    this.locations,
     this.isExpanded = false,
+    this.complete = false,
+    this.distance,
   });
 
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);

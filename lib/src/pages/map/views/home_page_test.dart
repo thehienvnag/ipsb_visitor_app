@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
 import 'package:ipsb_visitor_app/src/pages/map/controllers/map_controller.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/widgets/custom_bottom_bar.dart';
 import 'package:ipsb_visitor_app/src/widgets/ticket_box.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
@@ -91,58 +92,26 @@ class HomePage2 extends GetView<MapController> {
           ),
         ),
       ),
-      body: SlidingUpPanel(
-        controller: storePanelController,
-        isDraggable: false,
-        backdropOpacity: 0,
-        minHeight: 0,
-        maxHeight: MediaQuery.of(context).size.height,
-        defaultPanelState: PanelState.CLOSED,
-        body: Container(
-          margin: EdgeInsets.only(top: 10),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(
-                  'https://genk.mediacdn.vn/2018/3/14/photo-1-1521033482343809363991.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedLabelStyle: TextStyle(color: Colors.grey),
-        selectedLabelStyle: TextStyle(color: Color(0xff0DB5B4)),
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 0,
-        selectedItemColor: Color(0xff0DB5B4),
-        unselectedItemColor: Color(0xffC4C4C4),
-        items: [
-          BottomNavigationBarItem(
-            label: 'Home',
-            icon: Icon(
-              Icons.home,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'My Coupons',
-            icon: Icon(
-              Icons.view_list,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Messenges',
-            icon: Icon(
-              Icons.notifications_active,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Account',
-            icon: Icon(
-              Icons.account_circle,
-            ),
-          ),
-        ],
-      ),
+      // body: SlidingUpPanel(
+      //   controller: storePanelController,
+      //   isDraggable: false,
+      //   backdropOpacity: 0,
+      //   minHeight: 0,
+      //   maxHeight: MediaQuery.of(context).size.height,
+      //   defaultPanelState: PanelState.CLOSED,
+      //   body: Container(
+      //     margin: EdgeInsets.only(top: 10),
+      //     decoration: BoxDecoration(
+      //       image: DecorationImage(
+      //         image: NetworkImage(
+      //             'https://genk.mediacdn.vn/2018/3/14/photo-1-1521033482343809363991.png'),
+      //         fit: BoxFit.cover,
+      //       ),
+      //     ),
+      //   ),
+      // ),
+      bottomNavigationBar: CustomBottombar(),
+      bottomSheet: bottomSheetEnd(context),
     );
   }
 
@@ -599,26 +568,13 @@ class HomePage2 extends GetView<MapController> {
                             child: Container(
                               width: 370,
                               margin: EdgeInsets.only(left: 10),
-                              child: Row(
-                                children: [
-                                  Text('Đi tới: ',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black)),
-                                  Text(
-                                    'Trà sữa Phúc Long ',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black),
-                                  ),
-                                  Text('Tầng 1 (250m)',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black))
-                                ],
+                              child: Text(
+                                'Đi tới: Trà sữa Phúc Long Tầng 1 (250m)',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),

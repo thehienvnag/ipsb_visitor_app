@@ -13,6 +13,9 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
     description: json['description'] as String?,
     price: (json['price'] as num?)?.toDouble(),
     imageUrl: json['imageUrl'] as String?,
+    store: json['store'] == null
+        ? null
+        : Store.fromJson(json['store'] as Map<String, dynamic>),
   )..isSelected = json['isSelected'] as bool?;
 }
 
@@ -23,4 +26,5 @@ Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
       'description': instance.description,
       'imageUrl': instance.imageUrl,
       'price': instance.price,
+      'store': instance.store,
     };

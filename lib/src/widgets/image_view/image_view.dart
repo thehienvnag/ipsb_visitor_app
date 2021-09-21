@@ -22,16 +22,11 @@ class ImageView extends GetView<ImageViewController> {
       child: Container(
         padding: const EdgeInsets.only(bottom: 90, top: 40),
         color: Colors.white,
-        // padding:
-        //     const EdgeInsets.only(top: 200, bottom: 600, left: 200, right: 200),
-        // decoration: BoxDecoration(color: Colors.transparent),
         child: Container(
           width: width,
           height: height,
           decoration: BoxDecoration(
             image: DecorationImage(image: image),
-            // border: Border.all(color: Colors.grey.shade300),
-            // borderRadius: BorderRadius.circular(8)
           ),
           child: Obx(() {
             return Stack(
@@ -40,6 +35,7 @@ class ImageView extends GetView<ImageViewController> {
                   painter: PathPainter(points: controller.points),
                 ),
                 ...buildMapMarkers(controller.markers),
+                ...buildMapMarkers(controller.shoppingMarkers),
                 buildOneMarker(controller.point.value),
                 buildPopup(controller.servicePopup.value, width, height),
               ],
@@ -48,6 +44,16 @@ class ImageView extends GetView<ImageViewController> {
         ),
       ),
     );
+  }
+
+  List<Positioned> buildShoppingMarkers(List<MapMarker> markers) {
+    return markers
+        .map((e) => Positioned(
+              left: e.dx - MapKey.radius,
+              top: e.dy - MapKey.radius,
+              child: e.content,
+            ))
+        .toList();
   }
 
   List<Positioned> buildMapMarkers(List<MapMarker> markers) => markers

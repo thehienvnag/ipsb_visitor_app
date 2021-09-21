@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
 
 import 'package:ipsb_visitor_app/src/data/api_helper.dart';
 import 'package:ipsb_visitor_app/src/data/file_upload_utils.dart';
@@ -39,6 +40,9 @@ abstract class BaseService<T> {
       Paging<T> paging = Paging.fromJson(res.body);
       paging.convertToList(fromJson);
       return paging;
+    }
+    if (res.statusCode == HttpStatus.notModified) {
+      throw StorageConstants.dataNotModified;
     }
     return Paging.defaultInstance<T>();
   }

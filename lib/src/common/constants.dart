@@ -60,8 +60,8 @@ class AppBoxShadow {
   static BoxShadow boxShadowLight = BoxShadow(
     color: Colors.grey.withOpacity(0.5),
     spreadRadius: 1,
-    blurRadius: 7,
-    offset: Offset(0, 1), // changes position of shadow
+    blurRadius: 1,
+    offset: Offset(0, 0.5), // changes position of shadow
   );
 }
 
@@ -79,6 +79,10 @@ class AppColors {
 class StorageConstants {
   static const floorPlanBox = "floorPlanBox";
   static const edgeBox = "edgeBox";
+  static const requestUriBox = "requestUriBox";
+  static const lastModified = "last-modified";
+  static final Duration expireDuration = Duration(days: 3);
+  static const dataNotModified = "Data is not modified";
 }
 
 class MapKey {
@@ -104,4 +108,5 @@ class AppHiveType {
   static const int edge = 3;
   static const int store = 4;
   static const int storageListEdge = 5;
+  static const int lastModifiedHeader = 6;
 }

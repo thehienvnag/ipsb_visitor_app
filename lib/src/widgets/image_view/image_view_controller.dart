@@ -10,6 +10,7 @@ import 'package:ipsb_visitor_app/src/widgets/image_view/map_marker.dart';
 import 'package:ipsb_visitor_app/src/widgets/marker_popup.dart';
 
 import '../current_location.dart';
+import '../shopping_point.dart';
 
 class ImageViewController extends GetxController {
   /// Markers on the map
@@ -22,6 +23,19 @@ class ImageViewController extends GetxController {
     content: CurrentLocation(),
   ).obs;
 
+  /// Paths on the map
+  final points = <Offset>[].obs;
+
+  /// Service popup location on the map
+  final servicePopup = PopupState(enabled: false).obs;
+
+  /// Shopping point on the map
+  final shoppingMarkers = <MapMarker>[].obs;
+
+  void setShoppingMarkers(List<MapMarker> value) {
+    shoppingMarkers.value = value;
+  }
+
   void setPoint(MapMarker marker) {
     point.value = marker;
   }
@@ -29,9 +43,6 @@ class ImageViewController extends GetxController {
   void setMarkers(List<MapMarker> value) {
     markers.value = value;
   }
-
-  /// Paths on the map
-  final points = <Offset>[].obs;
 
   void setPath(List<Offset> value) {
     points.value = value;
@@ -47,9 +58,6 @@ class ImageViewController extends GetxController {
       locationType: location.locationTypeId!,
     );
   }
-
-  /// Service popup location on the map
-  var servicePopup = PopupState(enabled: false).obs;
 
   void closePopup(int type) {
     switch (type) {

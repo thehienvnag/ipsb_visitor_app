@@ -27,6 +27,12 @@ dependencies:
   # The following is used for state management
   get:
 
+  # Icon
+  ionicons: ^0.1.2
+
+  # Spinner
+  flutter_spinkit: ^5.1.0
+
   # The following is used for pick image from mobile device
   image_picker: ^0.8.0+3
 

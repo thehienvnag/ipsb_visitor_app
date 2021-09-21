@@ -19,6 +19,7 @@ import 'package:ipsb_visitor_app/src/services/api/floor_plan_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/location_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/product_category_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/product_service.dart';
+import 'package:ipsb_visitor_app/src/services/api/shopping_list_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/store_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
@@ -88,7 +89,10 @@ class AppInit {
     // Calling api at ProductCategory service
     Get.lazyPut<IProductCategoryService>(() => ProductCategoryService(),
         fenix: true);
+    // Calling api at Building service
     Get.lazyPut<IBuildingService>(() => BuildingService(), fenix: true);
+    // Calling api at ShoppingList service
+    Get.lazyPut<IShoppingListService>(() => ShoppingListService(), fenix: true);
   }
 
   static void initUserProfile() {

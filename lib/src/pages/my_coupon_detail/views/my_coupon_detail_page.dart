@@ -12,7 +12,6 @@ import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:ipsb_visitor_app/src/widgets/ticket_box.dart';
-import 'package:ipsb_visitor_app/src/widgets/user_welcome.dart';
 
 class MyCouponDetailPage extends GetView<MyCouponDetailController> {
   final dateTime = DateTime.now();

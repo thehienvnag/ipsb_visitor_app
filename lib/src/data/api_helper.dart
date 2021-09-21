@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
+import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 
 mixin IApiHelper {
   // Get all from an API [endpoint] using [uri] and [query]
@@ -73,8 +75,30 @@ class ApiHelper extends GetConnect with IApiHelper {
     // Request modifier: [Add bearer token]
     httpClient.addRequestModifier((Request request) async {
       request.headers["Authorization"] = await AuthServices.getAuthHeader();
-      print("Token: " + request.headers["Authorization"].toString());
+      // print("Token: " + request.headers["Authorization"].toString());
+
       return request;
+    });
+
+    //Request modifier: [if-modified-since: header]
+    httpClient.addRequestModifier((Request request) async {
+      final lastModified = await HiveStorage.getIfModifiedSinceHeader(
+        HiveStorage.getEndpoint(request.url),
+      );
+      if (lastModified != null) {
+        request.headers["If-Modified-Since"] = lastModified;
+      }
+      return request;
+    });
+
+    //Response modifier: [last-modified: header]
+    httpClient.addResponseModifier((request, response) async {
+      String? lastModified = response.headers?["Last-Modified"];
+      HiveStorage.saveLastModifiedHeader(
+        lastModified,
+        HiveStorage.getEndpoint(request.url),
+      );
+      return response;
     });
   }
 

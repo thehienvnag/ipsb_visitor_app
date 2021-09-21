@@ -80,7 +80,8 @@ class CreateShoppingListPage extends GetView<CreateShoppingListController> {
                   child: SelectBuilding(
                     dataCallback: controller.loadBuilding,
                     label: "Select building",
-                    onSubmitted: (value) => print(value),
+                    onSubmitted: (value) =>
+                        controller.setShoppingBuilding(value),
                   ),
                 ),
                 // Container(
@@ -112,12 +113,15 @@ class CreateShoppingListPage extends GetView<CreateShoppingListController> {
                     ),
                     firstDate: DateTime(2000),
                     lastDate: DateTime(2100),
-                    onChanged: (val) => print(val),
-                    validator: (val) {
-                      print(val);
-                      return null;
+                    onChanged: (val) => controller.shoppingDate.value = val,
+                    // validator: (val) {
+                    //   return null;
+                    // },
+                    onSaved: (val) {
+                      if (val != null) {
+                        controller.shoppingDate.value = val;
+                      }
                     },
-                    onSaved: (val) => print(val),
                   ),
                 ),
                 // Container(

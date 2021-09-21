@@ -67,6 +67,9 @@ class StoreAdapter extends TypeAdapter<Store> {
 
 Store _$StoreFromJson(Map<String, dynamic> json) {
   return Store(
+    products: (json['products'] as List<dynamic>?)
+        ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
+        .toList(),
     floorPlan: json['floorPlan'] == null
         ? null
         : FloorPlan.fromJson(json['floorPlan'] as Map<String, dynamic>),
@@ -77,6 +80,9 @@ Store _$StoreFromJson(Map<String, dynamic> json) {
     floorPlanId: json['floorPlanId'] as int?,
     productCategoryId: json['productCategoryId'] as String?,
     status: json['status'] as String?,
+    locations: (json['locations'] as List<dynamic>?)
+        ?.map((e) => Location.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
@@ -89,4 +95,6 @@ Map<String, dynamic> _$StoreToJson(Store instance) => <String, dynamic>{
       'productCategoryId': instance.productCategoryId,
       'status': instance.status,
       'floorPlan': instance.floorPlan,
+      'locations': instance.locations,
+      'products': instance.products,
     };

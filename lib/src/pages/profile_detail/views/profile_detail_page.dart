@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/pages/profile_detail/controllers/profile_detail_controller.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 
 class ProfileDetailPage extends GetView<ProfileDetailController> {
@@ -61,9 +62,10 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: sharedStates.user != null
+                            image: AuthServices.isLoggedIn()
                                 ? NetworkImage(
-                                    sharedStates.user!.photoURL.toString())
+                                    AuthServices.userLoggedIn.value.imageUrl!,
+                                  )
                                 : NetworkImage(
                                     'https://mcss.co.za/images/Member-Login.jpg'),
                           ),
@@ -95,20 +97,20 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
               ),
               buildTextField(
                   "Name",
-                  sharedStates.user != null
-                      ? sharedStates.user!.displayName.toString()
+                  AuthServices.isLoggedIn()
+                      ? AuthServices.userLoggedIn.value.name!
                       : "Not sigin",
                   false),
               buildTextField(
                   "Địa chỉ Email",
-                  sharedStates.user != null
-                      ? sharedStates.user!.email.toString()
+                  AuthServices.isLoggedIn()
+                      ? AuthServices.userLoggedIn.value.email!
                       : "Not sigin",
                   false),
               buildTextField(
                   "Số điện thoại",
-                  sharedStates.user != null
-                      ? sharedStates.user!.phoneNumber.toString()
+                  AuthServices.isLoggedIn()
+                      ? AuthServices.userLoggedIn.value.phone!
                       : "Not sigin",
                   false),
               buildTextField("Địa chỉ (Không bắt buộc)", "", false),

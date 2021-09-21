@@ -1,4 +1,5 @@
 import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/models/shopping_list.dart';
 import 'package:ipsb_visitor_app/src/pages/shopping_list/controllers/shopping_list_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/utils/formatter.dart';
+import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:ipsb_visitor_app/src/widgets/custom_bottom_bar.dart';
 
 class ShoppingListPage extends GetView<ShoppingListController> {
@@ -32,7 +35,7 @@ class ShoppingListPage extends GetView<ShoppingListController> {
       ),
       body: SingleChildScrollView(
         child: Column(children: [
-          ...listItem([1, 2, 3, 4, 5, 6, 7], context),
+          listItem(),
           SizedBox(
             height: 50,
           )
@@ -42,10 +45,17 @@ class ShoppingListPage extends GetView<ShoppingListController> {
     );
   }
 
-  List<Widget> listItem(List<int> list, BuildContext context) {
-    if (list.isEmpty) {
-      return [
-        Center(
+  Widget listItem() {
+    return Obx(() {
+      final list = controller.shoppingLists;
+      if (controller.loading.value) {
+        return Container(
+          margin: const EdgeInsets.only(top: 200),
+          child: Center(child: CircularProgressIndicator()),
+        );
+      }
+      if (list.isEmpty) {
+        return Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -82,13 +92,17 @@ class ShoppingListPage extends GetView<ShoppingListController> {
               ),
             ],
           ),
-        ),
-      ];
-    }
-    return list.map((e) => shoppingItem(e, context)).toList();
+        );
+      }
+      return ListView.builder(
+        shrinkWrap: true,
+        itemBuilder: (context, index) => shoppingItem(list[index], context),
+        itemCount: list.length,
+      );
+    });
   }
 
-  Widget shoppingItem(int element, BuildContext context) {
+  Widget shoppingItem(ShoppingList element, BuildContext context) {
     return Slidable(
       actionPane: SlidableScrollActionPane(),
       secondaryActions: <Widget>[
@@ -139,66 +153,73 @@ class ShoppingListPage extends GetView<ShoppingListController> {
         ),
       ],
       actionExtentRatio: 0.15,
-      child: GestureDetector(
-        onTap: () => Get.toNamed(Routes.shoppingListDetail),
-        child: Container(
-          margin: const EdgeInsets.only(top: 25, left: 20, right: 20),
-          padding: const EdgeInsets.only(
-            top: 10,
-            left: 15,
-            right: 15,
-            bottom: 10,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            //border: Border.all(color: Colors.black26, width: 1),
-            borderRadius: BorderRadius.circular(2),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
+      child: Container(
+        margin: const EdgeInsets.only(top: 25, left: 20, right: 20),
+        padding: const EdgeInsets.only(
+          top: 6,
+          left: 15,
+          right: 15,
+          bottom: 6,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          //border: Border.all(color: Colors.black26, width: 1),
+          borderRadius: BorderRadius.circular(2),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () => Get.toNamed(
+                    Routes.shoppingListDetail,
+                    parameters: {
+                      "shoppingListId": element.id.toString(),
+                    },
+                  ),
+                  child: Container(
                     margin: EdgeInsets.only(right: 15),
-                    height: 45,
-                    width: 47,
-                    child: Image.network(
-                        'https://image.flaticon.com/icons/png/512/2331/2331970.png'),
+                    height: 50,
+                    width: 65,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: Utils.resolveDecoImg(element.building?.imageUrl!),
+                    ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Weekend List',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Text(
-                        'Vincom Thủ Đức',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Text(
-                '8/11/2021',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 15,
-                  color: Colors.grey,
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      element.name!,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      Formatter.shorten(element.building?.name, 20),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Text(
+              Formatter.date(element.shoppingDate),
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 15,
+                color: Colors.grey,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

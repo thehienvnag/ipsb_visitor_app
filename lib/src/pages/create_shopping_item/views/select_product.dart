@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:ipsb_visitor_app/src/models/building.dart';
+import 'package:ipsb_visitor_app/src/models/product.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:ipsb_visitor_app/src/widgets/custom_select.dart';
 
-class SelectBuilding extends StatelessWidget {
+class SelectProduct extends StatelessWidget {
   final String label;
-  final Function(Building?) onSubmitted;
-  final Building? selected;
+  final Function(Product?) onSubmitted;
+  final Product? selected;
   final bool required;
-  final Future<List<Building>?> Function([String?]) dataCallback;
-  const SelectBuilding({
+  final Future<List<Product>?> Function([String?]) dataCallback;
+  const SelectProduct({
     Key? key,
     required this.label,
     required this.onSubmitted,
@@ -19,7 +19,7 @@ class SelectBuilding extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return CustomSelect<Building>(
+    return CustomSelect<Product>(
       dataCallback: dataCallback,
       label: label,
       type: "single",
@@ -29,7 +29,7 @@ class SelectBuilding extends StatelessWidget {
           width: 80,
         ),
         title: Text(Formatter.shorten(item.name)),
-        subtitle: Text(Formatter.shorten(item.address)),
+        subtitle: Text(Formatter.shorten(item.description)),
         trailing: Checkbox(
           value: selected,
           onChanged: (value) => changeSelected(value!),

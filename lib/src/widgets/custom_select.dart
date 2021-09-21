@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ipsb_visitor_app/src/widgets/rounded_button.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -18,7 +19,7 @@ class CustomSelect<T> extends StatefulWidget {
   final List<T>? items;
 
   /// Callback for data api
-  final Future<List<T>?> Function()? dataCallback;
+  final Future<List<T>?> Function([String?])? dataCallback;
 
   /// Background color
   final Color color;
@@ -141,7 +142,10 @@ class _CustomSelectState<T> extends State<CustomSelect<T>> {
     if (widget.type != "single" || selectedItem == null) {
       return Container();
     }
-    return widget.selectedItemBuilder(selectedItem!, () => removeSingle());
+    return widget.selectedItemBuilder(selectedItem!, () {
+      widget.onSubmitted!(null);
+      removeSingle();
+    });
   }
 
   Widget showMutilple() {
@@ -244,7 +248,7 @@ class DialogWidget<T> extends StatefulWidget {
   final String type;
   final List<T>? selectedItems;
   final T? selectedItem;
-  final Future<List<T>?> Function()? dataCallback;
+  final Future<List<T>?> Function([String?])? dataCallback;
 
   /// Item in dropdown builder
   final itemBuilder;
@@ -271,6 +275,9 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
   /// items
   List<SelectItemWrapper<T>> wrapperItems = [];
 
+  /// Loading
+  bool loading = false;
+
   @override
   void initState() {
     super.initState();
@@ -286,22 +293,32 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
         return SelectItemWrapper<T>(value: e, selected: selected);
       }).toList();
     } else {
-      widget.dataCallback!.call().then((value) {
-        if (value != null) {
-          setState(() {
-            wrapperItems = value.map((e) {
-              bool selected = false;
-              if (widget.type == "single") {
-                selected = e == widget.selectedItem;
-              } else {
-                selected = widget.selectedItems?.contains(e) ?? false;
-              }
-              return SelectItemWrapper<T>(value: e, selected: selected);
-            }).toList();
-          });
-        }
-      });
+      loadDataByCallback();
     }
+  }
+
+  void loadDataByCallback([String? search]) {
+    setState(() {
+      loading = true;
+    });
+    widget.dataCallback!.call(search).then((value) {
+      if (value != null) {
+        setState(() {
+          wrapperItems = value.map((e) {
+            bool selected = false;
+            if (widget.type == "single") {
+              selected = e == widget.selectedItem;
+            } else {
+              selected = widget.selectedItems?.contains(e) ?? false;
+            }
+            return SelectItemWrapper<T>(value: e, selected: selected);
+          }).toList();
+        });
+      }
+      setState(() {
+        loading = false;
+      });
+    });
   }
 
   @override
@@ -320,11 +337,13 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
           margin: const EdgeInsets.only(bottom: 8),
           child: TextFormField(
             controller: _textController,
+            onChanged: (value) => loadDataByCallback(value),
             focusNode: _inputNode,
             decoration: InputDecoration(
               border: InputBorder.none,
               focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey)),
+                borderSide: BorderSide(color: Colors.grey),
+              ),
             ),
           ),
         ),
@@ -356,7 +375,7 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
         child: Column(
           children: [
             Expanded(
-              child: wrapperItems.isEmpty
+              child: loading
                   ? Center(
                       child: CircularProgressIndicator(),
                     )

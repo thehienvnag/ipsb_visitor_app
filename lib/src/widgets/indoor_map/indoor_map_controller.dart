@@ -3,12 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/models/location.dart';
+import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/widgets/current_location.dart';
 import 'dart:ui' as ui;
 
 import 'package:ipsb_visitor_app/src/widgets/image_view/image_view_controller.dart';
 import 'package:ipsb_visitor_app/src/widgets/image_view/map_marker.dart';
 import 'package:ipsb_visitor_app/src/widgets/place_object.dart';
+
+import '../shopping_point.dart';
 
 class IndoorMapController extends GetxController {
   final transformationController = TransformationController();
@@ -76,5 +79,22 @@ class IndoorMapController extends GetxController {
   void setPathOnMap(List<Location> locations) {
     final list = locations.map((e) => Offset(e.x!, e.y!)).toList();
     _imageViewController.setPath(list);
+  }
+
+  /// Set Shopping points on map
+  void setShoppingPoints(List<Store> stores) {
+    int i = 0;
+    final listMarkers = stores.map((store) {
+      final location = store.locations![0];
+      return MapMarker(
+        dx: location.x!,
+        dy: location.y!,
+        content: ShoppingPoint(
+          store: store,
+          index: (++i).toString(),
+        ),
+      );
+    }).toList();
+    _imageViewController.setShoppingMarkers(listMarkers);
   }
 }

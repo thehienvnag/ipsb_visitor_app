@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/pages/login_gmail/controllers/login_gmail_controller.dart';
-import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 
 class LoginEmailPage extends GetView<LoginEmailController> {
@@ -77,8 +76,7 @@ class LoginEmailPage extends GetView<LoginEmailController> {
                   SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
-                      //Get.toNamed(Routes.loginPhone);
-                      sharedStates.bottomSheet(context);
+                      sharedStates.showLoginBottomSheet();
                     },
                     child: GestureDetector(
                       child: Container(

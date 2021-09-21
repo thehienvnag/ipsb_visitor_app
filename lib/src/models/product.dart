@@ -1,3 +1,4 @@
+import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'product.g.dart';
@@ -8,13 +9,19 @@ class Product {
   final int? id;
   final String? name, description, imageUrl;
   final double? price;
-
+  final Store? store;
+  @JsonKey(ignore: true)
+  String? note;
+  @JsonKey(ignore: true)
+  bool checked = false;
   Product({
     this.id,
     this.name,
     this.description,
     this.price,
     this.imageUrl,
+    this.store,
+    this.note,
   });
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
