@@ -55,6 +55,6 @@ class EdgeService extends BaseService<Edge> implements IEdgeService {
     return getAllBase({
       "isAll": true.toString(),
       "buildingId": buildingId.toString(),
-    });
+    }, true);
   }
 }

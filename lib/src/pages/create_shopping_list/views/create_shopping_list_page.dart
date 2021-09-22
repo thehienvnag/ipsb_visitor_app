@@ -57,14 +57,16 @@ class CreateShoppingListPage extends GetView<CreateShoppingListController> {
                   height: 43,
                   margin: EdgeInsets.only(top: 15, right: 30, left: 30),
                   child: TextField(
+                    onChanged: (val) => controller.shoppingListName.value = val,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.black12,
                       contentPadding: EdgeInsets.only(top: 5, left: 10),
                       hintText: 'Input list name',
                       border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(5)),
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
                     ),
                   ),
                 ),
@@ -117,11 +119,9 @@ class CreateShoppingListPage extends GetView<CreateShoppingListController> {
                     // validator: (val) {
                     //   return null;
                     // },
-                    onSaved: (val) {
-                      if (val != null) {
-                        controller.shoppingDate.value = val;
-                      }
-                    },
+                    // onSaved: (val) {
+                    //   controller.shoppingDate.value = val ?? "";
+                    // },
                   ),
                 ),
                 // Container(
@@ -209,7 +209,7 @@ class CreateShoppingListPage extends GetView<CreateShoppingListController> {
                   margin: EdgeInsets.only(top: 30),
                   child: OutlinedButton(
                     style: ElevatedButton.styleFrom(primary: AppColors.primary),
-                    onPressed: () {},
+                    onPressed: () => controller.submitForm(),
                     child: Text(
                       "Create List",
                       style: TextStyle(color: Colors.white, fontSize: 16),

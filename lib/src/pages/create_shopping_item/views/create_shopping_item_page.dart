@@ -57,13 +57,14 @@ class CreateShoppingItemPage extends GetView<CreateShoppingItemController> {
                   child: SelectProduct(
                     dataCallback: controller.loadProducts,
                     label: "Select product",
-                    onSubmitted: (value) => print(value),
+                    onSubmitted: (value) => controller.setProduct(value),
                   ),
                 ),
                 Container(
                   height: 43,
                   margin: EdgeInsets.only(top: 15, right: 30, left: 30),
                   child: TextField(
+                    onChanged: (val) => controller.note.value = val,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.black12,
@@ -79,7 +80,7 @@ class CreateShoppingItemPage extends GetView<CreateShoppingItemController> {
                   margin: EdgeInsets.only(top: 30),
                   child: OutlinedButton(
                     style: ElevatedButton.styleFrom(primary: AppColors.primary),
-                    onPressed: () {},
+                    onPressed: () => controller.submitForm(),
                     child: Text(
                       "Create",
                       style: TextStyle(color: Colors.white, fontSize: 16),

@@ -167,10 +167,10 @@ class _ShoppingItemsState extends State<ShoppingItems> {
           checked: item.checked,
         ),
         subtitle: Text(Formatter.price(item.price)),
-        trailing: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.delete_outline),
-        ),
+        // trailing: IconButton(
+        //   onPressed: () {},
+        //   icon: const Icon(Icons.delete_outline),
+        // ),
         onTap: () {},
       ),
     );

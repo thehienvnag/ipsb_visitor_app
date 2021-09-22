@@ -6,6 +6,7 @@ import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/data/api_helper.dart';
 import 'package:ipsb_visitor_app/src/models/edge.dart';
 import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
+import 'package:ipsb_visitor_app/src/models/last_modified.dart';
 import 'package:ipsb_visitor_app/src/models/location.dart';
 import 'package:ipsb_visitor_app/src/models/location_type.dart';
 import 'package:ipsb_visitor_app/src/models/storage_list.dart';
@@ -19,6 +20,7 @@ import 'package:ipsb_visitor_app/src/services/api/floor_plan_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/location_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/product_category_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/product_service.dart';
+import 'package:ipsb_visitor_app/src/services/api/shopping_item_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/shopping_list_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/store_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
@@ -55,6 +57,7 @@ class AppInit {
       ..registerAdapter<LocationType>(LocationTypeAdapter())
       ..registerAdapter<FloorPlan>(FloorPlanAdapter())
       ..registerAdapter<Store>(StoreAdapter())
+      ..registerAdapter<LastModified>(LastModifiedAdapter())
       ..registerAdapter<StorageList<Edge>>(
         StorageListAdapter<Edge>(typeId: AppHiveType.storageListEdge),
       );
@@ -93,6 +96,8 @@ class AppInit {
     Get.lazyPut<IBuildingService>(() => BuildingService(), fenix: true);
     // Calling api at ShoppingList service
     Get.lazyPut<IShoppingListService>(() => ShoppingListService(), fenix: true);
+    // Calling api at ShoppingItem service
+    Get.lazyPut<IShoppingItemService>(() => ShoppingItemService(), fenix: true);
   }
 
   static void initUserProfile() {

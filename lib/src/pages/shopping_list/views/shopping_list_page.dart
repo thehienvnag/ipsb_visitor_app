@@ -27,17 +27,21 @@ class ShoppingListPage extends GetView<ShoppingListController> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primary,
-        child: Icon(
-          Icons.add,
-        ),
-        onPressed: () => Get.toNamed(Routes.createShoppingList),
-      ),
+          backgroundColor: AppColors.primary,
+          child: Icon(
+            Icons.add,
+          ),
+          onPressed: () async {
+            final result = await Get.toNamed(Routes.createShoppingList);
+            if (result is bool && result) {
+              controller.loadShoppingLists();
+            }
+          }),
       body: SingleChildScrollView(
         child: Column(children: [
           listItem(),
           SizedBox(
-            height: 50,
+            height: 100,
           )
         ]),
       ),

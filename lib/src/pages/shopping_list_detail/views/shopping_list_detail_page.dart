@@ -67,13 +67,17 @@ class ShoppingListDetailsPage extends GetView<ShoppingListDetailController> {
                         child: Obx(() {
                           final details = controller.shoppingListDetails.value;
                           return FloatingActionButton(
-                            onPressed: () => Get.toNamed(
-                              Routes.createShoppingItem,
-                              parameters: {
-                                "buildingId": details.buildingId.toString(),
-                                "shoppingListId": details.id.toString(),
-                              },
-                            ),
+                            onPressed: () async {
+                              var result = await Get.toNamed(
+                                  Routes.createShoppingItem,
+                                  parameters: {
+                                    "buildingId": details.buildingId.toString(),
+                                    "shoppingListId": details.id.toString(),
+                                  });
+                              if (result is bool && result) {
+                                controller.loadShoppingListDetails();
+                              }
+                            },
                             backgroundColor: AppColors.primary,
                             child: Icon(
                               Icons.add,

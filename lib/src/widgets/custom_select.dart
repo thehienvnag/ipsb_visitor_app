@@ -143,7 +143,6 @@ class _CustomSelectState<T> extends State<CustomSelect<T>> {
       return Container();
     }
     return widget.selectedItemBuilder(selectedItem!, () {
-      widget.onSubmitted!(null);
       removeSingle();
     });
   }
@@ -199,6 +198,7 @@ class _CustomSelectState<T> extends State<CustomSelect<T>> {
     setState(() {
       selectedItem = null;
     });
+    widget.onSubmitted!(null);
   }
 
   Future<void> showDialog() async {

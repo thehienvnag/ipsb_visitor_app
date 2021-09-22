@@ -109,6 +109,12 @@ class MapController extends GetxController {
     loadShoppingList();
   }
 
+  @override
+  void onClose() {
+    super.onClose();
+    closeShopping();
+  }
+
   void loadShoppingList() {
     if (sharedData.shoppingList.value.id == null) return;
     shoppingListVisble.value = true;
@@ -307,8 +313,8 @@ class MapController extends GetxController {
 
   /// Get list Coupon from api
   Future<void> getCoupons() async {
-    final paging = await _service.getCoupons();
-    listCoupon.value = paging.content!;
+    // final paging = await _service.getCoupons();
+    // listCoupon.value = paging.content!;
   }
 
   /// Get list FloorPlan from api by buildingID
@@ -335,14 +341,15 @@ class MapController extends GetxController {
   Future<void> loadEdgesInBuilding() async {
     int? buildingId = sharedData.building.value.id;
     if (buildingId != null) {
-      // final edgesResult = await HiveStorage.useStorageList<Edge>(
-      //   apiCallback: () => _edgeService.getByBuildingId(buildingId),
-      //   transformData: EdgeHelper.splitToSegments,
-      //   storageBoxName: StorageConstants.edgeBox,
-      //   key: buildingId,
-      // );
-      final dataFromAPI = await _edgeService.getByBuildingId(buildingId);
-      edges.value = EdgeHelper.splitToSegments(dataFromAPI);
+      final edgesResult = await HiveStorage.useStorageList<Edge>(
+        apiCallback: () => _edgeService.getByBuildingId(buildingId),
+        transformData: EdgeHelper.splitToSegments,
+        storageBoxName: StorageConstants.edgeBox,
+        key: "edges_$buildingId",
+      );
+      // final dataFromAPI = await _edgeService.getByBuildingId(buildingId);
+      // edges.value = EdgeHelper.splitToSegments(dataFromAPI);
+      edges.value = edgesResult;
     }
   }
 

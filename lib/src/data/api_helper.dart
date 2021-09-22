@@ -82,18 +82,20 @@ class ApiHelper extends GetConnect with IApiHelper {
 
     //Request modifier: [if-modified-since: header]
     httpClient.addRequestModifier((Request request) async {
-      final lastModified = await HiveStorage.getIfModifiedSinceHeader(
-        HiveStorage.getEndpoint(request.url),
-      );
-      if (lastModified != null) {
-        request.headers["If-Modified-Since"] = lastModified;
+      if (request.url.path.contains("edges")) {
+        final lastModified = await HiveStorage.getIfModifiedSinceHeader(
+          HiveStorage.getEndpoint(request.url),
+        );
+        if (lastModified != null) {
+          request.headers["if-modified-since"] = lastModified;
+        }
       }
       return request;
     });
 
     //Response modifier: [last-modified: header]
     httpClient.addResponseModifier((request, response) async {
-      String? lastModified = response.headers?["Last-Modified"];
+      String? lastModified = response.headers?["last-modified"];
       HiveStorage.saveLastModifiedHeader(
         lastModified,
         HiveStorage.getEndpoint(request.url),

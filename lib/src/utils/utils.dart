@@ -72,4 +72,8 @@ class Utils {
     }
     return imageProvider;
   }
+
+  // static DateTime parse(){
+  //   DateTime.parse("string date here")
+  // }
 }

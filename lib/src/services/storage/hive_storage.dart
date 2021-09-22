@@ -57,7 +57,7 @@ class HiveStorage {
     if (lastModified != null) {
       final box =
           await Hive.openBox<LastModified>(StorageConstants.requestUriBox);
-      box.put(
+      await box.put(
         requestUri,
         LastModified(
           lastModified: lastModified,

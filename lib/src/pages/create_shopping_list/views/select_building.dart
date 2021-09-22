@@ -40,7 +40,7 @@ class SelectBuilding extends StatelessWidget {
           item.imageUrl!,
           height: 40,
         ),
-        title: Text(item.name!),
+        title: Text(Formatter.shorten(item.name, 20)),
         trailing:
             IconButton(onPressed: () => remove(), icon: Icon(Icons.close)),
       ),

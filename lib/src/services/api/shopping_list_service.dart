@@ -5,6 +5,7 @@ import 'base_service.dart';
 mixin IShoppingListService {
   Future<List<ShoppingList>> getByAccountId(int accountId);
   Future<ShoppingList?> getById(int id);
+  Future<ShoppingList?> create(Map<String, dynamic> body);
 }
 
 class ShoppingListService extends BaseService<ShoppingList>
@@ -30,5 +31,10 @@ class ShoppingListService extends BaseService<ShoppingList>
   @override
   Future<ShoppingList?> getById(int id) {
     return getByIdBase(id);
+  }
+
+  @override
+  Future<ShoppingList?> create(Map<String, dynamic> body) {
+    return postBase(body);
   }
 }

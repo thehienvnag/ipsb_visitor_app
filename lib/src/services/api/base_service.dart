@@ -33,7 +33,8 @@ abstract class BaseService<T> {
   }
 
   /// Get paging instance from API with [query]
-  Future<Paging<T>> getPagingBase(Map<String, dynamic> query) async {
+  Future<Paging<T>> getPagingBase(Map<String, dynamic> query,
+      [bool cacheAllow = false]) async {
     final callback = () => _apiHelper.getAll(endpoint(), query: query);
     Response res = await AuthServices.handleUnauthorized(callback);
     if (res.isOk) {
@@ -41,23 +42,25 @@ abstract class BaseService<T> {
       paging.convertToList(fromJson);
       return paging;
     }
-    if (res.statusCode == HttpStatus.notModified) {
+    if (res.statusCode == HttpStatus.notModified && cacheAllow) {
       throw StorageConstants.dataNotModified;
     }
     return Paging.defaultInstance<T>();
   }
 
   /// Get list instances from API with [query]
-  Future<List<T>> getAllBase(Map<String, dynamic> query) async {
-    Paging<T> paging = await getPagingBase(query);
+  Future<List<T>> getAllBase(Map<String, dynamic> query,
+      [bool cacheAllow = false]) async {
+    Paging<T> paging = await getPagingBase(query, cacheAllow);
     return paging.content ?? [];
   }
 
   /// Post an instance with [body]
-  Future<T?> postBase(Map<String, dynamic> body) async {
+  Future<T?> postBase(Map<String, dynamic> body,
+      [bool noResponse = false]) async {
     final callback = () => _apiHelper.postOne(endpoint(), body);
     Response res = await AuthServices.handleUnauthorized(callback);
-    if (res.statusCode == HttpStatus.created) {
+    if (res.statusCode == HttpStatus.created && !noResponse) {
       return fromJson(res.body);
     }
   }
