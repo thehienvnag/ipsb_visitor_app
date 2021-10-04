@@ -144,6 +144,7 @@ class ShoppingListDetailsPage extends GetView<ShoppingListDetailController> {
                 return ShoppingItems(
                   stores: stores,
                   removeCallback: controller.deleteShoppingItem,
+                  updateCallback: controller.updateShoppingItem,
                 );
               }),
             )
@@ -156,15 +157,21 @@ class ShoppingListDetailsPage extends GetView<ShoppingListDetailController> {
 
 class ShoppingItems extends StatefulWidget {
   final List<Store>? stores;
-  final Function(List<int>)? removeCallback;
-  const ShoppingItems({Key? key, this.stores, this.removeCallback})
-      : super(key: key);
+  final Function(List<int>) removeCallback;
+  final Function(int, String) updateCallback;
+  const ShoppingItems({
+    Key? key,
+    this.stores,
+    required this.removeCallback,
+    required this.updateCallback,
+  }) : super(key: key);
 
   @override
   State<ShoppingItems> createState() => _ShoppingItemsState();
 }
 
 class _ShoppingItemsState extends State<ShoppingItems> {
+  String? note;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -279,11 +286,7 @@ class _ShoppingItemsState extends State<ShoppingItems> {
               'Yes',
               style: TextStyle(color: AppColors.primary, fontSize: 18),
             ),
-            onPressed: () {
-              if (widget.removeCallback != null) {
-                widget.removeCallback!(shoppingItemIds);
-              }
-            },
+            onPressed: () => widget.removeCallback(shoppingItemIds),
           ),
         ],
       ),
@@ -301,23 +304,103 @@ class _ShoppingItemsState extends State<ShoppingItems> {
         ),
       ),
       title: Text(Formatter.shorten(item.name, 20)),
-      subtitle: Row(
-        children: [
-          Container(
-            margin: EdgeInsets.only(right: 5),
-            child: Icon(
-              Icons.notes,
-              color: Colors.grey,
+      subtitle: item.note != null && item.note!.isNotEmpty
+          ? Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: 5),
+                  child: Icon(
+                    Icons.notes,
+                    color: Colors.grey,
+                  ),
+                ),
+                Text(item.note!),
+              ],
+            )
+          : Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: 5),
+                  child: Icon(
+                    Icons.edit,
+                    color: Colors.grey,
+                  ),
+                ),
+                Text("Enter your note"),
+              ],
             ),
-          ),
-          Text(Formatter.shorten(item.note, 25)),
-        ],
-      ),
       trailing: IconButton(
         onPressed: () => showDeleteDialog([item.shoppingItemId!]),
         icon: const Icon(Icons.delete_outline),
       ),
-      onTap: () {},
+      onTap: () => showUpdateDialog(item),
+    );
+  }
+
+  void showUpdateDialog(Product product) {
+    setState(() {
+      note = null;
+    });
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content: Container(
+          height: 165,
+          width: 350,
+          child: Column(
+            children: [
+              ListTile(
+                leading: Image.network(product.imageUrl!),
+                title: Text(product.name!),
+                onTap: () {},
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              TextFormField(
+                onChanged: (val) {
+                  print(val);
+                  setState(() {
+                    note = val;
+                  });
+                },
+                maxLines: 3,
+                initialValue: product.note,
+                decoration: InputDecoration(
+                  filled: true,
+                  contentPadding: EdgeInsets.only(top: 8, left: 10),
+                  hintText: 'Enter note for shopping item',
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: AppColors.colorBlue, fontSize: 18),
+            ),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          TextButton(
+            child: Text(
+              'OK',
+              style: TextStyle(color: AppColors.primary, fontSize: 18),
+            ),
+            onPressed: () => widget.updateCallback(
+              product.shoppingItemId!,
+              note ?? "",
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

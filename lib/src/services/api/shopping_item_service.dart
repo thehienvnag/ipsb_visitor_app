@@ -6,6 +6,7 @@ import 'base_service.dart';
 mixin IShoppingItemService {
   Future<ShoppingItem?> create(Map<String, dynamic> data);
   Future<bool> delete(int id);
+  Future<bool> update(int id, Map<String, dynamic> data);
 }
 
 class ShoppingItemService extends BaseService<ShoppingItem>
@@ -28,5 +29,10 @@ class ShoppingItemService extends BaseService<ShoppingItem>
   @override
   Future<bool> delete(int id) {
     return deleteBase(id);
+  }
+
+  @override
+  Future<bool> update(int id, Map<String, dynamic> data) {
+    return putBase(id, data);
   }
 }
