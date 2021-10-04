@@ -5,7 +5,6 @@ import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/models/product.dart';
 import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/pages/shopping_list_detail/controllers/shopping_list_detail_controller.dart';
-import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:ipsb_visitor_app/src/widgets/rounded_button.dart';
@@ -144,6 +143,7 @@ class ShoppingListDetailsPage extends GetView<ShoppingListDetailController> {
                 final stores = shoppingListDetails.getListStores();
                 return ShoppingItems(
                   stores: stores,
+                  removeCallback: controller.deleteShoppingItem,
                 );
               }),
             )
@@ -156,7 +156,9 @@ class ShoppingListDetailsPage extends GetView<ShoppingListDetailController> {
 
 class ShoppingItems extends StatefulWidget {
   final List<Store>? stores;
-  const ShoppingItems({Key? key, this.stores}) : super(key: key);
+  final Function(List<int>)? removeCallback;
+  const ShoppingItems({Key? key, this.stores, this.removeCallback})
+      : super(key: key);
 
   @override
   State<ShoppingItems> createState() => _ShoppingItemsState();
@@ -194,7 +196,9 @@ class _ShoppingItemsState extends State<ShoppingItems> {
                   child: Container(
                     child: IconButton(
                       onPressed: () {
-                        showDeleteDialog();
+                        showDeleteDialog(item.products!
+                            .map((e) => e.shoppingItemId!)
+                            .toList());
                       },
                       icon: Container(
                         child: Icon(
@@ -253,7 +257,7 @@ class _ShoppingItemsState extends State<ShoppingItems> {
     );
   }
 
-  void showDeleteDialog() {
+  void showDeleteDialog(List<int> shoppingItemIds) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -275,7 +279,11 @@ class _ShoppingItemsState extends State<ShoppingItems> {
               'Yes',
               style: TextStyle(color: AppColors.primary, fontSize: 18),
             ),
-            onPressed: () {},
+            onPressed: () {
+              if (widget.removeCallback != null) {
+                widget.removeCallback!(shoppingItemIds);
+              }
+            },
           ),
         ],
       ),
@@ -306,7 +314,7 @@ class _ShoppingItemsState extends State<ShoppingItems> {
         ],
       ),
       trailing: IconButton(
-        onPressed: () => showDeleteDialog(),
+        onPressed: () => showDeleteDialog([item.shoppingItemId!]),
         icon: const Icon(Icons.delete_outline),
       ),
       onTap: () {},

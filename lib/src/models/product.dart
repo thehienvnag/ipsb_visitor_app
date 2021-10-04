@@ -11,6 +11,8 @@ class Product {
   final double? price;
   final Store? store;
   @JsonKey(ignore: true)
+  int? shoppingItemId;
+  @JsonKey(ignore: true)
   String? note;
   @JsonKey(ignore: true)
   bool checked = false;
