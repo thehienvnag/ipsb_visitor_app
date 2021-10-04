@@ -44,20 +44,16 @@ class CreateShoppingItemController extends GetxController {
 
   void submitForm() async {
     if (productId.value == 0) return;
-    if (note.isEmpty) return;
     if (shoppingListId.value == 0) return;
     final data = {
       "productId": productId.value,
       "note": note.value,
       "shoppingListId": shoppingListId.value,
     };
-    print(data);
     final result = await _shoppingItemService.create(data);
     if (result != null) {
-      BotToast.showText(
-        text: "Successfully created shopping list",
-        onClose: () => Get.back(),
-      );
+      BotToast.showText(text: "Successfully created shopping list");
+      Get.back(result: true);
     }
   }
 }

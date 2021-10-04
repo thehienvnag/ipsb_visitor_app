@@ -64,26 +64,13 @@ class ShoppingListDetailsPage extends GetView<ShoppingListDetailController> {
                       Container(
                         height: 30,
                         width: 30,
-                        child: Obx(() {
-                          final details = controller.shoppingListDetails.value;
-                          return FloatingActionButton(
-                            onPressed: () async {
-                              var result = await Get.toNamed(
-                                  Routes.createShoppingItem,
-                                  parameters: {
-                                    "buildingId": details.buildingId.toString(),
-                                    "shoppingListId": details.id.toString(),
-                                  });
-                              if (result is bool && result) {
-                                controller.loadShoppingListDetails();
-                              }
-                            },
-                            backgroundColor: AppColors.primary,
-                            child: Icon(
-                              Icons.add,
-                            ),
-                          );
-                        }),
+                        child: FloatingActionButton(
+                          onPressed: () => controller.createShoppingItem(),
+                          backgroundColor: AppColors.primary,
+                          child: Icon(
+                            Icons.add,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -111,29 +98,36 @@ class ShoppingListDetailsPage extends GetView<ShoppingListDetailController> {
                   );
                 }
                 final details = controller.shoppingListDetails.value;
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                if (details.shoppingItems!.isEmpty) {
+                  return Container();
+                }
+                return Column(
                   children: [
-                    Text(
-                      details.name!,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20,
-                        letterSpacing: 1,
-                        color: Colors.black,
-                      ),
-                    ),
-                    RoundedButton(
-                      radius: 45,
-                      color: Colors.grey[200],
-                      onPressed: () {
-                        controller.startShopping();
-                      },
-                      icon: Icon(
-                        Icons.directions,
-                        color: AppColors.primary,
-                        size: 30,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          details.name!,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20,
+                            letterSpacing: 1,
+                            color: Colors.black,
+                          ),
+                        ),
+                        RoundedButton(
+                          radius: 45,
+                          color: Colors.grey[200],
+                          onPressed: () {
+                            controller.startShopping();
+                          },
+                          icon: Icon(
+                            Icons.directions,
+                            color: AppColors.primary,
+                            size: 30,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 );

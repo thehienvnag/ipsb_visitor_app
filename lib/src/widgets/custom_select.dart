@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:ipsb_visitor_app/src/widgets/rounded_button.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -89,7 +88,6 @@ class _CustomSelectState<T> extends State<CustomSelect<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         color: widget.color,
         // border: Border.all(color: Colors.black12),
@@ -105,7 +103,11 @@ class _CustomSelectState<T> extends State<CustomSelect<T>> {
               showCursor: false,
               readOnly: true,
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(top: 10),
+                contentPadding: const EdgeInsets.only(
+                  top: 10,
+                  left: 10,
+                  right: 10,
+                ),
                 labelText:
                     widget.type == widget.singleType && selectedItem != null
                         ? ""

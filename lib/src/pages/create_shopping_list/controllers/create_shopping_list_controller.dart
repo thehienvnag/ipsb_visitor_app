@@ -40,13 +40,10 @@ class CreateShoppingListController extends GetxController {
       "shoppingDate": shoppingDate.value,
       "accountId": 18,
     };
-
     final result = await _iShoppingListService.create(data);
     if (result != null) {
-      BotToast.showText(
-        text: "Successfully created shopping list",
-        onClose: () => Get.back(),
-      );
+      BotToast.showText(text: "Successfully created shopping list");
+      Get.back(result: true);
     }
   }
 }
