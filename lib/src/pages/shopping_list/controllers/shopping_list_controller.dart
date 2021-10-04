@@ -1,7 +1,8 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/models/shopping_list.dart';
+import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/shopping_list_service.dart';
-import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 
 class ShoppingListController extends GetxController {
   final shoppingLists = <ShoppingList>[].obs;
@@ -20,5 +21,22 @@ class ShoppingListController extends GetxController {
     loading.value = true;
     shoppingLists.value = await _iShoppingListService.getByAccountId(18);
     loading.value = false;
+  }
+
+  void createShoppingList() async {
+    final result = await Get.toNamed(Routes.createShoppingList);
+    if (result is bool && result) {
+      loadShoppingLists();
+    }
+  }
+
+  void deleteShoppingList(int? id) async {
+    if (id == null) return;
+    Get.back();
+    bool result = await _iShoppingListService.delete(id);
+    if (result) {
+      BotToast.showText(text: "Successfully removed!");
+      loadShoppingLists();
+    }
   }
 }

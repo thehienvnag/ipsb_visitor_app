@@ -32,4 +32,14 @@ class ShoppingListDetailController extends GetxController {
     _sharedStates.shoppingList.value = shoppingListDetails.value;
     Get.toNamed(Routes.map);
   }
+
+  void createShoppingItem() async {
+    var result = await Get.toNamed(Routes.createShoppingItem, parameters: {
+      "shoppingListId": shoppingListDetails.value.id.toString(),
+      "buildingId": shoppingListDetails.value.buildingId.toString(),
+    });
+    if (result is bool && result) {
+      loadShoppingListDetails();
+    }
+  }
 }

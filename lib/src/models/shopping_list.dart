@@ -25,11 +25,11 @@ class ShoppingList {
     shoppingItems!.forEach((e) {
       final store = stores.putIfAbsent(
         e.product!.store!.id!,
-        () => e.product!.store!,
+        () {
+          e.product!.store!.products = [];
+          return e.product!.store!;
+        },
       );
-      if (store.products == null) {
-        store.products = [];
-      }
       e.product!.note = e.note;
       bool isProductExist = store.products!.indexWhere(
             (element) => element.id == e.product!.id,

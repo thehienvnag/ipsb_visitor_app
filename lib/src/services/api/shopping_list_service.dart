@@ -6,6 +6,7 @@ mixin IShoppingListService {
   Future<List<ShoppingList>> getByAccountId(int accountId);
   Future<ShoppingList?> getById(int id);
   Future<ShoppingList?> create(Map<String, dynamic> body);
+  Future<bool> delete(int id);
 }
 
 class ShoppingListService extends BaseService<ShoppingList>
@@ -36,5 +37,10 @@ class ShoppingListService extends BaseService<ShoppingList>
   @override
   Future<ShoppingList?> create(Map<String, dynamic> body) {
     return postBase(body);
+  }
+
+  @override
+  Future<bool> delete(int id) {
+    return deleteBase(id);
   }
 }
