@@ -56,4 +56,14 @@ class ShoppingListDetailController extends GetxController {
       loadShoppingListDetails();
     }
   }
+
+  void updateShoppingItem(int id, String note) async {
+    if (note.isEmpty) return;
+    final result = await _shoppingItemService.update(id, {"note": note});
+    if (result) {
+      Get.back();
+      BotToast.showText(text: "Successfully updated!!");
+      loadShoppingListDetails();
+    }
+  }
 }

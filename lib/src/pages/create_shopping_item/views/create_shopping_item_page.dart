@@ -61,10 +61,10 @@ class CreateShoppingItemPage extends GetView<CreateShoppingItemController> {
                   ),
                 ),
                 Container(
-                  height: 43,
                   margin: EdgeInsets.only(top: 15, right: 30, left: 30),
                   child: TextField(
                     onChanged: (val) => controller.note.value = val,
+                    maxLines: 3,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.black12,
