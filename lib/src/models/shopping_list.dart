@@ -31,6 +31,7 @@ class ShoppingList {
         },
       );
       e.product!.note = e.note;
+      e.product!.shoppingItemId = e.id;
       bool isProductExist = store.products!.indexWhere(
             (element) => element.id == e.product!.id,
           ) ==
