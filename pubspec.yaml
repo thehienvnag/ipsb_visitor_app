@@ -136,6 +136,21 @@ dependencies:
   #Bottom sheet modal
   modal_bottom_sheet: ^2.0.0
 
+  # Matrix manipulation
+  linalg: ^0.4.0
+
+  # Accessing accelerometer sensors
+  sensors_plus: ^1.1.0
+
+  # Compass
+  flutter_compass: ^0.7.0
+
+  # Beacon plugin
+  beacons_plugin: ^2.0.1
+
+  # Math calculation
+  vector_math: any
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
