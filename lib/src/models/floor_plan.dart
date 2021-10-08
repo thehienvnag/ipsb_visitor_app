@@ -1,11 +1,29 @@
+import 'package:hive/hive.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'floor_plan.g.dart';
 
 @JsonSerializable()
+@HiveType(typeId: AppHiveType.floorPlan)
 class FloorPlan {
-  final int? id, floorNumber, buildingId;
-  final String? floorCode, floorNum, imageUrl;
+  @HiveField(0)
+  final int? id;
+
+  @HiveField(1)
+  final int? floorNumber;
+
+  @HiveField(2)
+  final int? buildingId;
+
+  @HiveField(3)
+  final String? floorCode;
+
+  @HiveField(4)
+  final String? floorNum;
+
+  @HiveField(5)
+  final String? imageUrl;
 
   FloorPlan({
     this.floorNumber,

@@ -1,13 +1,10 @@
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/pages/home/controllers/home_controller.dart';
-import 'package:indoor_positioning_visitor/src/pages/my_coupons/controllers/my_coupon_controller.dart';
+import 'package:ipsb_visitor_app/src/pages/home/controllers/home_controller.dart';
 
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
     // Bind Home controller
-    Get.lazyPut<HomeController>(() => HomeController());
-    // Bind My Coupon controller
-    Get.lazyPut<MyCouponController>(() => MyCouponController());
+    Get.lazyPut<HomeController>(() => HomeController(), fenix: true);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/widgets/indoor_map/indoor_map_controller.dart';
+import 'package:ipsb_visitor_app/src/services/api/location_service.dart';
+import 'package:ipsb_visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
 
 class TestAlgorithmController extends GetxController {
   /// Inject EdgeService
@@ -49,8 +50,20 @@ class TestAlgorithmController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _mapController.loadLocationsOnMap([]);
-    _mapController.setCurrentMarker(null);
-    _mapController.setPathOnMap([]);
+    // _mapController.loadLocationsOnMap([]);
+    // _mapController.setCurrentMarker(null);
+    // setPathsOnMap();
+    setLocationOnFloor();
+  }
+
+  ILocationService _locationService = Get.find();
+  Future<void> setPathsOnMap() async {
+    final locations = await _locationService.getLocationsByType(2, 12);
+    _mapController.setPathOnMap(locations);
+  }
+
+  Future<void> setLocationOnFloor() async {
+    final locations = await _locationService.getLocationOnFloor(12);
+    _mapController.loadLocationsOnMap(locations);
   }
 }

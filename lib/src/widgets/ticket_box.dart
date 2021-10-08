@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:path_drawing/path_drawing.dart';
+
+import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 
 class TicketBox extends StatelessWidget {
   final double margin;
@@ -35,40 +38,195 @@ class TicketBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CustomClipper<Path> clipper = TicketClipper(
+      xAxisMain: xAxisMain,
+      fromEdgeMain: fromEdgeMain,
+      borderRadius: borderRadius,
+      clipRadius: clipRadius,
+      smallClipRadius: smallClipRadius,
+      numberOfSmallClips: numberOfSmallClips,
+      xAxisSeparator: xAxisSeparator,
+      fromEdgeSeparator: fromEdgeSeparator,
+      isOvalSeparator: isOvalSeparator,
+      ticketWidth: ticketWidth,
+      ticketHeight: ticketHeight,
+    );
     return Container(
       width: ticketWidth,
       height: ticketHeight,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 8),
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 37,
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: ClipPath(
-        clipper: TicketClipper(
-          xAxisMain: xAxisMain,
-          fromEdgeMain: fromEdgeMain,
-          borderRadius: borderRadius,
-          clipRadius: clipRadius,
-          smallClipRadius: smallClipRadius,
-          numberOfSmallClips: numberOfSmallClips,
-          xAxisSeparator: xAxisSeparator,
-          fromEdgeSeparator: fromEdgeSeparator,
-          isOvalSeparator: isOvalSeparator,
-          ticketWidth: ticketWidth,
-          ticketHeight: ticketHeight,
-          hasSeparator: hasSeparator,
+      child: CustomPaint(
+        painter: ClipShadowShadowPainter(
+          shadow: Shadow(blurRadius: 2.5, color: Colors.grey.shade400),
+          clipper: clipper,
         ),
-        child: Container(
-          color: Colors.white,
-          child: child,
+        child: ClipPath(
+          child: Container(
+            child: CustomPaint(
+              painter:
+                  DashPainter(xAxisMain: xAxisMain, fromMain: fromEdgeMain),
+              child: child,
+            ),
+            color: Colors.white,
+          ),
+          clipper: clipper,
         ),
       ),
     );
+  }
+
+  factory TicketBox.small({
+    required String imgUrl,
+    required String? storeName,
+    required String? name,
+    required String? description,
+    required double? amount,
+    required String? discountType,
+    required DateTime? expireDate,
+  }) {
+    return TicketBox(
+      margin: 20,
+      xAxisMain: true,
+      fromEdgeMain: 120,
+      fromEdgeSeparator: 134,
+      isOvalSeparator: false,
+      smallClipRadius: 15,
+      clipRadius: 10,
+      numberOfSmallClips: 8,
+      ticketWidth: 360,
+      ticketHeight: 130,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 12, left: 6),
+            child: Card(
+              child: Container(
+                width: 95,
+                height: 95,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(imgUrl),
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(7),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            width: 227,
+            height: 130,
+            padding: const EdgeInsets.only(top: 4),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      Formatter.shorten(storeName).toUpperCase(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 17,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      Formatter.amount(amount, discountType),
+                      style: TextStyle(
+                        fontSize: discountType == 'Fixed' ? 25 : 40,
+                      ),
+                    ),
+                    Text(
+                      Formatter.shorten(description, 20).toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    'Hết hạn: ${Formatter.date(expireDate)}',
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DashPainter extends CustomPainter {
+  final double fromMain;
+  final double ticketHeight;
+  final double ticketWidth;
+  final bool xAxisMain;
+  DashPainter({
+    this.fromMain = 120,
+    this.ticketHeight = 130,
+    this.ticketWidth = 360,
+    this.xAxisMain = true,
+  });
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint dashLine = Paint()
+      ..color = Colors.grey.shade400
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.2;
+    Path path = Path();
+    if (xAxisMain) {
+      path.addPolygon([
+        Offset(fromMain, xAxisMain ? 20 : 0),
+        Offset(fromMain, ticketHeight - (xAxisMain ? 22 : 0))
+      ], false);
+      canvas.drawPath(
+        dashPath(path,
+            dashArray: CircularIntervalList<double>(<double>[14, 7])),
+        dashLine,
+      );
+    } else {
+      path.addPolygon(
+          [Offset(35, fromMain), Offset(ticketWidth - 23, fromMain)], false);
+      canvas.drawPath(
+        dashPath(path,
+            dashArray: CircularIntervalList<double>(<double>[20, 7])),
+        dashLine,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class ClipShadowShadowPainter extends CustomPainter {
+  final Shadow shadow;
+  final CustomClipper<Path> clipper;
+
+  ClipShadowShadowPainter({
+    required this.shadow,
+    required this.clipper,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = shadow.toPaint();
+    var clipPath = clipper.getClip(size).shift(shadow.offset);
+    canvas.drawPath(clipPath, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
   }
 }
 
@@ -77,7 +235,6 @@ class TicketClipper extends CustomClipper<Path> {
   final bool xAxisMain;
   final bool xAxisSeparator;
   final bool isOvalSeparator;
-  final bool hasSeparator;
   final double fromEdgeMain;
   final double fromEdgeSeparator;
   final double borderRadius;
@@ -91,7 +248,6 @@ class TicketClipper extends CustomClipper<Path> {
     required this.xAxisMain,
     required this.xAxisSeparator,
     required this.isOvalSeparator,
-    required this.hasSeparator,
     required this.fromEdgeMain,
     required this.fromEdgeSeparator,
     required this.borderRadius,
@@ -107,7 +263,6 @@ class TicketClipper extends CustomClipper<Path> {
     var path = Path();
 
     final clipFromEdgeMain = fromEdgeMain;
-    final clipFromEdgeSeparator = fromEdgeSeparator;
 
     // draw rect
     path.addRRect(RRect.fromRectAndRadius(
@@ -119,60 +274,18 @@ class TicketClipper extends CustomClipper<Path> {
 
     // circle on the left
     clipPath.addOval(Rect.fromCircle(
-      center: xAxisMain
-          ? Offset(clipFromEdgeMain, -8)
-          : Offset(-8, clipFromEdgeMain),
+      center:
+          xAxisMain ? Offset(clipFromEdgeMain, 0) : Offset(0, clipFromEdgeMain),
       radius: clipRadius,
     ));
 
     // circle on the right
     clipPath.addOval(Rect.fromCircle(
       center: xAxisMain
-          ? Offset(clipFromEdgeMain, ticketHeight + 8)
-          : Offset(ticketWidth + 8, clipFromEdgeMain),
+          ? Offset(clipFromEdgeMain, ticketHeight)
+          : Offset(ticketWidth, clipFromEdgeMain),
       radius: clipRadius,
     ));
-    if (hasSeparator) {
-      final clipContainerSize = (xAxisMain ? ticketHeight : ticketWidth) -
-          clipRadius * 2 -
-          clipPadding * 2;
-      final smallClipSize = smallClipRadius * 2;
-      final smallClipBoxSize = clipContainerSize / numberOfSmallClips;
-      final smallClipPadding = (smallClipBoxSize - smallClipSize) / 2;
-      final smallClipStart = 0;
-
-      final smallClipCenterOffsets = List.generate(numberOfSmallClips, (index) {
-        final boxX = smallClipStart + smallClipBoxSize * index;
-        final centerX = boxX + smallClipPadding + smallClipRadius;
-
-        return xAxisSeparator
-            ? Offset(clipFromEdgeSeparator, centerX)
-            : Offset(centerX, clipFromEdgeSeparator);
-      });
-      // final boxX = smallClipStart + numberOfSmallClips * smallClipBoxSize;
-      // final centerX = boxX + smallClipPadding + smallClipRadius;
-
-      // final lastOffset = xAxisSeparator
-      //     ? Offset(clipFromEdgeSeparator, centerX)
-      //     : Offset(centerX, clipFromEdgeSeparator);
-
-      smallClipCenterOffsets.forEach((centerOffset) {
-        if (isOvalSeparator) {
-          clipPath.addOval(Rect.fromCircle(
-            center: centerOffset,
-            radius: smallClipRadius,
-          ));
-        } else {
-          clipPath.addRect(
-            Rect.fromCenter(
-              center: centerOffset,
-              width: 2,
-              height: smallClipRadius,
-            ),
-          );
-        }
-      });
-    }
 
     // combine two path together
     final ticketPath = Path.combine(

@@ -1,0 +1,137 @@
+{
+  "project_info": {
+    "project_number": "275091410654",
+    "project_id": "application-test-4750a",
+    "storage_bucket": "application-test-4750a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275091410654:android:db54cca4073fd7d276fc4f",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "275091410654-3nbkr6ea34lpqcevf4slseo2s525rvnt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_app",
+            "certificate_hash": "8662903f2bfa2843a2016017c2119a1c93c621cb"
+          }
+        },
+        {
+          "client_id": "275091410654-ndkg966o186vu0sbre7741o2rd7go2lj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_app",
+            "certificate_hash": "81a1c27103d73c90f151c9e65c495f1a88e7048e"
+          }
+        },
+        {
+          "client_id": "275091410654-p91d3b3f0lsdr31f64gffcscu8odcp8j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_app",
+            "certificate_hash": "1723a9adcc5a89f38610c32365fe7d60bc42368c"
+          }
+        },
+        {
+          "client_id": "275091410654-psfica7dam52jhf7c2cv4sgb8ird8unb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_app",
+            "certificate_hash": "916d34d8a97b91477bd2c8d6b7bbec35aa4ccc7d"
+          }
+        },
+        {
+          "client_id": "275091410654-199smo0vrjkrvmp2sl7pkp736i70ar8g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0woPowSdaUfEoJDO-raRFejHV9CoR3Jk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "275091410654-199smo0vrjkrvmp2sl7pkp736i70ar8g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275091410654:android:3327285b202c5a2576fc4f",
+        "android_client_info": {
+          "package_name": "com.example.indoor_positioning_visitor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "275091410654-199smo0vrjkrvmp2sl7pkp736i70ar8g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0woPowSdaUfEoJDO-raRFejHV9CoR3Jk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "275091410654-199smo0vrjkrvmp2sl7pkp736i70ar8g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275091410654:android:8b78a1342ad191ac76fc4f",
+        "android_client_info": {
+          "package_name": "com.ipsb.visitor_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "275091410654-rpu8tn6ff1187dpab1iskqm6so5bplqe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ipsb.visitor_app",
+            "certificate_hash": "d63533f8100b96855f9cc681f57d24454284c2da"
+          }
+        },
+        {
+          "client_id": "275091410654-199smo0vrjkrvmp2sl7pkp736i70ar8g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0woPowSdaUfEoJDO-raRFejHV9CoR3Jk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "275091410654-199smo0vrjkrvmp2sl7pkp736i70ar8g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

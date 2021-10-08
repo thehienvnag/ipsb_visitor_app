@@ -1,115 +1,159 @@
+import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
-import 'package:indoor_positioning_visitor/src/widgets/ticket_box.dart';
-import 'package:indoor_positioning_visitor/src/pages/my_coupons/controllers/my_coupon_controller.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/models/coupon_in_use.dart';
+import 'package:ipsb_visitor_app/src/widgets/animate_wrapper.dart';
+import 'package:ipsb_visitor_app/src/widgets/custom_bottom_bar.dart';
+import 'package:ipsb_visitor_app/src/widgets/ticket_box.dart';
+import 'package:ipsb_visitor_app/src/pages/my_coupons/controllers/my_coupon_controller.dart';
+import 'package:ipsb_visitor_app/src/widgets/user_welcome.dart';
 
 class MyCouponPage extends GetView<MyCouponController> {
+  final dateTime = DateTime.now();
+  final SharedStates sharedStates = Get.find();
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          leadingWidth: 0,
-          title: Center(
-              child: Text(
-            'Mã giảm giá của tôi',
-            style: TextStyle(color: Colors.black),
-          )),
-          bottom: TabBar(
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorWeight: 3,
-            unselectedLabelColor: Colors.white,
-            tabs: [
-              Tab(
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Tất cả',
-                      style: TextStyle(
-                          color: Colors.black.withOpacity(0.7), fontSize: 18),
-                    )),
+    return Obx(() {
+      bool isLoggedIn = AuthServices.isLoggedIn();
+      return DefaultTabController(
+        length: isLoggedIn ? 4 : 0,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            leadingWidth: 0,
+            title: Center(
+              child: Container(
+                margin: const EdgeInsets.only(top: 10, left: 40),
+                child: Text(
+                  'MY COUPONS',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-              Tab(
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Đã hết hạn',
-                      style: TextStyle(
-                          color: Colors.black.withOpacity(0.7), fontSize: 18),
-                    )),
-              ),
-              Tab(
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Đã dùng',
-                      style: TextStyle(
-                          color: Colors.black.withOpacity(0.7), fontSize: 18),
-                    )),
-              ),
+            ),
+            actions: [
+              Container(
+                margin: const EdgeInsets.only(right: 15, top: 5),
+                child: ProfileIcon(),
+              )
             ],
+            bottom: isLoggedIn
+                ? PreferredSize(
+                    preferredSize: Size.fromHeight(50),
+                    child: Container(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: TabBar(
+                        indicatorColor: Colors.green,
+                        tabs: [
+                          Container(
+                            width: 100,
+                            child: Tab(
+                              text: "TẤT CẢ",
+                            ),
+                          ),
+                          Container(
+                            width: 100,
+                            child: Tab(
+                              text: "MỚI",
+                            ),
+                          ),
+                          Container(
+                            width: 100,
+                            child: Tab(
+                              text: "ĐÃ DÙNG",
+                            ),
+                          ),
+                          Container(
+                            width: 100,
+                            child: Tab(
+                              text: "HẾT HẠN",
+                            ),
+                          ),
+                        ],
+                        labelColor: Colors.black,
+                        indicator: MaterialIndicator(
+                          height: 5,
+                          topLeftRadius: 8,
+                          topRightRadius: 8,
+                          horizontalPadding: 15,
+                          tabPosition: TabPosition.bottom,
+                        ),
+                      ),
+                    ),
+                  )
+                : null,
           ),
+          body: isLoggedIn
+              ? Container(child: Obx(() {
+                  final listCoupon = controller.listCouponInUse;
+                  return TabBarView(
+                    children: [
+                      _displayAllCoupon(listCoupon, 'All'),
+                      _displayAllCoupon(listCoupon, 'New'),
+                      _displayAllCoupon(listCoupon, 'Used'),
+                      _displayAllCoupon(listCoupon, 'Expired'),
+                    ],
+                  );
+                }))
+              : Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        child: Image.asset(
+                          "assets/images/empty.png",
+                          width: 150,
+                        ),
+                      ),
+                      Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: AppColors.primary),
+                          onPressed: () {
+                            sharedStates.showLoginBottomSheet();
+                          },
+                          child: Text(
+                            "REDEEM COUPONS",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+          bottomNavigationBar: CustomBottombar(),
         ),
-        body: Container(
-            color: Colors.grey.withOpacity(0.2),
-            child: Obx(() {
-              final listCoupon = controller.listCoupon;
-              return TabBarView(
-                children: [
-                  _displayAllCoupon(listCoupon, context, 'Active'),
-                  _displayExpireCoupon(listCoupon, context, 'Active'),
-                  _displayUsedCoupon(listCoupon, context, 'Active'),
-                ],
-              );
-            })),
-        bottomNavigationBar: BottomNavigationBar(
-          unselectedLabelStyle: TextStyle(color: Colors.grey),
-          selectedLabelStyle: TextStyle(color: Color(0xff0DB5B4)),
-          type: BottomNavigationBarType.fixed,
-          currentIndex: 1,
-          selectedItemColor: Color(0xff0DB5B4),
-          unselectedItemColor: Color(0xffC4C4C4),
-          items: [
-            BottomNavigationBarItem(
-              label: 'Home',
-              icon: Icon(
-                Icons.home,
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: 'My Coupons',
-              icon: Icon(
-                Icons.view_list,
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: 'Messenges',
-              icon: Icon(
-                Icons.notifications_active,
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: 'Account',
-              icon: Icon(
-                Icons.account_circle,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+      );
+    });
   }
 
-  Widget _displayAllCoupon(
-      List<CouponInUse> allCoupon, BuildContext context, String status) {
-    final screenSize = MediaQuery.of(context).size;
+  Widget _displayAllCoupon(List<CouponInUse> listCoupon, String status) {
+    // final screenSize = MediaQuery.of(context).size;
+    var coupons = [];
+    switch (status) {
+      case 'Used':
+        coupons = listCoupon.where((e) => e.status == status).toList();
 
-    if (allCoupon.isEmpty) {
+        break;
+      case 'New':
+        coupons = listCoupon
+            .where((e) =>
+                e.status == status && !controller.checkExpireCoupon(e.coupon))
+            .toList();
+        break;
+      case 'Expired':
+        coupons = listCoupon
+            .where((e) => controller.checkExpireCoupon(e.coupon))
+            .toList();
+        break;
+      default:
+        coupons = listCoupon;
+    }
+
+    if (coupons.isEmpty) {
       return Container(
         child: Center(
             child: Text(
@@ -118,315 +162,30 @@ class MyCouponPage extends GetView<MyCouponController> {
         )),
       );
     }
-    return Container(
-      child: ListView.builder(
-          physics: BouncingScrollPhysics(),
-          itemCount: allCoupon.length,
-          itemBuilder: (BuildContext buildContext, int index) {
-            var couponInUse = allCoupon[index];
-            final coupon = couponInUse.coupon!;
-            return GestureDetector(
-              onTap: () => controller.gotoCouponDetails(couponInUse),
+    return ListView.builder(
+        physics: BouncingScrollPhysics(),
+        itemCount: coupons.length,
+        itemBuilder: (BuildContext buildContext, int index) {
+          var couponInUse = coupons[index];
+          var coupon = couponInUse.coupon!;
+          return GestureDetector(
+            onTap: () => controller.gotoCouponDetails(couponInUse),
+            child: AnimateWrapper(
+              index: index,
               child: Column(children: [
                 SizedBox(height: 15),
-                TicketBox(
-                  fromEdgeMain: 62,
-                  fromEdgeSeparator: 134,
-                  isOvalSeparator: false,
-                  smallClipRadius: 15,
-                  clipRadius: 25,
-                  numberOfSmallClips: 8,
-                  ticketWidth: 340,
-                  ticketHeight: 130,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 20.0, right: 20, left: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(6),
-                              ),
-                              child: Image.network(
-                                coupon.imageUrl ?? '',
-                                width: 100,
-                                height: 80,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: List.generate(
-                                screenSize.height * 0.8 ~/ (10 + 5),
-                                (_) => Container(
-                                  width: 2,
-                                  height: 2,
-                                  color: Colors.black38,
-                                ),
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  coupon.name ?? 'Name not set',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  coupon.description ?? 'Description not set',
-                                  style: TextStyle(color: Colors.black87),
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      coupon.code ?? 'Code not set',
-                                      style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text('  Xem chi tiết',
-                                        style: TextStyle(
-                                            color: Colors.blueAccent,
-                                            fontSize: 13)),
-                                  ],
-                                ),
-                                Text(
-                                  'Ngày hết hạn: ${Formatter.dateFormat(coupon.expireDate)}',
-                                  style: TextStyle(color: Colors.black87),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                TicketBox.small(
+                  imgUrl: coupon.imageUrl!,
+                  storeName: coupon.store?.name,
+                  name: coupon.name,
+                  description: coupon.description,
+                  amount: coupon.amount,
+                  discountType: coupon.discountType,
+                  expireDate: coupon.expireDate,
+                )
               ]),
-            );
-          }),
-    );
-  }
-
-  Widget _displayExpireCoupon(
-      List<CouponInUse> allCoupon, BuildContext context, String status) {
-    final screenSize = MediaQuery.of(context).size;
-
-    return Container(
-      child: ListView.builder(
-          physics: BouncingScrollPhysics(),
-          itemCount: allCoupon.length,
-          itemBuilder: (BuildContext buildContext, int index) {
-            final couponInUse = allCoupon[index];
-            final coupon = couponInUse.coupon!;
-            return GestureDetector(
-              onTap: () {
-                controller.sharedData.saveCouponInUse(couponInUse);
-                Get.toNamed(Routes.couponDetail);
-              },
-              child: Column(children: [
-                SizedBox(height: 15),
-                TicketBox(
-                  fromEdgeMain: 62,
-                  fromEdgeSeparator: 134,
-                  isOvalSeparator: false,
-                  smallClipRadius: 15,
-                  clipRadius: 25,
-                  numberOfSmallClips: 8,
-                  ticketWidth: 340,
-                  ticketHeight: 130,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 20.0, right: 20, left: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(6),
-                              ),
-                              child: Image.network(
-                                coupon.imageUrl ?? '',
-                                width: 100,
-                                height: 80,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: List.generate(
-                                screenSize.height * 0.8 ~/ (10 + 5),
-                                (_) => Container(
-                                  width: 2,
-                                  height: 2,
-                                  color: Colors.black38,
-                                ),
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  coupon.name ?? 'Name not set',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  coupon.description ?? 'Description not set',
-                                  style: TextStyle(color: Colors.black87),
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      coupon.name ?? 'Name not set',
-                                      style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text('  Xem chi tiết',
-                                        style: TextStyle(
-                                            color: Colors.blueAccent,
-                                            fontSize: 15)),
-                                  ],
-                                ),
-                                Text(
-                                  'Ngày hết hạn: ${Formatter.dateFormat(couponInUse.applyDate)}',
-                                  style: TextStyle(color: Colors.black87),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ]),
-            );
-          }),
-    );
-  }
-
-  Widget _displayUsedCoupon(
-      List<CouponInUse> allCoupon, BuildContext context, String status) {
-    final screenSize = MediaQuery.of(context).size;
-
-    if (allCoupon.isEmpty) {
-      return Container(
-        child: Center(
-            child: Text(
-          "Chưa dùng voucher nào!",
-          style: TextStyle(fontSize: 20),
-        )),
-      );
-    }
-    return Container(
-      child: ListView.builder(
-          physics: BouncingScrollPhysics(),
-          itemCount: allCoupon.length,
-          itemBuilder: (BuildContext buildContext, int index) {
-            var couponInUse = allCoupon[index];
-            var coupon = couponInUse.coupon!;
-            return GestureDetector(
-              onTap: () {
-                controller.sharedData.saveCouponInUse(couponInUse);
-                Get.toNamed(Routes.couponDetail);
-              },
-              child: Column(children: [
-                SizedBox(height: 15),
-                TicketBox(
-                  fromEdgeMain: 62,
-                  fromEdgeSeparator: 134,
-                  isOvalSeparator: false,
-                  smallClipRadius: 15,
-                  clipRadius: 25,
-                  numberOfSmallClips: 8,
-                  ticketWidth: 340,
-                  ticketHeight: 130,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 20.0, right: 20, left: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(6),
-                              ),
-                              child: Image.network(
-                                coupon.imageUrl ?? '',
-                                width: 100,
-                                height: 80,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: List.generate(
-                                screenSize.height * 0.8 ~/ (10 + 5),
-                                (_) => Container(
-                                  width: 2,
-                                  height: 2,
-                                  color: Colors.black38,
-                                ),
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  coupon.name ?? 'Name not set',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  coupon.description ?? 'Description not set',
-                                  style: TextStyle(color: Colors.black87),
-                                ),
-                                Row(
-                                  children: [
-                                    Text(coupon.code ?? 'Code not set',
-                                        style: TextStyle(
-                                            color: Colors.green,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)),
-                                    Text('  Xem chi tiết',
-                                        style: TextStyle(
-                                            color: Colors.blueAccent,
-                                            fontSize: 15)),
-                                  ],
-                                ),
-                                Text(
-                                  'Ngày sử dụng: ${Formatter.dateFormat(couponInUse.applyDate)}',
-                                  style: TextStyle(color: Colors.black87),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ]),
-            );
-          }),
-    );
+            ),
+          );
+        });
   }
 }

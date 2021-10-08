@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/widgets/current_location.dart';
-import 'package:indoor_positioning_visitor/src/widgets/image_view/image_view_controller.dart';
-import 'package:indoor_positioning_visitor/src/widgets/image_view/map_marker.dart';
-import 'package:indoor_positioning_visitor/src/widgets/path_painter.dart';
-import 'package:indoor_positioning_visitor/src/widgets/place_object.dart';
-import 'package:indoor_positioning_visitor/src/widgets/marker_popup.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/widgets/current_location.dart';
+import 'package:ipsb_visitor_app/src/widgets/image_view/image_view_controller.dart';
+import 'package:ipsb_visitor_app/src/widgets/image_view/map_marker.dart';
+import 'package:ipsb_visitor_app/src/widgets/path_painter.dart';
+import 'package:ipsb_visitor_app/src/widgets/marker_popup.dart';
 
 class ImageView extends GetView<ImageViewController> {
   final double width, height;
@@ -20,31 +20,46 @@ class ImageView extends GetView<ImageViewController> {
     return GestureDetector(
       onTap: () => controller.closeAllPopup(),
       child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          image: DecorationImage(image: image),
+        padding: const EdgeInsets.only(bottom: 90, top: 40),
+        color: Colors.white,
+        child: Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            image: DecorationImage(image: image),
+          ),
+          child: Obx(() {
+            return Stack(
+              children: [
+                CustomPaint(
+                  painter: PathPainter(points: controller.points),
+                ),
+                ...buildMapMarkers(controller.markers),
+                ...buildMapMarkers(controller.shoppingMarkers),
+                buildOneMarker(controller.point.value),
+                buildPopup(controller.servicePopup.value, width, height),
+              ],
+            );
+          }),
         ),
-        child: Obx(() {
-          return Stack(
-            children: [
-              CustomPaint(
-                painter: PathPainter(points: controller.points),
-              ),
-              ...buildMapMarkers(controller.markers),
-              buildOneMarker(controller.point.value),
-              buildPopup(controller.servicePopup.value, width, height),
-            ],
-          );
-        }),
       ),
     );
   }
 
+  List<Positioned> buildShoppingMarkers(List<MapMarker> markers) {
+    return markers
+        .map((e) => Positioned(
+              left: e.dx - MapKey.radius,
+              top: e.dy - MapKey.radius,
+              child: e.content,
+            ))
+        .toList();
+  }
+
   List<Positioned> buildMapMarkers(List<MapMarker> markers) => markers
       .map((e) => Positioned(
-            left: e.dx - PlaceConstants.radius,
-            top: e.dy - PlaceConstants.radius,
+            left: e.dx - MapKey.radius,
+            top: e.dy - MapKey.radius,
             child: e.content,
           ))
       .toList();
@@ -74,7 +89,7 @@ class ImageView extends GetView<ImageViewController> {
               height,
               popupState.offset.dy,
             ) -
-            PlaceConstants.radius,
+            MapKey.radius,
         child: MarkerPopup(state: popupState),
       );
     }
@@ -90,7 +105,7 @@ class ImageView extends GetView<ImageViewController> {
     dOffset += offset;
     double widthEnd = dOffset + popupSize;
     double value = widthEnd > screenSize
-        ? dOffset - popupSize - PlaceConstants.radius * 3
+        ? dOffset - popupSize - MapKey.radius * 3
         : dOffset;
     return value;
   }

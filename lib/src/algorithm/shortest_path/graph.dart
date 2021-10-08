@@ -1,8 +1,9 @@
-import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/node.dart';
-import 'package:indoor_positioning_visitor/src/models/edge.dart';
+import 'package:ipsb_visitor_app/src/algorithm/shortest_path/node.dart';
+import 'package:ipsb_visitor_app/src/models/edge.dart';
+import 'package:ipsb_visitor_app/src/models/location.dart';
 
 class Graph {
-  final Map<int, Node> nodes = {};
+  final Map<int, Node<Location>> nodes = {};
   Graph.from(List<Edge> edges) {
     edges.forEach((edge) {
       addNodesFromEdge(edge);
@@ -12,9 +13,9 @@ class Graph {
 
   /// Add nodes to graph from [edge]
   void addNodesFromEdge(Edge edge) {
-    Node? from = nodes[edge.fromLocationId] ??
+    Node<Location>? from = nodes[edge.fromLocationId] ??
         Node(id: edge.fromLocationId, value: edge.fromLocation);
-    Node? to = nodes[edge.toLocationId] ??
+    Node<Location>? to = nodes[edge.toLocationId] ??
         Node(id: edge.toLocationId, value: edge.toLocation);
 
     from.addDestination(to, edge.distance!);
@@ -33,4 +34,12 @@ class Graph {
   double getDistance(int id) {
     return nodes[id]?.distance ?? 0;
   }
+
+  List<Location> getShortestPath(int beginLocationId) {
+    final nodeToFind = this.nodes[beginLocationId];
+    return nodeToFind?.getShortestPath() ?? [];
+  }
+
+  static List<Location> getPathOnFloor(List<Location> list, int floorPlanId) =>
+      list.where((e) => e.floorPlanId == floorPlanId).toList();
 }

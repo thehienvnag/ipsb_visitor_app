@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import 'package:indoor_positioning_visitor/src/pages/notifications/controllers/notifications_controller.dart';
+import 'package:ipsb_visitor_app/src/pages/notifications/controllers/notifications_controller.dart';
 
 class NotificationsBinding extends Bindings {
   @override

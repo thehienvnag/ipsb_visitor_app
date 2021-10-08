@@ -27,7 +27,10 @@ Coupon _$CouponFromJson(Map<String, dynamic> json) {
     maxDiscount: (json['maxDiscount'] as num?)?.toDouble(),
     minDiscount: (json['minDiscount'] as num?)?.toDouble(),
     limit: json['limit'] as int?,
-    storeId: (json['storeId'] as num?)?.toDouble(),
+    storeId: json['storeId'] as int?,
+    store: json['store'] == null
+        ? null
+        : Store.fromJson(json['store'] as Map<String, dynamic>),
   );
 }
 
@@ -48,4 +51,5 @@ Map<String, dynamic> _$CouponToJson(Coupon instance) => <String, dynamic>{
       'limit': instance.limit,
       'expireDate': instance.expireDate?.toIso8601String(),
       'publishDate': instance.publishDate?.toIso8601String(),
+      'store': instance.store,
     };

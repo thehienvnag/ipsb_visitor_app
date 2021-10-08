@@ -1,202 +1,146 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:geocode/geocode.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon.dart';
-import 'package:indoor_positioning_visitor/src/models/floor_plan.dart';
-import 'package:indoor_positioning_visitor/src/models/store.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
+import 'package:ipsb_visitor_app/src/models/building.dart';
+import 'package:ipsb_visitor_app/src/models/coupon.dart';
+import 'package:ipsb_visitor_app/src/models/product_category.dart';
 
-final listFloorPlanFinal = [
-  FloorPlan(floorCode: "Chọn tầng", floorNumber: 0),
-  FloorPlan(floorCode: "Tầng 1", floorNumber: 1),
-  FloorPlan(floorCode: "Tầng 2", floorNumber: 2),
-  FloorPlan(floorCode: "Tầng 3", floorNumber: 3),
-  FloorPlan(floorCode: "Tầng 4", floorNumber: 4),
-  FloorPlan(floorCode: "Tầng 5", floorNumber: 5),
-  FloorPlan(floorCode: "Tầng 5", floorNumber: 6),
-];
-
-final listCouponFinal = [
-  Coupon(
-      id: 1,
-      name: 'Trà sữa Phúc Long',
-      description: 'Giảm 30% cho đơn 100k',
-      code: 'Giảm 30%',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Coupon(
-      id: 3,
-      name: 'Trà sữa Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Mua 1 tặng 1',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-  Coupon(
-      id: 4,
-      name: 'Trà sữa Tocotoco',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Giảm 50%',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://1office.vn/wp-content/uploads/2020/02/36852230_419716301836700_6088975431891943424_n-1.png'),
-  Coupon(
-      id: 5,
-      name: 'Trà sữa Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Mua 2 tặng 1',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-  Coupon(
-      id: 6,
-      name: 'Trà sữa Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Giảm 20%',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-  Coupon(
-      id: 7,
-      name: 'Trà sữa Tocotoco',
-      description: 'Trà ngon vì sức khỏe',
-      code: 'Giảm 20%',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://1office.vn/wp-content/uploads/2020/02/36852230_419716301836700_6088975431891943424_n-1.png'),
-];
-
-final listStoreSearchFinal = [
-  Store(
-      id: 1,
-      name: 'Phúc Long',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: '1',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Store(
-      id: 2,
-      name: 'Highlands Coffee',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: '2',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'http://niie.edu.vn/wp-content/uploads/2017/09/highlands-coffee.jpg'),
-  Store(
-      id: 3,
-      name: 'Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: '3',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-  Store(
-      id: 4,
-      name: 'Tocotoco',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: '1',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://1office.vn/wp-content/uploads/2020/02/36852230_419716301836700_6088975431891943424_n-1.png'),
-  Store(
-      id: 5,
-      name: 'Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: '3',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-  Store(
-      id: 6,
-      name: 'Phúc Long',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: '1',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Store(
-      id: 7,
-      name: 'Gong Cha',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: '1',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Store(
-      id: 8,
-      name: 'Gong Cha',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: '1',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Store(
-      id: 9,
-      name: 'Gong Cha',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: '1',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Store(
-      id: 10,
-      name: 'Gong Cha',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: '1',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://edu2review.com/upload/article-images/2016/07/843/768x768_phuc-long-logo.jpg'),
-  Store(
-      id: 11,
-      name: 'Highlands Coffee',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: '2',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'http://niie.edu.vn/wp-content/uploads/2017/09/highlands-coffee.jpg'),
-  Store(
-      id: 12,
-      name: 'Bobapop',
-      description: 'Trà ngon vì sức khỏe',
-      floorPlanId: '3',
-      status: 'Mở cả ngày',
-      imageUrl:
-          'https://static.mservice.io/placebrand/s/momo-upload-api-191028114319-637078597998163085.jpg'),
-];
+import 'package:ipsb_visitor_app/src/models/store.dart';
+import 'package:ipsb_visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/services/api/building_service.dart';
+import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
+import 'package:ipsb_visitor_app/src/services/api/store_service.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_visitor_app/src/utils/formatter.dart';
+import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 
 class HomeController extends GetxController {
-  /// Shared data
-  final SharedStates sharedData = Get.find();
-
-  /// [searchValue] for home screen
-  var searchValue = "".obs;
-
-  /// Get list coupons random data
-  var listCoupon = listCouponFinal.obs;
-
-  /// Get list stores when search
-  var listStore = listStoreSearchFinal.obs;
-
-  /// Change search value with String [value]
-  void changeSearchValue(String value) {
-    searchValue.value = value;
-    listStore.value = listStoreSearchFinal;
+  IStoreService storeService = Get.find();
+  final ScrollController scrollController = ScrollController();
+  final showSlider = true.obs;
+  final buildingId = 0.obs;
+  final buildingName = "".obs;
+  final listCategories = categories.obs;
+  final buildings = [].obs;
+  final listCoupon = <Coupon>[].obs;
+  final listStore = <Store>[].obs;
+  final listBuilding = <Building>[].obs;
+  @override
+  void onInit() {
+    super.onInit();
+    if (!initPage()) return;
+    initPage();
+    getStores();
+    getCoupons();
+    getBuildings();
   }
 
-  ///  List floor plan data
-  var listFloorPlan = listFloorPlanFinal.obs;
-
-  /// Get selected of floor
-  var selectedFloor = listFloorPlanFinal[0].obs;
-
-  /// Change selected of floor
-  void changeSelectedFloor(FloorPlan? floor) {
-    selectedFloor.value = floor!;
+  SharedStates states = Get.find();
+  bool initPage() {
+    scrollController.addListener(() {
+      final fromTop = scrollController.position.pixels;
+      if (fromTop > 10) {
+        showSlider.value = false;
+      } else if (fromTop == 0) {
+        showSlider.value = true;
+      }
+    });
+    buildingId.value = states.building.value.id!;
+    buildingName.value = states.building.value.name!;
+    return true;
   }
 
-  void gotoCouponDetails(Coupon coupon) {
-    sharedData.saveCoupon(coupon);
-    Get.toNamed(Routes.couponDetail);
+  void gotoDetails([int? id]) {
+    Get.toNamed(Routes.buildingDetails, parameters: {
+      "id": id != null ? id.toString() : buildingId.value.toString()
+    });
+  }
+
+  void goToStoreDetails(int? id) {
+    if (id != null) {
+      Get.toNamed(Routes.storeDetails, parameters: {"id": id.toString()});
+    }
+  }
+
+  void goToCouponDetails(Coupon coupon) {
+    states.coupon.value = coupon;
+    // states.couponInUse.value = coupon;
+    Get.toNamed(Routes.couponDetail, parameters: {
+      'couponId': coupon.id.toString(),
+    });
+  }
+
+  Future<void> getStores() async {
+    final stores = await storeService.getStoresByBuilding(buildingId.value);
+    listStore.value = stores.content ?? [];
+  }
+
+  ICouponService couponService = Get.find();
+  Future<void> getCoupons() async {
+    listCoupon.value = (await couponService.getCoupons()).content ?? [];
+  }
+
+  IBuildingService buildingService = Get.find();
+  Future<void> getBuildings() async {
+    listBuilding.value = (await buildingService.getBuildings());
+  }
+
+  final listSearchCoupons = <Coupon>[].obs;
+  final isSearching = false.obs;
+  Future<void> searchCoupons(String keySearch) async {
+    if (keySearch.isEmpty) {
+      listSearchCoupons.clear();
+      return;
+    }
+    int? bId = buildingId.value;
+
+    if (!isSearching.value) {
+      isSearching.value = true;
+      listSearchCoupons.value =
+          await couponService.searchCoupons(bId.toString(), keySearch);
+      Timer(Duration(seconds: 1), () => isSearching.value = false);
+    }
+  }
+
+  var distanceTwoPoin = "".obs;
+
+  Future<String> getDistanceBetweenTwoLocation(String buildingAddress) async {
+    Location location = new Location();
+    GeoCode geoCode = GeoCode();
+    LocationData myLocation;
+    myLocation = await location.getLocation();
+    Coordinates coordinates =
+        await geoCode.forwardGeocoding(address: buildingAddress);
+    double distance = Geolocator.distanceBetween(
+        myLocation.latitude!.toDouble(),
+        myLocation.longitude!.toDouble(),
+        coordinates.latitude!.toDouble(),
+        coordinates.longitude!.toDouble());
+    final formatter = new NumberFormat("###,###,###,###");
+    distanceTwoPoin.value = formatter.format(distance / 1000) + ' Km';
+    print("nè nè : " + formatter.format(distance / 1000) + ' Km');
+    return formatter.format(distance / 1000) + ' Km';
+  }
+
+  String getDistanceDisplay(String address) {
+    var valueDistan = "";
+    getDistanceBetweenTwoLocation(address).then((value) {
+      valueDistan = value;
+    });
+    print("hello: " + valueDistan);
+    return valueDistan;
   }
 }
+
+final categories = [
+  ProductCategory(name: 'Cà phê', imageUrl: 'assets/images/icon_coffee.png'),
+  ProductCategory(name: 'Trà sữa', imageUrl: 'assets/images/icon_milktea.png'),
+  ProductCategory(name: 'Mua sắm', imageUrl: 'assets/images/icon_shopping.png'),
+  ProductCategory(
+      name: 'Nhà hàng', imageUrl: 'assets/images/icon_restaurant.png'),
+  ProductCategory(name: 'Xem phim', imageUrl: 'assets/images/icon_cinema.png'),
+];

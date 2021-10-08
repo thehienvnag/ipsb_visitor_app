@@ -1,12 +1,29 @@
-import 'package:indoor_positioning_visitor/src/models/location.dart';
+import 'package:hive/hive.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/models/location.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'edge.g.dart';
 
 @JsonSerializable()
+@HiveType(typeId: AppHiveType.edge)
 class Edge {
-  final int? id, fromLocationId, toLocationId;
-  final Location? fromLocation, toLocation;
+  @HiveField(0)
+  final int? id;
+
+  @HiveField(1)
+  final int? fromLocationId;
+
+  @HiveField(2)
+  final int? toLocationId;
+
+  @HiveField(3)
+  final Location? fromLocation;
+
+  @HiveField(4)
+  final Location? toLocation;
+
+  @HiveField(5)
   final double? distance;
   Edge({
     this.id,

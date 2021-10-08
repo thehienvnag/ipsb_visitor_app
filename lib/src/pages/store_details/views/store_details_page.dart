@@ -1,255 +1,353 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 
-import 'package:indoor_positioning_visitor/src/models/product.dart';
-import 'package:indoor_positioning_visitor/src/pages/store_details/controllers/store_details_controller.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
+import 'package:get/get.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+
+import 'package:ipsb_visitor_app/src/pages/store_details/controllers/store_details_controller.dart';
+import 'package:ipsb_visitor_app/src/utils/formatter.dart';
+import 'package:ipsb_visitor_app/src/utils/utils.dart';
+import 'package:ipsb_visitor_app/src/widgets/rounded_button.dart';
+import 'package:ipsb_visitor_app/src/widgets/animate_wrapper.dart';
 
 class StoreDetailsPage extends GetView<StoreDetailsController> {
   @override
   Widget build(BuildContext context) {
-    // Size size = MediaQuery.of(context).size;
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            Container(
-              child: Image.network(
-                  'https://scontent-hkg4-2.xx.fbcdn.net/v/t1.18169-9/12143272_1641373789476730_6172127264499031070_n.jpg?_nc_cat=109&ccb=1-3&_nc_sid=ba80b0&_nc_ohc=Hsq3FRjDMpcAX-qh2Qz&_nc_ht=scontent-hkg4-2.xx&oh=1f40e631cc8bcdc0a15b127ae11e03fc&oe=60D3B08C'),
-            ),
-            Container(
-              margin: EdgeInsets.only(right: 220, top: 10),
-              child: Text(
-                'HIGHLANDS COFFEE',
-                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(right: 90),
-              child: Text('Thương Hiệu Cà Phê Tự Hào Sinh Ra Từ Đất Việt'),
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    child: Icon(
-                      Icons.location_on_outlined,
-                      color: Color(0xff0DB5B4),
+    Size size = MediaQuery.of(context).size;
+    return SafeArea(
+      child: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: Column(
+            children: [
+              Obx(() {
+                var store = controller.store.value;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Stack(
+                      children: [
+                        Container(
+                          width: size.width,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            image: Utils.resolveDecoImg(store.imageUrl),
+                            boxShadow: [AppBoxShadow.boxShadow],
+                          ),
+                        ),
+                        Positioned(
+                          top: 18,
+                          left: 15,
+                          child: RoundedButton(
+                            icon: Icon(
+                              Icons.chevron_left,
+                              size: 40,
+                            ),
+                            onPressed: () {
+                              Get.back();
+                            },
+                            radius: 40,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Text('Tầng 1 - Vincom Lê Văn Việt'),
-                ],
-              ),
-            ),
-            // Divider(
-            //   height: 10,
-            //   thickness: 2,
-            // ),
-            Container(
-              child: TabBar(
-                tabs: [
-                  Tab(
-                    child: Text(
-                      'Sản phẩm',
-                      style: TextStyle(color: Colors.black),
+                    Container(
+                      margin: const EdgeInsets.only(left: 14, top: 20),
+                      padding: const EdgeInsets.only(
+                        top: 5,
+                        left: 10,
+                        right: 10,
+                        bottom: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black26, width: 1),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        Formatter.shorten(store.name),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900, fontSize: 26),
+                      ),
                     ),
-                  ),
-                  Tab(
-                    child: Text(
-                      'Vé ưu đãi',
-                      style: TextStyle(color: Colors.black),
+                    ListTile(
+                      title: Text(Formatter.shorten(store.description)),
+                      subtitle: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                child: Icon(
+                                  Icons.location_on_outlined,
+                                  color: Color(0xff0DB5B4),
+                                ),
+                              ),
+                              Text('Tầng 1 - Vincom Lê Văn Việt'),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
+                  ],
+                );
+              }),
+              Container(
+                padding: const EdgeInsets.only(bottom: 10),
+                // margin: const EdgeInsets.only(bottom: 10),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.grey.shade400, width: 0.5),
                   ),
-                ],
+                ),
+                child: TabBar(
+                  indicatorColor: Colors.green,
+                  tabs: [
+                    Container(
+                      width: 100,
+                      child: Tab(
+                        text: "PRODUCTS",
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      child: Tab(
+                        text: "COMBOS",
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      child: Tab(
+                        text: "COUPONS",
+                      ),
+                    ),
+                  ],
+                  labelColor: Colors.black,
+                  indicator: MaterialIndicator(
+                    height: 5,
+                    topLeftRadius: 8,
+                    topRightRadius: 8,
+                    horizontalPadding: 50,
+                    tabPosition: TabPosition.bottom,
+                  ),
+                ),
               ),
-            ),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  _buildProducts(),
-                  _buildCoupons(),
-                ],
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    _buildProducts(),
+                    _buildCombos(),
+                    _buildCoupons(),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildProducts() {
-    return ListView.separated(
-      itemBuilder: (context, index) {
-        Product product = listProduct[index];
-        return Row(
-          children: [
-            Image.network(
-              product.imageUrl ?? '',
-              height: 100,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 42, bottom: 5),
-                      child: Text(product.name ?? '',
-                          style: TextStyle(fontWeight: FontWeight.w700)),
-                    ),
-                    Container(
-                      child: Text(
-                        '${product.price} VNĐ',
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  width: 250,
-                  child: Text(
-                    product.description ?? '',
-                    style: TextStyle(fontSize: 13),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: Column(
+        children: [
+          Expanded(
+            child: Obx(() {
+              final products = controller.listProduct;
+              return AnimationLimiter(
+                child: GridView.count(
+                  childAspectRatio: 4 / 6,
+                  crossAxisCount: 2,
+                  children: List.generate(
+                    products.length,
+                    (int index) {
+                      final product = products[index];
+                      return GestureDetector(
+                        onTap: () => controller.gotoProductDetails(),
+                        child: AnimateWrapper(
+                          index: index,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 3, vertical: 4),
+                            child: Card(
+                              child: Container(
+                                width: 200,
+                                padding: const EdgeInsets.only(bottom: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      height: 170,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              product.imageUrl ?? ''),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    ListTile(
+                                      title: Text(
+                                        Formatter.shorten(product.name, 10),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        Formatter.shorten(product.description),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 10, left: 16),
+                                      child: Text(
+                                        Formatter.price(product.price),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
-              ],
-            ),
-          ],
-        );
-      },
-      separatorBuilder: (context, index) => Divider(
-        indent: 30,
-        endIndent: 30,
-        color: Colors.black,
+              );
+            }),
+          ),
+        ],
       ),
-      itemCount: listProduct.length,
+    );
+  }
+
+  Widget _buildCombos() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: Column(
+        children: [
+          Expanded(
+            child: Obx(() {
+              final products = controller.listProduct;
+              return AnimationLimiter(
+                child: GridView.count(
+                  childAspectRatio: 4 / 6,
+                  crossAxisCount: 2,
+                  children: List.generate(
+                    products.length,
+                    (int index) {
+                      final product = products[index];
+                      return GestureDetector(
+                        onTap: () => controller.gotoProductComboDetails(),
+                        child: AnimateWrapper(
+                          index: index,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 3, vertical: 4),
+                            child: Card(
+                              child: Container(
+                                width: 200,
+                                padding: const EdgeInsets.only(bottom: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      height: 170,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              product.imageUrl ?? ''),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    ListTile(
+                                      title: Text(
+                                        Formatter.shorten(product.name, 10),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        Formatter.shorten(product.description),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 10, left: 16),
+                                      child: Text(
+                                        Formatter.price(product.price),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildCoupons() {
-    return ListView.separated(
-      itemCount: coupons.length,
-      itemBuilder: (context, index) {
-        final coupon = coupons[index];
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network(
-              coupon.imageUrl ?? '',
-              height: 80,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 10, left: 10),
-                  width: 240,
-                  child: Text(coupon.name ?? '',
-                      style: TextStyle(fontWeight: FontWeight.w700)),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 10, left: 10),
-                  width: 240,
-                  child: Text(
-                    coupon.description ?? '',
-                    style: TextStyle(fontSize: 13),
+    return Obx(() {
+      final coupons = controller.listCoupon;
+      return ListView.builder(
+        itemCount: coupons.length,
+        itemBuilder: (context, index) {
+          final coupon = coupons[index];
+          return GestureDetector(
+            onTap: () => controller.gotoCouponDetail(coupon),
+            child: AnimateWrapper(
+              index: index,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                child: Card(
+                  color: Color(0xffF5F5F7),
+                  child: ListTile(
+                    leading: Image.network(
+                      coupon.imageUrl ?? '',
+                      width: 50,
+                    ),
+                    title: Text(Formatter.shorten(coupon.name)),
+                    subtitle: Text(Formatter.shorten(coupon.description)),
+                    trailing: TextButton.icon(
+                      onPressed: () {},
+                      icon: Icon(Icons.local_activity),
+                      label: Text('Chi tiết'),
+                    ),
                   ),
                 ),
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.info),
-                  label: Text('Xem chi tiết'),
-                ),
-              ],
+              ),
             ),
-          ],
-        );
-      },
-      separatorBuilder: (context, index) => Divider(
-        indent: 30,
-        endIndent: 30,
-        color: Colors.black,
-      ),
-    );
+          );
+        },
+      );
+    });
   }
 }
-
-List<Product> listProduct = [
-  Product(
-    id: 1,
-    name: 'GOLDEN LOTUS TEA',
-    description:
-        'Thức uống chinh phục những thực khách khó tính! Sự kết hợp độc đáo giữa trà Ô long, hạt sen thơm bùi và củ năng giòn tan. Thêm vào chút sữa sẽ để vị thêm ngọt ngào.',
-    price: 39000,
-    imageUrl:
-        'https://www.highlandscoffee.com.vn/vnt_upload/product/03_2018/TRASENVANG.png',
-  ),
-  Product(
-    id: 1,
-    name: 'GOLDEN LOTUS TEA',
-    description:
-        'Thức uống chinh phục những thực khách khó tính! Sự kết hợp độc đáo giữa trà Ô long, hạt sen thơm bùi và củ năng giòn tan. Thêm vào chút sữa sẽ để vị thêm ngọt ngào.',
-    price: 39000,
-    imageUrl:
-        'https://www.highlandscoffee.com.vn/vnt_upload/product/03_2018/TRASENVANG.png',
-  ),
-  Product(
-    id: 1,
-    name: 'GOLDEN LOTUS TEA',
-    description:
-        'Thức uống chinh phục những thực khách khó tính! Sự kết hợp độc đáo giữa trà Ô long, hạt sen thơm bùi và củ năng giòn tan. Thêm vào chút sữa sẽ để vị thêm ngọt ngào.',
-    price: 39000,
-    imageUrl:
-        'https://www.highlandscoffee.com.vn/vnt_upload/product/03_2018/TRASENVANG.png',
-  ),
-  Product(
-    id: 1,
-    name: 'GOLDEN LOTUS TEA',
-    description:
-        'Thức uống chinh phục những thực khách khó tính! Sự kết hợp độc đáo giữa trà Ô long, hạt sen thơm bùi và củ năng giòn tan. Thêm vào chút sữa sẽ để vị thêm ngọt ngào.',
-    price: 39000,
-    imageUrl:
-        'https://www.highlandscoffee.com.vn/vnt_upload/product/03_2018/TRASENVANG.png',
-  ),
-];
-
-final coupons = [
-  Coupon(
-    id: 1,
-    name: 'THỬ PHINDI MỚI!',
-    description:
-        'Thêm 6.000/ly để đổi ly PhinDi tặng sang cỡ vừa hoặc 10.000/ly để đổi sang cỡ lớn',
-    imageUrl:
-        'https://www.highlandscoffee.com.vn/vnt_upload/product/03_2018/TRASENVANG.png',
-  ),
-  Coupon(
-    id: 2,
-    name: 'CHỌN FREEZE TRÀ XANH, NHẬN THẺ TẬN HƯỞNG!',
-    description:
-        'Thưởng thức sự kết hợp hoàn hảo giữa vị Trà Xanh Đậm Đà cùng những miếng Thạch Giòn Khó Cưỡng.',
-    imageUrl:
-        'https://www.highlandscoffee.com.vn/vnt_upload/product/03_2018/TRASENVANG.png',
-  ),
-  Coupon(
-    id: 3,
-    name: 'SỔ ƯU ĐÃI MỪNG 300 QUÁN',
-    description:
-        'Từ ngày 07/07/2019 đến ngày 21/07/2019 tại Highlands Coffee® toàn quốc.',
-    imageUrl:
-        'https://www.highlandscoffee.com.vn/vnt_upload/product/03_2018/TRASENVANG.png',
-  ),
-  Coupon(
-    id: 4,
-    name: 'GIẢM 30K ĐƠN TỪ 100K',
-    description:
-        'E-Voucher giảm giá 30k cho đơn hàng 100k khi thanh toán bằng Airpay QR hoặc BLE Scan & Pay',
-    imageUrl:
-        'https://www.highlandscoffee.com.vn/vnt_upload/product/03_2018/TRASENVANG.png',
-  ),
-];

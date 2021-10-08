@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/common/constants.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:get/get_connect/http/src/status/http_status.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
+import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 
 mixin IApiHelper {
   // Get all from an API [endpoint] using [uri] and [query]
@@ -9,7 +13,7 @@ mixin IApiHelper {
   });
 
   /// Get 1 by Id from API [endpoint] using [uri] and [id]
-  Future<Response> getById<T>(String endpoint, dynamic id);
+  Future<Response> getById(String endpoint, dynamic id);
 
   /// Post 1 to API [endpoint] providing [data]
   Future<Response> postOne(
@@ -39,11 +43,8 @@ mixin IApiHelper {
   );
 
   /// Put 1 to API [endpoint] providing [data] with one file [files]
-  Future<Response> putOneWithOneFile(
-    String endpoint,
-    Map<String, dynamic> data,
-    MultipartFile file,
-  );
+  Future<Response> putOneWithOneFile(String endpoint, Map<String, dynamic> data,
+      MultipartFile file, String fileName);
 
   /// Put 1 to API [endpoint] providing [data] with many files [files]
   Future<Response> putOneWithFiles(
@@ -61,6 +62,8 @@ mixin IApiHelper {
 
 /// Class for calling HTTP methods
 class ApiHelper extends GetConnect with IApiHelper {
+  /// Auth services
+  // final IAuthService _authService = Get.find();
   @override
   void onInit() {
     super.onInit();
@@ -68,6 +71,37 @@ class ApiHelper extends GetConnect with IApiHelper {
     // Set baseUrl & timeout for API call
     httpClient.baseUrl = Constants.baseUrl;
     httpClient.timeout = Constants.timeout;
+
+    // Request modifier: [Add bearer token]
+    httpClient.addRequestModifier((Request request) async {
+      request.headers["Authorization"] = await AuthServices.getAuthHeader();
+      // print("Token: " + request.headers["Authorization"].toString());
+
+      return request;
+    });
+
+    //Request modifier: [if-modified-since: header]
+    httpClient.addRequestModifier((Request request) async {
+      if (request.url.path.contains("edges")) {
+        final lastModified = await HiveStorage.getIfModifiedSinceHeader(
+          HiveStorage.getEndpoint(request.url),
+        );
+        if (lastModified != null) {
+          request.headers["if-modified-since"] = lastModified;
+        }
+      }
+      return request;
+    });
+
+    //Response modifier: [last-modified: header]
+    httpClient.addResponseModifier((request, response) async {
+      String? lastModified = response.headers?["last-modified"];
+      HiveStorage.saveLastModifiedHeader(
+        lastModified,
+        HiveStorage.getEndpoint(request.url),
+      );
+      return response;
+    });
   }
 
   @override
@@ -79,8 +113,8 @@ class ApiHelper extends GetConnect with IApiHelper {
   }
 
   @override
-  Future<Response> getById<T>(String endpoint, dynamic id) {
-    return get<T>('$endpoint/$id');
+  Future<Response> getById(String endpoint, dynamic id) {
+    return get('$endpoint/$id');
   }
 
   @override
@@ -118,17 +152,14 @@ class ApiHelper extends GetConnect with IApiHelper {
     dynamic id,
     Map<String, dynamic> data,
   ) {
-    return put('$endpoint$id', data);
+    return put('$endpoint/$id', data);
   }
 
   @override
-  Future<Response> putOneWithOneFile(
-    String endpoint,
-    Map<String, dynamic> data,
-    MultipartFile file,
-  ) {
+  Future<Response> putOneWithOneFile(String endpoint, Map<String, dynamic> data,
+      MultipartFile file, String fileName) {
     var form = FormData(data);
-    form.files.add(MapEntry('files', file));
+    form.files.add(MapEntry(fileName, file));
 
     return put(endpoint, form);
   }

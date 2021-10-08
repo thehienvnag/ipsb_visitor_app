@@ -8,13 +8,19 @@ class Paging<T> {
   late final List<T>? content;
   List<dynamic>? rawContent;
 
+  static Paging<T> defaultInstance<T>() {
+    final paging = Paging<T>();
+    paging.content = null;
+    return paging;
+  }
+
   Paging({
-    this.totalCount,
-    this.pageSize,
-    this.totalPage,
-    this.currentPage,
-    this.nextPage,
-    this.previousPage,
+    this.totalCount = 0,
+    this.pageSize = 0,
+    this.totalPage = 0,
+    this.currentPage = 0,
+    this.nextPage = 0,
+    this.previousPage = 0,
     this.rawContent,
   });
 
