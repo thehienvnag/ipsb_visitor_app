@@ -184,6 +184,12 @@ class MapController extends GetxController {
 
   void showShoppingDirections() {
     if (startShopping.isFalse) return;
+    if (listStoreShopping.every((e) => e.complete)) {
+      listShoppingRoutes.clear();
+      _mapController.setActiveRoute([]);
+      _mapController.setInActiveRoute([]);
+      return;
+    }
 
     int beginId = currentPosition.value.id!;
     Graph graph = Graph.from(edges);
@@ -203,6 +209,7 @@ class MapController extends GetxController {
     );
   }
 
+  /// Check complete
   bool checkComplete(int storeId) {
     bool result = false;
     try {
@@ -334,7 +341,7 @@ class MapController extends GetxController {
   }
 
   /// On Selected floor changed
-  onSelectedFloorChange() {
+  void onSelectedFloorChange() {
     selectedFloor.listen((floor) {
       onShoppingListChange();
 
