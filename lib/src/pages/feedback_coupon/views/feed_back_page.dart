@@ -5,7 +5,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/pages/feedback_coupon/controllers/feedback_conpon_controller.dart';
-import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_visitor_app/src/widgets/rounded_button.dart';
 
 class FeedbackCouponPage extends GetView<FeedbackCouponController> {

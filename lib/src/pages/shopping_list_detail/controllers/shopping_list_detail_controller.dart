@@ -1,5 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/models/shopping_list.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/shopping_item_service.dart';
@@ -30,9 +32,34 @@ class ShoppingListDetailController extends GetxController {
 
   bool checkDataPresent() => shoppingListDetails.value.id != null;
 
-  void startShopping() {
+  // bool shoppingIsEmpty() =>
+  //     shoppingListDetails.value.shoppingItems == null ||
+  //     shoppingListDetails.value.shoppingItems!.isEmpty;
+
+  void startShopping(BuildContext context) {
     if (!checkDataPresent()) return;
+    // if (!shoppingIsEmpty()) {
+    //   showErrorDialog(
+    //     context,
+    //     "Shopping list is empty!",
+    //     "Please add more items to your list!!",
+    //   );
+    //   return;
+    // }
+    if (!checkItemsValid()) {
+      showErrorDialog(
+        context,
+        "Product is not available!",
+        "Please remove the unavailable products!",
+      );
+      return;
+    }
+    shoppingListDetails.value.shoppingItems?.forEach((e) {
+      e.product?.checked = false;
+      e.product?.store?.complete = false;
+    });
     _sharedStates.shoppingList.value = shoppingListDetails.value;
+
     Get.toNamed(Routes.map);
   }
 
@@ -65,5 +92,30 @@ class ShoppingListDetailController extends GetxController {
       BotToast.showText(text: "Successfully updated!!");
       loadShoppingListDetails();
     }
+  }
+
+  bool checkItemsValid() {
+    return shoppingListDetails.value.shoppingItems
+            ?.fold(true, (acc, e) => acc! && e.product?.status == "Active") ??
+        false;
+  }
+
+  void showErrorDialog(BuildContext context, String title, String msg) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(title),
+        content: Text(msg),
+        actions: [
+          TextButton(
+            child: Text(
+              'OK',
+              style: TextStyle(color: AppColors.primary, fontSize: 18),
+            ),
+            onPressed: () => Get.back(),
+          ),
+        ],
+      ),
+    );
   }
 }

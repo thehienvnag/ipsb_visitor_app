@@ -38,6 +38,8 @@ class Store {
 
   List<Product>? products;
 
+  int? pos;
+
   @JsonKey(ignore: true)
   bool isExpanded;
 
@@ -66,4 +68,17 @@ class Store {
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);
 
   Map<String, dynamic> toJson() => _$StoreToJson(this);
+
+  void changeProductSelected(Product product) {
+    this.products!.forEach((pro) {
+      if (pro.id == product.id) {
+        pro.checked = !pro.checked;
+      }
+    });
+    if (this.products!.every((pro) => pro.checked)) {
+      this.complete = true;
+    } else {
+      this.complete = false;
+    }
+  }
 }

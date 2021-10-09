@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:beacons_plugin/beacons_plugin.dart';
-import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/ipsb_positioning.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/beacon.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/location_2d.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/ble/floor_detection.dart';

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:geocode/geocode.dart';
-import 'package:geolocator/geolocator.dart';
+// import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/models/building.dart';
 import 'package:ipsb_visitor_app/src/models/coupon.dart';
@@ -108,32 +108,32 @@ class HomeController extends GetxController {
 
   var distanceTwoPoin = "".obs;
 
-  Future<String> getDistanceBetweenTwoLocation(String buildingAddress) async {
-    Location location = new Location();
-    GeoCode geoCode = GeoCode();
-    LocationData myLocation;
-    myLocation = await location.getLocation();
-    Coordinates coordinates =
-        await geoCode.forwardGeocoding(address: buildingAddress);
-    double distance = Geolocator.distanceBetween(
-        myLocation.latitude!.toDouble(),
-        myLocation.longitude!.toDouble(),
-        coordinates.latitude!.toDouble(),
-        coordinates.longitude!.toDouble());
-    final formatter = new NumberFormat("###,###,###,###");
-    distanceTwoPoin.value = formatter.format(distance / 1000) + ' Km';
-    print("nè nè : " + formatter.format(distance / 1000) + ' Km');
-    return formatter.format(distance / 1000) + ' Km';
-  }
+  // Future<String> getDistanceBetweenTwoLocation(String buildingAddress) async {
+  //   Location location = new Location();
+  //   GeoCode geoCode = GeoCode();
+  //   LocationData myLocation;
+  //   myLocation = await location.getLocation();
+  //   Coordinates coordinates =
+  //       await geoCode.forwardGeocoding(address: buildingAddress);
+  //   double distance = Geolocator.distanceBetween(
+  //       myLocation.latitude!.toDouble(),
+  //       myLocation.longitude!.toDouble(),
+  //       coordinates.latitude!.toDouble(),
+  //       coordinates.longitude!.toDouble());
+  //   final formatter = new NumberFormat("###,###,###,###");
+  //   distanceTwoPoin.value = formatter.format(distance / 1000) + ' Km';
+  //   print("nè nè : " + formatter.format(distance / 1000) + ' Km');
+  //   return formatter.format(distance / 1000) + ' Km';
+  // }
 
-  String getDistanceDisplay(String address) {
-    var valueDistan = "";
-    getDistanceBetweenTwoLocation(address).then((value) {
-      valueDistan = value;
-    });
-    print("hello: " + valueDistan);
-    return valueDistan;
-  }
+  // String getDistanceDisplay(String address) {
+  //   var valueDistan = "";
+  //   getDistanceBetweenTwoLocation(address).then((value) {
+  //     valueDistan = value;
+  //   });
+  //   print("hello: " + valueDistan);
+  //   return valueDistan;
+  // }
 }
 
 final categories = [

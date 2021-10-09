@@ -4,11 +4,18 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/models/location.dart';
 
 class Utils {
-  static double calDistance(Offset p1, Offset p2) {
+  static double calDistanceOffset(Offset p1, Offset p2) {
     var xSquare = pow(p2.dx - p1.dx, 2);
     var ySquare = pow(p2.dy - p1.dy, 2);
+    return sqrt(xSquare + ySquare);
+  }
+
+  static double calDistance(Location p1, Location p2) {
+    var xSquare = pow(p2.x! - p1.x!, 2);
+    var ySquare = pow(p2.y! - p1.y!, 2);
     return sqrt(xSquare + ySquare);
   }
 

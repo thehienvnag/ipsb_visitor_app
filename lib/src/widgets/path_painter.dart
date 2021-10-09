@@ -1,27 +1,29 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:path_drawing/path_drawing.dart';
+// import 'package:path_drawing/path_drawing.dart';
 
 class PathPainter extends CustomPainter {
   final List<Offset> points;
   final double space = 2;
   final double lineWidth = 3;
+  final bool isActive;
   PathPainter({
     required this.points,
+    this.isActive = true,
   });
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = Colors.blue[200]!
+      ..color = this.isActive ? Colors.blue[200]! : Colors.grey[300]!
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 5;
+      ..strokeWidth = 11
+      ..strokeCap = StrokeCap.round;
 
     Path path = Path();
     path.addPolygon(points, false);
 
-    canvas.drawPath(
-      dashPath(path, dashArray: CircularIntervalList<double>(<double>[20, 13])),
-      paint,
-    );
+    canvas.drawPath(path, paint);
   }
 
   @override

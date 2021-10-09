@@ -10,6 +10,7 @@ class Product {
   final String? name, description, imageUrl;
   final double? price;
   final Store? store;
+  final String? status;
   @JsonKey(ignore: true)
   int? shoppingItemId;
   @JsonKey(ignore: true)
@@ -24,6 +25,7 @@ class Product {
     this.imageUrl,
     this.store,
     this.note,
+    this.status,
   });
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);

@@ -75,15 +75,20 @@ class IndoorMapController extends GetxController {
     _imageViewController.setMarkers(list);
   }
 
-  /// Set path on map
-  void setPathOnMap(List<Location> locations) {
+  /// Set active routes on map
+  void setActiveRoute(List<Location> locations) {
     final list = locations.map((e) => Offset(e.x!, e.y!)).toList();
-    _imageViewController.setPath(list);
+    _imageViewController.setActivePath(list);
+  }
+
+  /// Set inactive routes on map
+  void setInActiveRoute(List<Location> locations) {
+    final list = locations.map((e) => Offset(e.x!, e.y!)).toList();
+    _imageViewController.setInActivePath(list);
   }
 
   /// Set Shopping points on map
   void setShoppingPoints(List<Store> stores) {
-    int i = 0;
     final listMarkers = stores.map((store) {
       final location = store.locations![0];
       return MapMarker(
@@ -91,7 +96,7 @@ class IndoorMapController extends GetxController {
         dy: location.y!,
         content: ShoppingPoint(
           store: store,
-          index: (++i).toString(),
+          index: (store.pos).toString(),
         ),
       );
     }).toList();

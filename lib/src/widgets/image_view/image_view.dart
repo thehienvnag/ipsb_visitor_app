@@ -32,7 +32,13 @@ class ImageView extends GetView<ImageViewController> {
             return Stack(
               children: [
                 CustomPaint(
-                  painter: PathPainter(points: controller.points),
+                  painter: PathPainter(
+                    points: controller.inActivePoints,
+                    isActive: false,
+                  ),
+                ),
+                CustomPaint(
+                  painter: PathPainter(points: controller.activePoints),
                 ),
                 ...buildMapMarkers(controller.markers),
                 ...buildMapMarkers(controller.shoppingMarkers),

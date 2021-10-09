@@ -23,8 +23,11 @@ class ImageViewController extends GetxController {
     content: CurrentLocation(),
   ).obs;
 
-  /// Paths on the map
-  final points = <Offset>[].obs;
+  /// Active route on the map
+  final activePoints = <Offset>[].obs;
+
+  /// Inactive route on the map
+  final inActivePoints = <Offset>[].obs;
 
   /// Service popup location on the map
   final servicePopup = PopupState(enabled: false).obs;
@@ -44,8 +47,12 @@ class ImageViewController extends GetxController {
     markers.value = value;
   }
 
-  void setPath(List<Offset> value) {
-    points.value = value;
+  void setActivePath(List<Offset> values) {
+    activePoints.value = values;
+  }
+
+  void setInActivePath(List<Offset> values) {
+    inActivePoints.value = values;
   }
 
   var servicePopupEnabled = false.obs;

@@ -92,13 +92,16 @@ class MapPage extends GetView<MapController> {
               Stack(
                 children: [
                   ListTile(
-                    leading: Container(
-                      width: 100,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        image: Utils.resolveDecoImg(
-                            shoppingList.building?.imageUrl),
-                        borderRadius: BorderRadius.circular(5),
+                    leading: GestureDetector(
+                      onTap: () => controller.testGoingShoppingRoutes(),
+                      child: Container(
+                        width: 100,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          image: Utils.resolveDecoImg(
+                              shoppingList.building?.imageUrl),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
                       ),
                     ),
                     title: Text(
@@ -112,27 +115,34 @@ class MapPage extends GetView<MapController> {
                       margin: const EdgeInsets.only(bottom: 20),
                       child: IconButton(
                         onPressed: () => controller.closeShopping(),
-                        icon: Icon(Icons.close),
+                        icon: controller.isShoppingComplete() &&
+                                controller.startShopping.isTrue
+                            ? Icon(
+                                Icons.check_circle_outline_outlined,
+                                color: Colors.greenAccent,
+                                size: 40,
+                              )
+                            : Icon(Icons.close),
                       ),
                     ),
                   ),
-                  if (controller.startShopping.value)
-                    Positioned(
-                      top: 4,
-                      left: 16,
-                      child: Container(
-                        width: 100,
-                        height: 60,
-                        child: SpinKitWave(
-                          color: AppColors.primary.withOpacity(0.9),
-                          type: SpinKitWaveType.start,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.black38,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                    ),
+                  // if (controller.startShopping.value)
+                  //   Positioned(
+                  //     top: 4,
+                  //     left: 16,
+                  //     child: Container(
+                  //       width: 100,
+                  //       height: 60,
+                  //       child: SpinKitWave(
+                  //         color: AppColors.primary.withOpacity(0.9),
+                  //         type: SpinKitWaveType.start,
+                  //       ),
+                  //       decoration: BoxDecoration(
+                  //         color: Colors.black38,
+                  //         borderRadius: BorderRadius.circular(5),
+                  //       ),
+                  //     ),
+                  //   ),
                 ],
               ),
               if (!controller.startShopping.value)

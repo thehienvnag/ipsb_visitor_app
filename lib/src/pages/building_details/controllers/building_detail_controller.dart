@@ -5,9 +5,9 @@ import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/building_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/store_service.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
 import 'package:geocode/geocode.dart';
-import 'package:geolocator/geolocator.dart';
+// import 'package:geolocator/geolocator.dart';
 
 class BuildingDetailController extends GetxController {
   IStoreService _storeService = Get.find();
@@ -45,10 +45,10 @@ class BuildingDetailController extends GetxController {
   var currentAddress = "".obs;
 
   getUserLocation() async {
-    Location location = new Location();
+    // Location location = new Location();
 
-    LocationData myLocation;
-    myLocation = await location.getLocation();
+    // LocationData myLocation;
+    // myLocation = await location.getLocation();
     // var addresses = await geoCode.reverseGeocoding(latitude: myLocation.latitude!.toDouble(), longitude: myLocation.longitude!.toDouble());
     // currentAddress.value = (addresses.streetAddress.toString() + " " + addresses.city.toString()+ " " + addresses.region.toString()+ " " + addresses.countryName.toString());
     // print('hello: '+ addresses.toString()+"/ địa chỉ nè : " + addresses.streetAddress.toString() + " " + addresses.city.toString()+ " " + addresses.region.toString()+ " " + addresses.countryName.toString());
@@ -84,7 +84,7 @@ class MapUtils {
   MapUtils._();
   static Future<void> openMap(String currentLocation, String location) async {
     String googleUrl =
-        'https://www.google.com/maps/dir/${currentLocation}/${location}';
+        'https://www.google.com/maps/dir/$currentLocation/$location';
     if (await canLaunch(googleUrl)) {
       await launch(googleUrl);
     } else {

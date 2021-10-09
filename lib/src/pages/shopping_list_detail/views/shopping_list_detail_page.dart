@@ -118,7 +118,7 @@ class ShoppingListDetailsPage extends GetView<ShoppingListDetailController> {
                           radius: 45,
                           color: Colors.grey[200],
                           onPressed: () {
-                            controller.startShopping();
+                            controller.startShopping(context);
                           },
                           icon: Icon(
                             Icons.directions,
@@ -303,7 +303,12 @@ class _ShoppingItemsState extends State<ShoppingItems> {
           image: Utils.resolveDecoImg(item.imageUrl),
         ),
       ),
-      title: Text(Formatter.shorten(item.name, 20)),
+      title: Text(
+        Formatter.shorten(item.name, 20),
+        style: item.status == "Inactive"
+            ? TextStyle(decoration: TextDecoration.lineThrough)
+            : null,
+      ),
       subtitle: item.note != null && item.note!.isNotEmpty
           ? Row(
               children: [
@@ -331,7 +336,10 @@ class _ShoppingItemsState extends State<ShoppingItems> {
             ),
       trailing: IconButton(
         onPressed: () => showDeleteDialog([item.shoppingItemId!]),
-        icon: const Icon(Icons.delete_outline),
+        icon: Icon(
+          Icons.delete_outline,
+          color: item.status == "Inactive" ? Colors.redAccent : null,
+        ),
       ),
       onTap: () => showUpdateDialog(item),
     );
