@@ -83,7 +83,7 @@ Store _$StoreFromJson(Map<String, dynamic> json) {
     locations: (json['locations'] as List<dynamic>?)
         ?.map((e) => Location.fromJson(e as Map<String, dynamic>))
         .toList(),
-  );
+  )..pos = json['pos'] as int?;
 }
 
 Map<String, dynamic> _$StoreToJson(Store instance) => <String, dynamic>{
@@ -97,4 +97,5 @@ Map<String, dynamic> _$StoreToJson(Store instance) => <String, dynamic>{
       'floorPlan': instance.floorPlan,
       'locations': instance.locations,
       'products': instance.products,
+      'pos': instance.pos,
     };

@@ -16,6 +16,7 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
     store: json['store'] == null
         ? null
         : Store.fromJson(json['store'] as Map<String, dynamic>),
+    status: json['status'] as String?,
   )..isSelected = json['isSelected'] as bool?;
 }
 
@@ -27,4 +28,5 @@ Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
       'imageUrl': instance.imageUrl,
       'price': instance.price,
       'store': instance.store,
+      'status': instance.status,
     };

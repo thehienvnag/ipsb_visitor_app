@@ -59,7 +59,7 @@ class TestAlgorithmController extends GetxController {
   ILocationService _locationService = Get.find();
   Future<void> setPathsOnMap() async {
     final locations = await _locationService.getLocationsByType(2, 12);
-    _mapController.setPathOnMap(locations);
+    _mapController.setActiveRoute(locations);
   }
 
   Future<void> setLocationOnFloor() async {

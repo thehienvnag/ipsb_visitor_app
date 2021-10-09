@@ -10,6 +10,7 @@ import 'package:ipsb_visitor_app/src/models/edge.dart';
 import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
 import 'package:ipsb_visitor_app/src/models/location.dart';
 import 'package:ipsb_visitor_app/src/models/product.dart';
+import 'package:ipsb_visitor_app/src/models/shopping_list.dart';
 import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/edge_service.dart';
@@ -19,7 +20,6 @@ import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
 import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 import 'package:ipsb_visitor_app/src/utils/edge_helper.dart';
-import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:ipsb_visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -99,14 +99,18 @@ class MapController extends GetxController {
   /// List store in turn of distance
   final listStoreShopping = <Store>[].obs;
 
+  /// List shopping routes;
+  final listShoppingRoutes = <List<Location>>[].obs;
+
   @override
   void onInit() {
     super.onInit();
     getFloorPlan();
     loadEdgesInBuilding();
     getCoupons();
+    onSelectedFloorChange();
     onLocationChanged();
-    loadShoppingList();
+    initShoppingList();
   }
 
   @override
@@ -115,68 +119,87 @@ class MapController extends GetxController {
     closeShopping();
   }
 
-  void loadShoppingList() {
+  void initShoppingList() {
     if (sharedData.shoppingList.value.id == null) return;
     shoppingListVisble.value = true;
+
+    /// Stream of list shopping stores changed
+    listStoreShopping.listen((stores) {
+      _mapController.setShoppingPoints(Graph.getShoppingPoints(
+        stores,
+        selectedFloor.value.id!,
+      ));
+    });
+
+    /// Stream of list shopping routes changed
+    listShoppingRoutes.listen((e) => setShoppingRoutes(e));
   }
 
+  bool isShoppingComplete() => listStoreShopping.every((e) => e.complete);
+
+  void setShoppingRoutes(List<List<Location>> shoppingRoutes) {
+    if (startShopping.isFalse) {
+      // Set locations as Active routes
+      _mapController.setActiveRoute([]);
+      // Set locations as Inactive routes
+      _mapController.setInActiveRoute([]);
+      return;
+    }
+    if (shoppingRoutes.isEmpty) return;
+
+    // The 1st route
+    final firstRoute = shoppingRoutes[0];
+    // The remaining routes
+    final remainings = shoppingRoutes
+        .getRange(1, shoppingRoutes.length)
+        .expand((route) => route);
+
+    // Set locations as Active routes
+    _mapController.setActiveRoute(
+      Graph.getRouteOnFloor(firstRoute, selectedFloor.value.id!),
+    );
+    // Set locations as Inactive routes
+    _mapController.setInActiveRoute(
+      Graph.getRouteOnFloor(remainings, selectedFloor.value.id!),
+    );
+  }
+
+  /// Begin shopping
   void beginShopping() {
+    if (edges.isEmpty) return;
+
     startShopping.value = true;
-    int beginLocationId = currentPosition.value.id!;
-    Graph graph = Graph.from(edges);
-    final listStores = sharedData.shoppingList.value.getListStores();
-    listStores.forEach((e) {
-      int endLocationId = e.locations![0].id!;
-      // Find all shortest paths to endLocationId
-      _shortestPathAlgorithm.solve(graph, endLocationId);
-      double distance = 0;
-      List<Location> path = graph.getShortestPath(beginLocationId);
-      int i = 0;
-      path.forEach((e) {
-        if (i < path.length - 1) {
-          final p1 = Offset(e.x!, e.y!);
-          final p2 = Offset(path[i + 1].x!, path[i + 1].y!);
-          distance +=
-              Utils.calDistance(p1, p2) / 30; // 30 is real scale of floor map
-        }
-        i++;
-      });
-      e.distance = distance;
-    });
-    listStores.sort((a, b) => a.distance!.compareTo(b.distance!));
-    listStoreShopping.value = listStores;
-    _mapController.setShoppingPoints(
-      listStores
-          .where((e) => e.locations![0].floorPlanId == selectedFloor.value.id)
-          .toList(),
-    );
-    showDirectionForShopping();
+
+    // Init list shopping points (store on map)
+    listStoreShopping.value = sharedData.shoppingList.value.getListStores();
+
+    // Show direction
+    showShoppingDirections();
+
+    // Init store positions
+    int i = 0;
+    listStoreShopping.forEach((e) => e.pos = ++i);
+    listStoreShopping.refresh();
   }
 
-  void showDirectionForShopping() {
-    if (!shoppingListVisble.value) return;
-    List<Location> pathsOnMap = [];
-    final initial = solveForShortestPath(
-      currentPosition.value.id!,
-      listStoreShopping[0].locations![0].id!,
+  void showShoppingDirections() {
+    if (startShopping.isFalse) return;
+
+    int beginId = currentPosition.value.id!;
+    Graph graph = Graph.from(edges);
+
+    // Sort the store by the distance from current position
+    graph.sortStoreByDistance(
+      beginId,
+      listStoreShopping,
+      solveForShortestPath,
     );
-    pathsOnMap.addAll(initial);
-    int pos = 0;
-    listStoreShopping.forEach((e) {
-      if (pos < listStoreShopping.length - 1) {
-        Location p1 = e.locations![pos];
-        Location p2 = e.locations![pos + 1];
-        final pathTo = solveForShortestPath(
-          p1.id!,
-          p2.id!,
-        );
-        pathsOnMap.addAll(pathTo);
-      }
-      pos++;
-    });
-    shortestPath.value = pathsOnMap;
-    _mapController.setPathOnMap(
-      Graph.getPathOnFloor(shortestPath, selectedFloor.value.id!),
+
+    // Sort the store by the distance from current position
+    listShoppingRoutes.value = graph.getShoppingRoutes(
+      beginId,
+      listStoreShopping.where((e) => !e.complete).toList(),
+      solveForShortestPath,
     );
   }
 
@@ -192,30 +215,21 @@ class MapController extends GetxController {
   void onProductSelected(Product product, int storeId) {
     listStoreShopping.value = listStoreShopping.map((e) {
       if (e.id == storeId) {
-        e.products!.forEach((pro) {
-          if (pro.id == product.id) {
-            pro.checked = !pro.checked;
-          }
-        });
-        if (e.products!.every((pro) => pro.checked)) {
-          e.complete = true;
-        } else {
-          e.complete = false;
-        }
+        e.changeProductSelected(
+          product,
+        );
       }
       return e;
     }).toList();
-    _mapController.setShoppingPoints(
-      listStoreShopping
-          .where((e) => e.locations![0].floorPlanId == selectedFloor.value.id)
-          .toList(),
-    );
+    showShoppingDirections();
   }
 
   void closeShopping() {
     shoppingListVisble.value = false;
-    _mapController.setShoppingPoints([]);
-    _mapController.setPathOnMap([]);
+    startShopping.value = false;
+    sharedData.shoppingList.value = ShoppingList();
+    listStoreShopping.clear();
+    listShoppingRoutes.clear();
   }
 
   void startShowDirection(int? destLocationId) {
@@ -229,8 +243,8 @@ class MapController extends GetxController {
     _mapController.setCurrentMarker(currentPosition.value);
     currentPosition.listen((location) {
       showDirection();
-      showDirectionForShopping();
       checkCurrentLocationOnFloor();
+      showShoppingDirections();
       _mapController.moveToScene(location);
     });
   }
@@ -250,10 +264,10 @@ class MapController extends GetxController {
     Graph graph = Graph.from(edges);
     // Find all shortest paths to endLocationId
     _shortestPathAlgorithm.solve(graph, endId);
-    // Get shortest path for current position
 
+    // Get shortest path for current position
     final paths = graph.getShortestPath(beginId);
-    paths.insert(0, currentPosition.value);
+    // paths.insert(0, graph.nodes[beginId]);
     return paths;
   }
 
@@ -269,8 +283,8 @@ class MapController extends GetxController {
     shortestPath.value = solveForShortestPath(beginLocationId, endLocationId);
 
     // Set path on map
-    _mapController.setPathOnMap(
-      Graph.getPathOnFloor(shortestPath, selectedFloor.value.id!),
+    _mapController.setActiveRoute(
+      Graph.getRouteOnFloor(shortestPath, selectedFloor.value.id!),
     );
     isShowingDirection.value = false;
   }
@@ -288,13 +302,6 @@ class MapController extends GetxController {
   Future<void> changeSelectedFloor(FloorPlan? floor) async {
     if (floor?.id == selectedFloor.value.id) return;
     selectedFloor.value = floor!;
-    loadPlaceOnFloor(floor.id!);
-    _mapController.setPathOnMap(
-      Graph.getPathOnFloor(shortestPath, floor.id!),
-    );
-    if (currentPosition.value.floorPlanId != selectedFloor.value.id) {
-      _mapController.setCurrentMarker(null);
-    }
   }
 
   Future<void> searchLocations(String keySearch) async {
@@ -324,6 +331,36 @@ class MapController extends GetxController {
     selectedFloor.value = listFloorPlan[0];
     loadPlaceOnFloor(listFloorPlan[0].id!);
     return listFloorPlan.map((element) => element.id!).toList();
+  }
+
+  /// On Selected floor changed
+  onSelectedFloorChange() {
+    selectedFloor.listen((floor) {
+      onShoppingListChange();
+
+      // Load facility on maps
+      loadPlaceOnFloor(floor.id!);
+
+      // Determine current position on floor
+      if (currentPosition.value.floorPlanId != selectedFloor.value.id) {
+        _mapController.setCurrentMarker(null);
+      } else {
+        _mapController.setCurrentMarker(currentPosition.value);
+      }
+    });
+  }
+
+  /// On Shopping List Change
+  void onShoppingListChange() {
+    if (startShopping.isFalse) return;
+    // Set shopping stores
+    _mapController.setShoppingPoints(Graph.getShoppingPoints(
+      listStoreShopping,
+      selectedFloor.value.id!,
+    ));
+
+    // Set shopping routes
+    setShoppingRoutes(listShoppingRoutes);
   }
 
   /// Go to coupon detail of selected
@@ -386,5 +423,24 @@ class MapController extends GetxController {
         }
       });
     } else {}
+  }
+
+  final testRoute = <Location>[].obs;
+  int currentRouteIndex = 0;
+  void testGoingShoppingRoutes() {
+    // final shoppings = listShoppingRoutes.map((e) => e).toList();
+    testRoute.value = listShoppingRoutes[0];
+    if (currentRouteIndex < listShoppingRoutes.length) {
+      int index = -1;
+      final paths = testRoute.map((e) => e).toList();
+      Timer.periodic(Duration(milliseconds: 500), (timer) {
+        if (index >= paths.length - 1) {
+          timer.cancel();
+        } else {
+          setCurrentLocation(paths[++index]);
+        }
+      });
+    }
+    // currentRouteIndex++;
   }
 }
