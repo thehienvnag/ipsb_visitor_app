@@ -25,6 +25,7 @@ import 'package:ipsb_visitor_app/src/services/api/shopping_list_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/store_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_visitor_app/src/utils/firebase_helper.dart';
 import 'package:ipsb_visitor_app/src/widgets/custom_bottom_bar.dart';
 
 class AppInit {
@@ -34,6 +35,7 @@ class AppInit {
     initApiServices();
     initHiveStorage();
     initUserProfile();
+    initializePushNotification();
   }
 
   /// Init mobile app services
@@ -102,5 +104,12 @@ class AppInit {
 
   static void initUserProfile() {
     AuthServices.initUserFromPrevLogin();
+  }
+
+  static void initializePushNotification() {
+    FirebaseHelper helper = FirebaseHelper();
+    helper.requestingPermissionForIOS();
+    helper.getToken();
+    helper.initPushNotification();
   }
 }
