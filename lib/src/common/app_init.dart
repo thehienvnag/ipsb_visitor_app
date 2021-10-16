@@ -111,5 +111,8 @@ class AppInit {
     helper.requestingPermissionForIOS();
     helper.getToken();
     helper.initPushNotification();
+    helper.setupInteractedMessage();
+    // helper.setupBackgroundMessage();
+    // helper.setupInteractedMessageWhenAppIsKilled();
   }
 }

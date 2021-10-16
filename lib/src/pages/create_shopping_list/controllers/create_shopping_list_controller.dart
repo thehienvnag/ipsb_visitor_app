@@ -3,6 +3,7 @@ import 'package:ipsb_visitor_app/src/models/building.dart';
 import 'package:ipsb_visitor_app/src/services/api/building_service.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/services/api/shopping_list_service.dart';
+import 'package:ipsb_visitor_app/src/utils/firebase_helper.dart';
 
 class CreateShoppingListController extends GetxController {
   final selectedBuilding = Building().obs;
