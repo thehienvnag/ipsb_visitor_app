@@ -97,6 +97,59 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:275091410654:android:c7b59683fc179ca176fc4f",
+        "android_client_info": {
+          "package_name": "com.ipsb.partner_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "275091410654-2o2na2ie42jgjfa1aul2bnl8qhdu06ep.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ipsb.partner_app",
+            "certificate_hash": "bf3c330628f55d8cb5fca9bea77a1c44187c722e"
+          }
+        },
+        {
+          "client_id": "275091410654-96cfbkfjf4k4fi03tir76sem4hfkdl10.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ipsb.partner_app",
+            "certificate_hash": "8662903f2bfa2843a2016017c2119a1c93c621cb"
+          }
+        },
+        {
+          "client_id": "275091410654-98urqcuf9mpa4gjv0p5baf3fb0u93c6l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ipsb.partner_app",
+            "certificate_hash": "d63533f8100b96855f9cc681f57d24454284c2da"
+          }
+        },
+        {
+          "client_id": "275091410654-199smo0vrjkrvmp2sl7pkp736i70ar8g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0woPowSdaUfEoJDO-raRFejHV9CoR3Jk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "275091410654-199smo0vrjkrvmp2sl7pkp736i70ar8g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:275091410654:android:8b78a1342ad191ac76fc4f",
         "android_client_info": {
           "package_name": "com.ipsb.visitor_app"
@@ -104,11 +157,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "275091410654-qp8a5cfand9ukeq44geag5dkblqc5n4h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ipsb.visitor_app",
+            "certificate_hash": "8662903f2bfa2843a2016017c2119a1c93c621cb"
+          }
+        },
+        {
           "client_id": "275091410654-rpu8tn6ff1187dpab1iskqm6so5bplqe.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ipsb.visitor_app",
             "certificate_hash": "d63533f8100b96855f9cc681f57d24454284c2da"
+          }
+        },
+        {
+          "client_id": "275091410654-slsesccjauc3c2g5gp15u03vfd4mhke9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ipsb.visitor_app",
+            "certificate_hash": "bf3c330628f55d8cb5fca9bea77a1c44187c722e"
           }
         },
         {

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/models/shopping_list.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/shopping_list_service.dart';
+import 'package:ipsb_visitor_app/src/utils/firebase_helper.dart';
 
 class ShoppingListController extends GetxController {
   final shoppingLists = <ShoppingList>[].obs;
@@ -20,6 +21,12 @@ class ShoppingListController extends GetxController {
     //     .getByAccountId(AuthServices.userLoggedIn.value.id!);
     loading.value = true;
     shoppingLists.value = await _iShoppingListService.getByAccountId(18);
+    if (shoppingLists.value.isNotEmpty) {
+      FirebaseHelper helper = FirebaseHelper();
+      for(var item in shoppingLists.value) {
+        helper.subscribeToTopic("shopping_list_id_" + item.id.toString());
+      }
+    }
     loading.value = false;
   }
 
@@ -36,6 +43,8 @@ class ShoppingListController extends GetxController {
     bool result = await _iShoppingListService.delete(id);
     if (result) {
       BotToast.showText(text: "Successfully removed!");
+      FirebaseHelper helper = FirebaseHelper();
+      helper.unsubscribeFromTopic("shopping_list_id_" + id.toString());
       loadShoppingLists();
     }
   }

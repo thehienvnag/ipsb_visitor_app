@@ -104,7 +104,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                     color: Colors.black54,
                                   ),
                                 ),
-                                if (coupon.discountType! == 'Fixed')
+                                // if (coupon.discountType! == 'Fixed')
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
