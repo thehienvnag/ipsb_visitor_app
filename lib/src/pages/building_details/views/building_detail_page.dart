@@ -26,8 +26,7 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
           children: [
             Stack(
               children: [
-                Image.network(buildingSelected.imageUrl ??
-                    'http://www.vtr.org.vn/FileManager/Anh%20web%202019/Thang%2011/2130/tttmgigamall%20(3).jpg'),
+                Image.network(buildingSelected.imageUrl ?? ''),
                 Container(
                   margin: EdgeInsets.only(top: 50),
                   width: screenSize.width,
@@ -51,12 +50,12 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                   height: screenSize.height * 0.75,
                   child: Card(
                     shape: BeveledRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(4.0),
                     ),
                     color: Colors.white,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 15),
+                          horizontal: 10, vertical: 7),
                       child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,10 +69,6 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                     buildingSelected.name ?? 'Vạn hạnh mall',
                                     style: TextStyle(fontSize: 18),
                                   ),
-                                ),
-                                Text(
-                                  '  (${buildingSelected.numberOfFloor ?? '5'} tầng)',
-                                  style: TextStyle(fontSize: 17),
                                 ),
                               ],
                             ),
@@ -109,7 +104,7 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                 ),
                                 color: Colors.white70,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(4.0),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -170,7 +165,7 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                   listStore.length > 9 ? 9 : listStore.length;
                               if (listStore.isEmpty) {
                                 return Center(
-                                  child: Text('Loading'),
+                                  child: Text(''),
                                 );
                               }
                               return Container(

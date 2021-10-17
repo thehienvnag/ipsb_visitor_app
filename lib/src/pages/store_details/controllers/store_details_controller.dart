@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/models/coupon.dart';
 import 'package:ipsb_visitor_app/src/models/product.dart';
@@ -10,14 +11,25 @@ import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 
 final dateTime = DateTime.now();
 
-class StoreDetailsController extends GetxController {
+class StoreDetailsController extends GetxController
+    with SingleGetTickerProviderMixin {
+  late TabController tabController;
   final store = Store().obs;
   final listProduct = <Product>[].obs;
+  final listGroups = <Product>[].obs;
   final listCoupon = <Coupon>[].obs;
   final storeId = 0.obs;
+
+  @override
+  void onClose() {
+    tabController.dispose();
+    super.onClose();
+  }
+
   @override
   void onInit() {
     super.onInit();
+    tabController = TabController(vsync: this, length: 3);
     String? id = Get.parameters['id'];
     print(id);
     if (id == null) return;
@@ -38,8 +50,21 @@ class StoreDetailsController extends GetxController {
 
   IProductService productService = Get.find();
   Future<void> getProducts() async {
-    listProduct.value =
-        await productService.getProductsByStoreId(storeId.value);
+    final list = await productService.getProductsByStoreId(storeId.value);
+    final listGroupIds = list
+        .where((e) => e.productGroup?.id != null)
+        .map((e) => e.productGroup!.id!)
+        .toList();
+    setListProduct(list, listGroupIds);
+    setListProductGroup(list, listGroupIds);
+  }
+
+  void setListProduct(List<Product> list, List<int?> groupIds) {
+    listProduct.value = list.where((e) => !groupIds.contains(e.id!)).toList();
+  }
+
+  void setListProductGroup(List<Product> list, List<int?> groupIds) {
+    listGroups.value = list.where((e) => groupIds.contains(e.id!)).toList();
   }
 
   ICouponService couponService = Get.find();
@@ -56,17 +81,11 @@ class StoreDetailsController extends GetxController {
     );
   }
 
-  void gotoProductDetails() {
+  void gotoProductDetails(int? id) {
+    if (id == null) return;
     Get.toNamed(
       Routes.productDetail,
-      // parameters: {'productId': product.id.toString()},
-    );
-  }
-
-  void gotoProductComboDetails() {
-    Get.toNamed(
-      Routes.productComboDetail,
-      // parameters: {'productId': product.id.toString()},
+      parameters: {'productId': id.toString()},
     );
   }
 }

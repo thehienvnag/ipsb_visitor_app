@@ -157,6 +157,9 @@ dependencies:
   # Math calculation
   vector_math: any
 
+  # Webview
+  webview_flutter: ^2.0.13
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -181,6 +184,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/templates/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

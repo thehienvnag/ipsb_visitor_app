@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:ipsb_visitor_app/src/pages/building_store_list/controllers/building_store_controller.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 
 class BuildingStorePage extends GetView<BuildingStoreController> {
   final SharedStates sharedData = Get.find();
@@ -89,64 +90,39 @@ class BuildingStorePage extends GetView<BuildingStoreController> {
             return GestureDetector(
               onTap: () {},
               child: Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 5,
+                  horizontal: 10,
+                ),
                 child: Container(
                   height: screenSize.height * 0.76,
                   child: GridView.builder(
-                      addSemanticIndexes: true,
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, // num row
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 5,
-                        childAspectRatio: 2, // height of Card
-                      ),
-                      itemCount: listStore.length,
-                      itemBuilder: (BuildContext ctx, index) {
-                        final store = listStore[index];
-                        return GestureDetector(
-                          onTap: () => controller.goToStoreDetails(store.id),
-                          child: Card(
-                              shape: BeveledRectangleBorder(
-                                borderRadius: BorderRadius.circular(6.0),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Container(
-                                      width: 70,
-                                      height: 62,
-                                      child: Card(
-                                        shape: BeveledRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(6.0),
-                                        ),
-                                        child: Image(
-                                          image: NetworkImage(
-                                              store.imageUrl.toString()),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      )),
-                                  Container(
-                                    height: 62,
-                                    child: Column(
-                                      children: [
-                                        SizedBox(height: 10),
-                                        Text(
-                                          store.name.toString(),
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text('3 ưu đãi')
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              )),
-                        );
-                      }),
+                    addSemanticIndexes: true,
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // num row
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 5,
+                      childAspectRatio: 2, // height of Card
+                    ),
+                    itemCount: listStore.length,
+                    itemBuilder: (BuildContext ctx, index) {
+                      final store = listStore[index];
+                      return GestureDetector(
+                        onTap: () => controller.goToStoreDetails(store.id),
+                        child: Card(
+                          child: ListTile(
+                            leading: Image.network(
+                              store.imageUrl ?? "",
+                              width: 50,
+                            ),
+                            title: Text(Formatter.shorten(store.name, 10)),
+                            subtitle: Text(Formatter.shorten("3 coupons", 10)),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             );
