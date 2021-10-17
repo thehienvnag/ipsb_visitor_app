@@ -4,6 +4,7 @@ import 'package:ipsb_visitor_app/src/models/product.dart';
 import 'package:ipsb_visitor_app/src/services/api/base_service.dart';
 
 mixin IProductService {
+  Future<Product?> getProductById(int id);
   Future<List<Product>> getProductsByStoreId(int storeId);
   Future<List<Product>> searchByBuildingId(int buildingId, [String? search]);
 }
@@ -41,5 +42,10 @@ class ProductService extends BaseService<Product> implements IProductService {
     }
 
     return getAllBase(params);
+  }
+
+  @override
+  Future<Product?> getProductById(int id) {
+    return getByIdBase(id);
   }
 }
