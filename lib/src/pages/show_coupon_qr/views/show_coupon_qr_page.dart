@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bullet_list/flutter_bullet_list.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/pages/show_coupon_qr/controllers/show_coupon_qr_controller.dart';
-import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 

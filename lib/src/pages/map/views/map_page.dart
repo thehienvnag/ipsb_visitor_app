@@ -13,14 +13,14 @@ import 'package:ipsb_visitor_app/src/widgets/indoor_map/indoor_map.dart';
 import 'package:ipsb_visitor_app/src/widgets/ticket_box.dart';
 import 'package:ipsb_visitor_app/src/widgets/user_welcome.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+// import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class MapPage extends GetView<MapController> {
   final double tabBarHeight = 80;
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
+    // final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(

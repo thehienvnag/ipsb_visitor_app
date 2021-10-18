@@ -10,7 +10,6 @@ import 'package:ipsb_visitor_app/src/widgets/image_view/map_marker.dart';
 import 'package:ipsb_visitor_app/src/widgets/marker_popup.dart';
 
 import '../current_location.dart';
-import '../shopping_point.dart';
 
 class ImageViewController extends GetxController {
   /// Markers on the map

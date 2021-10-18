@@ -2,7 +2,6 @@ import 'package:ipsb_visitor_app/src/pages/create_shopping_item/bindings/create_
 import 'package:ipsb_visitor_app/src/pages/create_shopping_item/views/create_shopping_item_page.dart';
 import 'package:ipsb_visitor_app/src/pages/create_shopping_list/bindings/create_shopping_list_binding.dart';
 import 'package:ipsb_visitor_app/src/pages/create_shopping_list/views/create_shopping_list_page.dart';
-import 'package:ipsb_visitor_app/src/pages/map/views/home_page_test.dart';
 import 'package:ipsb_visitor_app/src/pages/shopping_list/bindings/shopping_list_binding.dart';
 import 'package:ipsb_visitor_app/src/pages/shopping_list/views/shopping_list_page.dart';
 import 'package:get/get.dart';

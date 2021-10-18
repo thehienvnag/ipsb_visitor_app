@@ -1,15 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
-import 'package:ipsb_visitor_app/src/models/account.dart';
 import 'package:ipsb_visitor_app/src/models/building.dart';
 import 'package:ipsb_visitor_app/src/models/coupon.dart';
 import 'package:ipsb_visitor_app/src/models/coupon_in_use.dart';
 import 'package:ipsb_visitor_app/src/models/shopping_list.dart';
-import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/pages/login_gmail/controllers/login_gmail_controller.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';

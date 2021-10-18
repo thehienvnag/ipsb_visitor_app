@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/models/product.dart';
-import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/product_service.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -29,7 +28,7 @@ class ProductDetailController extends GetxController {
     loadProductById(id);
   }
 
-  void loadProductById(int id) async {
+  Future<void> loadProductById(int id) async {
     final productFound = await _productService.getProductById(id);
     if (productFound != null) {
       productDetails.value = productFound;
@@ -64,8 +63,9 @@ class ProductDetailController extends GetxController {
     } catch (e) {}
   }
 
-  void gotoProductDetails(int? id) {
+  void gotoProductDetails(int? id) async {
     if (id == null) return;
-    loadProductById(id);
+    await loadProductById(id);
+    loadWebView(webViewController);
   }
 }

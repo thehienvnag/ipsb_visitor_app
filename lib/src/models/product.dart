@@ -11,8 +11,6 @@ class Product {
   final double? price;
   final Store? store;
   final String? status;
-  final Product? productGroup;
-  final List<Product>? inverseProductGroup;
   @JsonKey(ignore: true)
   int? shoppingItemId;
   @JsonKey(ignore: true)
@@ -28,8 +26,6 @@ class Product {
     this.store,
     this.note,
     this.status,
-    this.productGroup,
-    this.inverseProductGroup,
   });
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);

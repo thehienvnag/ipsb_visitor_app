@@ -17,12 +17,6 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
         ? null
         : Store.fromJson(json['store'] as Map<String, dynamic>),
     status: json['status'] as String?,
-    productGroup: json['productGroup'] == null
-        ? null
-        : Product.fromJson(json['productGroup'] as Map<String, dynamic>),
-    inverseProductGroup: (json['inverseProductGroup'] as List<dynamic>?)
-        ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
-        .toList(),
   )..isSelected = json['isSelected'] as bool?;
 }
 
@@ -35,6 +29,4 @@ Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
       'price': instance.price,
       'store': instance.store,
       'status': instance.status,
-      'productGroup': instance.productGroup,
-      'inverseProductGroup': instance.inverseProductGroup,
     };

@@ -2,7 +2,6 @@ import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/pages/profile/controllers/profile_controller.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';

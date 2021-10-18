@@ -21,9 +21,9 @@ class ShoppingListController extends GetxController {
     //     .getByAccountId(AuthServices.userLoggedIn.value.id!);
     loading.value = true;
     shoppingLists.value = await _iShoppingListService.getByAccountId(18);
-    if (shoppingLists.value.isNotEmpty) {
+    if (shoppingLists.isNotEmpty) {
       FirebaseHelper helper = FirebaseHelper();
-      for(var item in shoppingLists.value) {
+      for (var item in shoppingLists) {
         helper.subscribeToTopic("shopping_list_id_" + item.id.toString());
       }
     }

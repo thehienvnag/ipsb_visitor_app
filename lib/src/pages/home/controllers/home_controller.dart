@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:geocode/geocode.dart';
-// import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/models/building.dart';
 import 'package:ipsb_visitor_app/src/models/coupon.dart';
@@ -14,9 +12,6 @@ import 'package:ipsb_visitor_app/src/services/api/building_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/store_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
-import 'package:ipsb_visitor_app/src/utils/formatter.dart';
-import 'package:intl/intl.dart';
-import 'package:location/location.dart';
 
 class HomeController extends GetxController {
   IStoreService storeService = Get.find();
