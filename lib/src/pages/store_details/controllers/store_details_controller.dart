@@ -50,21 +50,8 @@ class StoreDetailsController extends GetxController
 
   IProductService productService = Get.find();
   Future<void> getProducts() async {
-    final list = await productService.getProductsByStoreId(storeId.value);
-    final listGroupIds = list
-        .where((e) => e.productGroup?.id != null)
-        .map((e) => e.productGroup!.id!)
-        .toList();
-    setListProduct(list, listGroupIds);
-    setListProductGroup(list, listGroupIds);
-  }
-
-  void setListProduct(List<Product> list, List<int?> groupIds) {
-    listProduct.value = list.where((e) => !groupIds.contains(e.id!)).toList();
-  }
-
-  void setListProductGroup(List<Product> list, List<int?> groupIds) {
-    listGroups.value = list.where((e) => groupIds.contains(e.id!)).toList();
+    listProduct.value =
+        await productService.getProductsByStoreId(storeId.value);
   }
 
   ICouponService couponService = Get.find();

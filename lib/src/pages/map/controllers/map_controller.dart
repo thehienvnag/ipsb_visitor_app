@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/algorithm/shortest_path/graph.dart';
@@ -17,7 +16,6 @@ import 'package:ipsb_visitor_app/src/services/api/edge_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/floor_plan_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/location_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
-import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
 import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 import 'package:ipsb_visitor_app/src/utils/edge_helper.dart';
 import 'package:ipsb_visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
@@ -40,7 +38,7 @@ class MapController extends GetxController {
   IFloorPlanService _floorPlanService = Get.find();
 
   /// Service for interacting with Coupon API
-  ICouponService _service = Get.find();
+  // ICouponService _service = Get.find();
 
   /// Service for interacting with Location API
   ILocationService _locationService = Get.find();

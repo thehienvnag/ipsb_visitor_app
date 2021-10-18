@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:ipsb_visitor_app/src/models/edge.dart';
 import 'package:ipsb_visitor_app/src/models/location.dart';
 

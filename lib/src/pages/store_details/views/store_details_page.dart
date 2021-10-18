@@ -24,7 +24,6 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
           headerSliverBuilder: (context, value) {
             return [
               SliverToBoxAdapter(
-                /// _buildCarousel() in your case....
                 child: Container(
                   width: size.width,
                   child: Obx(() {
@@ -113,12 +112,6 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                     Container(
                       width: 100,
                       child: Tab(
-                        text: "COMBOS",
-                      ),
-                    ),
-                    Container(
-                      width: 100,
-                      child: Tab(
                         text: "COUPONS",
                       ),
                     ),
@@ -139,42 +132,10 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
             controller: controller.tabController,
             children: [
               _buildProducts(context),
-              _buildCombos(context),
               _buildCoupons(context),
             ],
           ),
         ),
-
-        // DefaultTabController(
-        //   length: 3,
-        //   child: Scaffold(
-        //     backgroundColor: Colors.white,
-        //     body: Column(
-        //       children: [
-
-        //         Container(
-        //           padding: const EdgeInsets.only(bottom: 10),
-        //           // margin: const EdgeInsets.only(bottom: 10),
-        //           decoration: BoxDecoration(
-        //             border: Border(
-        //               bottom:
-        //                   BorderSide(color: Colors.grey.shade400, width: 0.5),
-        //             ),
-        //           ),
-        // child:
-        //         Expanded(
-        //           child: TabBarView(
-        //             children: [
-        //               _buildProducts(context),
-        //               _buildCombos(context),
-        //               _buildCoupons(context),
-        //             ],
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
       ),
     );
   }
@@ -230,83 +191,6 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                                   Formatter.price(product.price),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        );
-      }),
-    );
-  }
-
-  Widget _buildCombos(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width,
-      padding: const EdgeInsets.symmetric(horizontal: 5),
-      child: Obx(() {
-        final products = controller.listGroups;
-        return AnimationLimiter(
-          child: GridView.count(
-            physics: NeverScrollableScrollPhysics(),
-            childAspectRatio: 4 / 6,
-            crossAxisCount: 2,
-            children: List.generate(
-              products.length,
-              (int index) {
-                final product = products[index];
-                return GestureDetector(
-                  onTap: () => controller.gotoProductDetails(product.id),
-                  child: AnimateWrapper(
-                    index: index,
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 3, vertical: 4),
-                      child: Card(
-                        child: Container(
-                          width: 200,
-                          padding: const EdgeInsets.only(bottom: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                height: 170,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  image: DecorationImage(
-                                    image: NetworkImage(product.imageUrl ?? ''),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              ListTile(
-                                title: Text(
-                                  Formatter.shorten(product.name, 10),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  Formatter.shorten(product.description),
-                                ),
-                              ),
-                              Container(
-                                margin:
-                                    const EdgeInsets.only(top: 10, left: 16),
-                                child: Text(
-                                  Formatter.price(product.price),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                         ),

@@ -37,8 +37,8 @@ class UpdateProfileController extends GetxController {
   final rePassword = "".obs;
 
   // set rePassword
-  void setRePassword(String RePass) {
-    rePassword.value = RePass;
+  void setRePassword(String rePass) {
+    rePassword.value = rePass;
   }
 
   // userName of visitor
