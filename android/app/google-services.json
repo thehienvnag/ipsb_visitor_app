@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "275091410654-9j63qu9t5r3kq0j0rr8q4jnvv5rdfmb0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_app",
+            "certificate_hash": "577da255eb1ed07940045b4557e5134773076c3b"
+          }
+        },
+        {
           "client_id": "275091410654-ndkg966o186vu0sbre7741o2rd7go2lj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -162,6 +170,14 @@
           "android_info": {
             "package_name": "com.ipsb.visitor_app",
             "certificate_hash": "8662903f2bfa2843a2016017c2119a1c93c621cb"
+          }
+        },
+        {
+          "client_id": "275091410654-r1do0o9iopa145rhqiov7rku12b25lr7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ipsb.visitor_app",
+            "certificate_hash": "577da255eb1ed07940045b4557e5134773076c3b"
           }
         },
         {
