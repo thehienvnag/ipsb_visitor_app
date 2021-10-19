@@ -41,34 +41,31 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(top: 9, left: 18, right: 18),
-            width: screenSize.width,
-            child: Card(
-              color: Colors.white,
-              child: Container(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 9, left: 18, right: 18),
+              width: screenSize.width,
+              child: Card(
+                color: Colors.white,
+                child: Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'HIGH LAND COFFEE',
+                      Text('HIGH LAND COFFEE',
                         style: TextStyle(
                             color: Colors.black54,
                             fontSize: 20,
                             fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                        '(${coupon.description})',
+                      Text('(${coupon.description})',
                         style: TextStyle(color: Colors.black54, fontSize: 15),
                       ),
                       SizedBox(height: 10),
                       QrImage(
                         data: controller.genCode(coupon, couponInUse.id),
-                        size: 220,
+                        size: screenSize.width*0.6,
                         backgroundColor: Colors.white,
                       ),
                       SizedBox(height: 10),
@@ -86,84 +83,84 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                 ),
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 18, right: 18),
-            width: screenSize.width,
-            child: Card(
-              color: Colors.white,
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(bottom: 5, top: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: FlutterBulletList(
-                        data: [
-                          ListItemModel(
-                              label: "Chương trình: ",
-                              data: [ListItemModel(label: "${coupon.name}")]),
-                          ListItemModel(label: "Áp dụng cho: ", data: [
+            Container(
+              margin: EdgeInsets.only(left: 18, right: 18),
+              width: screenSize.width,
+              child: Card(
+                color: Colors.white,
+                child: SingleChildScrollView(
+                  // physics: ScrollPhysics(),
+                  padding: EdgeInsets.only(bottom: 5, top: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: FlutterBulletList(
+                          data: [
                             ListItemModel(
-                                label: "Toàn menu (không áp dụng combo)"),
-                            ListItemModel(label: "Giá chưa bao gồm VAT}"),
-                          ]),
-                          ListItemModel(
-                            label: "Lưu ý: ",
-                            data: [
-                              ListItemModel(
-                                label: "Chỉ áp dụng tại cửa hàng",
+                                label: "Chương trình: ",
+                                data: [ListItemModel(label: "${coupon.name}")]),
+                            ListItemModel(label: "Áp dụng cho: ", data: [
+                              ListItemModel(label: "Toàn menu (không áp dụng combo)"),
+                              ListItemModel(label: "Giá chưa bao gồm VAT}"),
+                            ]),
+                            ListItemModel(
+                              label: "Lưu ý: ",
+                              data: [
+                                ListItemModel(
+                                  label: "Chỉ áp dụng tại cửa hàng",
+                                ),
+                                ListItemModel(
+                                    label:
+                                        "Khi thanh toán chỉ áp dụng duy nhất 1 mã"),
+                                ListItemModel(
+                                    label:
+                                        "Áp dụng cho nhiều sản phẩm trong cùng hóa đơn"),
+                              ],
+                            ),
+                          ],
+                          textStyle:
+                              TextStyle(color: Colors.black54, fontSize: 16),
+                          bulletColor: Colors.grey,
+                          bulletSize: 3,
+                        ),
+                      ),
+                      Container(
+                        width: screenSize.width * 0.75,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              child: Row(
+                                children: [
+                                  Icon(Icons.directions, color: Colors.white),
+                                  Text('Chỉ đường'),
+                                ],
                               ),
-                              ListItemModel(
-                                  label:
-                                      "Khi thanh toán chỉ áp dụng duy nhất 1 mã"),
-                              ListItemModel(
-                                  label:
-                                      "Áp dụng cho nhiều sản phẩm trong cùng hóa đơn"),
-                            ],
-                          ),
-                        ],
-                        textStyle:
-                            TextStyle(color: Colors.black54, fontSize: 16),
-                        bulletColor: Colors.grey,
-                        bulletSize: 3,
-                      ),
-                    ),
-                    Container(
-                      width: screenSize.width * 0.75,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: Row(
-                              children: [
-                                Icon(Icons.directions, color: Colors.white),
-                                Text('Chỉ đường'),
-                              ],
                             ),
-                          ),
-                          SizedBox(
-                            width: 6,
-                          ),
-                          OutlinedButton.icon(
-                            onPressed: () {},
-                            label: Row(
-                              children: [
-                                Text('Gọi cửa hàng'),
-                              ],
+                            SizedBox(
+                              width: 6,
                             ),
-                            icon: Icon(Icons.phone),
-                          ),
-                        ],
+                            OutlinedButton.icon(
+                              onPressed: () {},
+                              label: Row(
+                                children: [
+                                  Text('Gọi cửa hàng'),
+                                ],
+                              ),
+                              icon: Icon(Icons.phone),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
