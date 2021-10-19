@@ -3,6 +3,7 @@ import 'package:ipsb_visitor_app/src/models/building.dart';
 import 'package:ipsb_visitor_app/src/services/api/building_service.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/services/api/shopping_list_service.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 
 class CreateShoppingListController extends GetxController {
   final selectedBuilding = Building().obs;
@@ -38,7 +39,7 @@ class CreateShoppingListController extends GetxController {
       "name": shoppingListName.value,
       "buildingId": shoppingListBuilding.value,
       "shoppingDate": shoppingDate.value,
-      "accountId": 18,
+      "accountId": AuthServices.userLoggedIn.value.id,
     };
     final result = await _iShoppingListService.create(data);
     if (result != null) {

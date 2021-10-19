@@ -1,8 +1,10 @@
+import 'dart:ffi';
 import 'dart:math';
 import 'dart:ui';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/models/location.dart';
 
@@ -80,7 +82,13 @@ class Utils {
     return imageProvider;
   }
 
-  // static DateTime parse(){
-  //   DateTime.parse("string date here")
-  // }
+
+  static String parseDateTimeToDate(DateTime date){
+    if (date == null) {
+      return "Data not set";
+    }
+    var formatter = new DateFormat('dd-MM-yyyy');
+    String formatDate = formatter.format(date);
+    return formatDate;
+  }
 }

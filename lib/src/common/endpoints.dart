@@ -50,4 +50,7 @@ class Endpoints {
 
   /// Shopping item endpoint version /api/v1
   static const shoppingItem = '$apiVer1/shopping-items';
+
+  /// Notification endpoint version /api/v1
+  static const notifications = '$apiVer1/notifications';
 }

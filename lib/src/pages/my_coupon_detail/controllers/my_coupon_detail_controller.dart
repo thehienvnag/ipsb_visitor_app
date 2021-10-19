@@ -106,7 +106,7 @@ class MyCouponDetailController extends GetxController {
       result.coupon = coupon;
       couponInUse.value = result;
       FirebaseHelper firebaseHelper = FirebaseHelper();
-      firebaseHelper.subscribeToTopic("coupon_in_use_id_" + couponInUse.value.id.toString());
+      await firebaseHelper.subscribeToTopic("coupon_in_use_id_" + couponInUse.value.id.toString());
     }
   }
 }

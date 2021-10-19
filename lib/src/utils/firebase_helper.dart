@@ -12,16 +12,6 @@ class FirebaseHelper {
 
   String _fcmToken = "Get Firebase token";
 
-  // static final _androidPlatformChannelSpecifics =
-  //     new AndroidNotificationDetails('channel id', 'channel name',
-  //         channelDescription: 'channel desc',
-  //         importance: Importance.max,
-  //         priority: Priority.high);
-  //
-  // static NotificationDetails platformSpecInstance() {
-  //   return new NotificationDetails(android: _androidPlatformChannelSpecifics);
-  // }
-
   static FlutterLocalNotificationsPlugin flutterLocalNotificationInstance() {
     if (_flutterLocalNotificationsPlugin == null) {
       _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -34,21 +24,26 @@ class FirebaseHelper {
 
     AndroidNotification? android = message.notification?.android;
     if (data != null) {
-      flutterLocalNotificationInstance().show(
-          0,
-          data.title,
-          data.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails('channel id', 'channel name',
-                channelDescription: 'channel desc',
-                icon: android?.smallIcon,
-                setAsGroupSummary: true,
-                importance: Importance.max,
-                priority: Priority.high),
-            iOS: const IOSNotificationDetails(
-                presentAlert: true, presentSound: true),
-          ),
-          payload: 'referenceName');
+      flutterLocalNotificationInstance()
+          .show(
+              0,
+              data.title,
+              data.body,
+              NotificationDetails(
+                android: AndroidNotificationDetails(
+                    'channel id', 'channel name',
+                    channelDescription: 'channel desc',
+                    icon: android?.smallIcon,
+                    setAsGroupSummary: true,
+                    importance: Importance.max,
+                    priority: Priority.high),
+                iOS: const IOSNotificationDetails(
+                    presentAlert: true, presentSound: true),
+              ),
+              payload: 'referenceName')
+          .then((value) => Future.delayed(const Duration(seconds: 2), () {
+                FirebaseHelper.flutterLocalNotificationInstance().cancel(0);
+              }));
       Get.dialog(_buildDialog(data.title, data.body, message.data));
     }
   }
@@ -112,18 +107,6 @@ class FirebaseHelper {
     FirebaseMessaging.onMessage.listen((message) {
       _showNotification(message);
     });
-
-    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    //   print('A new onMessageOpenedApp event was published!');
-    //   if (message.data['notificationType'] == 'shopping_list_changed') {
-    //     Get.toNamed(
-    //       Routes.shoppingListDetail,
-    //       parameters: {
-    //         "shoppingListId": message.data['shoppingListId'],
-    //       },
-    //     );
-    //   }
-    // });
   }
 
   Future<void> subscribeToTopic(String topic) async {
@@ -156,6 +139,7 @@ class FirebaseHelper {
           FlatButton(
             child: const Text('GO TO SHOPPING LIST'),
             onPressed: () {
+              Get.back();
               Get.toNamed(
                 Routes.shoppingListDetail,
                 parameters: {
@@ -182,21 +166,6 @@ class FirebaseHelper {
   }
 
   Future<void> setupInteractedMessage() async {
-    // Get any messages which caused the application to open from
-    // a terminated state.
-    // RemoteMessage? initialMessage =
-    //     await _messaging.getInitialMessage();
-    //
-    // // If the message also contains a data property with a "type" of "chat",
-    // // navigate to a chat screen
-    // if (initialMessage != null) {
-    //   _handleMessage(initialMessage);
-    // }
-
-    // Also handle any interaction when the app is in the background via a
-    // Stream listener
-    // FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
-
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       if (message.data['notificationType'] == 'shopping_list_changed') {
         Get.toNamed(
@@ -208,21 +177,4 @@ class FirebaseHelper {
       }
     });
   }
-
-  // Future<void> setupInteractedMessageWhenAppIsKilled() async {
-  //   _messaging.getInitialMessage().then((RemoteMessage? message) => {
-  //         if (message != null)
-  //           {
-  //             if (message.data['notificationType'] == 'shopping_list_changed')
-  //               {
-  //                 Get.toNamed(
-  //                   Routes.shoppingListDetail,
-  //                   parameters: {
-  //                     "shoppingListId": message.data['shoppingListId'],
-  //                   },
-  //                 )
-  //               }
-  //           }
-  //       });
-  // }
 }
