@@ -24,7 +24,7 @@ class ShoppingListController extends GetxController {
     if (shoppingLists.value.isNotEmpty) {
       FirebaseHelper helper = FirebaseHelper();
       for(var item in shoppingLists.value) {
-        helper.subscribeToTopic("shopping_list_id_" + item.id.toString());
+        await helper.subscribeToTopic("shopping_list_id_" + item.id.toString());
       }
     }
     loading.value = false;
@@ -44,7 +44,7 @@ class ShoppingListController extends GetxController {
     if (result) {
       BotToast.showText(text: "Successfully removed!");
       FirebaseHelper helper = FirebaseHelper();
-      helper.unsubscribeFromTopic("shopping_list_id_" + id.toString());
+      await helper.unsubscribeFromTopic("shopping_list_id_" + id.toString());
       loadShoppingLists();
     }
   }

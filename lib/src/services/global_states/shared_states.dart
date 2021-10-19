@@ -18,21 +18,27 @@ class SharedStates extends GetxService {
   /// selected bottom bar index
   final bottomBarSelectedIndex = 0.obs;
 
-  // Coupon
+  /// Coupon
   final coupon = Coupon().obs;
 
-  // Coupon
+  /// Coupon
   final couponInUse = CouponInUse().obs;
 
-  // Building
+  /// Building
   final building =
       Building(id: 12, name: "Đại học FPT thành phố Hồ Chí Minh").obs;
 
-  // List shopping
+  /// List shopping
   final shoppingList = ShoppingList().obs;
 
-  // Current shopping item
+  /// Current shopping item
   final shoppingItemIndex = -1.obs;
+
+  /// Total unread notification
+  final unreadNotification = 0.obs;
+
+  /// User login in app
+  Account? account;
 
   void logout() {
     Get.toNamed(Routes.home);

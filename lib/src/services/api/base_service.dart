@@ -55,6 +55,15 @@ abstract class BaseService<T> {
     return paging.content ?? [];
   }
 
+  /// Get list instances from API with [query]
+  Future<int> countBase(Map<String, dynamic> query,
+      [bool cacheAllow = false]) async {
+    final callback = () => _apiHelper.count(endpoint() + "/count", query);
+    Response res = await AuthServices.handleUnauthorized(callback);
+    print("This is body "+res.body.toString());
+    return res.body;
+  }
+
   /// Post an instance with [body]
   Future<T?> postBase(Map<String, dynamic> body,
       [bool noResponse = false]) async {

@@ -44,7 +44,12 @@ class Constants {
 
   static const String discountTypeFixed = "Fixed";
   static const String discountTypePercentage = "Percentage";
+
+  /// Constants for status
+  static const String read = "Read";
+  static const String unread = "Unread";
 }
+
 
 class Fonts {
   static const String montserrat = "Montserrat";

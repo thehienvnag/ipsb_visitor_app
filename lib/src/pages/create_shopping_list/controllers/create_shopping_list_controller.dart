@@ -39,7 +39,7 @@ class CreateShoppingListController extends GetxController {
       "name": shoppingListName.value,
       "buildingId": shoppingListBuilding.value,
       "shoppingDate": shoppingDate.value,
-      "accountId": 18,
+      "accountId": 3,
     };
     final result = await _iShoppingListService.create(data);
     if (result != null) {

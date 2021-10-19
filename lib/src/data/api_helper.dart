@@ -5,11 +5,14 @@ import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 
 mixin IApiHelper {
-  // Get all from an API [endpoint] using [uri] and [query]
+  /// Get all from an API [endpoint] using [uri] and [query]
   Future<Response> getAll<T>(
     String uri, {
     Map<String, dynamic> query = Constants.defaultPagingQuery,
   });
+
+  /// Count element got from an API [endpoint] using [uri] and [query]
+  Future<Response> count<T>(String uri, Map<String, dynamic> query);
 
   /// Get 1 by Id from API [endpoint] using [uri] and [id]
   Future<Response> getById(String endpoint, dynamic id);
@@ -108,6 +111,11 @@ class ApiHelper extends GetConnect with IApiHelper {
     String uri, {
     Map<String, dynamic>? query = Constants.defaultPagingQuery,
   }) {
+    return get<T>(uri, query: query);
+  }
+
+  @override
+  Future<Response> count<T> (String uri, Map<String, dynamic> query) {
     return get<T>(uri, query: query);
   }
 
