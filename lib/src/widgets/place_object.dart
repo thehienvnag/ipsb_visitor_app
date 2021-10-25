@@ -23,19 +23,19 @@ class PlaceObject extends GetView<ImageViewController> {
           if (!isStore())
             AvatarGlow(
               endRadius: MapKey.radius,
+              shape: BoxShape.rectangle,
               child: Material(
                 elevation: 8.0,
-                shape: CircleBorder(
-                  side: BorderSide(
-                      width: location.storeId == null ? 3 : 0,
-                      color: Colors.white),
-                ),
-                child: CircleAvatar(
-                  // backgroundColor: Colors.grey[100],
-                  backgroundColor: Colors.white,
-                  backgroundImage:
-                      Utils.getServiceImage(location.locationTypeId),
-                  radius: MapKey.radius,
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image:
+                          Utils.resolveDecoImg(location.locationType?.imageUrl),
+                    ),
+                  ),
                 ),
               ),
             ),

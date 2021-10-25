@@ -10,7 +10,7 @@ import 'package:ipsb_visitor_app/src/widgets/image_view/image_view_controller.da
 
 class MarkerPopup extends GetView<ImageViewController> {
   static const double serviceWidth = 320;
-  static const double serviceHeight = 80;
+  static const double serviceHeight = 120;
   static const double storeWidth = 320;
   static const double storeHeight = 320;
 

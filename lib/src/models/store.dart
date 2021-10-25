@@ -34,7 +34,8 @@ class Store {
   @HiveField(7)
   final FloorPlan? floorPlan;
 
-  final List<Location>? locations;
+  @HiveField(8)
+  final Location? location;
 
   List<Product>? products;
 
@@ -59,7 +60,7 @@ class Store {
     this.floorPlanId,
     this.productCategoryId,
     this.status,
-    this.locations,
+    this.location,
     this.isExpanded = false,
     this.complete = false,
     this.distance,

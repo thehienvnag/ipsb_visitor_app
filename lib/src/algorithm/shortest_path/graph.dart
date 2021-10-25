@@ -51,14 +51,14 @@ class Graph {
     List<List<Location>> shoppingRoutes = [];
     final initial = shortestPathSolver(
       currentPosition,
-      stores[0].locations![0].id!,
+      stores[0].location!.id!,
     );
     shoppingRoutes.add(initial);
     int i = 0;
     stores.forEach((e) {
       if (i < stores.length - 1) {
-        Location p1 = e.locations![0];
-        Location p2 = stores[++i].locations![0];
+        Location p1 = e.location!;
+        Location p2 = stores[++i].location!;
         final pathTo = shortestPathSolver(p1.id!, p2.id!);
         shoppingRoutes.add(pathTo);
       }
@@ -78,7 +78,7 @@ class Graph {
         return;
       }
 
-      int endLocationId = e.locations![0].id!;
+      int endLocationId = e.location!.id!;
 
       // Find all shortest paths from current position to endLocationId
       final paths = shortestPathSolver.call(
@@ -104,7 +104,7 @@ class Graph {
     List<Store> list,
     int floorPlanId,
   ) =>
-      list.where((e) => e.locations![0].floorPlanId == floorPlanId).toList();
+      list.where((e) => e.location?.floorPlanId == floorPlanId).toList();
 
   /// Get
   static List<Location> getRouteOnFloor(

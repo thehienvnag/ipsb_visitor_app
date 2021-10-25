@@ -82,8 +82,16 @@ class Utils {
     return imageProvider;
   }
 
+  static String? getServiceImgUrl(int? locationTypeId) {
+    switch (locationTypeId) {
+      case MapKey.elevator:
+        return ConstImg.elevator;
+      case MapKey.restRoom:
+        return ConstImg.restRoom;
+    }
+  }
 
-  static String parseDateTimeToDate(DateTime date){
+  static String parseDateTimeToDate(DateTime date) {
     if (date == null) {
       return "Data not set";
     }

@@ -111,26 +111,16 @@ class PopupState {
   }
 
   double determineWidth() {
-    switch (location?.locationTypeId) {
-      case MapKey.store:
-        return MarkerPopup.storeWidth;
-      case MapKey.stairCase:
-      case MapKey.elevator:
-      case MapKey.restRoom:
-        return MarkerPopup.serviceWidth;
+    if (location?.locationTypeId == MapKey.store) {
+      return MarkerPopup.storeWidth;
     }
-    return 0;
+    return MarkerPopup.serviceWidth;
   }
 
   double determineHeight() {
-    switch (location?.locationTypeId) {
-      case MapKey.store:
-        return MarkerPopup.storeWidth;
-      case MapKey.stairCase:
-      case MapKey.elevator:
-      case MapKey.restRoom:
-        return MarkerPopup.serviceHeight;
+    if (location?.locationTypeId == MapKey.store) {
+      return MarkerPopup.storeWidth;
     }
-    return 0;
+    return MarkerPopup.serviceHeight;
   }
 }

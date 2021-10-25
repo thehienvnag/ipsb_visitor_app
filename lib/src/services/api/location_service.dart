@@ -57,6 +57,8 @@ class LocationService extends BaseService<Location>
     return await getAllBase({
       'isAll': true.toString(),
       'floorPlanId': floorPlanId.toString(),
+      'notLocationTypeId': '5',
+      'status': "Active"
     });
   }
 

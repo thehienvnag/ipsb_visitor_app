@@ -90,7 +90,7 @@ class IndoorMapController extends GetxController {
   /// Set Shopping points on map
   void setShoppingPoints(List<Store> stores) {
     final listMarkers = stores.map((store) {
-      final location = store.locations![0];
+      final location = store.location!;
       return MapMarker(
         dx: location.x!,
         dy: location.y!,
