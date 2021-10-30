@@ -1,14 +1,15 @@
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bullet_list/flutter_bullet_list.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/models/coupon.dart';
 import 'package:ipsb_visitor_app/src/models/coupon_in_use.dart';
 import 'package:ipsb_visitor_app/src/pages/my_coupon_detail/controllers/my_coupon_detail_controller.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
-
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:ipsb_visitor_app/src/widgets/ticket_box.dart';
@@ -19,7 +20,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
 
   @override
   Widget build(BuildContext context) {
-    // final screenSize = MediaQuery.of(context).size;
+    final screenSize = MediaQuery.of(context).size;
     return Obx(() {
       final couponInUse = controller.couponInUse.value;
       final coupon = couponInUse.coupon ?? sharedData.coupon.value;
@@ -47,7 +48,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
           title: Column(
             children: [
               Text(
-                'Chi tiết mã giảm giá',
+                'Coupon Detail',
                 style: TextStyle(color: Colors.black),
               ),
             ],
@@ -55,17 +56,17 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
         ),
         body: Center(
           child: Column(children: [
-            SizedBox(height: 40),
+            SizedBox(height: 20),
             TicketBox(
               xAxisMain: false,
-              fromEdgeMain: 470,
+              fromEdgeMain: 500,
               fromEdgeSeparator: 134,
               isOvalSeparator: false,
               smallClipRadius: 15,
               clipRadius: 15,
-              numberOfSmallClips: 8,
+              numberOfSmallClips: 11,
               ticketWidth: 370,
-              ticketHeight: 640,
+              ticketHeight: 660,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -97,8 +98,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  Formatter.shorten(coupon.store?.name)
-                                      .toUpperCase(),
+                                  Formatter.shorten(coupon.store?.name,12).toUpperCase(),
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.black54,
@@ -106,13 +106,12 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                 ),
                                 // if (coupon.discountType! == 'Fixed')
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         margin: const EdgeInsets.only(top: 8),
                                         child: Text(
-                                          '[Giảm giá] ',
+                                          '[Fix] ',
                                           style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.black54,
@@ -122,8 +121,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                       Container(
                                         margin: const EdgeInsets.only(top: 8),
                                         child: Text(
-                                          Formatter.price(coupon.amount)
-                                              .toUpperCase(),
+                                          Formatter.price(coupon.amount).toUpperCase(),
                                           style: TextStyle(
                                             fontSize: 23,
                                             fontWeight: FontWeight.w600,
@@ -154,34 +152,41 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                         width: 380,
                         child: FlutterBulletList(
                           data: [
-                            ListItemModel(
-                                label: "Chương trình: ",
-                                data: [ListItemModel(label: "${coupon.name}")]),
-                            ListItemModel(label: "Áp dụng cho: ", data: [
-                              ListItemModel(
-                                  label: "Toàn menu (không áp dụng combo)"),
-                              ListItemModel(label: "Giá chưa bao gồm VAT}"),
+                            ListItemModel(label: "Promotion: ", data: [ListItemModel(label: "${coupon.name}")]),
+                            ListItemModel(label: "Apply with: ", data: [
+                              ListItemModel(label: "Full menu (does not apply combos)"),
+                              ListItemModel(label: "Price does not include VAT"),
                             ]),
                             ListItemModel(
-                              label: "Lưu ý: ",
+                              label: "Note: ",
                               data: [
-                                ListItemModel(
-                                  label: "Chỉ áp dụng tại cửa hàng",
-                                ),
-                                ListItemModel(
-                                    label:
-                                        "Khi thanh toán chỉ áp dụng duy nhất 1 mã"),
-                                ListItemModel(
-                                    label:
-                                        "Áp dụng cho nhiều sản phẩm trong cùng hóa đơn"),
+                                ListItemModel(label: "Use in-store only",),
+                                ListItemModel(label: "Only 1 promotion can be used when paying"),
+                                ListItemModel(label: "Applies to multiple products in the same bill"),
+                                // ListItemModel(label: 'View More')
                               ],
                             ),
                           ],
-                          textStyle:
-                              TextStyle(color: Colors.black54, fontSize: 16),
+                          textStyle: TextStyle(color: Colors.black54, fontSize: 16),
                           bulletColor: Colors.grey,
                           bulletSize: 3,
                         ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          // Icon(Icons.more_horiz_outlined,size: 20,color: Colors.blue,),
+                          SizedBox(width: 8,),
+                          GestureDetector(
+                              onTap: (){
+                                //CASE 1:
+                                // showDetailBottomSheet(coupon, context);
+                                //CASE 2:
+                                showCustomDialog(context,coupon);
+                              },
+                              child: Text('View More', style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w700),)),
+                          SizedBox(width: 40,),
+                        ],
                       ),
                     ],
                   ),
@@ -192,17 +197,15 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         FlutterBulletList(
-                          textStyle:
-                              TextStyle(color: Colors.black54, fontSize: 16),
+                          textStyle: TextStyle(color: Colors.black54, fontSize: 16),
                           bulletColor: Colors.grey,
                           bulletSize: 3,
                           data: [
                             ListItemModel(
-                              label: "Thời gian áp dụng: ",
+                              label: "Apply time: ",
                               data: [
                                 ListItemModel(
-                                  label:
-                                      "[${Formatter.date(coupon.publishDate)}]     ----     [${Formatter.date(coupon.expireDate)}]",
+                                  label: "[${Formatter.date(coupon.publishDate)}]     ----     [${Formatter.date(coupon.expireDate)}]",
                                 ),
                               ],
                             ),
@@ -236,7 +239,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
           ElevatedButton.icon(
             onPressed: () => controller.gotoShowQR(),
             icon: Icon(Icons.qr_code),
-            label: Text('SỬ DỤNG'),
+            label: Text('Use'),
           ),
         if (state == 2)
           couponInUse.feedbackContent == null
@@ -278,7 +281,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                       children: [
                         Icon(Icons.library_add_check_rounded,
                             color: Colors.white),
-                        Text('  Đã feedback'),
+                        Text('  Feedbacked'),
                       ],
                     ),
                   ),
@@ -296,9 +299,71 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
         onPressed: () => controller.saveCouponInUse(couponId),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-          child: Text('LƯU'),
+          child: Text('SAVE'),
         ),
       ),
     ];
   }
 }
+
+void showCustomDialog(BuildContext context,Coupon coupon) => showDialog(
+  context: context,
+  barrierDismissible: false,
+  builder: (BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 12),
+            Text('${coupon.name}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+            SizedBox(height: 20),
+            Container(
+              color: Color(0xfffafafa),
+              padding: EdgeInsets.only(left: screenSize.width*0.08,bottom: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(width: screenSize.width*0.4,child: Text("Amount limit: ")),
+                  Text("${coupon.limit ?? "1000"}")
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: screenSize.width*0.08,bottom: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(width: screenSize.width*0.4,child: Text("Minimum spend: ")),
+                  Text("${Formatter.price(coupon.minDiscount ?? 50000).toUpperCase()}")
+                ],
+              ),
+            ),
+            Container(
+              color: Color(0xfffafafa),
+              padding: EdgeInsets.only(left: screenSize.width*0.08,bottom: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(width: screenSize.width*0.4,child: Text("Maximum discount: ")),
+                  Text("${Formatter.price(coupon.maxDiscount ?? 200000).toUpperCase()}")
+                ],
+              ),
+            ),
+            SizedBox(height: 12),
+            TextButton(
+              child: Text('Close', style: TextStyle(fontSize: 15,)),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+        ),
+      ),
+    );
+  },
+);
