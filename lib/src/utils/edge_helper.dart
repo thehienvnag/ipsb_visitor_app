@@ -1,18 +1,17 @@
 import 'package:ipsb_visitor_app/src/models/edge.dart';
 import 'package:ipsb_visitor_app/src/models/location.dart';
 
-const double cmToMeter = 3.5;
-const double meterToPixel = 10.8;
-const double minDistance = 3;
+import 'utils.dart';
+
 const List<int> stairAndLift = [3, 4];
 
 class EdgeHelper {
-  static List<Edge> splitToSegments(List<Edge> edges) {
+  static List<Edge> splitToSegments(List<Edge> edges, double mapScale) {
     if (edges.isEmpty) return [];
     List<Edge> result = [];
     int id = getMaxLocationId(edges);
     edges.forEach((edge) {
-      final segments = getSegments(edge, minDistance, id);
+      final segments = getSegments(edge, id, mapScale);
       if (segments.isNotEmpty) {
         result.addAll(segments);
         id += segments.length;
@@ -21,15 +20,6 @@ class EdgeHelper {
       }
     });
     return result;
-  }
-
-  static List<Location> testPaths(List<Edge> edges) {
-    Map<int, Location> locs = {};
-    edges.forEach((e) {
-      locs.putIfAbsent(e.fromLocationId!, () => e.fromLocation!);
-      locs.putIfAbsent(e.toLocationId!, () => e.toLocation!);
-    });
-    return locs.values.toList();
   }
 
   static int getMaxLocationId(List<Edge> edges) {
@@ -45,8 +35,15 @@ class EdgeHelper {
       stairAndLift.contains(edge.fromLocation?.locationTypeId) &&
       stairAndLift.contains(edge.toLocation?.locationTypeId);
 
-  static List<Edge> getSegments(Edge edge, double minDistance, int id) {
-    double segment = minDistance * meterToPixel;
+  static List<Edge> getSegments(
+    Edge edge,
+    int id,
+    double mapScale,
+  ) {
+    const minDistance = 0.2; // Meter
+    const meterToPixel = 3779.5275590551; // Meter to pixel
+    double segment = minDistance / mapScale * meterToPixel;
+
     int divide = (edge.distance! / segment).round();
     if (isFloorConnect(edge) || divide < 2) return [];
 
@@ -95,5 +92,34 @@ class EdgeHelper {
       i++;
     }
     return result;
+  }
+
+  static Location findNearestLocation(List<Edge> edges, Location loc) {
+    if (edges.isEmpty) return loc;
+    Location location = edges[0].fromLocation!;
+    double minDistance = Utils.calDistance(
+      location,
+      loc,
+    );
+    edges.forEach((e) {
+      double fromDistance = Utils.calDistance(
+        loc,
+        e.fromLocation!,
+      );
+      if (fromDistance < minDistance) {
+        minDistance = fromDistance;
+        location = e.fromLocation!;
+      }
+
+      double toDistance = Utils.calDistance(
+        loc,
+        e.toLocation!,
+      );
+      if (toDistance < minDistance) {
+        minDistance = toDistance;
+        location = e.toLocation!;
+      }
+    });
+    return location;
   }
 }

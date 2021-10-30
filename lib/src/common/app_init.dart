@@ -18,6 +18,7 @@ import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/edge_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/floor_plan_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/location_service.dart';
+import 'package:ipsb_visitor_app/src/services/api/locator_tag_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/notification_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/product_category_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/product_service.dart';
@@ -103,6 +104,8 @@ class AppInit {
     Get.lazyPut<IShoppingItemService>(() => ShoppingItemService(), fenix: true);
     // Calling api at ShoppingItem service
     Get.lazyPut<INotificationService>(() => NotificationService(), fenix: true);
+    // Calling api at ShoppingItem service
+    Get.lazyPut<ILocatorTagService>(() => LocatorTagService(), fenix: true);
   }
 
   static void initUserProfile() {

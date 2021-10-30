@@ -14,7 +14,7 @@ abstract class BaseBleAction {
     if (scanResult.isNotEmpty) {
       final json = jsonDecode(scanResult);
       String uuid = json["uuid"];
-      int rssi = json["rssi"];
+      int rssi = int.parse(json["rssi"]);
       handleScanData(uuid, rssi);
     }
   }

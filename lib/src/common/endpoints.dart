@@ -53,4 +53,7 @@ class Endpoints {
 
   /// Notification endpoint version /api/v1
   static const notifications = '$apiVer1/notifications';
+
+  /// Notification endpoint version /api/v1
+  static const locatorTag = '$apiVer1/locator-tags';
 }

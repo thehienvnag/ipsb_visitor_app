@@ -66,8 +66,8 @@ class KalmanFilter2d implements IKalmanFilter2d {
 
   @override
   Location2d get state => Location2d(
-        y: _state[0][0],
-        x: _state[1][0],
+        x: _state[0][0],
+        y: _state[1][0],
         floorPlanId: _floorPlanId,
         timeStamp: Utils.getCurrentTimeStamp(),
       );

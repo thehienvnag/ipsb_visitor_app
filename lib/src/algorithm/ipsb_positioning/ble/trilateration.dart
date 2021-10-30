@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/ble/base_ble_action.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/ble/managers/beacon_manager.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/filters/mean_filter.dart';
@@ -9,6 +11,7 @@ import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/trilateration/ls
 
 abstract class BaseTrilateration extends BaseBleAction {
   Location2d? resolveLocation();
+  void stop();
 }
 
 class Trilateration extends BaseTrilateration {
@@ -31,6 +34,9 @@ class Trilateration extends BaseTrilateration {
   /// Current floor
   int? _currentFloor;
 
+  /// Timer
+  Timer? _timer;
+
   @override
   void init(config) {
     _config = config;
@@ -38,25 +44,42 @@ class Trilateration extends BaseTrilateration {
     currentFloorEvents.listen((floorId) {
       _currentFloor = floorId;
     });
+    periodicHandleLocation();
   }
 
   @override
   void handleScanData(String uuid, int rssi) {
     _beaconManager.addBeaconFound(uuid, rssi);
-    handleLocation();
+  }
+
+  void periodicHandleLocation() {
+    const interval = const Duration(milliseconds: 800);
+    _timer = Timer.periodic(interval, (timer) {
+      handleLocation();
+    });
   }
 
   void handleLocation() {
     if (_currentFloor == null) return; //If no floor is detected
-    final beacons = _beaconManager.getUsableBeacons(_currentFloor);
+    var beacons = _beaconManager.getUsableBeacons(_currentFloor);
     if (beacons.length >= 3) {
-      beacons.forEach((e) => e.getAndSetDistance(_config.environmentFactor));
-      final location = lsqTrilateration.solve(
-        beacons.map((e) => e.location!).toList(),
-      );
-      locationsCalculated.add(location);
+      final locations = beacons
+          .map((e) => Location2d(
+                y: e.location!.y,
+                x: e.location!.x,
+                floorPlanId: e.location!.floorPlanId,
+                distance: e.getDistance(
+                  _config.environmentFactor,
+                  _config.mapScale,
+                ),
+              ))
+          .where((e) => e.distance != null)
+          .toList();
+      if (locations.length >= 3) {
+        final location = lsqTrilateration.solve(locations);
+        locationsCalculated.add(location);
+      }
     }
-    beacons.forEach((e) => e.packetManager.removeOldPackets());
   }
 
   @override
@@ -70,4 +93,9 @@ class Trilateration extends BaseTrilateration {
 
   List<Beacon> findByFloorId(List<Beacon> list, int floorId) =>
       list.where((e) => e.location!.floorPlanId == floorId).toList();
+
+  @override
+  void stop() {
+    _timer?.cancel();
+  }
 }

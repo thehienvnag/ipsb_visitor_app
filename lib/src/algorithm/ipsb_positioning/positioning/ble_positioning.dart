@@ -11,16 +11,16 @@ class BlePositioningConfig extends PositioningConfig {
   /// Private beacons
   final List<Beacon> beacons;
 
-  /// Private _beaconFloor
-  final List<Beacon> beaconsFloor;
-
   /// Environment Factor on deployed site
   final double environmentFactor;
 
+  /// Map scale
+  double mapScale;
+
   BlePositioningConfig({
+    required this.mapScale,
     required this.environmentFactor,
     required this.beacons,
-    required this.beaconsFloor,
   });
 }
 
@@ -33,7 +33,7 @@ mixin IBlePositioning on Positioning {
 
 class BlePositioning implements IBlePositioning {
   /// Controller for current floor stream
-  late final StreamController<int> _currentFloor;
+  final StreamController<int> _currentFloor = StreamController<int>.broadcast();
 
   @override
   Stream<int> get currentFloorEvents => _currentFloor.stream;
@@ -64,7 +64,6 @@ class BlePositioning implements IBlePositioning {
   void start() {
     initPlugin();
     initBle();
-    _currentFloor = StreamController<int>.broadcast();
   }
 
   @override

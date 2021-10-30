@@ -11,6 +11,9 @@ mixin IPacketManager {
   /// Remove first
   void removeFirst();
 
+  /// remove all
+  void removeAll();
+
   /// Not empty
   bool isNotEmpty();
 
@@ -37,7 +40,7 @@ class PacketManager implements IPacketManager {
 
   @override
   Iterable<double> getListRssi() {
-    return _packets.where((e) => !e.isOld()).map((e) => e.rssi.toDouble());
+    return _packets.map((e) => e.rssi.toDouble());
   }
 
   @override
@@ -48,5 +51,10 @@ class PacketManager implements IPacketManager {
   @override
   bool isNotEmpty() {
     return _packets.isNotEmpty;
+  }
+
+  @override
+  void removeAll() {
+    _packets.clear();
   }
 }

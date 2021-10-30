@@ -22,8 +22,7 @@ class SharedStates extends GetxService {
   final couponInUse = CouponInUse().obs;
 
   /// Building
-  final building =
-      Building(id: 12, name: "Đại học FPT thành phố Hồ Chí Minh").obs;
+  final building = Building(id: 38, name: "Zin blue").obs;
 
   /// List shopping
   final shoppingList = ShoppingList().obs;

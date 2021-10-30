@@ -1,4 +1,5 @@
 import 'package:animated_floating_buttons/widgets/animated_floating_action_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -282,7 +283,7 @@ class MapPage extends GetView<MapController> {
           return CircularProgressIndicator();
         }
         return IndoorMap(
-          image: NetworkImage(floorplan.imageUrl!),
+          image: CachedNetworkImageProvider(floorplan.imageUrl!),
           loading: CircularProgressIndicator(),
         );
       }),

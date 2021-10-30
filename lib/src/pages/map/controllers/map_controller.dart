@@ -1,6 +1,11 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/ipsb_positioning.dart';
+import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/beacon.dart';
+import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/location_2d.dart';
+import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/positioning/ble_positioning.dart';
+import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/positioning/pdr_positioning.dart';
 import 'package:ipsb_visitor_app/src/algorithm/shortest_path/graph.dart';
 import 'package:ipsb_visitor_app/src/algorithm/shortest_path/shortest_path.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
@@ -15,6 +20,7 @@ import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/edge_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/floor_plan_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/location_service.dart';
+import 'package:ipsb_visitor_app/src/services/api/locator_tag_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 import 'package:ipsb_visitor_app/src/utils/edge_helper.dart';
@@ -45,6 +51,9 @@ class MapController extends GetxController {
 
   /// Service for interacting with Edge API
   IEdgeService _edgeService = Get.find();
+
+  /// Service for interacting with LocatorTag API
+  ILocatorTagService _locatorTagService = Get.find();
 
   /// List edges of all of the building
   final edges = <Edge>[].obs;
@@ -100,12 +109,19 @@ class MapController extends GetxController {
   /// List shopping routes;
   final listShoppingRoutes = <List<Location>>[].obs;
 
+  /// Ble config
+  BlePositioningConfig? _bleConfig;
+
+  /// Pdr config
+  PdrPositioningConfig? _pdrConfig;
+
   @override
   void onInit() {
     super.onInit();
-    getFloorPlan();
-    loadEdgesInBuilding();
-    getCoupons();
+    getFloorPlan().then((value) {
+      initPositioning();
+      loadEdgesInBuilding();
+    });
     onSelectedFloorChange();
     onLocationChanged();
     initShoppingList();
@@ -115,6 +131,66 @@ class MapController extends GetxController {
   void onClose() {
     super.onClose();
     closeShopping();
+    IpsbPositioning.stop();
+  }
+
+  void initPositioning() async {
+    if (listFloorPlan.isEmpty) return; // If get none floorplan, stop!
+
+    final beacons =
+        (await _locatorTagService.getByBuildingId(38)) // Hard code buildingId
+            .map(
+              (e) => Beacon(
+                id: e.id,
+                uuid: e.uuid,
+                txPower: e.txPower!,
+                location: Location2d(
+                  x: e.location!.x!,
+                  y: e.location!.y!,
+                  floorPlanId: e.floorPlanId!,
+                ),
+                beaconGroupId: e.locatorTagGroupId,
+              ),
+            )
+            .toList();
+
+    _bleConfig = BlePositioningConfig(
+      environmentFactor: 2.3, // Hard code environment factor
+      beacons: beacons,
+      mapScale: selectedFloor.value.mapScale!,
+    );
+
+    _pdrConfig = PdrPositioningConfig(
+      rotationAngle: selectedFloor.value.rotationAngle!,
+    );
+
+    IpsbPositioning.start<Location>(
+      pdrConfig: _pdrConfig!,
+      bleConfig: _bleConfig!,
+      resultTranform: (location2d) => Location(
+        x: location2d.x,
+        y: location2d.y,
+        floorPlanId: location2d.floorPlanId,
+      ),
+      onChange: (newLocation, currentFloor, setCurrent) {
+        if (currentFloor != null) {
+          final floor = listFloorPlan.firstWhere(
+            (floor) => floor.id == currentFloor,
+            orElse: () => FloorPlan(),
+          );
+          if (floor.id != null) {
+            changeSelectedFloor(floor);
+            _pdrConfig?.rotationAngle = floor.rotationAngle!;
+            _bleConfig?.mapScale = floor.mapScale!;
+          }
+        }
+        final location = EdgeHelper.findNearestLocation(edges, newLocation);
+        if (location.x != null) {
+          currentPosition.value = location;
+        }
+        print('New location');
+      },
+    );
   }
 
   void initShoppingList() {
@@ -244,13 +320,17 @@ class MapController extends GetxController {
   }
 
   void onLocationChanged() {
-    // _mapController.moveToScene(Location(x: 100, y: 100));
-    _mapController.setCurrentMarker(currentPosition.value);
     currentPosition.listen((location) {
       showDirection();
       checkCurrentLocationOnFloor();
       showShoppingDirections();
-      _mapController.moveToScene(location);
+      // Determine current position on floor
+      if (location.floorPlanId == selectedFloor.value.id) {
+        _mapController.setCurrentMarker(location);
+      } else {
+        _mapController.setCurrentMarker(null);
+      }
+      // _mapController.moveToScene(location);
     });
   }
 
@@ -280,6 +360,7 @@ class MapController extends GetxController {
     // Incase of edges is empty, end function
     if (edges.isEmpty) return;
     if (shoppingListVisble.value) return;
+    if (destPosition.value <= 0) return;
     isShowingDirection.value = true;
 
     int beginLocationId = currentPosition.value.id!;
@@ -300,7 +381,6 @@ class MapController extends GetxController {
     // print("[SetCurrentLocation]");
     // print(location);
     currentPosition.value = location;
-    _mapController.setCurrentMarker(location);
   }
 
   /// Change selected of floor
@@ -331,10 +411,12 @@ class MapController extends GetxController {
 
   /// Get list FloorPlan from api by buildingID
   Future<List<int>> getFloorPlan() async {
-    final paging = await _floorPlanService.getFloorPlans(12);
-    listFloorPlan.value = paging.content!;
-    selectedFloor.value = listFloorPlan[0];
-    loadPlaceOnFloor(listFloorPlan[0].id!);
+    final paging = await _floorPlanService.getFloorPlans(38);
+    if (paging.content != null) {
+      listFloorPlan.value = paging.content!;
+      selectedFloor.value = listFloorPlan[0];
+      loadPlaceOnFloor(listFloorPlan[0].id!);
+    }
     return listFloorPlan.map((element) => element.id!).toList();
   }
 
@@ -342,16 +424,8 @@ class MapController extends GetxController {
   void onSelectedFloorChange() {
     selectedFloor.listen((floor) {
       onShoppingListChange();
-
       // Load facility on maps
       loadPlaceOnFloor(floor.id!);
-
-      // Determine current position on floor
-      if (currentPosition.value.floorPlanId != selectedFloor.value.id) {
-        _mapController.setCurrentMarker(null);
-      } else {
-        _mapController.setCurrentMarker(currentPosition.value);
-      }
     });
   }
 
@@ -385,7 +459,8 @@ class MapController extends GetxController {
     if (buildingId != null) {
       final edgesResult = await HiveStorage.useStorageList<Edge>(
         apiCallback: () => _edgeService.getByBuildingId(buildingId),
-        transformData: EdgeHelper.splitToSegments,
+        transformData: (edges) =>
+            EdgeHelper.splitToSegments(edges, selectedFloor.value.mapScale!),
         storageBoxName: StorageConstants.edgeBox,
         key: "edges_$buildingId",
       );

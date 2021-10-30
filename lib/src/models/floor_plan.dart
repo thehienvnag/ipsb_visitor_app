@@ -20,21 +20,26 @@ class FloorPlan {
   final String? floorCode;
 
   @HiveField(4)
-  final String? floorNum;
+  final double? mapScale;
 
   @HiveField(5)
+  final double? rotationAngle;
+
+  @HiveField(6)
   final String? imageUrl;
 
-  FloorPlan({
-    this.floorNumber,
-    this.buildingId,
-    this.imageUrl,
-    this.id,
-    this.floorCode,
-    this.floorNum,
-  });
   factory FloorPlan.fromJson(Map<String, dynamic> json) =>
       _$FloorPlanFromJson(json);
+
+  FloorPlan({
+    this.id,
+    this.floorNumber,
+    this.buildingId,
+    this.floorCode,
+    this.mapScale,
+    this.rotationAngle,
+    this.imageUrl,
+  });
 
   Map<String, dynamic> toJson() => _$FloorPlanToJson(this);
 }

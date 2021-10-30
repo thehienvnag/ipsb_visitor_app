@@ -42,7 +42,7 @@ class DataFusion implements IDataFusion {
   int? _currentFloor;
 
   /// On location updated
-  final void Function(Location2d) onChange;
+  final void Function(Location2d, int?, void Function(Location2d)) onChange;
 
   DataFusion({required this.onChange});
 
@@ -61,7 +61,7 @@ class DataFusion implements IDataFusion {
   void start() async {
     runPeriodic();
     initBleMethod();
-    await initPdrMethod();
+    initPdrMethod();
   }
 
   void initBleMethod() {
@@ -78,29 +78,36 @@ class DataFusion implements IDataFusion {
     });
   }
 
-  Future<void> initPdrMethod() async {
-    // Init the initial location with ble method
-    _current = await initLocation();
+  void initPdrMethod() async {
     // Set the initial location for pdr method
     _pdrPositioning.start();
     _pdrPositioning.setInitial(_current);
-    _pdrPositioning.locationEvents.listen((e) {
-      _current = e;
-      onChange(e);
-    });
+    // _pdrPositioning.locationEvents.listen((e) {
+    //   _current = e;
+    //   onChange(e, _currentFloor, setCurrent);
+    // });
   }
 
-  void runPeriodic() {
+  void setCurrent(Location2d location2d) {
+    _current = location2d;
+  }
+
+  void runPeriodic() async {
+    _current = await initLocation();
     _timer = Timer.periodic(longerInterval, (timer) async {
-      _pdrPositioning.resume();
-      await Future.delayed(Const.longInterval, () {
+      if (_current != null) {
         _pdrPositioning.pause();
         _filter.predict(_current!);
         final measured = _blePositioning.resolve();
-        _filter.correct(measured!);
-        _current = _filter.state;
-        onChange(_current!);
-      });
+        if (measured != null) {
+          _filter.correct(measured);
+          _current = _filter.state;
+        }
+        onChange(_current!, _currentFloor, setCurrent);
+      } else {
+        _current = await initLocation();
+      }
+      _pdrPositioning.resume();
     });
   }
 
@@ -111,10 +118,11 @@ class DataFusion implements IDataFusion {
     _pdrPositioning.stop();
   }
 
-  Future<Location2d> initLocation() async {
-    final location = await Future.delayed(Const.longInterval, () {
+  Future<Location2d?> initLocation() async {
+    const initialInterval = const Duration(milliseconds: 2500);
+    final location = await Future.delayed(initialInterval, () {
       return _blePositioning.resolve();
     });
-    return location!;
+    return location;
   }
 }

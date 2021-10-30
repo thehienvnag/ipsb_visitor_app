@@ -20,7 +20,7 @@ class ImageView extends GetView<ImageViewController> {
     return GestureDetector(
       onTap: () => controller.closeAllPopup(),
       child: Container(
-        padding: const EdgeInsets.only(bottom: 90, top: 40),
+        padding: const EdgeInsets.only(bottom: 90, top: 100),
         color: Colors.white,
         child: Container(
           width: width,

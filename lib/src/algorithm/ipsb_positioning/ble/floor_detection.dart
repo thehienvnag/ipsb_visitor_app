@@ -30,7 +30,7 @@ class FloorDetection extends BaseFloorDetection {
   @override
   void init(BlePositioningConfig config) {
     _config = config;
-    _beaconManager = BeaconManager(beacons: config.beaconsFloor);
+    _beaconManager = BeaconManager(beacons: config.beacons);
     periodicFloorDetection();
   }
 
@@ -46,12 +46,10 @@ class FloorDetection extends BaseFloorDetection {
 
   /// Perform floor detection periodically
   void periodicFloorDetection() {
-    int interval = 2;
-    Future.delayed(Duration(seconds: interval), () {
-      _timer = Timer.periodic(
-        Duration(seconds: interval),
-        (timer) => floorDetection(),
-      );
+    const interval = const Duration(seconds: 3);
+
+    _timer = Timer.periodic(interval, (timer) {
+      floorDetection();
     });
   }
 
@@ -77,8 +75,13 @@ class FloorDetection extends BaseFloorDetection {
       result = usableBeacons.first.location!.floorPlanId;
     } else {
       final satisfiedBeacons = getBeaconSatisfied(usableBeacons);
-      result = getCurrentFloor(satisfiedBeacons, floorIds.toList());
+      if (satisfiedBeacons.isNotEmpty) {
+        result = getCurrentFloor(satisfiedBeacons, floorIds.toList());
+      } else {
+        result = getMostOccurenceFloorId(usableBeacons);
+      }
     }
+
     return result;
   }
 
@@ -88,14 +91,47 @@ class FloorDetection extends BaseFloorDetection {
   List<Beacon> getBeaconSatisfied(List<Beacon> beacons) {
     Map<int, List<Beacon>> beaconGroup = {};
     beacons.forEach((e) {
-      var beaconList = beaconGroup.putIfAbsent(e.beaconGroupId!, () => []);
-      beaconList.add(e);
+      if (e.beaconGroupId != null) {
+        var beaconList = beaconGroup.putIfAbsent(e.beaconGroupId!, () => []);
+        beaconList.add(e);
+      }
     });
+    beacons.forEach((e) {
+      if (beaconGroup.containsKey(e.id)) {
+        beaconGroup[e.id!]!.add(e);
+      }
+    });
+    if (beaconGroup.isEmpty) {
+      return [];
+    }
+
     int maxLength = getListMaxLength(beaconGroup);
     return beaconGroup.values
         .where((e) => e.length == maxLength)
         .expand((e) => e)
         .toList();
+  }
+
+  int getMostOccurenceFloorId(List<Beacon> beacons) {
+    Map<int, int> floorOccur = {};
+    beacons.forEach((e) {
+      if (floorOccur.containsKey(e.location!.floorPlanId)) {
+        floorOccur[e.location!.floorPlanId] =
+            floorOccur[e.location!.floorPlanId]! + 1;
+      } else {
+        floorOccur.putIfAbsent(e.location!.floorPlanId, () => 1);
+      }
+    });
+
+    int floorId = floorOccur.keys.first;
+    int occurs = floorOccur.values.first;
+    floorOccur.forEach((key, value) {
+      if (occurs < value) {
+        floorId = key;
+        occurs = value;
+      }
+    });
+    return floorId;
   }
 
   /// Calculate mean distance from all Beacon of a floor to user device

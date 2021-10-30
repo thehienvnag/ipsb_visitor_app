@@ -1,3 +1,4 @@
+import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/ble/managers/packet_manager.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/beacon.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/utils/utils.dart';
 
@@ -37,10 +38,14 @@ class BeaconManager implements IBeaconManager {
 
   @override
   List<Beacon> getUsableBeacons([int? floorPlanId]) {
-    final result = _beaconsFound
-        .where((e) => e.isRecentlySeen() && e.packetManager.isNotEmpty());
-    if (floorPlanId == null) return result.toList();
-    return result.where((e) => e.location!.floorPlanId == floorPlanId).toList();
+    if (floorPlanId == null) {
+      return _beaconsFound.where((e) => e.packetManager.isNotEmpty()).toList();
+    }
+    return _beaconsFound
+        .where((e) =>
+            e.location!.floorPlanId == floorPlanId &&
+            e.packetManager.isNotEmpty())
+        .toList();
   }
 
   Beacon? addIfNonNull(List<Beacon> list, Beacon? beacon) {
@@ -50,10 +55,18 @@ class BeaconManager implements IBeaconManager {
     }
   }
 
-  Beacon? findBeaconValid(String uuid) => findByUuid(beacons, uuid);
+  Beacon? findBeaconValid(String uuid) {
+    final b = findByUuid(beacons, uuid)?.clone();
+    b?.packetManager = PacketManager();
+    return b;
+  }
 
   Beacon? findBeaconFound(String uuid) => findByUuid(_beaconsFound, uuid);
 
-  Beacon? findByUuid(List<Beacon> list, String uuid) =>
-      list.firstWhere((e) => e.uuid == uuid, orElse: null);
+  Beacon? findByUuid(List<Beacon> list, String uuid) {
+    final b = list.firstWhere((e) => e.uuid == uuid, orElse: () => Beacon());
+    if (b.uuid != null) {
+      return b;
+    }
+  }
 }

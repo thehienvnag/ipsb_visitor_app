@@ -2,7 +2,7 @@ import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/utils/const.dart
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/utils/utils.dart';
 
 class Packet {
-  final int rssi;
+  final double rssi;
   final int timeStamp;
 
   Packet({

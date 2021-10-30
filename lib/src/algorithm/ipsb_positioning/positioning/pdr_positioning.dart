@@ -9,14 +9,14 @@ import 'package:sensors_plus/sensors_plus.dart';
 import 'package:vector_math/vector_math.dart';
 
 class PdrPositioningConfig extends PositioningConfig {
-  /// Rotation of the floor map compared to the true north [rotation]
-  final double rotation;
+  /// Rotation of the floor map compared to the true north [rotationAngle]
+  double rotationAngle;
 
   /// Average step length on each step [stepLength]
   final double stepLength;
 
   PdrPositioningConfig({
-    required this.rotation,
+    required this.rotationAngle,
     this.stepLength = 0.7, // Assuming that average step of user is of 0.7 meter
   });
 }
@@ -135,7 +135,7 @@ class PdrPositioning implements IPdrPositioning {
 
   void onStep(DateTime dateTime) async {
     double stepLength = _config.stepLength;
-    double rotation = _config.rotation;
+    double rotation = _config.rotationAngle;
     if (_heading == null) return; // No new location if _heading == null
     if (_initial == null) return; // No new location if initial == null
     // PDR equation with step length and heading
