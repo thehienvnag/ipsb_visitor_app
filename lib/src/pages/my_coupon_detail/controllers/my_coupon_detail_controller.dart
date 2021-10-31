@@ -89,7 +89,7 @@ class MyCouponDetailController extends GetxController {
 
   Future<int> _countCouponInUseByCouponId(int couponId) async {
     return await couponInUseService
-        .countCouponInUseByCouponId({"couponId": couponId.toString()});
+        .countCouponInUseByCouponId({"couponId": couponId.toString(), "status" : "Used"});
   }
 
   Future<void> saveCouponInUse(

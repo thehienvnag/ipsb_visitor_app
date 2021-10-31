@@ -242,7 +242,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
           ElevatedButton.icon(
             onPressed: () => controller.gotoShowQR(),
             icon: Icon(Icons.qr_code),
-            label: Text('Use'),
+            label: Text('Apply now'),
           ),
         if (state == 2)
           couponInUse.feedbackContent == null
