@@ -21,6 +21,8 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    print("Height: " + screenSize.height.toString() + " , width: " + screenSize.width.toString());
+
     return Obx(() {
       final couponInUse = controller.couponInUse.value;
       final coupon = couponInUse.coupon ?? sharedData.coupon.value;
@@ -216,7 +218,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                             padding: const EdgeInsets.symmetric(horizontal: 22),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: _couponState(coupon.id, couponInUse),
+                              children: _couponState(context, coupon.id, couponInUse, coupon.limit!),
                             ),
                           ),
                       ],
@@ -231,7 +233,8 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
     });
   }
 
-  List<Widget> _couponState(int? couponId, CouponInUse couponInUse) {
+  List<Widget> _couponState(BuildContext context, int? couponId, CouponInUse couponInUse, int limit) {
+    final screenSize = MediaQuery.of(context).size;
     int state = controller.checkCouponState();
     if (state == 2 || state == 3)
       return [
@@ -296,7 +299,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
     return [
       Container(),
       ElevatedButton(
-        onPressed: () => controller.saveCouponInUse(couponId),
+        onPressed: () => controller.saveCouponInUse(context, couponId, limit),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
           child: Text('SAVE'),
@@ -321,17 +324,17 @@ void showCustomDialog(BuildContext context,Coupon coupon) => showDialog(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 12),
+            SizedBox(height: screenSize.height * 0.0164),
             Text('${coupon.name}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-            SizedBox(height: 20),
+            SizedBox(height: screenSize.height * 0.027),
             Container(
               color: Color(0xfffafafa),
               padding: EdgeInsets.only(left: screenSize.width*0.08,bottom: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(width: screenSize.width*0.4,child: Text("Amount limit: ")),
-                  Text("${coupon.limit ?? "1000"}")
+                  Container(width: screenSize.width*0.4,child: Text("Limit: ")),
+                  Text("${coupon.limit ?? "N/A"}")
                 ],
               ),
             ),
@@ -341,7 +344,7 @@ void showCustomDialog(BuildContext context,Coupon coupon) => showDialog(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(width: screenSize.width*0.4,child: Text("Minimum spend: ")),
-                  Text("${Formatter.price(coupon.minDiscount ?? 50000).toUpperCase()}")
+                  Text("${Formatter.price(coupon.minSpend ?? 0).toUpperCase()}")
                 ],
               ),
             ),
@@ -352,11 +355,11 @@ void showCustomDialog(BuildContext context,Coupon coupon) => showDialog(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(width: screenSize.width*0.4,child: Text("Maximum discount: ")),
-                  Text("${Formatter.price(coupon.maxDiscount ?? 200000).toUpperCase()}")
+                  Text("${Formatter.price(coupon.maxDiscount ?? 0).toUpperCase()}")
                 ],
               ),
             ),
-            SizedBox(height: 12),
+            SizedBox(height: screenSize.height * 0.0164),
             TextButton(
               child: Text('Close', style: TextStyle(fontSize: 15,)),
               onPressed: () => Navigator.of(context).pop(),

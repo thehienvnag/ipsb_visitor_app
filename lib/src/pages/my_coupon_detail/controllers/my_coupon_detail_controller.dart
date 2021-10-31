@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/models/coupon_in_use.dart';
@@ -21,6 +23,8 @@ class MyCouponDetailController extends GetxController {
 
   // Is getting coupon in use
   final isLoading = false.obs;
+
+  int countCouponInUse = 0;
 
   @override
   onInit() {
@@ -83,12 +87,27 @@ class MyCouponDetailController extends GetxController {
     return 1;
   }
 
-  Future<void> saveCouponInUse(int? couponId) async {
+  Future<int> _countCouponInUseByCouponId(int couponId) async {
+    return await couponInUseService
+        .countCouponInUseByCouponId({"couponId": couponId.toString()});
+  }
+
+  Future<void> saveCouponInUse(
+      BuildContext context, int? couponId, int limit) async {
     if (!AuthServices.isLoggedIn()) {
       sharedStates.showLoginBottomSheet();
       return;
     }
     if (couponId == null) return;
+
+    countCouponInUse = await _countCouponInUseByCouponId(couponId);
+    if (countCouponInUse >= limit) {
+      print(countCouponInUse);
+      print(limit);
+      showCustomDialog(context);
+      return;
+    }
+
     final dateTime = DateTime.now();
     CouponInUse input = CouponInUse(
       couponId: couponId,
@@ -106,7 +125,58 @@ class MyCouponDetailController extends GetxController {
       result.coupon = coupon;
       couponInUse.value = result;
       FirebaseHelper firebaseHelper = FirebaseHelper();
-      await firebaseHelper.subscribeToTopic("coupon_in_use_id_" + couponInUse.value.id.toString());
+      await firebaseHelper.subscribeToTopic(
+          "coupon_in_use_id_" + couponInUse.value.id.toString());
     }
   }
+
+  void showCustomDialog(BuildContext context) => showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          final screenSize = MediaQuery.of(context).size;
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 12),
+                  Container(
+                    alignment: Alignment.center,
+                    width: screenSize.width * 0.7,
+                    color: Color(0xfffafafa),
+                    child: Text(
+                      'ERROR WHILE SAVING COUPON',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
+                    child: Text(
+                      "Unable to save coupon due to the number of people using the code exceeding the limit ",
+                      style: TextStyle(fontSize: 14),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  TextButton(
+                    child: Text('Close',
+                        style: TextStyle(
+                          fontSize: 15,
+                        )),
+                    onPressed: () => Get.back(),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      );
 }
