@@ -33,7 +33,7 @@ class StoreDetailsController extends GetxController
   @override
   void onInit() {
     super.onInit();
-    tabController = TabController(vsync: this, length: 3);
+    tabController = TabController(vsync: this, length: 2);
     String? id = Get.parameters['id'];
     print(id);
     if (id == null) return;

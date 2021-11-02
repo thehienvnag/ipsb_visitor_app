@@ -14,7 +14,7 @@ class Coupon {
       productInclude,
       productExclude,
       status;
-  final double? amount, maxDiscount, minDiscount;
+  final double? amount, maxDiscount, minSpend;
   final int? storeId, limit;
   final DateTime? expireDate, publishDate;
   final Store? store;
@@ -33,7 +33,7 @@ class Coupon {
     this.status,
     this.amount,
     this.maxDiscount,
-    this.minDiscount,
+    this.minSpend,
     this.limit,
     this.storeId,
     this.store,
