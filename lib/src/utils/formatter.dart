@@ -1,5 +1,6 @@
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class Formatter {
   static String date(DateTime? date, [String formatter = 'dd-MM-yyyy']) {
@@ -35,5 +36,14 @@ class Formatter {
     }
     final formatter = new NumberFormat("###");
     return '-' + formatter.format(amount) + '%';
+  }
+
+  static String dateCaculator(DateTime? date){
+    if (date == null) {
+      return "";
+    }
+    int differenceInDays = new DateTime.now().difference(DateTime.parse(date.toString())).inHours;
+    final fifteenAgo = new DateTime.now().subtract(new Duration(hours: differenceInDays));
+    return timeago.format(fifteenAgo, locale: 'en');
   }
 }

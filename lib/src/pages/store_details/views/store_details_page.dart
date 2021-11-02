@@ -1,15 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/models/store.dart';
 
 import 'package:ipsb_visitor_app/src/pages/store_details/controllers/store_details_controller.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:ipsb_visitor_app/src/widgets/rounded_button.dart';
 import 'package:ipsb_visitor_app/src/widgets/animate_wrapper.dart';
+import 'package:comment_tree/comment_tree.dart';
 
 class StoreDetailsPage extends GetView<StoreDetailsController> {
   @override
@@ -115,6 +119,12 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                         text: "COUPONS",
                       ),
                     ),
+                    Container(
+                      width: 100,
+                      child: Tab(
+                        text: "FEEDBACKS",
+                      ),
+                    ),
                   ],
                   labelColor: Colors.black,
                   indicator: MaterialIndicator(
@@ -133,6 +143,7 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
             children: [
               _buildProducts(context),
               _buildCoupons(context),
+              _buildFeedbacks(context)
             ],
           ),
         ),
@@ -234,8 +245,150 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                       trailing: TextButton.icon(
                         onPressed: () {},
                         icon: Icon(Icons.local_activity),
-                        label: Text('Chi tiết'),
+                        label: Text('View Detail'),
                       ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      }),
+    );
+  }
+
+  Widget _buildFeedbacks(BuildContext context){
+    final size = MediaQuery.of(context).size;
+    return Container(
+      width: size.width,
+      child: Obx(() {
+        final feedbacks = controller.listFeedbacked;
+        var store = controller.store.value;
+        return ListView.builder(
+          itemCount: feedbacks.length,
+          itemBuilder: (context, index) {
+            final feedback = feedbacks[index];
+            return AnimateWrapper(
+              index: index,
+              child: Container(
+                padding: const EdgeInsets.all(6),
+                child: Card(
+                  color: Color(0xffF5F5F7),
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    child: CommentTreeWidget<Comment, Comment>(
+                      Comment(
+                          avatar: 'null',
+                          userName: 'null',
+                          content: 'null'),
+                      [
+                        Comment(
+                            avatar: 'null',
+                            userName: 'null',
+                            content: 'null'),
+                      ],
+                      treeThemeData: TreeThemeData(lineColor: Colors.grey.shade400, lineWidth: 3),
+                      avatarRoot: (context, data) => PreferredSize(
+                        child: CircleAvatar(
+                          radius: 18,
+                          backgroundColor: Colors.grey,
+                          backgroundImage: NetworkImage(feedback.visitor!.imageUrl!),
+                        ),
+                        preferredSize: Size.fromRadius(18),
+                      ),
+                      avatarChild: (context, data) => PreferredSize(
+                        child: CircleAvatar(
+                          radius: 12,
+                          backgroundColor: Colors.grey,
+                          backgroundImage: NetworkImage(store.imageUrl.toString()),
+                        ),
+                        preferredSize: Size.fromRadius(12),
+                      ),
+                      contentChild: (context, data) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: size.width*0.72,
+                              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                              decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.6),
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                   store.name.toString() + ' store',
+                                    style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black),
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    feedback.feedbackReply ?? 'Not Reply',
+                                    style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                      contentRoot: (context, data) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(12)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        feedback.visitor!.name!,
+                                        style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black, fontSize: 16),
+                                      ),
+                                      Text(
+                                        Formatter.dateCaculator(feedback.feedbackDate),
+                                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                  RatingBar.builder(
+                                    initialRating: feedback.rateScore ?? 0,
+                                    itemSize: 18,
+                                    minRating: 1,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    itemCount: 5,
+                                    itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
+                                    onRatingUpdate: (value) => true,
+                                    updateOnDrag: true,
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    feedback.feedbackContent ?? 'Not content',
+                                    style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black),
+                                  ),
+                                  Container(
+                                      width:  size.width * 0.4,
+                                      height: size.height * 0.12,
+                                      alignment: Alignment.centerLeft,
+                                      child: feedback.feedbackImage != null
+                                          ? Card(child: Image(image: CachedNetworkImageProvider(feedback.feedbackImage.toString()),))
+                                          : Image(image: CachedNetworkImageProvider('https://pngimg.com/uploads/mouth_smile/mouth_smile_PNG42.png'))
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),

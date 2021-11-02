@@ -163,6 +163,13 @@ dependencies:
   # Cache network image
   cached_network_image: ^3.1.0
 
+  # Comment Tree
+  comment_tree: ^0.3.0
+
+  # Time ago
+  timeago: ^3.1.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
