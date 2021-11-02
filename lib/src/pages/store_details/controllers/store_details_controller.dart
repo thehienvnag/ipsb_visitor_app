@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/models/coupon.dart';
+import 'package:ipsb_visitor_app/src/models/coupon_in_use.dart';
 import 'package:ipsb_visitor_app/src/models/product.dart';
 import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/services/api/coupon_in_use_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/product_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/store_service.dart';
@@ -18,6 +20,8 @@ class StoreDetailsController extends GetxController
   final listProduct = <Product>[].obs;
   final listGroups = <Product>[].obs;
   final listCoupon = <Coupon>[].obs;
+  final listFeedbacks = <CouponInUse>[].obs;
+  final listFeedbacked = <CouponInUse>[].obs;
   final storeId = 0.obs;
 
   @override
@@ -37,6 +41,18 @@ class StoreDetailsController extends GetxController
     getStoreDetail();
     getProducts();
     getCoupons();
+    getFeedback();
+  }
+
+  ICouponInUseService couponInUseService = Get.find();
+  Future<void> getFeedback() async {
+    final paging = await couponInUseService.getCouponInUseByStoreId(storeId.value);
+    listFeedbacks.value = paging.content!;
+    for(int i = 0; i < listFeedbacks.length; i++ ){
+      if(listFeedbacks[i].feedbackReply.toString().compareTo('null') < 0){
+        listFeedbacked.add(listFeedbacks[i]);
+      }
+    }
   }
 
   IStoreService storeService = Get.find();
@@ -50,8 +66,7 @@ class StoreDetailsController extends GetxController
 
   IProductService productService = Get.find();
   Future<void> getProducts() async {
-    listProduct.value =
-        await productService.getProductsByStoreId(storeId.value);
+    listProduct.value = await productService.getProductsByStoreId(storeId.value);
   }
 
   ICouponService couponService = Get.find();

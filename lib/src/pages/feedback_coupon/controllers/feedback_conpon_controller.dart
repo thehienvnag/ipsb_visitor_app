@@ -53,7 +53,7 @@ class FeedbackCouponController extends GetxController {
         status: coupon.status,
         feedbackContent: feedbackContent.value,
         feedbackImage: filePath.value,
-        feedBackDate: dateTime,
+        feedbackDate: dateTime,
         rateScore: rating.value);
     BotToast.showLoading();
     final result = await couponInUseService.putFeedbackCouponInUse(

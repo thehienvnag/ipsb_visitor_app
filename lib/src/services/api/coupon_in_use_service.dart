@@ -9,6 +9,7 @@ mixin ICouponInUseService {
   Future<CouponInUse?> createCouponInUse(CouponInUse couponInUse);
   Future<bool> putFeedbackCouponInUse(
       CouponInUse couponInUse, String filePath, int id);
+  Future<Paging<CouponInUse>> getCouponInUseByStoreId(int storeId);
 }
 
 class CouponInUseService extends BaseService<CouponInUse>
@@ -49,5 +50,13 @@ class CouponInUseService extends BaseService<CouponInUse>
   Future<bool> putFeedbackCouponInUse(
       CouponInUse couponInUse, String filePath, int id) {
     return putWithOneFileBase(couponInUse.toJson(), filePath, id);
+  }
+
+  @override
+  Future<Paging<CouponInUse>> getCouponInUseByStoreId(int storeId) {
+    return getPagingBase({
+      'storeId': storeId.toString(),
+      'status': "Used",
+    });
   }
 }

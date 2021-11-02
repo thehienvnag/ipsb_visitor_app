@@ -45,9 +45,9 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 200, left: 7, right: 7),
+                  margin: EdgeInsets.only(top: screenSize.height * 0.25, left: 7, right: 7),
                   width: screenSize.width,
-                  height: screenSize.height * 0.75,
+                  height: screenSize.height * 0.7,
                   child: Card(
                     shape: BeveledRectangleBorder(
                       borderRadius: BorderRadius.circular(4.0),
