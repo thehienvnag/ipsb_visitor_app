@@ -23,7 +23,7 @@ class Beacon {
     this.txPower,
   });
 
-  double getDistanceAvg(double environmentFactor) {
+  double getDistanceAvg() {
     // Average Rssi
     double rssi = MeanFilter.average(packetManager.getListRssi());
     packetManager.removeAll();
@@ -32,11 +32,10 @@ class Beacon {
     return Utils.rssiDistance(
       rssi,
       txPower!,
-      environmentFactor,
     );
   }
 
-  double? getDistance(double environmentFactor, double mapScale) {
+  double? getDistance(double mapScale) {
     final meterToPixel = 3779.52755906;
     if (packetManager.getListRssi().isNotEmpty) {
       // Average Rssi
@@ -47,7 +46,6 @@ class Beacon {
       final distanceMeter = Utils.rssiDistance(
         rssi,
         txPower!,
-        environmentFactor,
       );
 
       // If distance smaller than 10

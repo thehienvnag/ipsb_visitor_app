@@ -136,11 +136,10 @@ class FloorDetection extends BaseFloorDetection {
 
   /// Calculate mean distance from all Beacon of a floor to user device
   double calMeanDistanceByFloor(List<Beacon> list, int floorId) {
-    final environmentFactor = _config.environmentFactor;
     return MeanFilter.average(
       list
           .where((e) => e.location!.floorPlanId == floorId)
-          .map((e) => e.getDistanceAvg(environmentFactor)),
+          .map((e) => e.getDistanceAvg()),
     );
   }
 

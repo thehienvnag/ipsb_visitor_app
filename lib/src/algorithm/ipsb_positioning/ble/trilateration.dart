@@ -69,7 +69,6 @@ class Trilateration extends BaseTrilateration {
                 x: e.location!.x,
                 floorPlanId: e.location!.floorPlanId,
                 distance: e.getDistance(
-                  _config.environmentFactor,
                   _config.mapScale,
                 ),
               ))

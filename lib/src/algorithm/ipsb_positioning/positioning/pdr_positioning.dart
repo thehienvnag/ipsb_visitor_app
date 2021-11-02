@@ -17,8 +17,9 @@ class PdrPositioningConfig extends PositioningConfig {
 
   PdrPositioningConfig({
     required this.rotationAngle,
-    this.stepLength = 0.7, // Assuming that average step of user is of 0.7 meter
-  });
+    required double mapScale,
+    this.stepLength = 0.7,
+  }) : super(mapScale: mapScale);
 }
 
 mixin IPdrPositioning on Positioning {
@@ -134,10 +135,12 @@ class PdrPositioning implements IPdrPositioning {
   }
 
   void onStep(DateTime dateTime) async {
-    double stepLength = _config.stepLength;
+    final meterToPixel = 3779.52755906;
+    double stepLength = _config.stepLength / _config.mapScale * meterToPixel;
     double rotation = _config.rotationAngle;
     if (_heading == null) return; // No new location if _heading == null
     if (_initial == null) return; // No new location if initial == null
+
     // PDR equation with step length and heading
     final location = Location2d(
       x: _initial!.x + stepLength * cos(radians(_heading! - rotation)),

@@ -82,10 +82,10 @@ class DataFusion implements IDataFusion {
     // Set the initial location for pdr method
     _pdrPositioning.start();
     _pdrPositioning.setInitial(_current);
-    // _pdrPositioning.locationEvents.listen((e) {
-    //   _current = e;
-    //   onChange(e, _currentFloor, setCurrent);
-    // });
+    _pdrPositioning.locationEvents.listen((e) {
+      _current = e;
+      onChange(e, _currentFloor, setCurrent);
+    });
   }
 
   void setCurrent(Location2d location2d) {

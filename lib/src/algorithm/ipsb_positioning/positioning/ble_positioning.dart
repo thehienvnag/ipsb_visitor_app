@@ -11,17 +11,10 @@ class BlePositioningConfig extends PositioningConfig {
   /// Private beacons
   final List<Beacon> beacons;
 
-  /// Environment Factor on deployed site
-  final double environmentFactor;
-
-  /// Map scale
-  double mapScale;
-
   BlePositioningConfig({
-    required this.mapScale,
-    required this.environmentFactor,
     required this.beacons,
-  });
+    required double mapScale,
+  }) : super(mapScale: mapScale);
 }
 
 mixin IBlePositioning on Positioning {

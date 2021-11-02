@@ -24,7 +24,6 @@ class Utils {
   static double rssiDistance(
     double rssi,
     double txPower,
-    double environmentFactor,
   ) {
     if (rssi == 0) {
       return -1.0; // if we cannot determine accuracy, return -1.

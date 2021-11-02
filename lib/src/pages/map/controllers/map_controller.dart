@@ -155,13 +155,13 @@ class MapController extends GetxController {
             .toList();
 
     _bleConfig = BlePositioningConfig(
-      environmentFactor: 2.3, // Hard code environment factor
       beacons: beacons,
       mapScale: selectedFloor.value.mapScale!,
     );
 
     _pdrConfig = PdrPositioningConfig(
       rotationAngle: selectedFloor.value.rotationAngle!,
+      mapScale: selectedFloor.value.mapScale!,
     );
 
     IpsbPositioning.start<Location>(
@@ -180,8 +180,6 @@ class MapController extends GetxController {
           );
           if (floor.id != null) {
             changeSelectedFloor(floor);
-            _pdrConfig?.rotationAngle = floor.rotationAngle!;
-            _bleConfig?.mapScale = floor.mapScale!;
           }
         }
         final location = EdgeHelper.findNearestLocation(edges, newLocation);
@@ -424,8 +422,10 @@ class MapController extends GetxController {
   void onSelectedFloorChange() {
     selectedFloor.listen((floor) {
       onShoppingListChange();
-      // Load facility on maps
       loadPlaceOnFloor(floor.id!);
+      _pdrConfig?.rotationAngle = floor.rotationAngle!;
+      _pdrConfig?.mapScale = floor.mapScale!;
+      _bleConfig?.mapScale = floor.mapScale!;
     });
   }
 
