@@ -5,6 +5,7 @@ import 'base_service.dart';
 
 mixin IAccountService {
   Future<Account?> loginWithFirebase(String idToken);
+  Future<Account?> loginWithPhone(String phone, String password);
   Future<Account?> refreshToken(String refreshToken);
   Future<Account?> getById(int id);
   Future<bool> updateProfile(int id, Map<String, String> data, String filePath);
@@ -40,5 +41,13 @@ class AccountService extends BaseService<Account> with IAccountService {
   Future<bool> updateProfile(
       int id, Map<String, String> data, String filePath) {
     return putWithOneFileBase(data, filePath, id);
+  }
+
+  @override
+  Future<Account?> loginWithPhone(String phone, String password) {
+    return postNoAuth(Endpoints.loginPhone, {
+      "phone": phone,
+      "password": password,
+    });
   }
 }

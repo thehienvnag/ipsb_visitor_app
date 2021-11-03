@@ -13,7 +13,6 @@ Coupon _$CouponFromJson(Map<String, dynamic> json) {
     imageUrl: json['imageUrl'] as String?,
     description: json['description'] as String?,
     code: json['code'] as String?,
-    discountType: json['discountType'] as String?,
     expireDate: json['expireDate'] == null
         ? null
         : DateTime.parse(json['expireDate'] as String),
@@ -28,6 +27,7 @@ Coupon _$CouponFromJson(Map<String, dynamic> json) {
     minSpend: (json['minSpend'] as num?)?.toDouble(),
     limit: json['limit'] as int?,
     storeId: json['storeId'] as int?,
+    couponTypeId: json['couponTypeId'] as int?,
     store: json['store'] == null
         ? null
         : Store.fromJson(json['store'] as Map<String, dynamic>),
@@ -40,7 +40,6 @@ Map<String, dynamic> _$CouponToJson(Coupon instance) => <String, dynamic>{
       'imageUrl': instance.imageUrl,
       'description': instance.description,
       'code': instance.code,
-      'discountType': instance.discountType,
       'productInclude': instance.productInclude,
       'productExclude': instance.productExclude,
       'status': instance.status,
@@ -48,6 +47,7 @@ Map<String, dynamic> _$CouponToJson(Coupon instance) => <String, dynamic>{
       'maxDiscount': instance.maxDiscount,
       'minSpend': instance.minSpend,
       'storeId': instance.storeId,
+      'couponTypeId': instance.couponTypeId,
       'limit': instance.limit,
       'expireDate': instance.expireDate?.toIso8601String(),
       'publishDate': instance.publishDate?.toIso8601String(),

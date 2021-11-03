@@ -17,10 +17,15 @@ class AuthServices {
   static bool isLoggedIn() => userLoggedIn.value.id != null;
 
   static Future<bool> loginWithFirebase(User userCredentials) async {
-    print(await userCredentials.getIdToken());
     IAccountService _accountService = Get.find();
     final idToken = await userCredentials.getIdToken();
     final accountInfo = await _accountService.loginWithFirebase(idToken);
+    return saveAuthInfo(accountInfo);
+  }
+
+  static Future<bool> loginWithPhone(String phone, String password) async {
+    IAccountService _accountService = Get.find();
+    final accountInfo = await _accountService.loginWithPhone(phone, password);
     return saveAuthInfo(accountInfo);
   }
 

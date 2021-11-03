@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ import 'package:ipsb_visitor_app/src/pages/home/controllers/home_controller.dart
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:ipsb_visitor_app/src/widgets/custom_bottom_bar.dart';
 import 'package:ipsb_visitor_app/src/widgets/custom_search_bar.dart';
+import 'package:ipsb_visitor_app/src/widgets/ticket_box.dart';
 import 'package:ipsb_visitor_app/src/widgets/user_welcome.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -47,7 +49,7 @@ class HomePage extends GetView<HomeController> {
                                 padding: EdgeInsets.only(left: 10),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Danh mục sản phẩm',
+                                  'CATEGORIES',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
@@ -59,7 +61,7 @@ class HomePage extends GetView<HomeController> {
                                 child: TextButton(
                                   onPressed: () {},
                                   child: Text(
-                                    'Xem thêm >>',
+                                    'View more >>',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey,
@@ -135,7 +137,7 @@ class HomePage extends GetView<HomeController> {
                                 padding: EdgeInsets.only(left: 10),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Thương hiệu nổi bật',
+                                  'OUTSTANDING STORES',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
@@ -147,7 +149,7 @@ class HomePage extends GetView<HomeController> {
                                 child: TextButton(
                                   onPressed: () {},
                                   child: Text(
-                                    'Xem thêm >>',
+                                    'View more >>',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey,
@@ -158,67 +160,62 @@ class HomePage extends GetView<HomeController> {
                             ],
                           ),
                           Container(
-                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            width: screenSize.width,
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 15),
                             child: Obx(() {
                               var listStore = controller.listStore;
                               int storeCount =
                                   listStore.length > 9 ? 9 : listStore.length;
 
-                              return SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    Wrap(
-                                      spacing: 18,
-                                      children:
-                                          List.generate(storeCount, (index) {
-                                        final store = listStore[index];
-                                        return GestureDetector(
-                                          onTap: () => controller
-                                              .goToStoreDetails(store.id),
+                              return Wrap(
+                                direction: Axis.horizontal,
+                                alignment: WrapAlignment.spaceBetween,
+                                children: List.generate(storeCount, (index) {
+                                  final store = listStore[index];
+                                  return GestureDetector(
+                                    onTap: () =>
+                                        controller.goToStoreDetails(store.id),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              right: 5, bottom: 15),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 6, vertical: 2),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.black12),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
                                           child: Column(
                                             children: [
                                               Container(
-                                                margin: const EdgeInsets.only(
-                                                    right: 5, bottom: 10),
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 6, vertical: 2),
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Colors.black12),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
+                                                width: 60,
+                                                height: 60,
+                                                child: Image.network(
+                                                  store.imageUrl ?? '',
+                                                  fit: BoxFit.contain,
                                                 ),
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      width: 60,
-                                                      height: 60,
-                                                      child: Image.network(
-                                                        store.imageUrl ?? '',
-                                                        fit: BoxFit.contain,
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      margin: EdgeInsets.only(
-                                                          top: 10),
-                                                      width: 100,
-                                                      height: 35,
-                                                      child: Text(
-                                                        store.name ?? '',
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
-                                                    ),
-                                                  ],
+                                              ),
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(top: 10),
+                                                width: 100,
+                                                height: 35,
+                                                child: Text(
+                                                  store.name ?? '',
+                                                  textAlign: TextAlign.center,
                                                 ),
                                               ),
                                             ],
                                           ),
-                                        );
-                                      }),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  );
+                                }),
                               );
                             }),
                           ),
@@ -240,7 +237,7 @@ class HomePage extends GetView<HomeController> {
                                 padding: EdgeInsets.only(left: 10),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Ưu đãi nổi bật',
+                                  'OUTSTANDING COUPONS',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
@@ -252,7 +249,7 @@ class HomePage extends GetView<HomeController> {
                                 child: TextButton(
                                   onPressed: () {},
                                   child: Text(
-                                    'Xem thêm >>',
+                                    'View more >>',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey,
@@ -265,7 +262,7 @@ class HomePage extends GetView<HomeController> {
                           Obx(() {
                             var listCoupon = controller.listCoupon;
                             return Container(
-                              height: 290,
+                              height: 180,
                               margin: const EdgeInsets.only(left: 5),
                               child: ListView.builder(
                                 addSemanticIndexes: true,
@@ -278,108 +275,16 @@ class HomePage extends GetView<HomeController> {
                                     onTap: () =>
                                         controller.goToCouponDetails(coupon),
                                     child: Container(
-                                      margin: const EdgeInsets.only(
-                                        right: 20,
-                                        bottom: 15,
-                                      ),
-                                      padding: const EdgeInsets.only(
-                                        top: 15,
-                                        left: 10,
-                                        right: 10,
-                                        bottom: 5,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: Colors.grey.shade300,
-                                        ),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            height: 150,
-                                            width: 280,
-                                            margin: const EdgeInsets.only(
-                                                bottom: 10),
-                                            decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.5),
-                                                  spreadRadius: 1,
-                                                  blurRadius: 7,
-                                                  offset: Offset(0,
-                                                      3), // changes position of shadow
-                                                ),
-                                              ],
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                  coupon.imageUrl ?? '',
-                                                ),
-                                                fit: BoxFit.fitWidth,
-                                                alignment: Alignment.topCenter,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                            ),
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Container(
-                                                width: 295,
-                                                child: ListTile(
-                                                  title: Text(
-                                                    Formatter.shorten(
-                                                        coupon.store?.name),
-                                                  ),
-                                                  subtitle: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        Formatter.shorten(
-                                                          coupon.description,
-                                                          25,
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        margin: const EdgeInsets
-                                                            .only(top: 5),
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(5),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          border: Border.all(
-                                                            color: AppColors
-                                                                .primary,
-                                                            width: 1.2,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(4),
-                                                        ),
-                                                        child: Text(
-                                                          "HSD: " +
-                                                              Formatter.date(
-                                                                coupon
-                                                                    .expireDate,
-                                                              ),
-                                                          style: TextStyle(
-                                                              color: AppColors
-                                                                  .primary),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                      padding: const EdgeInsets.all(10),
+                                      child: TicketBox.small(
+                                        width: 350,
+                                        imgUrl: coupon.imageUrl!,
+                                        storeName: coupon.store?.name,
+                                        name: coupon.name,
+                                        description: coupon.description,
+                                        amount: coupon.amount,
+                                        couponTypeId: coupon.couponTypeId,
+                                        expireDate: coupon.expireDate,
                                       ),
                                     ),
                                   );
@@ -406,7 +311,7 @@ class HomePage extends GetView<HomeController> {
                                 padding: EdgeInsets.only(left: 10),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Tòa nhà gần bạn',
+                                  'NEARBY BUILDINGS',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
@@ -418,7 +323,7 @@ class HomePage extends GetView<HomeController> {
                                 child: TextButton(
                                   onPressed: () {},
                                   child: Text(
-                                    'Xem thêm >>',
+                                    'View more >>',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey,
@@ -500,34 +405,6 @@ class HomePage extends GetView<HomeController> {
                                                           fontSize: 16),
                                                     ),
                                                   ),
-                                                  Container(
-                                                    child: RichText(
-                                                      text: TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            text:
-                                                                'Đang hoạt động',
-                                                            style: TextStyle(
-                                                              color: Colors
-                                                                  .blueAccent,
-                                                              fontFamily: Fonts
-                                                                  .montserrat,
-                                                            ),
-                                                          ),
-                                                          TextSpan(
-                                                            text:
-                                                                ' 7h00 - 21h30',
-                                                            style: TextStyle(
-                                                              color: Colors
-                                                                  .black87,
-                                                              fontFamily: Fonts
-                                                                  .montserrat,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -562,6 +439,7 @@ class HomePage extends GetView<HomeController> {
                 top: 105,
                 left: 0,
                 child: Container(
+                  margin: const EdgeInsets.only(top: 20),
                   width: screenSize.width,
                   height: 240,
                   child: Obx(() {
@@ -577,32 +455,39 @@ class HomePage extends GetView<HomeController> {
                       );
                     return CarouselSlider(
                       options: CarouselOptions(
-                        aspectRatio: 2.0,
+                        height: 240,
                         enlargeCenterPage: true,
-                        enableInfiniteScroll: false,
+                        enlargeStrategy: CenterPageEnlargeStrategy.height,
                         initialPage: 2,
                         autoPlay: true,
                       ),
-                      items: images.map((i) {
+                      items: images.map((img) {
                         return Builder(
                           builder: (BuildContext context) {
                             return Container(
-                              width: screenSize.width * 1.2,
+                              width: 350,
+                              height: 240,
+                              margin: const EdgeInsets.only(
+                                bottom: 30,
+                                right: 15,
+                                left: 15,
+                              ),
                               decoration: BoxDecoration(
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(12),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 1,
                                     blurRadius: 7,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
+                                    offset: Offset(0, 3),
                                   ),
                                 ],
                                 image: DecorationImage(
-                                  alignment: Alignment.topCenter,
-                                  image: NetworkImage(i),
-                                  fit: BoxFit.fitWidth,
+                                  alignment: Alignment.center,
+                                  image: CachedNetworkImageProvider(img),
+                                  fit: BoxFit.cover,
+                                  scale: 0.95,
                                 ),
                               ),
                             );

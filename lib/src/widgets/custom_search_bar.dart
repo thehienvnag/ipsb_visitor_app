@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/pages/map/controllers/map_controller.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
 import 'package:ipsb_visitor_app/src/pages/home/controllers/home_controller.dart';
+import 'package:menu_button/menu_button.dart';
 
 import 'custom_menu_button.dart';
 
@@ -19,6 +21,7 @@ class MapSearchBar extends GetView<MapController> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.only(top: 48),
       child: FloatingSearchBar(
@@ -28,7 +31,7 @@ class MapSearchBar extends GetView<MapController> {
         transitionCurve: Curves.easeInOut,
         physics: const BouncingScrollPhysics(),
         openAxisAlignment: 0.0,
-        width: 390,
+        width: screenSize.width * 0.95,
         debounceDelay: const Duration(milliseconds: 500),
         onQueryChanged: (query) {
           controller.searchLocations(query);
@@ -130,15 +133,15 @@ class HomeSearchBar extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    // final screen = MediaQuery.of(context).size;
+    final screen = MediaQuery.of(context).size;
     return FloatingSearchBar(
-      hint: 'Tìm kiếm ưu đãi..',
+      hint: 'Search coupons..',
       scrollPadding: const EdgeInsets.only(top: 10, bottom: 56),
       transitionDuration: const Duration(milliseconds: 800),
       transitionCurve: Curves.easeInOut,
       physics: const BouncingScrollPhysics(),
       openAxisAlignment: 0.0,
-      width: 390,
+      width: screen.width * 0.95,
       debounceDelay: const Duration(milliseconds: 500),
       onQueryChanged: (query) => controller.searchCoupons(query),
       transition: CircularFloatingSearchBarTransition(),
@@ -147,29 +150,26 @@ class HomeSearchBar extends GetView<HomeController> {
       actions: [
         FloatingSearchBarAction(
           showIfOpened: false,
-          child: GestureDetector(
-            onTap: () => controller.gotoDetails(),
-            child: Row(
-              children: [
-                Container(
-                  height: 34,
-                  width: 1.3,
-                  color: Colors.grey.shade300,
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 8, right: 10),
-                  child: Icon(Icons.apartment_rounded, color: Colors.black45),
-                ),
-                Text(
-                  Formatter.shorten(buildingName, 10),
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
+          child: MenuButton<String>(
+            selectedItem: "Hello 1",
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: Text('Products'),
             ),
+            items: ["Coupons", "Products", "Stores"],
+            itemBuilder: (value) => Container(
+              height: 40,
+              alignment: Alignment.centerLeft,
+              padding:
+                  const EdgeInsets.symmetric(vertical: 0.0, horizontal: 16),
+              child: Text(value),
+            ),
+            toggledChild: Container(
+              padding: const EdgeInsets.all(10),
+              child: Text('Products'),
+            ),
+            onItemSelected: (value) {},
+            // onMenuButtonToggle: (bool isToggle) {},
           ),
         ),
         FloatingSearchBarAction.searchToClear(

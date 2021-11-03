@@ -77,8 +77,6 @@ class ApiHelper extends GetConnect with IApiHelper {
     // Request modifier: [Add bearer token]
     httpClient.addRequestModifier((Request request) async {
       request.headers["Authorization"] = await AuthServices.getAuthHeader();
-      // print("Token: " + request.headers["Authorization"].toString());
-
       return request;
     });
 
@@ -115,7 +113,7 @@ class ApiHelper extends GetConnect with IApiHelper {
   }
 
   @override
-  Future<Response> count<T> (String uri, Map<String, dynamic> query) {
+  Future<Response> count<T>(String uri, Map<String, dynamic> query) {
     return get<T>(uri, query: query);
   }
 

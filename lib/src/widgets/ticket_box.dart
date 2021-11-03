@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart';
 
@@ -62,8 +63,11 @@ class TicketBox extends StatelessWidget {
         child: ClipPath(
           child: Container(
             child: CustomPaint(
-              painter:
-                  DashPainter(xAxisMain: xAxisMain, fromMain: fromEdgeMain),
+              painter: DashPainter(
+                xAxisMain: xAxisMain,
+                fromMain: fromEdgeMain,
+                ticketWidth: ticketWidth,
+              ),
               child: child,
             ),
             color: Colors.white,
@@ -76,12 +80,13 @@ class TicketBox extends StatelessWidget {
 
   factory TicketBox.small({
     required String imgUrl,
-    required String? storeName,
-    required String? name,
-    required String? description,
-    required double? amount,
-    required String? discountType,
-    required DateTime? expireDate,
+    String? storeName,
+    String? name,
+    String? description,
+    double? amount,
+    int? couponTypeId,
+    DateTime? expireDate,
+    required double width,
   }) {
     return TicketBox(
       margin: 20,
@@ -92,7 +97,7 @@ class TicketBox extends StatelessWidget {
       smallClipRadius: 15,
       clipRadius: 10,
       numberOfSmallClips: 8,
-      ticketWidth: 360,
+      ticketWidth: width,
       ticketHeight: 130,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,22 +105,21 @@ class TicketBox extends StatelessWidget {
         children: [
           Container(
             margin: const EdgeInsets.only(top: 12, left: 6),
-            child: Card(
-              child: Container(
-                width: 95,
-                height: 95,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(imgUrl),
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(7),
+            child: Container(
+              width: 95,
+              height: 95,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black26, width: 0.4),
+                image: DecorationImage(
+                  image: CachedNetworkImageProvider(imgUrl),
+                  fit: BoxFit.cover,
                 ),
+                borderRadius: BorderRadius.circular(7),
               ),
             ),
           ),
           Container(
-            width: 227,
+            width: width - 106,
             height: 130,
             padding: const EdgeInsets.only(top: 4),
             child: Column(
@@ -124,7 +128,7 @@ class TicketBox extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      Formatter.shorten(storeName).toUpperCase(),
+                      Formatter.shorten(storeName, 12).toUpperCase(),
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 17,
@@ -132,27 +136,27 @@ class TicketBox extends StatelessWidget {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      Formatter.amount(amount, discountType),
+                      Formatter.amount(amount, couponTypeId),
                       style: TextStyle(
-                        fontSize: discountType == 'Fixed' ? 25 : 40,
+                        fontSize: couponTypeId == 2 ? 25 : 40,
                       ),
                     ),
                     Text(
-                      Formatter.shorten(description, 20).toUpperCase(),
+                      Formatter.shorten(description, 20),
                       style: TextStyle(
                         fontSize: 14,
                       ),
                     ),
-                  ],
-                ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    'Hết hạn: ${Formatter.date(expireDate)}',
-                    style: TextStyle(
-                      fontSize: 14,
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        'Expires: ${Formatter.date(expireDate)}',
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
@@ -171,7 +175,7 @@ class DashPainter extends CustomPainter {
   DashPainter({
     this.fromMain = 120,
     this.ticketHeight = 130,
-    this.ticketWidth = 360,
+    required this.ticketWidth,
     this.xAxisMain = true,
   });
   @override

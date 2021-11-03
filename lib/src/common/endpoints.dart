@@ -42,6 +42,9 @@ class Endpoints {
   /// Login via firebase endpoint version /api/v1
   static const loginFirebase = '$apiVer1/auth/login-firebase';
 
+  /// Login via phone endpoint version /api/v1
+  static const loginPhone = '$apiVer1/auth/login-phone';
+
   /// Refresh token endpoint version /api/v1
   static const refreshToken = '$apiVer1/auth/refresh-token';
 

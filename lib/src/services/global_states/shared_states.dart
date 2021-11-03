@@ -22,7 +22,7 @@ class SharedStates extends GetxService {
   final couponInUse = CouponInUse().obs;
 
   /// Building
-  final building = Building(id: 38, name: "Zin blue").obs;
+  final building = Building(id: 12, name: "FPT HCM University").obs;
 
   /// List shopping
   final shoppingList = ShoppingList().obs;
@@ -162,8 +162,9 @@ class SharedStates extends GetxService {
                           ),
                           onPressed: () {
                             loginController.checkLoginWithPhoneAndPass(
-                                phoneController.value.text,
-                                passController.value.text);
+                              phoneController.value.text,
+                              passController.value.text,
+                            );
                           },
                           child: Text(
                             'Login',

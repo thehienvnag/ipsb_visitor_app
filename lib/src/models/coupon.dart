@@ -10,12 +10,12 @@ class Coupon {
       imageUrl,
       description,
       code,
-      discountType,
       productInclude,
       productExclude,
       status;
+
   final double? amount, maxDiscount, minSpend;
-  final int? storeId, limit;
+  final int? storeId, couponTypeId, limit;
   final DateTime? expireDate, publishDate;
   final Store? store;
 
@@ -25,7 +25,6 @@ class Coupon {
     this.imageUrl,
     this.description,
     this.code,
-    this.discountType,
     this.expireDate,
     this.publishDate,
     this.productInclude,
@@ -36,6 +35,7 @@ class Coupon {
     this.minSpend,
     this.limit,
     this.storeId,
+    this.couponTypeId,
     this.store,
   });
 

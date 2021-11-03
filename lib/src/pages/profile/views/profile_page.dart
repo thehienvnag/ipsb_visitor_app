@@ -28,40 +28,10 @@ class ProfilePage extends GetView<ProfileController> {
                   height: 10.0 * 10,
                   width: 10.0 * 10,
                   margin: EdgeInsets.only(top: 10.0 * 3),
-                  child: Stack(
-                    children: <Widget>[
-                      CircleAvatar(
-                        backgroundImage: Utils.resolveNetworkImg(
-                            imageUrl, 'assets/images/profile.png'),
-                        radius: 100,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.toNamed(Routes.profileDetail);
-                        },
-                        child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: Container(
-                            height: 35,
-                            width: 35,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    color: Colors.black26, width: 1.5)),
-                            child: Center(
-                              heightFactor: 10.0 * 1.5,
-                              widthFactor: 10.0 * 1.5,
-                              child: Icon(
-                                Icons.edit,
-                                // color: Colors.white,
-                                size: 25,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: CircleAvatar(
+                    backgroundImage: Utils.resolveNetworkImg(
+                        imageUrl, 'assets/images/profile.png'),
+                    radius: 100,
                   ),
                 ),
                 SizedBox(height: 20),
@@ -101,112 +71,6 @@ class ProfilePage extends GetView<ProfileController> {
                   ),
                   SizedBox(width: 15),
                   Text('Tài khoản của tôi',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                      )),
-                  Spacer(),
-                  Icon(
-                    Icons.arrow_forward,
-                    size: 25,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          GestureDetector(
-            child: Container(
-              height: 55,
-              margin: EdgeInsets.symmetric(horizontal: 30).copyWith(bottom: 20),
-              padding: EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey.withOpacity(0.1),
-              ),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.help,
-                    size: 25,
-                    color: const Color(0xff344CDD),
-                  ),
-                  SizedBox(width: 15),
-                  Text('Trợ giúp và hỗ trợ',
-                      style: TextStyle(
-                        fontSize: 10.0 * 1.7,
-                        fontWeight: FontWeight.w500,
-                      )),
-                  Spacer(),
-                  Icon(
-                    Icons.arrow_forward,
-                    size: 25,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          GestureDetector(
-            child: Container(
-              height: 55,
-              margin: EdgeInsets.symmetric(
-                horizontal: 30,
-              ).copyWith(
-                bottom: 20,
-              ),
-              padding: EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey.withOpacity(0.1),
-              ),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.policy,
-                    size: 25,
-                    color: const Color(0xff344CDD),
-                  ),
-                  SizedBox(width: 15),
-                  Text('Điều khoản & chính sách',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                      )),
-                  Spacer(),
-                  Icon(
-                    Icons.arrow_forward,
-                    size: 25,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Get.toNamed(Routes.setting);
-            },
-            child: Container(
-              height: 55,
-              margin: EdgeInsets.symmetric(
-                horizontal: 30,
-              ).copyWith(bottom: 20),
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey.withOpacity(0.1),
-              ),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.settings,
-                    size: 25,
-                    color: const Color(0xff344CDD),
-                  ),
-                  SizedBox(width: 15),
-                  Text('Cài đặt',
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
