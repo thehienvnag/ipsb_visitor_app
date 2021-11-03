@@ -70,7 +70,7 @@ class ProfilePage extends GetView<ProfileController> {
                     color: const Color(0xff344CDD),
                   ),
                   SizedBox(width: 15),
-                  Text('Tài khoản của tôi',
+                  Text('My Account',
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
@@ -110,7 +110,7 @@ class ProfilePage extends GetView<ProfileController> {
                     color: const Color(0xff344CDD),
                   ),
                   SizedBox(width: 15),
-                  Text('Đăng xuất',
+                  Text('Logout',
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,

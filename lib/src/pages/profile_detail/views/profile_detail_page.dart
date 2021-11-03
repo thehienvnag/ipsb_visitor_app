@@ -98,19 +98,19 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
               buildTextField(
                   "Name",
                   AuthServices.isLoggedIn()
-                      ? AuthServices.userLoggedIn.value.name!
+                      ? AuthServices.userLoggedIn.value.name.toString()
                       : "Not sigin",
                   false),
               buildTextField(
                   "Email",
                   AuthServices.isLoggedIn()
-                      ? AuthServices.userLoggedIn.value.email!
+                      ? AuthServices.userLoggedIn.value.email.toString()
                       : "Not sigin",
                   false),
               buildTextField(
                   "Phone",
                   AuthServices.isLoggedIn()
-                      ? AuthServices.userLoggedIn.value.phone!
+                      ? AuthServices.userLoggedIn.value.phone.toString()
                       : "Not sigin",
                   false),
               SizedBox(

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
@@ -66,7 +67,7 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                 Container(
                                   width: screenSize.width * 0.7,
                                   child: Text(
-                                    buildingSelected.name ?? 'Vạn hạnh mall',
+                                    buildingSelected.name ?? 'Loading',
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 ),
@@ -119,7 +120,7 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                       ),
                                       TextButton(
                                         child: Text(
-                                          "Xem bản đồ >>",
+                                          "View Map >>",
                                           style: TextStyle(
                                               color: Colors.blueAccent,
                                               fontSize: 16),
@@ -148,7 +149,8 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                   ),
                                   GestureDetector(
                                       onTap: () {
-                                        Get.toNamed(Routes.buildingStore);
+                                        controller.goToBuildingStoreDetails(
+                                            buildingSelected.id);
                                       },
                                       child: Text(
                                         'View more >>',
@@ -163,7 +165,7 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                   listStore.length > 9 ? 9 : listStore.length;
                               if (listStore.isEmpty) {
                                 return Center(
-                                  child: Text(''),
+                                  child: Text('No data'),
                                 );
                               }
                               return Container(

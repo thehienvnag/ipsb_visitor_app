@@ -22,15 +22,13 @@ class BuildingDetailController extends GetxController {
 
   /// Get list Store from api by buildingID
   Future<void> getStore(String buildingId) async {
-    final paging =
-        await _storeService.getStoresByBuilding(int.parse(buildingId));
+    final paging = await _storeService.getStoresByBuilding(int.parse(buildingId));
     listStore.value = paging.content!;
   }
 
   /// Get building details
   Future<void> getBuildingDetails(String buildingId) async {
-    final result =
-        await _buildingService.getBuildingById(int.parse(buildingId));
+    final result = await _buildingService.getBuildingById(int.parse(buildingId));
     if (result != null) {
       building.value = result;
     }
@@ -39,6 +37,12 @@ class BuildingDetailController extends GetxController {
   void goToStoreDetails(int? id) {
     if (id != null) {
       Get.toNamed(Routes.storeDetails, parameters: {"id": id.toString()});
+    }
+  }
+
+  void goToBuildingStoreDetails(int? id) {
+    if (id != null) {
+      Get.toNamed(Routes.buildingStore, parameters: {"buildingID": id.toString()});
     }
   }
 

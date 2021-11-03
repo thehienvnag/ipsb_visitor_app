@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
@@ -30,7 +31,7 @@ class BuildingStorePage extends GetView<BuildingStoreController> {
         title: Column(
           children: [
             Text(
-              'Danh sách thương hiệu',
+              'List of brands',
               style: TextStyle(color: Colors.black),
             ),
           ],
@@ -77,8 +78,7 @@ class BuildingStorePage extends GetView<BuildingStoreController> {
                         selected: category.select!,
                         onSelected: (value) {
                           controller.changeSelected(category.category?.id);
-                          controller.getStoreByCategory(
-                              category.select!, category.id!);
+                          controller.getStoreByCategory(category.select!, category.id!);
                         },
                       ),
                     );
@@ -87,6 +87,16 @@ class BuildingStorePage extends GetView<BuildingStoreController> {
               })),
           Obx(() {
             var listStore = controller.listStoreByCategory;
+            if (listStore.isEmpty) {
+              return Container(
+                  margin: EdgeInsets.only(top: screenSize.height*0.3),
+                  child: Center(child: Column(
+                    children: [
+                      CircularProgressIndicator(),
+                      Text('No data')
+                    ],
+                  )));
+            }
             return GestureDetector(
               onTap: () {},
               child: Padding(
@@ -108,16 +118,19 @@ class BuildingStorePage extends GetView<BuildingStoreController> {
                     itemCount: listStore.length,
                     itemBuilder: (BuildContext ctx, index) {
                       final store = listStore[index];
+                      controller.getCouponsByStoreId(store.id!);
                       return GestureDetector(
                         onTap: () => controller.goToStoreDetails(store.id),
                         child: Card(
                           child: ListTile(
-                            leading: Image.network(
-                              store.imageUrl ?? "",
-                              width: 50,
-                            ),
+                            leading: Image(image: CachedNetworkImageProvider( store.imageUrl ?? ""), width: 50),
                             title: Text(Formatter.shorten(store.name, 10)),
-                            subtitle: Text(Formatter.shorten("3 coupons", 10)),
+                            subtitle:
+                            Obx(() {
+                              return (controller.listMap.isNotEmpty)
+                                  ? Text(controller.listMap[store.id!].toString() + ' coupons')
+                                  : Text('0 coupons');
+                            })
                           ),
                         ),
                       );

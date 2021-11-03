@@ -1,14 +1,16 @@
 import 'package:get/get.dart';
+import 'package:ipsb_visitor_app/src/models/coupon.dart';
 import 'package:ipsb_visitor_app/src/models/product_category.dart';
 import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/product_category_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/store_service.dart';
 
 class BuildingStoreController extends GetxController {
   IStoreService _storeService = Get.find();
   IProductCategoryService _categoryService = Get.find();
-
+  ICouponService _couponService = Get.find();
   /// Get list stores of building
   final listStore = <Store>[].obs;
 
@@ -18,9 +20,10 @@ class BuildingStoreController extends GetxController {
     }
   }
 
+  String? id = Get.parameters['buildingID'];
   /// Get list Store by api from buildingID
   Future<void> getStore() async {
-    final paging = await _storeService.getStoresByBuilding(12);
+    final paging = await _storeService.getStoresByBuilding(int.parse(id!));
     listStore.value = paging.content!;
     for (int i = 0; i < listStore.length; i++) {
       listStoreByCategory.add(listStore[i]);
@@ -38,10 +41,7 @@ class BuildingStoreController extends GetxController {
     final paging = await _categoryService.getProductCategory();
     listProductCategory.value = paging.content!;
     for (int i = 0; i < listProductCategory.length; i++) {
-      listIndex.add(SelectedIndex(
-          id: listProductCategory[i].id,
-          select: false,
-          category: listProductCategory[i]));
+      listIndex.add(SelectedIndex(id: listProductCategory[i].id, select: false, category: listProductCategory[i]));
     }
   }
 
@@ -70,10 +70,18 @@ class BuildingStoreController extends GetxController {
         for (int i = 0; i < listStore.length; i++) {
           listStoreByCategory.add(listStore[i]);
         }
-      } else if (listStore[i].productCategoryId!.contains(cateId.toString())) {
+      } else if (listStore[i].productCategoryId.toString().contains(cateId.toString())) {
         listStoreByCategory.add(listStore[i]);
       }
     }
+  }
+
+  var listCoupon = <Coupon>[];
+  final listMap = <int, int>{}.obs;
+
+  Future<void> getCouponsByStoreId(int storeId) async {
+    listCoupon = await _couponService.getCouponsByStoreId(storeId);
+    listMap.putIfAbsent(storeId, () => listCoupon.length);
   }
 
   @override
