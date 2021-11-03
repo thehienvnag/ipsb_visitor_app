@@ -132,7 +132,7 @@ class HomeSearchBar extends GetView<HomeController> {
   Widget build(BuildContext context) {
     // final screen = MediaQuery.of(context).size;
     return FloatingSearchBar(
-      hint: 'Tìm kiếm ưu đãi..',
+      hint: 'Search coupons ..',
       scrollPadding: const EdgeInsets.only(top: 10, bottom: 56),
       transitionDuration: const Duration(milliseconds: 800),
       transitionCurve: Curves.easeInOut,

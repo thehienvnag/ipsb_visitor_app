@@ -50,25 +50,25 @@ class MyCouponPage extends GetView<MyCouponController> {
                           Container(
                             width: 100,
                             child: Tab(
-                              text: "TẤT CẢ",
+                              text: "ALL",
                             ),
                           ),
                           Container(
                             width: 100,
                             child: Tab(
-                              text: "MỚI",
+                              text: "NEW",
                             ),
                           ),
                           Container(
                             width: 100,
                             child: Tab(
-                              text: "ĐÃ DÙNG",
+                              text: "USED",
                             ),
                           ),
                           Container(
                             width: 100,
                             child: Tab(
-                              text: "HẾT HẠN",
+                              text: "EXPIRED",
                             ),
                           ),
                         ],
@@ -157,7 +157,7 @@ class MyCouponPage extends GetView<MyCouponController> {
       return Container(
         child: Center(
             child: Text(
-          "Chưa lưu voucher nào !",
+          "No coupon have been saved !",
           style: TextStyle(fontSize: 20),
         )),
       );

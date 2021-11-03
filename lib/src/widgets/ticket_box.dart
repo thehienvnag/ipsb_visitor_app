@@ -148,7 +148,7 @@ class TicketBox extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.only(bottom: 10),
                   child: Text(
-                    'Hết hạn: ${Formatter.date(expireDate)}',
+                    'Expired Date: ${Formatter.date(expireDate)}',
                     style: TextStyle(
                       fontSize: 14,
                     ),

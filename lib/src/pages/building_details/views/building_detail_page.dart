@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
@@ -66,14 +67,14 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                 Container(
                                   width: screenSize.width * 0.7,
                                   child: Text(
-                                    buildingSelected.name ?? 'Vạn hạnh mall',
+                                    buildingSelected.name ?? 'Loading',
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 ),
                               ],
                             ),
                             Text(
-                              'Trung tâm mua sắm',
+                              'Mall',
                               style: TextStyle(fontSize: 16),
                             ),
                             Container(
@@ -83,12 +84,12 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Mở cửa 9:30',
+                                    'Opent time 9:30',
                                     style: TextStyle(
                                         fontSize: 16, color: Colors.blueAccent),
                                   ),
                                   Text(
-                                    '  Đóng cửa 22:30',
+                                    'Close time 22:30',
                                     style: TextStyle(
                                         fontSize: 16, color: Colors.blueAccent),
                                   ),
@@ -112,23 +113,18 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                       Container(
                                         margin: const EdgeInsets.only(top: 8),
                                         child: Text(
-                                          Formatter.shorten(
-                                              buildingSelected.address, 60),
+                                          Formatter.shorten(buildingSelected.address, 60),
                                           style: TextStyle(fontSize: 17),
                                         ),
                                       ),
                                       TextButton(
                                         child: Text(
-                                          "Xem bản đồ >>",
-                                          style: TextStyle(
-                                              color: Colors.blueAccent,
-                                              fontSize: 16),
+                                          "View Map >>",
+                                          style: TextStyle(color: Colors.blueAccent, fontSize: 16),
                                         ),
                                         onPressed: () {
-                                          MapUtils.openMap(
-                                              controller.currentAddress.value,
-                                              buildingSelected.address
-                                                  .toString());
+                                          MapUtils.openMap(controller.currentAddress.value,
+                                              buildingSelected.address.toString());
                                         },
                                       )
                                     ],
@@ -143,29 +139,26 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Thương Hiệu',
+                                    'Brands',
                                     style: TextStyle(fontSize: 18),
                                   ),
                                   GestureDetector(
                                       onTap: () {
-                                        Get.toNamed(Routes.buildingStore);
+                                        controller.goToBuildingStoreDetails(buildingSelected.id);
                                       },
                                       child: Text(
-                                        'Xem tất cả',
-                                        style: TextStyle(
-                                            color: Colors.blueAccent,
-                                            fontSize: 15),
+                                        'View More',
+                                        style: TextStyle(color: Colors.blueAccent, fontSize: 15),
                                       ))
                                 ],
                               ),
                             ),
                             Obx(() {
                               var listStore = controller.listStore;
-                              int storeCount =
-                                  listStore.length > 9 ? 9 : listStore.length;
+                              int storeCount = listStore.length > 9 ? 9 : listStore.length;
                               if (listStore.isEmpty) {
                                 return Center(
-                                  child: Text(''),
+                                  child: Text('No data'),
                                 );
                               }
                               return Container(
@@ -174,57 +167,35 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                   var listStore = controller.listStore;
                                   return SingleChildScrollView(
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Wrap(
                                           spacing: 15,
-                                          children: List.generate(storeCount,
-                                              (index) {
+                                          children: List.generate(storeCount, (index) {
                                             final store = listStore[index];
                                             return GestureDetector(
-                                              onTap: () => controller
-                                                  .goToStoreDetails(store.id),
+                                              onTap: () => controller.goToStoreDetails(store.id),
                                               child: Column(
                                                 children: [
                                                   Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            right: 3,
-                                                            bottom: 10),
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 2,
-                                                            vertical: 2),
+                                                    margin: const EdgeInsets.only(right: 3, bottom: 10),
+                                                    padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                                                     decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color:
-                                                              Colors.black12),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
+                                                      border: Border.all(color: Colors.black12),
+                                                      borderRadius: BorderRadius.circular(8),
                                                     ),
                                                     child: Column(
                                                       children: [
                                                         Container(
                                                           width: 60,
                                                           height: 60,
-                                                          child: Image.network(
-                                                            store.imageUrl ??
-                                                                '',
-                                                            fit: BoxFit.contain,
-                                                          ),
+                                                          child: Image(image: CachedNetworkImageProvider( store.imageUrl ?? ""), width: 50, fit: BoxFit.contain),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(top: 10),
                                                           width: 100,
                                                           height: 35,
-                                                          child: Text(
-                                                            store.name ?? '',
-                                                            textAlign: TextAlign
-                                                                .center,
+                                                          child: Text(store.name ?? '', textAlign: TextAlign.center,
                                                           ),
                                                         ),
                                                       ],

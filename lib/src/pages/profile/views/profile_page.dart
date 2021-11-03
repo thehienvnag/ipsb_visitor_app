@@ -100,7 +100,7 @@ class ProfilePage extends GetView<ProfileController> {
                     color: const Color(0xff344CDD),
                   ),
                   SizedBox(width: 15),
-                  Text('Tài khoản của tôi',
+                  Text('My Account',
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
@@ -133,7 +133,7 @@ class ProfilePage extends GetView<ProfileController> {
                     color: const Color(0xff344CDD),
                   ),
                   SizedBox(width: 15),
-                  Text('Trợ giúp và hỗ trợ',
+                  Text('Help and support',
                       style: TextStyle(
                         fontSize: 10.0 * 1.7,
                         fontWeight: FontWeight.w500,
@@ -170,7 +170,7 @@ class ProfilePage extends GetView<ProfileController> {
                     color: const Color(0xff344CDD),
                   ),
                   SizedBox(width: 15),
-                  Text('Điều khoản & chính sách',
+                  Text('Terms & Policy ',
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
@@ -206,7 +206,7 @@ class ProfilePage extends GetView<ProfileController> {
                     color: const Color(0xff344CDD),
                   ),
                   SizedBox(width: 15),
-                  Text('Cài đặt',
+                  Text('Setting',
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
@@ -246,7 +246,7 @@ class ProfilePage extends GetView<ProfileController> {
                     color: const Color(0xff344CDD),
                   ),
                   SizedBox(width: 15),
-                  Text('Đăng xuất',
+                  Text('Logout',
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,

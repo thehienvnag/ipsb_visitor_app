@@ -28,7 +28,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
         title: Column(
           children: [
             Text(
-              'Cập nhật thông tin',
+              'Your Infomation',
               style: TextStyle(color: Colors.black87),
             ),
           ],
@@ -66,8 +66,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                                 ? NetworkImage(
                                     AuthServices.userLoggedIn.value.imageUrl!,
                                   )
-                                : NetworkImage(
-                                    'https://mcss.co.za/images/Member-Login.jpg'),
+                                : NetworkImage('https://mcss.co.za/images/Member-Login.jpg'),
                           ),
                         )),
                     Positioned(
@@ -98,22 +97,22 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
               buildTextField(
                   "Name",
                   AuthServices.isLoggedIn()
-                      ? AuthServices.userLoggedIn.value.name!
+                      ? AuthServices.userLoggedIn.value.name.toString()
                       : "Not sigin",
                   false),
               buildTextField(
-                  "Địa chỉ Email",
+                  "Email",
                   AuthServices.isLoggedIn()
-                      ? AuthServices.userLoggedIn.value.email!
+                      ? AuthServices.userLoggedIn.value.email.toString()
                       : "Not sigin",
                   false),
               buildTextField(
-                  "Số điện thoại",
+                  "Phone",
                   AuthServices.isLoggedIn()
-                      ? AuthServices.userLoggedIn.value.phone!
+                      ? AuthServices.userLoggedIn.value.phone.toString()
                       : "Not sigin",
                   false),
-              buildTextField("Địa chỉ (Không bắt buộc)", "", false),
+              buildTextField("Address (Optional)", "", false),
               SizedBox(
                 height: 35,
               ),
@@ -129,7 +128,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                     width: 167,
                     height: 19,
                     child: Text(
-                      "Lưu thông tin",
+                      "Save change",
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),

@@ -47,7 +47,7 @@ class HomePage extends GetView<HomeController> {
                                 padding: EdgeInsets.only(left: 10),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Danh mục sản phẩm',
+                                  'Product Portfolio',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
@@ -59,7 +59,7 @@ class HomePage extends GetView<HomeController> {
                                 child: TextButton(
                                   onPressed: () {},
                                   child: Text(
-                                    'Xem thêm >>',
+                                    'View More >>',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey,
@@ -135,7 +135,7 @@ class HomePage extends GetView<HomeController> {
                                 padding: EdgeInsets.only(left: 10),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Thương hiệu nổi bật',
+                                  'Featured Brands',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
@@ -147,7 +147,7 @@ class HomePage extends GetView<HomeController> {
                                 child: TextButton(
                                   onPressed: () {},
                                   child: Text(
-                                    'Xem thêm >>',
+                                    'View More >>',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey,
@@ -240,7 +240,7 @@ class HomePage extends GetView<HomeController> {
                                 padding: EdgeInsets.only(left: 10),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Ưu đãi nổi bật',
+                                  'Featured Coupons',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
@@ -252,7 +252,7 @@ class HomePage extends GetView<HomeController> {
                                 child: TextButton(
                                   onPressed: () {},
                                   child: Text(
-                                    'Xem thêm >>',
+                                    'View more >>',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey,
@@ -359,15 +359,10 @@ class HomePage extends GetView<HomeController> {
                                                             width: 1.2,
                                                           ),
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(4),
+                                                              BorderRadius.circular(4),
                                                         ),
                                                         child: Text(
-                                                          "HSD: " +
-                                                              Formatter.date(
-                                                                coupon
-                                                                    .expireDate,
-                                                              ),
+                                                          "HSD: " + Formatter.date(coupon.expireDate,),
                                                           style: TextStyle(
                                                               color: AppColors
                                                                   .primary),
@@ -406,7 +401,7 @@ class HomePage extends GetView<HomeController> {
                                 padding: EdgeInsets.only(left: 10),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Tòa nhà gần bạn',
+                                  'Buildings near you',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
@@ -418,7 +413,7 @@ class HomePage extends GetView<HomeController> {
                                 child: TextButton(
                                   onPressed: () {},
                                   child: Text(
-                                    'Xem thêm >>',
+                                    'View More >>',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey,
@@ -445,8 +440,7 @@ class HomePage extends GetView<HomeController> {
                                   // controller.getDistanceBetweenTwoLocation(building.address.toString());
                                   // String distance = controller.distanceTwoPoin.value.toString();
                                   return GestureDetector(
-                                    onTap: () =>
-                                        controller.gotoDetails(building.id),
+                                    onTap: () => controller.gotoDetails(building.id),
                                     child: Container(
                                       height: 100,
                                       padding: const EdgeInsets.symmetric(

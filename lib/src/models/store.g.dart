@@ -81,7 +81,7 @@ Store _$StoreFromJson(Map<String, dynamic> json) {
     description: json['description'] as String?,
     imageUrl: json['imageUrl'] as String?,
     floorPlanId: json['floorPlanId'] as int?,
-    productCategoryId: json['productCategoryId'] as String?,
+    productCategoryId: json['productCategoryIds'] as String?,
     status: json['status'] as String?,
     location: json['location'] == null
         ? null
@@ -95,7 +95,7 @@ Map<String, dynamic> _$StoreToJson(Store instance) => <String, dynamic>{
       'description': instance.description,
       'imageUrl': instance.imageUrl,
       'floorPlanId': instance.floorPlanId,
-      'productCategoryId': instance.productCategoryId,
+      'productCategoryIds': instance.productCategoryId,
       'status': instance.status,
       'floorPlan': instance.floorPlan,
       'location': instance.location,
