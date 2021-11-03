@@ -343,7 +343,7 @@ void showCustomDialog(BuildContext context,Coupon coupon) => showDialog(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(width: screenSize.width*0.4,child: Text("Minimum spend: ")),
+                  Container(width: screenSize.width*0.4,child: Text("Min. spend: ")),
                   Text("${Formatter.price(coupon.minSpend ?? 0).toUpperCase()}")
                 ],
               ),
@@ -354,7 +354,7 @@ void showCustomDialog(BuildContext context,Coupon coupon) => showDialog(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(width: screenSize.width*0.4,child: Text("Maximum discount: ")),
+                  Container(width: screenSize.width*0.4,child: Text("Max. discount: ")),
                   Text("${Formatter.price(coupon.maxDiscount ?? 0).toUpperCase()}")
                 ],
               ),
