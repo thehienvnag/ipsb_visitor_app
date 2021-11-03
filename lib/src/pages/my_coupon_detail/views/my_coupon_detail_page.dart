@@ -354,7 +354,7 @@ void showCustomDialog(BuildContext context, Coupon coupon) => showDialog(
                     children: [
                       Container(
                           width: screenSize.width * 0.4,
-                          child: Text("Minimum spend: ")),
+                          child: Text("Min. spend: ")),
                       Text(
                           "${Formatter.price(coupon.minSpend ?? 0).toUpperCase()}")
                     ],
@@ -369,7 +369,7 @@ void showCustomDialog(BuildContext context, Coupon coupon) => showDialog(
                     children: [
                       Container(
                           width: screenSize.width * 0.4,
-                          child: Text("Maximum discount: ")),
+                          child: Text("Max. discount: ")),
                       Text(
                           "${Formatter.price(coupon.maxDiscount ?? 0).toUpperCase()}")
                     ],
