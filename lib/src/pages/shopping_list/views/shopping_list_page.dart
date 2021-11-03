@@ -10,6 +10,7 @@ import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:ipsb_visitor_app/src/widgets/custom_bottom_bar.dart';
+import 'package:ipsb_visitor_app/src/widgets/user_welcome.dart';
 
 class ShoppingListPage extends GetView<ShoppingListController> {
   @override
@@ -18,13 +19,17 @@ class ShoppingListPage extends GetView<ShoppingListController> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Container(
-          alignment: Alignment.center,
-          child: Text(
-            'Shopping List',
-            style: TextStyle(color: Colors.black),
-          ),
+        title: Text(
+          'Shopping List',
+          style: TextStyle(color: Colors.black),
         ),
+        centerTitle: true,
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 15, top: 5),
+            child: ProfileIcon(),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primary,

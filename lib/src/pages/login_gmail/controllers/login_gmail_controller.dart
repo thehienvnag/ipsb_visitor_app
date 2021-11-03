@@ -53,26 +53,23 @@ class LoginEmailController extends GetxController {
     BotToast.closeAllLoading();
   }
 
-  void checkLoginWithPhoneAndPass(String phone, String pass) {
+  void checkLoginWithPhoneAndPass(String phone, String pass) async {
     try {
-      BotToast.showLoading();
-      if (phone.isNotEmpty && pass.isNotEmpty) {
-        // lưu DB and User here
-
-        BotToast.showText(
-            text: "Sign In Successfull",
-            textStyle: TextStyle(fontSize: 16),
-            duration: const Duration(seconds: 5));
-        //Get.toNamed(Routes.home);
-      } else {
+      if (phone.isEmpty || pass.isEmpty) {
         BotToast.showText(
             text: "Required Information!",
             textStyle: TextStyle(fontSize: 16),
             duration: const Duration(seconds: 7));
+        return;
+      }
+      BotToast.showLoading();
+      bool successLogin = await AuthServices.loginWithPhone(phone, pass);
+      if (successLogin) {
+        BotToast.showText(text: "Sign In Successfull");
+        Get.back();
       }
     } catch (e) {
       log("Lỗi: " + e.toString());
-
       BotToast.showText(text: "Your phone or password wrong ! Login In Failed");
     }
     BotToast.closeAllLoading();

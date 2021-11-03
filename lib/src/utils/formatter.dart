@@ -25,12 +25,12 @@ class Formatter {
     return formatter.format(price) + ' $currency';
   }
 
-  static String amount(double? amount, String? discountType,
+  static String amount(double? amount, int? couponTypeId,
       [String currency = "VNĐ"]) {
-    if (amount == null || discountType == null) {
+    if (amount == null || couponTypeId == null) {
       return '';
     }
-    if (discountType == Constants.discountTypeFixed) {
+    if (couponTypeId == Constants.discountTypeFixed) {
       final formatter = new NumberFormat("###,###,###,###");
       return '-' + formatter.format(amount) + ' $currency';
     }
@@ -38,12 +38,14 @@ class Formatter {
     return '-' + formatter.format(amount) + '%';
   }
 
-  static String dateCaculator(DateTime? date){
+  static String dateCaculator(DateTime? date) {
     if (date == null) {
       return "";
     }
-    int differenceInDays = new DateTime.now().difference(DateTime.parse(date.toString())).inHours;
-    final fifteenAgo = new DateTime.now().subtract(new Duration(hours: differenceInDays));
+    int differenceInDays =
+        new DateTime.now().difference(DateTime.parse(date.toString())).inHours;
+    final fifteenAgo =
+        new DateTime.now().subtract(new Duration(hours: differenceInDays));
     return timeago.format(fifteenAgo, locale: 'en');
   }
 }

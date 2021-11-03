@@ -1,5 +1,6 @@
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
+import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,8 +34,14 @@ class LocationButton extends StatelessWidget {
   const LocationButton({Key? key, required this.textColor}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final SharedStates states = Get.find();
+    final building = states.building.value;
     return TextButton(
-      onPressed: () {},
+      onPressed: () {
+        Get.toNamed(Routes.buildingDetails, parameters: {
+          "id": building.id.toString(),
+        });
+      },
       child: Row(
         children: [
           Icon(
@@ -45,7 +52,7 @@ class LocationButton extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(left: 5),
             child: Text(
-              "Đại học FPT TP.HCM",
+              Formatter.shorten(building.name, 12),
               style: TextStyle(
                 color: textColor,
                 fontWeight: FontWeight.w600,
@@ -82,7 +89,7 @@ class ProfileIcon extends StatelessWidget {
               AuthServices.userLoggedIn.value.imageUrl,
               "assets/images/profile.png",
             ),
-            radius: 30,
+            radius: 35,
           ),
         ),
       ),

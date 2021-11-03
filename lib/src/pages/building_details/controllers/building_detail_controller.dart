@@ -73,7 +73,7 @@ class BuildingDetailController extends GetxController {
     super.onInit();
     String? id = Get.parameters['id'];
     if (id != null) {
-      // getStore(id);
+      getStore(id);
       getBuildingDetails(id);
     }
     // getUserLocation();

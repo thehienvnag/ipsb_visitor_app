@@ -6,6 +6,7 @@ import 'package:ipsb_visitor_app/src/pages/notifications/controllers/notificatio
 import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:ipsb_visitor_app/src/widgets/custom_bottom_bar.dart';
 import 'package:ipsb_visitor_app/src/models/notification.dart';
+import 'package:ipsb_visitor_app/src/widgets/user_welcome.dart';
 
 class NotificationsPage extends GetView<NotificationsController> {
   @override
@@ -20,6 +21,12 @@ class NotificationsPage extends GetView<NotificationsController> {
           'Notification',
           style: TextStyle(color: Colors.black87),
         ),
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 15, top: 5),
+            child: ProfileIcon(),
+          )
+        ],
       ),
       bottomNavigationBar: CustomBottombar(),
       body: Container(
@@ -41,13 +48,13 @@ class NotificationsPage extends GetView<NotificationsController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                margin: EdgeInsets.only(top: 40, right: 20),
-                height: 200,
-                width: 200,
-                child: Image.network(
-                    'https://image.flaticon.com/icons/png/512/891/891462.png'),
-              ),
+              // Container(
+              //   margin: EdgeInsets.only(top: 40, right: 20),
+              //   height: 200,
+              //   width: 200,
+              //   child: Image.network(
+              //       'https://image.flaticon.com/icons/png/512/891/891462.png'),
+              // ),
               Container(
                 margin: EdgeInsets.only(top: 30),
                 child: Text(

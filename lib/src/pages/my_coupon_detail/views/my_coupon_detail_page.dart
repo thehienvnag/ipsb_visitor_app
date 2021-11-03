@@ -21,7 +21,6 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    print("Height: " + screenSize.height.toString() + " , width: " + screenSize.width.toString());
 
     return Obx(() {
       final couponInUse = controller.couponInUse.value;
@@ -67,161 +66,163 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
               smallClipRadius: 15,
               clipRadius: 15,
               numberOfSmallClips: 11,
-              ticketWidth: 370,
+              ticketWidth: screenSize.width * 0.9,
               ticketHeight: 660,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Stack(
                 children: [
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(right: 20),
-                              child: Card(
-                                child: Container(
-                                  width: 125,
-                                  height: 125,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(coupon.imageUrl!),
-                                      fit: BoxFit.cover,
+                      Column(
+                        children: [
+                          Container(
+                            width: screenSize.width * 0.9,
+                            padding: const EdgeInsets.all(15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(right: 20),
+                                  child: Card(
+                                    child: Container(
+                                      width: 125,
+                                      height: 100,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(coupon.imageUrl!),
+                                          fit: BoxFit.fill,
+                                        ),
+                                        borderRadius: BorderRadius.circular(7),
+                                      ),
                                     ),
-                                    borderRadius: BorderRadius.circular(7),
                                   ),
+                                ),
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      Formatter.shorten(coupon.store?.name, 12)
+                                          .toUpperCase(),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                    // if (coupon.discountType! == 'Fixed')
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.only(top: 8),
+                                          child: Text(
+                                            Formatter.price(coupon.amount)
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                              fontSize: 23,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.black54,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 8),
+                            width: screenSize.width * 0.9,
+                            child: FlutterBulletList(
+                              data: [
+                                ListItemModel(
+                                  label: "Promotion: ",
+                                  data: [
+                                    ListItemModel(label: "${coupon.name}"),
+                                  ],
+                                ),
+                                ListItemModel(
+                                  label: "Note: ",
+                                  data: [
+                                    ListItemModel(
+                                      label:
+                                          'Have your coupon ready before purchasing services.',
+                                    ),
+                                    ListItemModel(
+                                      label:
+                                          'Only one coupon is applied to a specific order.',
+                                    ),
+                                    ListItemModel(
+                                      label:
+                                          'Coupon will be usable unless limit usage has been reached.',
+                                    ),
+                                  ],
+                                ),
+                                ListItemModel(
+                                  label: "Description: ",
+                                  data: [
+                                    ListItemModel(label: coupon.description),
+                                  ],
+                                ),
+                              ],
+                              textStyle: TextStyle(
+                                  color: Colors.black54, fontSize: 16),
+                              bulletColor: Colors.grey,
+                              bulletSize: 3,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        height: 150,
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FlutterBulletList(
+                              textStyle: TextStyle(
+                                  color: Colors.black54, fontSize: 16),
+                              bulletColor: Colors.grey,
+                              bulletSize: 3,
+                              data: [
+                                ListItemModel(
+                                  label: "Apply time: ",
+                                  data: [
+                                    ListItemModel(
+                                      label:
+                                          "[${Formatter.date(coupon.publishDate)}]     ----     [${Formatter.date(coupon.expireDate)}]",
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            if (!controller.isLoading.value)
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 22),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: _couponState(context, coupon.id,
+                                      couponInUse, coupon.limit!),
                                 ),
                               ),
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  Formatter.shorten(coupon.store?.name,12).toUpperCase(),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black54,
-                                  ),
-                                ),
-                                // if (coupon.discountType! == 'Fixed')
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 8),
-                                        child: Text(
-                                          '[Fix] ',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black54,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 8),
-                                        child: Text(
-                                          Formatter.price(coupon.amount).toUpperCase(),
-                                          style: TextStyle(
-                                            fontSize: 23,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black54,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 180,
-                                        margin: const EdgeInsets.only(top: 8),
-                                        child: Text(
-                                          Formatter.shorten(
-                                              '(${coupon.description})'),
-                                          style: TextStyle(
-                                              color: Colors.black54,
-                                              fontSize: 16),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                              ],
-                            ),
                           ],
                         ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 8),
-                        width: 380,
-                        child: FlutterBulletList(
-                          data: [
-                            ListItemModel(label: "Promotion: ", data: [ListItemModel(label: "${coupon.name}")]),
-                            ListItemModel(label: "Apply with: ", data: [
-                              ListItemModel(label: "Full menu (does not apply combos)"),
-                              ListItemModel(label: "Price does not include VAT"),
-                            ]),
-                            ListItemModel(
-                              label: "Note: ",
-                              data: [
-                                ListItemModel(label: "Use in-store only",),
-                                ListItemModel(label: "Only 1 promotion can be used when paying"),
-                                ListItemModel(label: "Applies to multiple products in the same bill"),
-                                // ListItemModel(label: 'View More')
-                              ],
-                            ),
-                          ],
-                          textStyle: TextStyle(color: Colors.black54, fontSize: 16),
-                          bulletColor: Colors.grey,
-                          bulletSize: 3,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          // Icon(Icons.more_horiz_outlined,size: 20,color: Colors.blue,),
-                          SizedBox(width: 8,),
-                          GestureDetector(
-                              onTap: (){
-                                //CASE 1:
-                                // showDetailBottomSheet(coupon, context);
-                                //CASE 2:
-                                showCustomDialog(context,coupon);
-                              },
-                              child: Text('View More', style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w700),)),
-                          SizedBox(width: 40,),
-                        ],
                       ),
                     ],
                   ),
-                  Container(
-                    height: 150,
-                    padding: const EdgeInsets.only(bottom: 15),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FlutterBulletList(
-                          textStyle: TextStyle(color: Colors.black54, fontSize: 16),
-                          bulletColor: Colors.grey,
-                          bulletSize: 3,
-                          data: [
-                            ListItemModel(
-                              label: "Apply time: ",
-                              data: [
-                                ListItemModel(
-                                  label: "[${Formatter.date(coupon.publishDate)}]     ----     [${Formatter.date(coupon.expireDate)}]",
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        if (!controller.isLoading.value)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 22),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: _couponState(context, coupon.id, couponInUse, coupon.limit!),
-                            ),
-                          ),
-                      ],
+                  Positioned(
+                    right: 10,
+                    child: IconButton(
+                      onPressed: () => showCustomDialog(context, coupon),
+                      icon: Icon(Icons.info),
+                      color: Colors.blueAccent,
+                      iconSize: 35,
                     ),
                   ),
                 ],
@@ -233,7 +234,8 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
     });
   }
 
-  List<Widget> _couponState(BuildContext context, int? couponId, CouponInUse couponInUse, int limit) {
+  List<Widget> _couponState(
+      BuildContext context, int? couponId, CouponInUse couponInUse, int limit) {
     final screenSize = MediaQuery.of(context).size;
     int state = controller.checkCouponState();
     if (state == 2 || state == 3)
@@ -309,64 +311,81 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
   }
 }
 
-void showCustomDialog(BuildContext context,Coupon coupon) => showDialog(
-  context: context,
-  barrierDismissible: false,
-  builder: (BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: screenSize.height * 0.0164),
-            Text('${coupon.name}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-            SizedBox(height: screenSize.height * 0.027),
-            Container(
-              color: Color(0xfffafafa),
-              padding: EdgeInsets.only(left: screenSize.width*0.08,bottom: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(width: screenSize.width*0.4,child: Text("Limit: ")),
-                  Text("${coupon.limit ?? "N/A"}")
-                ],
-              ),
+void showCustomDialog(BuildContext context, Coupon coupon) => showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        final screenSize = MediaQuery.of(context).size;
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: screenSize.height * 0.0164),
+                Text(
+                  '${coupon.name}',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                SizedBox(height: screenSize.height * 0.027),
+                Container(
+                  color: Color(0xfffafafa),
+                  padding:
+                      EdgeInsets.only(left: screenSize.width * 0.08, bottom: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                          width: screenSize.width * 0.4,
+                          child: Text("Limit: ")),
+                      Text("${coupon.limit ?? "N/A"}")
+                    ],
+                  ),
+                ),
+                Container(
+                  padding:
+                      EdgeInsets.only(left: screenSize.width * 0.08, bottom: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                          width: screenSize.width * 0.4,
+                          child: Text("Minimum spend: ")),
+                      Text(
+                          "${Formatter.price(coupon.minSpend ?? 0).toUpperCase()}")
+                    ],
+                  ),
+                ),
+                Container(
+                  color: Color(0xfffafafa),
+                  padding:
+                      EdgeInsets.only(left: screenSize.width * 0.08, bottom: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                          width: screenSize.width * 0.4,
+                          child: Text("Maximum discount: ")),
+                      Text(
+                          "${Formatter.price(coupon.maxDiscount ?? 0).toUpperCase()}")
+                    ],
+                  ),
+                ),
+                SizedBox(height: screenSize.height * 0.0164),
+                TextButton(
+                  child: Text('Close',
+                      style: TextStyle(
+                        fontSize: 15,
+                      )),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              ],
             ),
-            Container(
-              padding: EdgeInsets.only(left: screenSize.width*0.08,bottom: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(width: screenSize.width*0.4,child: Text("Minimum spend: ")),
-                  Text("${Formatter.price(coupon.minSpend ?? 0).toUpperCase()}")
-                ],
-              ),
-            ),
-            Container(
-              color: Color(0xfffafafa),
-              padding: EdgeInsets.only(left: screenSize.width*0.08,bottom: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(width: screenSize.width*0.4,child: Text("Maximum discount: ")),
-                  Text("${Formatter.price(coupon.maxDiscount ?? 0).toUpperCase()}")
-                ],
-              ),
-            ),
-            SizedBox(height: screenSize.height * 0.0164),
-            TextButton(
-              child: Text('Close', style: TextStyle(fontSize: 15,)),
-              onPressed: () => Navigator.of(context).pop(),
-            )
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
-  },
-);

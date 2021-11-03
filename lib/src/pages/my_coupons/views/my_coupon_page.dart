@@ -90,10 +90,10 @@ class MyCouponPage extends GetView<MyCouponController> {
                   final listCoupon = controller.listCouponInUse;
                   return TabBarView(
                     children: [
-                      _displayAllCoupon(listCoupon, 'All'),
-                      _displayAllCoupon(listCoupon, 'New'),
-                      _displayAllCoupon(listCoupon, 'Used'),
-                      _displayAllCoupon(listCoupon, 'Expired'),
+                      _displayAllCoupon(listCoupon, 'All', context),
+                      _displayAllCoupon(listCoupon, 'New', context),
+                      _displayAllCoupon(listCoupon, 'Used', context),
+                      _displayAllCoupon(listCoupon, 'Expired', context),
                     ],
                   );
                 }))
@@ -130,7 +130,8 @@ class MyCouponPage extends GetView<MyCouponController> {
     });
   }
 
-  Widget _displayAllCoupon(List<CouponInUse> listCoupon, String status) {
+  Widget _displayAllCoupon(
+      List<CouponInUse> listCoupon, String status, BuildContext context) {
     // final screenSize = MediaQuery.of(context).size;
     var coupons = [];
     switch (status) {
@@ -162,6 +163,7 @@ class MyCouponPage extends GetView<MyCouponController> {
         )),
       );
     }
+    final width = MediaQuery.of(context).size.width;
     return ListView.builder(
         physics: BouncingScrollPhysics(),
         itemCount: coupons.length,
@@ -175,12 +177,13 @@ class MyCouponPage extends GetView<MyCouponController> {
               child: Column(children: [
                 SizedBox(height: 15),
                 TicketBox.small(
+                  width: width * 0.9,
                   imgUrl: coupon.imageUrl!,
                   storeName: coupon.store?.name,
                   name: coupon.name,
                   description: coupon.description,
                   amount: coupon.amount,
-                  discountType: coupon.discountType,
+                  couponTypeId: coupon.couponTypeId,
                   expireDate: coupon.expireDate,
                 )
               ]),

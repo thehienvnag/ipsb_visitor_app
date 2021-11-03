@@ -28,7 +28,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
         title: Column(
           children: [
             Text(
-              'Cập nhật thông tin',
+              'PROFILE',
               style: TextStyle(color: Colors.black87),
             ),
           ],
@@ -102,18 +102,17 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                       : "Not sigin",
                   false),
               buildTextField(
-                  "Địa chỉ Email",
+                  "Email",
                   AuthServices.isLoggedIn()
                       ? AuthServices.userLoggedIn.value.email!
                       : "Not sigin",
                   false),
               buildTextField(
-                  "Số điện thoại",
+                  "Phone",
                   AuthServices.isLoggedIn()
                       ? AuthServices.userLoggedIn.value.phone!
                       : "Not sigin",
                   false),
-              buildTextField("Địa chỉ (Không bắt buộc)", "", false),
               SizedBox(
                 height: 35,
               ),
@@ -129,7 +128,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                     width: 167,
                     height: 19,
                     child: Text(
-                      "Lưu thông tin",
+                      "SAVE",
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),

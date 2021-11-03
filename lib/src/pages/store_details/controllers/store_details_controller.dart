@@ -33,7 +33,7 @@ class StoreDetailsController extends GetxController
   @override
   void onInit() {
     super.onInit();
-    tabController = TabController(vsync: this, length: 2);
+    tabController = TabController(vsync: this, length: 3);
     String? id = Get.parameters['id'];
     print(id);
     if (id == null) return;
@@ -46,10 +46,11 @@ class StoreDetailsController extends GetxController
 
   ICouponInUseService couponInUseService = Get.find();
   Future<void> getFeedback() async {
-    final paging = await couponInUseService.getCouponInUseByStoreId(storeId.value);
+    final paging =
+        await couponInUseService.getCouponInUseByStoreId(storeId.value);
     listFeedbacks.value = paging.content!;
-    for(int i = 0; i < listFeedbacks.length; i++ ){
-      if(listFeedbacks[i].feedbackReply.toString().compareTo('null') < 0){
+    for (int i = 0; i < listFeedbacks.length; i++) {
+      if (listFeedbacks[i].feedbackReply.toString().compareTo('null') < 0) {
         listFeedbacked.add(listFeedbacks[i]);
       }
     }
@@ -66,7 +67,8 @@ class StoreDetailsController extends GetxController
 
   IProductService productService = Get.find();
   Future<void> getProducts() async {
-    listProduct.value = await productService.getProductsByStoreId(storeId.value);
+    listProduct.value =
+        await productService.getProductsByStoreId(storeId.value);
   }
 
   ICouponService couponService = Get.find();

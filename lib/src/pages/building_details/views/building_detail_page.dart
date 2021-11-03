@@ -22,41 +22,41 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
         if (buildingSelected.id == null) {
           return Center(child: CircularProgressIndicator());
         }
-        return Column(
-          children: [
-            Stack(
-              children: [
-                Image.network(buildingSelected.imageUrl ?? ''),
-                Container(
-                  margin: EdgeInsets.only(top: 50),
-                  width: screenSize.width,
-                  alignment: Alignment.topLeft,
-                  child: RoundedButton(
-                    radius: 35,
-                    color: Colors.grey.shade400,
-                    icon: Icon(
-                      Icons.chevron_left_rounded,
-                      color: Colors.white,
-                      size: 35,
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  Image.network(buildingSelected.imageUrl ?? ''),
+                  Container(
+                    margin: EdgeInsets.only(top: 50),
+                    width: screenSize.width,
+                    alignment: Alignment.topLeft,
+                    child: RoundedButton(
+                      radius: 35,
+                      color: Colors.grey.shade400,
+                      icon: Icon(
+                        Icons.chevron_left_rounded,
+                        color: Colors.white,
+                        size: 35,
+                      ),
+                      onPressed: () {
+                        Get.back(closeOverlays: true);
+                      },
                     ),
-                    onPressed: () {
-                      Get.back(closeOverlays: true);
-                    },
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: screenSize.height * 0.25, left: 7, right: 7),
-                  width: screenSize.width,
-                  height: screenSize.height * 0.7,
-                  child: Card(
-                    shape: BeveledRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 7),
-                      child: SingleChildScrollView(
+                  Container(
+                    margin: EdgeInsets.only(
+                        top: screenSize.height * 0.25, left: 7, right: 7),
+                    width: screenSize.width,
+                    child: Card(
+                      shape: BeveledRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 7),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,28 +73,28 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                               ],
                             ),
                             Text(
-                              'Trung tâm mua sắm',
+                              'Shopping mall',
                               style: TextStyle(fontSize: 16),
                             ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 8),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Mở cửa 9:30',
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.blueAccent),
-                                  ),
-                                  Text(
-                                    '  Đóng cửa 22:30',
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.blueAccent),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // Container(
+                            //   margin: const EdgeInsets.only(top: 8),
+                            //   child: Row(
+                            //     mainAxisAlignment:
+                            //         MainAxisAlignment.spaceBetween,
+                            //     children: [
+                            //       Text(
+                            //         'Mở cửa 9:30',
+                            //         style: TextStyle(
+                            //             fontSize: 16, color: Colors.blueAccent),
+                            //       ),
+                            //       Text(
+                            //         '  Đóng cửa 22:30',
+                            //         style: TextStyle(
+                            //             fontSize: 16, color: Colors.blueAccent),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             Container(
                               width: screenSize.width,
                               height: 120,
@@ -143,7 +143,7 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Thương Hiệu',
+                                    'Stores',
                                     style: TextStyle(fontSize: 18),
                                   ),
                                   GestureDetector(
@@ -151,10 +151,8 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                         Get.toNamed(Routes.buildingStore);
                                       },
                                       child: Text(
-                                        'Xem tất cả',
-                                        style: TextStyle(
-                                            color: Colors.blueAccent,
-                                            fontSize: 15),
+                                        'View more >>',
+                                        style: TextStyle(fontSize: 15),
                                       ))
                                 ],
                               ),
@@ -169,87 +167,78 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                 );
                               }
                               return Container(
-                                margin: const EdgeInsets.symmetric(vertical: 9),
+                                width: screenSize.width,
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 9,
+                                  horizontal: 10,
+                                ),
                                 child: Obx(() {
                                   var listStore = controller.listStore;
-                                  return SingleChildScrollView(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Wrap(
-                                          spacing: 15,
-                                          children: List.generate(storeCount,
-                                              (index) {
-                                            final store = listStore[index];
-                                            return GestureDetector(
-                                              onTap: () => controller
-                                                  .goToStoreDetails(store.id),
+                                  return Wrap(
+                                    alignment: WrapAlignment.spaceBetween,
+                                    spacing: 15,
+                                    children:
+                                        List.generate(storeCount, (index) {
+                                      final store = listStore[index];
+                                      return GestureDetector(
+                                        onTap: () => controller
+                                            .goToStoreDetails(store.id),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  right: 3, bottom: 15),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2, vertical: 2),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: Colors.black12,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
                                               child: Column(
                                                 children: [
                                                   Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            right: 3,
-                                                            bottom: 10),
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 2,
-                                                            vertical: 2),
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color:
-                                                              Colors.black12),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
+                                                    width: 60,
+                                                    height: 60,
+                                                    child: Image.network(
+                                                      store.imageUrl ?? '',
+                                                      fit: BoxFit.contain,
                                                     ),
-                                                    child: Column(
-                                                      children: [
-                                                        Container(
-                                                          width: 60,
-                                                          height: 60,
-                                                          child: Image.network(
-                                                            store.imageUrl ??
-                                                                '',
-                                                            fit: BoxFit.contain,
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  top: 10),
-                                                          width: 100,
-                                                          height: 35,
-                                                          child: Text(
-                                                            store.name ?? '',
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                          ),
-                                                        ),
-                                                      ],
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 10),
+                                                    width: 100,
+                                                    height: 35,
+                                                    child: Text(
+                                                      store.name ?? '',
+                                                      textAlign:
+                                                          TextAlign.center,
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                            );
-                                          }),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
+                                      );
+                                    }),
                                   );
                                 }),
                               );
-                            })
+                            }),
                           ],
                         ),
                       ),
                     ),
-                  ),
-                )
-              ],
-            ),
-          ],
+                  )
+                ],
+              ),
+              SizedBox(height: 50),
+            ],
+          ),
         );
       }),
     );

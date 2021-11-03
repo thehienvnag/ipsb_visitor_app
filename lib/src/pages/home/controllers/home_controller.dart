@@ -15,7 +15,7 @@ import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 
 class HomeController extends GetxController {
   IStoreService storeService = Get.find();
-  final ScrollController scrollController = ScrollController();
+  ScrollController? scrollController;
   final showSlider = true.obs;
   final buildingId = 0.obs;
   final buildingName = "".obs;
@@ -36,8 +36,9 @@ class HomeController extends GetxController {
 
   SharedStates states = Get.find();
   bool initPage() {
-    scrollController.addListener(() {
-      final fromTop = scrollController.position.pixels;
+    scrollController = ScrollController();
+    scrollController?.addListener(() {
+      final fromTop = scrollController!.position.pixels;
       if (fromTop > 10) {
         showSlider.value = false;
       } else if (fromTop == 0) {
