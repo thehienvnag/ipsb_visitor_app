@@ -161,8 +161,7 @@ class HomeSearchBar extends GetView<HomeController> {
             itemBuilder: (value) => Container(
               height: 40,
               alignment: Alignment.centerLeft,
-              padding:
-                  const EdgeInsets.symmetric(vertical: 0.0, horizontal: 16),
+              padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 16),
               child: Text(value),
             ),
             toggledChild: Container(

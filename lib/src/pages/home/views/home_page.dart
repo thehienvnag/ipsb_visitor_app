@@ -26,7 +26,7 @@ class HomePage extends GetView<HomeController> {
                   children: [
                     Obx(() {
                       return Container(
-                        height: controller.showSlider.value ? 340 : 140,
+                        height: controller.showSlider.value ? screenSize.height *0.439 : screenSize.height *0.181,
                         width: screenSize.width,
                         color: Colors.white,
                       );
@@ -39,7 +39,7 @@ class HomePage extends GetView<HomeController> {
                           bottom: BorderSide(color: Colors.grey.shade200),
                         ),
                       ),
-                      height: 150,
+                      height: screenSize.height *0.194,
                       child: Column(
                         children: [
                           Row(
@@ -82,26 +82,23 @@ class HomePage extends GetView<HomeController> {
                                   itemBuilder: (context, index) {
                                     final item = list[index];
                                     return Container(
-                                      height: 60,
-                                      width: 100,
+                                      height: screenSize.height *0.0775,
+                                      width: screenSize.width *0.243,
                                       child: Column(
                                         children: <Widget>[
                                           Container(
-                                            width: 55,
-                                            height: 50,
+                                            width: screenSize.width *0.133,
+                                            height: screenSize.height *0.0646,
                                             padding: const EdgeInsets.all(4),
-                                            margin: const EdgeInsets.only(
-                                                bottom: 7),
+                                            margin: const EdgeInsets.only(bottom: 7),
                                             child: Image.asset(
                                               item.imageUrl ?? '',
                                               height: 38,
                                               width: 38,
                                             ),
                                             decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Colors.black12),
-                                              borderRadius:
-                                                  BorderRadius.circular(7),
+                                              border: Border.all(color: Colors.black12),
+                                              borderRadius: BorderRadius.circular(7),
                                             ),
                                           ),
                                           Text(
@@ -161,49 +158,40 @@ class HomePage extends GetView<HomeController> {
                           ),
                           Container(
                             width: screenSize.width,
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 15),
+                            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                             child: Obx(() {
                               var listStore = controller.listStore;
-                              int storeCount =
-                                  listStore.length > 9 ? 9 : listStore.length;
-
+                              int storeCount = listStore.length > 9 ? 9 : listStore.length;
                               return Wrap(
                                 direction: Axis.horizontal,
                                 alignment: WrapAlignment.spaceAround,
                                 children: List.generate(storeCount, (index) {
                                   final store = listStore[index];
                                   return GestureDetector(
-                                    onTap: () =>
-                                        controller.goToStoreDetails(store.id),
+                                    onTap: () => controller.goToStoreDetails(store.id),
                                     child: Column(
                                       children: [
                                         Container(
-                                          margin: const EdgeInsets.only(
-                                              right: 5, bottom: 15),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 6, vertical: 2),
+                                          margin: const EdgeInsets.only(right: 5, bottom: 15),
+                                          padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                           decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.black12),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
+                                            border: Border.all(color: Colors.black12),
+                                            borderRadius: BorderRadius.circular(8),
                                           ),
                                           child: Column(
                                             children: [
                                               Container(
-                                                width: 60,
-                                                height: 60,
+                                                width: screenSize.width *0.146,
+                                                height: screenSize.height *0.077,
                                                 child: Image.network(
                                                   store.imageUrl ?? '',
                                                   fit: BoxFit.contain,
                                                 ),
                                               ),
                                               Container(
-                                                margin:
-                                                    EdgeInsets.only(top: 10),
-                                                width: 100,
-                                                height: 35,
+                                                margin: EdgeInsets.only(top: 10),
+                                                width: screenSize.width *0.243,
+                                                height: screenSize.height *0.045,
                                                 child: Text(
                                                   store.name ?? '',
                                                   textAlign: TextAlign.center,
@@ -262,7 +250,7 @@ class HomePage extends GetView<HomeController> {
                           Obx(() {
                             var listCoupon = controller.listCoupon;
                             return Container(
-                              height: 180,
+                              height: screenSize.height *0.232,
                               margin: const EdgeInsets.only(left: 5),
                               child: ListView.builder(
                                 addSemanticIndexes: true,
@@ -272,12 +260,11 @@ class HomePage extends GetView<HomeController> {
                                 itemBuilder: (BuildContext ctx, index) {
                                   final coupon = listCoupon[index];
                                   return GestureDetector(
-                                    onTap: () =>
-                                        controller.goToCouponDetails(coupon),
+                                    onTap: () => controller.goToCouponDetails(coupon),
                                     child: Container(
                                       padding: const EdgeInsets.all(10),
                                       child: TicketBox.small(
-                                        width: 350,
+                                        width: screenSize.width *0.85,
                                         imgUrl: coupon.imageUrl!,
                                         storeName: coupon.store?.name,
                                         name: coupon.name,
@@ -350,23 +337,19 @@ class HomePage extends GetView<HomeController> {
                                   // controller.getDistanceBetweenTwoLocation(building.address.toString());
                                   // String distance = controller.distanceTwoPoin.value.toString();
                                   return GestureDetector(
-                                    onTap: () =>
-                                        controller.gotoDetails(building.id),
+                                    onTap: () => controller.gotoDetails(building.id),
                                     child: Container(
-                                      height: 100,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
+                                      height: screenSize.height *0.13,
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
                                       child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                            height: 100,
+                                            height: screenSize.height *0.13,
                                             width: screenSize.width * 0.33,
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
-                                                image: NetworkImage(
-                                                    building.imageUrl ?? ''),
+                                                image: NetworkImage(building.imageUrl ?? ''),
                                                 fit: BoxFit.cover,
                                               ),
                                               borderRadius:
@@ -377,32 +360,22 @@ class HomePage extends GetView<HomeController> {
                                             width: screenSize.width * 0.6,
                                             child: ListTile(
                                               title: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
-                                                    Formatter.shorten(
-                                                        building.name, 14),
-                                                    style:
-                                                        TextStyle(fontSize: 16),
+                                                    Formatter.shorten(building.name, 14),
+                                                    style: TextStyle(fontSize: 16),
                                                   ),
                                                 ],
                                               ),
                                               subtitle: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 7),
+                                                    margin: const EdgeInsets.only(top: 7),
                                                     child: Text(
-                                                      Formatter.shorten(
-                                                          building.address),
-                                                      //'50 Lê Văn Việt | 3km'
-                                                      style: TextStyle(
-                                                          fontSize: 16),
+                                                      Formatter.shorten(building.address),
+                                                      style: TextStyle(fontSize: 16),
                                                     ),
                                                   ),
                                                 ],
@@ -423,7 +396,7 @@ class HomePage extends GetView<HomeController> {
               ),
               Obx(() {
                 return Container(
-                  height: controller.showSlider.value ? 195 : 95,
+                  height: controller.showSlider.value ? screenSize.height *0.251 : screenSize.height *0.123,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: AppColors.gradientColor,
@@ -441,21 +414,17 @@ class HomePage extends GetView<HomeController> {
                 child: Container(
                   margin: const EdgeInsets.only(top: 20),
                   width: screenSize.width,
-                  height: 240,
+                  height: screenSize.height *0.31,
                   child: Obx(() {
                     if (!controller.showSlider.value) {
                       return Container();
                     }
-                    final images = controller.listCoupon
-                        .map((element) => element.imageUrl!)
-                        .toList();
+                    final images = controller.listCoupon.map((element) => element.imageUrl!).toList();
                     if (images.isEmpty)
-                      return Container(
-                        color: Colors.grey.shade200,
-                      );
+                      return Container(color: Colors.grey.shade200,);
                     return CarouselSlider(
                       options: CarouselOptions(
-                        height: 240,
+                        height: screenSize.height *0.31,
                         enlargeCenterPage: true,
                         enlargeStrategy: CenterPageEnlargeStrategy.height,
                         initialPage: 2,
@@ -465,8 +434,8 @@ class HomePage extends GetView<HomeController> {
                         return Builder(
                           builder: (BuildContext context) {
                             return Container(
-                              width: 350,
-                              height: 240,
+                              width: screenSize.width *0.85,
+                              height: screenSize.height *0.31,
                               margin: const EdgeInsets.only(
                                 bottom: 30,
                                 right: 15,
@@ -505,8 +474,7 @@ class HomePage extends GetView<HomeController> {
               ),
               Container(
                 margin: const EdgeInsets.only(top: 55),
-                child:
-                    HomeSearchBar(buildingName: controller.buildingName.value),
+                child: HomeSearchBar(buildingName: controller.buildingName.value),
               ),
             ],
           ),
