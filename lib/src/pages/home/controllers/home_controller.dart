@@ -10,6 +10,7 @@ import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/building_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
+import 'package:ipsb_visitor_app/src/services/api/product_category_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/store_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 
@@ -21,7 +22,8 @@ class HomeController extends GetxController {
   final showSlider = true.obs;
   final buildingId = 0.obs;
   final buildingName = "".obs;
-  final listCategories = categories.obs;
+  final listCategories = <ProductCategory>[].obs; //categories.obs;
+
   final buildings = [].obs;
 
   /// Type of search
@@ -51,6 +53,7 @@ class HomeController extends GetxController {
     getStores();
     getCoupons();
     getBuildings();
+    getProductCategory();
   }
 
   SharedStates states = Get.find();
@@ -155,15 +158,10 @@ class HomeController extends GetxController {
   //   print("hello: " + valueDistan);
   //   return valueDistan;
   // }
+  IProductCategoryService _categoryService = Get.find();
+  /// Get list ProductCategory by api
+  Future<void> getProductCategory() async {
+    final paging = await _categoryService.getProductCategory();
+    listCategories.value = paging.content!;
+  }
 }
-
-final categories = [
-  ProductCategory(name: 'Coffee', imageUrl: 'assets/images/icon_coffee.png'),
-  ProductCategory(
-      name: 'Milk tea ', imageUrl: 'assets/images/icon_milktea.png'),
-  ProductCategory(
-      name: 'Shopping ', imageUrl: 'assets/images/icon_shopping.png'),
-  ProductCategory(
-      name: 'Restaurant ', imageUrl: 'assets/images/icon_restaurant.png'),
-  ProductCategory(name: 'Movie', imageUrl: 'assets/images/icon_cinema.png'),
-];
