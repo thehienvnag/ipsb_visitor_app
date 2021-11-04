@@ -56,179 +56,186 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
           ),
         ),
         body: Center(
-          child: Column(children: [
-            SizedBox(height: 20),
-            TicketBox(
-              xAxisMain: false,
-              fromEdgeMain: 500,
-              fromEdgeSeparator: 134,
-              isOvalSeparator: false,
-              smallClipRadius: 15,
-              clipRadius: 15,
-              numberOfSmallClips: 11,
-              ticketWidth: screenSize.width * 0.9,
-              ticketHeight: 660,
-              child: Stack(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Container(
-                            width: screenSize.width * 0.9,
-                            padding: const EdgeInsets.all(15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(right: 20),
-                                  child: Card(
-                                    child: Container(
-                                      width: 125,
-                                      height: 100,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(coupon.imageUrl!),
-                                          fit: BoxFit.fill,
+          child: SingleChildScrollView(
+            child: Column(children: [
+              SizedBox(height: 20),
+              TicketBox(
+                xAxisMain: false,
+                fromEdgeMain: 500,
+                fromEdgeSeparator: 134,
+                isOvalSeparator: false,
+                smallClipRadius: 15,
+                clipRadius: 15,
+                numberOfSmallClips: 11,
+                ticketWidth: screenSize.width * 0.9,
+                ticketHeight: 660,
+                child: Stack(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              width: screenSize.width * 0.9,
+                              padding: const EdgeInsets.all(15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(right: 20),
+                                    child: Card(
+                                      child: Container(
+                                        width: 125,
+                                        height: 100,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image:
+                                                NetworkImage(coupon.imageUrl!),
+                                            fit: BoxFit.fill,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(7),
                                         ),
-                                        borderRadius: BorderRadius.circular(7),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      Formatter.shorten(coupon.store?.name, 12)
-                                          .toUpperCase(),
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black54,
+                                  Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        Formatter.shorten(
+                                                coupon.store?.name, 12)
+                                            .toUpperCase(),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black54,
+                                        ),
                                       ),
-                                    ),
-                                    // if (coupon.discountType! == 'Fixed')
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 8),
-                                          child: Text(
-                                            Formatter.price(coupon.amount)
-                                                .toUpperCase(),
-                                            style: TextStyle(
-                                              fontSize: 23,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.black54,
+                                      // if (coupon.discountType! == 'Fixed')
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            margin:
+                                                const EdgeInsets.only(top: 8),
+                                            child: Text(
+                                              Formatter.price(coupon.amount)
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                fontSize: 23,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black54,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 8),
-                            width: screenSize.width * 0.9,
-                            child: FlutterBulletList(
-                              data: [
-                                ListItemModel(
-                                  label: "Promotion: ",
-                                  data: [
-                                    ListItemModel(label: "${coupon.name}"),
-                                  ],
-                                ),
-                                ListItemModel(
-                                  label: "Note: ",
-                                  data: [
-                                    ListItemModel(
-                                      label:
-                                          'Have your coupon ready before purchasing services.',
-                                    ),
-                                    ListItemModel(
-                                      label:
-                                          'Only one coupon is applied to a specific order.',
-                                    ),
-                                    ListItemModel(
-                                      label:
-                                          'Coupon will be usable unless limit usage has been reached.',
-                                    ),
-                                  ],
-                                ),
-                                ListItemModel(
-                                  label: "Description: ",
-                                  data: [
-                                    ListItemModel(label: coupon.description),
-                                  ],
-                                ),
-                              ],
-                              textStyle: TextStyle(
-                                  color: Colors.black54, fontSize: 16),
-                              bulletColor: Colors.grey,
-                              bulletSize: 3,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        height: 150,
-                        padding: const EdgeInsets.only(bottom: 15),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            FlutterBulletList(
-                              textStyle: TextStyle(
-                                  color: Colors.black54, fontSize: 16),
-                              bulletColor: Colors.grey,
-                              bulletSize: 3,
-                              data: [
-                                ListItemModel(
-                                  label: "Apply time: ",
-                                  data: [
-                                    ListItemModel(
-                                      label:
-                                          "[${Formatter.date(coupon.publishDate)}]     ----     [${Formatter.date(coupon.expireDate)}]",
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            if (!controller.isLoading.value)
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 22),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: _couponState(context, coupon.id,
-                                      couponInUse, coupon.limit!),
-                                ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 8),
+                              width: screenSize.width * 0.9,
+                              child: FlutterBulletList(
+                                data: [
+                                  ListItemModel(
+                                    label: "Promotion: ",
+                                    data: [
+                                      ListItemModel(label: "${coupon.name}"),
+                                    ],
+                                  ),
+                                  ListItemModel(
+                                    label: "Note: ",
+                                    data: [
+                                      ListItemModel(
+                                        label:
+                                            'Have your coupon ready before purchasing services.',
+                                      ),
+                                      ListItemModel(
+                                        label:
+                                            'Only one coupon is applied to a specific order.',
+                                      ),
+                                      ListItemModel(
+                                        label:
+                                            'Coupon will be usable unless limit usage has been reached.',
+                                      ),
+                                    ],
+                                  ),
+                                  ListItemModel(
+                                    label: "Description: ",
+                                    data: [
+                                      ListItemModel(label: coupon.description),
+                                    ],
+                                  ),
+                                ],
+                                textStyle: TextStyle(
+                                    color: Colors.black54, fontSize: 16),
+                                bulletColor: Colors.grey,
+                                bulletSize: 3,
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                  Positioned(
-                    right: 10,
-                    child: IconButton(
-                      onPressed: () => showCustomDialog(context, coupon),
-                      icon: Icon(Icons.info),
-                      color: Colors.blueAccent,
-                      iconSize: 35,
+                        Container(
+                          height: 150,
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              FlutterBulletList(
+                                textStyle: TextStyle(
+                                    color: Colors.black54, fontSize: 16),
+                                bulletColor: Colors.grey,
+                                bulletSize: 3,
+                                data: [
+                                  ListItemModel(
+                                    label: "Apply time: ",
+                                    data: [
+                                      ListItemModel(
+                                        label:
+                                            "[${Formatter.date(coupon.publishDate)}]     ----     [${Formatter.date(coupon.expireDate)}]",
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              if (!controller.isLoading.value)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 22),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: _couponState(context, coupon.id,
+                                        couponInUse, coupon.limit!),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    Positioned(
+                      right: 10,
+                      child: IconButton(
+                        onPressed: () => showCustomDialog(context, coupon),
+                        icon: Icon(Icons.info),
+                        color: Colors.blueAccent,
+                        iconSize: 35,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ]),
+            ]),
+          ),
         ),
       );
     });

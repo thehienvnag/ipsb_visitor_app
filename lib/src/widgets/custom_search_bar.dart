@@ -4,6 +4,7 @@ import 'package:ipsb_visitor_app/src/models/building.dart';
 import 'package:ipsb_visitor_app/src/models/coupon.dart';
 import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/pages/map/controllers/map_controller.dart';
+import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
@@ -212,28 +213,30 @@ class HomeSearchBar extends GetView<HomeController> {
   }
 
   Widget _buildSearchItem(Object? data) {
-    String? img, title, description;
-
+    late String img, title, description;
+    late Function() navigate;
     if (data is Coupon) {
       img = data.imageUrl ?? "";
       title =
           '${Formatter.shorten(data.store?.name)} - ${Formatter.shorten(data.name)}';
       description = Formatter.shorten(data.description);
+      navigate = () => controller.goToCouponDetails(data);
     } else if (data is Building) {
       img = data.imageUrl ?? "";
       title = data.name ?? '';
       description = Formatter.shorten(data.address);
+      navigate = () => Get.toNamed(Routes.buildingDetails, parameters: {
+            "id": data.id.toString(),
+          });
     } else if (data is Store) {
       img = data.imageUrl ?? "";
       title = data.name ?? '';
       description = Formatter.shorten(data.description);
+      navigate = () => Get.toNamed(Routes.storeDetails, parameters: {
+            "id": data.id.toString(),
+          });
     }
-    return _buildSearchResult(
-      img!,
-      title!,
-      description!,
-      () {},
-    );
+    return _buildSearchResult(img, title, description, () => navigate.call());
   }
 
   Widget _buildLoading() {
@@ -288,6 +291,7 @@ class HomeSearchBar extends GetView<HomeController> {
       height: 85,
       padding: const EdgeInsets.symmetric(horizontal: 7),
       child: ListTile(
+        onTap: navigateTo,
         contentPadding: const EdgeInsets.all(0),
         leading: CircleAvatar(
           radius: 25,
