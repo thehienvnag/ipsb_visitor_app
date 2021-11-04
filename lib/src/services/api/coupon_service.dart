@@ -25,7 +25,7 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
     return getAllBase(
       {
         'storeId': storeId.toString(),
-        'lowerExpireDate' : DateTime.now().toString(),
+        'lowerExpireDate': DateTime.now().toString(),
       },
     );
   }
@@ -42,13 +42,13 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
       "isAll": "true",
       "name": keySearch,
       "buildingId": buildingId,
-      'lowerExpireDate' : DateTime.now().toString(),
+      'lowerExpireDate': DateTime.now().toString(),
     });
     var byDescription = getAllBase({
       "isAll": "true",
       "description": keySearch,
       "buildingId": buildingId,
-      'lowerExpireDate' : DateTime.now().toString(),
+      'lowerExpireDate': DateTime.now().toString(),
     });
     var result = await Future.wait([byName, byDescription]);
     var list = result.expand((element) => element).toList();

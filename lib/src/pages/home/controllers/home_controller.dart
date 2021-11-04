@@ -15,15 +15,34 @@ import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 
 class HomeController extends GetxController {
   IStoreService storeService = Get.find();
+  ICouponService couponService = Get.find();
+  IBuildingService buildingService = Get.find();
   ScrollController? scrollController;
   final showSlider = true.obs;
   final buildingId = 0.obs;
   final buildingName = "".obs;
   final listCategories = categories.obs;
   final buildings = [].obs;
+
+  /// Type of search
+  final typeSearch = "Coupons".obs;
+
+  /// Search loading
+  final isSearching = false.obs;
+
+  /// List search of coupons
+  final listStoreSearch = <Store>[].obs;
+
+  /// List search of coupons
+  final listBuildingSearch = <Building>[].obs;
+
+  /// List search of coupons
+  final listSearchCoupons = <Coupon>[].obs;
+
   final listCoupon = <Coupon>[].obs;
   final listStore = <Store>[].obs;
   final listBuilding = <Building>[].obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -74,29 +93,36 @@ class HomeController extends GetxController {
     listStore.value = stores.content ?? [];
   }
 
-  ICouponService couponService = Get.find();
   Future<void> getCoupons() async {
     listCoupon.value = (await couponService.getCoupons()).content ?? [];
   }
 
-  IBuildingService buildingService = Get.find();
   Future<void> getBuildings() async {
     listBuilding.value = (await buildingService.getBuildings());
   }
 
-  final listSearchCoupons = <Coupon>[].obs;
-  final isSearching = false.obs;
-  Future<void> searchCoupons(String keySearch) async {
+  Future<void> search(String keySearch) async {
     if (keySearch.isEmpty) {
       listSearchCoupons.clear();
+      listBuildingSearch.clear();
+      listStoreSearch.clear();
       return;
     }
     int? bId = buildingId.value;
 
     if (!isSearching.value) {
       isSearching.value = true;
-      listSearchCoupons.value =
-          await couponService.searchCoupons(bId.toString(), keySearch);
+      if (typeSearch.value == "Coupons") {
+        listSearchCoupons.value = await couponService.searchCoupons(
+          bId.toString(),
+          keySearch,
+        );
+      } else if (typeSearch.value == "Buildings") {
+        listBuildingSearch.value =
+            await buildingService.searchBuildings(keySearch);
+      } else if (typeSearch.value == "Stores") {
+        listStoreSearch.value = await storeService.searchStore(keySearch);
+      }
       Timer(Duration(seconds: 1), () => isSearching.value = false);
     }
   }

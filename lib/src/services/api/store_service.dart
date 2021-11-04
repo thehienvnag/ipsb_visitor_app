@@ -7,6 +7,7 @@ mixin IStoreService {
   Future<Store?> getStoreById(int id);
   Future<Paging<Store>> getStores(String searchName, int floorPlanId);
   Future<Paging<Store>> getStoresByBuilding(int buildingId);
+  Future<List<Store>> searchStore(String search);
 }
 
 class StoreService extends BaseService<Store> implements IStoreService {
@@ -23,6 +24,13 @@ class StoreService extends BaseService<Store> implements IStoreService {
   @override
   Future<Store?> getStoreById(int id) {
     return getByIdBase(id);
+  }
+
+  Future<List<Store>> searchStore(String search) async {
+    return getAllBase({
+      "name": search.toString(),
+      "pageSize": "5",
+    });
   }
 
   Future<Paging<Store>> getStores(String searchName, int floorPlanId) async {

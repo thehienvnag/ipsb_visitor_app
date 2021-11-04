@@ -53,7 +53,7 @@ class PdrPositioning implements IPdrPositioning {
   late final PdrPositioningConfig _config;
 
   /// Step detector implementation
-  late final IStepDetector? _stepDetector;
+  IStepDetector? _stepDetector;
 
   /// Current heading direction
   double? _heading;

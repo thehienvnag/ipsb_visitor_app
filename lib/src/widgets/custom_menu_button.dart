@@ -25,7 +25,7 @@ class CustomMenuButton extends GetView<MapController> {
         height: 40,
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 16),
-        child: Text('Tầng ${value.floorCode ?? ''}'),
+        child: Text('Floor ${value.floorCode ?? ''}'),
       ),
       toggledChild: Container(
         child: normalChildButton(),
@@ -52,7 +52,7 @@ class CustomMenuButton extends GetView<MapController> {
             ),
             Flexible(
               child: Text(
-                'Tầng ${selected?.floorCode ?? ''}',
+                'Floor ${selected?.floorCode ?? ''}',
                 style: TextStyle(color: AppColors.primary),
               ),
             ),
