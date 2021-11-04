@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/models/coupon.dart';
 import 'package:ipsb_visitor_app/src/pages/map/controllers/map_controller.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
@@ -156,7 +157,7 @@ class HomeSearchBar extends GetView<HomeController> {
               padding: const EdgeInsets.all(10),
               child: Text('Products'),
             ),
-            items: ["Coupons", "Products", "Stores"],
+            items: ["Coupons", "Stores", "Buildings"],
             itemBuilder: (value) => Container(
               height: 40,
               alignment: Alignment.centerLeft,
@@ -206,40 +207,40 @@ class HomeSearchBar extends GetView<HomeController> {
                 ),
                 itemBuilder: (context, index) {
                   final coupon = listCoupons[index];
-                  final img = coupon.imageUrl ?? "";
-                  final title = Formatter.shorten(coupon.store?.name) +
-                      " - " +
-                      Formatter.shorten(coupon.name);
-                  final description = Formatter.shorten(coupon.description);
-                  return Container(
-                    height: 85,
-                    child: TextButton(
-                      onPressed: () {},
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(0),
-                        leading: CircleAvatar(
-                          radius: 25,
-                          backgroundImage: NetworkImage(img),
-                        ),
-                        title: Text(title),
-                        subtitle: Text(description),
-                        trailing: OutlinedButton.icon(
-                          onPressed: () => controller.goToCouponDetails(coupon),
-                          icon: Icon(
-                            Icons.local_activity,
-                            size: 24,
-                          ),
-                          label: Text("Chi Tiết"),
-                        ),
-                      ),
-                    ),
-                  );
+                  return _buildCoupons(coupon);
                 },
               );
             }),
           ),
         );
       },
+    );
+  }
+
+  Widget _buildCoupons(Coupon coupon) {
+    final img = coupon.imageUrl ?? "";
+    final title =
+        '${Formatter.shorten(coupon.store?.name)} - ${Formatter.shorten(coupon.name)}';
+    final description = Formatter.shorten(coupon.description);
+    return Container(
+      height: 85,
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(0),
+        leading: CircleAvatar(
+          radius: 25,
+          backgroundImage: NetworkImage(img),
+        ),
+        title: Text(title),
+        subtitle: Text(description),
+        trailing: OutlinedButton.icon(
+          onPressed: () => controller.goToCouponDetails(coupon),
+          icon: Icon(
+            Icons.local_activity,
+            size: 24,
+          ),
+          label: Text("Chi Tiết"),
+        ),
+      ),
     );
   }
 }

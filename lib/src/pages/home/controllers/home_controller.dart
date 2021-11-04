@@ -95,7 +95,8 @@ class HomeController extends GetxController {
 
     if (!isSearching.value) {
       isSearching.value = true;
-      listSearchCoupons.value = await couponService.searchCoupons(bId.toString(), keySearch);
+      listSearchCoupons.value =
+          await couponService.searchCoupons(bId.toString(), keySearch);
       Timer(Duration(seconds: 1), () => isSearching.value = false);
     }
   }
@@ -132,8 +133,11 @@ class HomeController extends GetxController {
 
 final categories = [
   ProductCategory(name: 'Coffee', imageUrl: 'assets/images/icon_coffee.png'),
-  ProductCategory(name: 'Milk tea ', imageUrl: 'assets/images/icon_milktea.png'),
-  ProductCategory(name: 'Shopping ', imageUrl: 'assets/images/icon_shopping.png'),
-  ProductCategory(name: 'Restaurant ', imageUrl: 'assets/images/icon_restaurant.png'),
+  ProductCategory(
+      name: 'Milk tea ', imageUrl: 'assets/images/icon_milktea.png'),
+  ProductCategory(
+      name: 'Shopping ', imageUrl: 'assets/images/icon_shopping.png'),
+  ProductCategory(
+      name: 'Restaurant ', imageUrl: 'assets/images/icon_restaurant.png'),
   ProductCategory(name: 'Movie', imageUrl: 'assets/images/icon_cinema.png'),
 ];

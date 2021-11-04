@@ -137,22 +137,22 @@ class MapController extends GetxController {
   void initPositioning() async {
     if (listFloorPlan.isEmpty) return; // If get none floorplan, stop!
 
-    final beacons =
-        (await _locatorTagService.getByBuildingId(38)) // Hard code buildingId
-            .map(
-              (e) => Beacon(
-                id: e.id,
-                uuid: e.uuid,
-                txPower: e.txPower!,
-                location: Location2d(
-                  x: e.location!.x!,
-                  y: e.location!.y!,
-                  floorPlanId: e.floorPlanId!,
-                ),
-                beaconGroupId: e.locatorTagGroupId,
-              ),
-            )
-            .toList();
+    final beacons = (await _locatorTagService.getByBuildingId(
+            sharedData.building.value.id!)) // Hard code buildingId
+        .map(
+          (e) => Beacon(
+            id: e.id,
+            uuid: e.uuid,
+            txPower: e.txPower!,
+            location: Location2d(
+              x: e.location!.x!,
+              y: e.location!.y!,
+              floorPlanId: e.floorPlanId!,
+            ),
+            beaconGroupId: e.locatorTagGroupId,
+          ),
+        )
+        .toList();
 
     _bleConfig = BlePositioningConfig(
       beacons: beacons,
@@ -409,7 +409,8 @@ class MapController extends GetxController {
 
   /// Get list FloorPlan from api by buildingID
   Future<List<int>> getFloorPlan() async {
-    final paging = await _floorPlanService.getFloorPlans(38);
+    final paging =
+        await _floorPlanService.getFloorPlans(sharedData.building.value.id!);
     if (paging.content != null) {
       listFloorPlan.value = paging.content!;
       selectedFloor.value = listFloorPlan[0];

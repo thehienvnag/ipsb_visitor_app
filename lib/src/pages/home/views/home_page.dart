@@ -170,7 +170,7 @@ class HomePage extends GetView<HomeController> {
 
                               return Wrap(
                                 direction: Axis.horizontal,
-                                alignment: WrapAlignment.spaceBetween,
+                                alignment: WrapAlignment.spaceAround,
                                 children: List.generate(storeCount, (index) {
                                   final store = listStore[index];
                                   return GestureDetector(

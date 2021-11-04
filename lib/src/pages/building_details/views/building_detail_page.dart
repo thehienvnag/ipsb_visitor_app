@@ -177,8 +177,8 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                 child: Obx(() {
                                   var listStore = controller.listStore;
                                   return Wrap(
-                                    alignment: WrapAlignment.spaceBetween,
-                                    spacing: 15,
+                                    alignment: WrapAlignment.spaceAround,
+                                    // spacing: 15,
                                     children:
                                         List.generate(storeCount, (index) {
                                       final store = listStore[index];
