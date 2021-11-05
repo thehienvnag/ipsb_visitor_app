@@ -48,6 +48,9 @@ class Constants {
   /// Constants for status
   static const String read = "Read";
   static const String unread = "Unread";
+  static const String notUsed = "NotUsed";
+  static const String active = "Active";
+  static const String inactive = "Inactive";
 }
 
 class Fonts {
