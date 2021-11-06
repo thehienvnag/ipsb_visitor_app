@@ -1,9 +1,11 @@
+import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/models/coupon.dart';
 import 'package:ipsb_visitor_app/src/models/coupon_in_use.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/coupon_in_use_service.dart';
+import 'package:ipsb_visitor_app/src/utils/firebase_helper.dart';
 
 class MyCouponController extends GetxController {
   ICouponInUseService _service = Get.find();
@@ -18,6 +20,15 @@ class MyCouponController extends GetxController {
       AuthServices.userLoggedIn.value.id!,
     );
     listCouponInUse.value = paging.content!;
+    FirebaseHelper helper = FirebaseHelper();
+    await Future.wait(
+      listCouponInUse.map(
+        (e) => e.coupon!.status == Constants.active &&
+                e.status == Constants.notUsed
+            ? helper.subscribeToTopic("coupon_in_use_id_${e.id}")
+            : helper.unsubscribeFromTopic("coupon_in_use_id_${e.id}"),
+      ),
+    );
   }
 
   void gotoCouponDetails(CouponInUse coupon) {

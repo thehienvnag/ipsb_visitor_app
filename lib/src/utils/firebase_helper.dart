@@ -44,6 +44,11 @@ class FirebaseHelper {
           .then((value) => Future.delayed(const Duration(seconds: 2), () {
                 FirebaseHelper.flutterLocalNotificationInstance().cancel(0);
               }));
+      if (message.data['notificationType'] == 'coupon_changed' ||
+          message.data['notificationType'] == 'coupon_in_use_changed') {
+        unsubscribeFromTopic(
+            "coupon_in_use_id_" + message.data['couponInUseId']);
+      }
       Get.dialog(_buildDialog(data.title, data.body, message.data));
     }
   }
@@ -110,18 +115,22 @@ class FirebaseHelper {
   }
 
   Future<void> subscribeToTopic(String topic) async {
-    print('FlutterFire Messaging Example: Subscribing to topic "fcm_test".');
-    await _messaging.subscribeToTopic(topic);
     print(
-        'FlutterFire Messaging Example: Subscribing to topic "fcm_test" successful.');
+        'FlutterFire Messaging Example: Subscribing to topic "' + topic + '".');
+    await _messaging.subscribeToTopic(topic);
+    print('FlutterFire Messaging Example: Subscribing to topic "' +
+        topic +
+        '" successful.');
   }
 
   Future<void> unsubscribeFromTopic(String topic) async {
-    print(
-        'FlutterFire Messaging Example: Unsubscribing from topic "fcm_test".');
+    print('FlutterFire Messaging Example: Unsubscribing from topic "' +
+        topic +
+        '".');
     await _messaging.unsubscribeFromTopic(topic);
-    print(
-        'FlutterFire Messaging Example: Unsubscribing from topic "fcm_test" successful.');
+    print('FlutterFire Messaging Example: Unsubscribing from topic "' +
+        topic +
+        '" successful.');
   }
 
   Widget _buildDialog(String? title, String? body, Map<String, dynamic> data) {
@@ -151,6 +160,32 @@ class FirebaseHelper {
         ],
       );
     }
+    if (data['notificationType'] == 'coupon_changed') {
+      return AlertDialog(
+        title: Text(title!),
+        content: Text(body!),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('CLOSE'),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          FlatButton(
+            child: const Text('GO TO COUPON'),
+            onPressed: () {
+              Get.back();
+              Get.toNamed(
+                Routes.couponDetail,
+                parameters: {
+                  "couponId": data['couponId'],
+                },
+              );
+            },
+          ),
+        ],
+      );
+    }
     return AlertDialog(
       title: Text(title!),
       content: Text(body!),
@@ -172,6 +207,14 @@ class FirebaseHelper {
           Routes.shoppingListDetail,
           parameters: {
             "shoppingListId": message.data['shoppingListId'],
+          },
+        );
+      }
+      if (message.data['notificationType'] == 'coupon_changed') {
+        Get.toNamed(
+          Routes.couponDetail,
+          parameters: {
+            "couponId": message.data['couponId'],
           },
         );
       }
