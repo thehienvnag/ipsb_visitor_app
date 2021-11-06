@@ -137,17 +137,18 @@ class MyCouponPage extends GetView<MyCouponController> {
     switch (status) {
       case 'Used':
         coupons = listCoupon.where((e) => e.status == status).toList();
-
         break;
       case 'New':
         coupons = listCoupon
             .where((e) =>
-                e.status == status && !controller.checkExpireCoupon(e.coupon))
+                e.status == 'NotUsed' &&
+                !controller.checkExpireCoupon(e.coupon))
             .toList();
         break;
       case 'Expired':
         coupons = listCoupon
-            .where((e) => controller.checkExpireCoupon(e.coupon))
+            .where((e) =>
+                e.status == 'NotUsed' && controller.checkExpireCoupon(e.coupon))
             .toList();
         break;
       default:

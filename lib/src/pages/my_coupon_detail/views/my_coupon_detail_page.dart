@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bullet_list/flutter_bullet_list.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
@@ -25,10 +24,14 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
     return Obx(() {
       final couponInUse = controller.couponInUse.value;
       final coupon = couponInUse.coupon ?? sharedData.coupon.value;
-      if (coupon.id == null) {
+      if (coupon.id == null || controller.isLoading.isTrue) {
         return Scaffold(
           body: Center(
-            child: Text('Loading'),
+            child: Container(
+              child: CircularProgressIndicator(),
+              height: 30,
+              width: 30,
+            ),
           ),
         );
       }
@@ -158,10 +161,10 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                         label:
                                             'Have your coupon ready before purchasing services.',
                                       ),
-                                      ListItemModel(
-                                        label:
-                                            'Only one coupon is applied to a specific order.',
-                                      ),
+                                      // ListItemModel(
+                                      //   label:
+                                      //       'Only one coupon is applied to a specific order.',
+                                      // ),
                                       ListItemModel(
                                         label:
                                             'Coupon will be usable unless limit usage has been reached.',
@@ -213,8 +216,12 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: _couponState(context, coupon.id,
-                                        couponInUse, coupon.limit!),
+                                    children: _couponState(
+                                      context,
+                                      coupon,
+                                      couponInUse,
+                                      coupon.limit!,
+                                    ),
                                   ),
                                 ),
                             ],
@@ -242,73 +249,99 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
   }
 
   List<Widget> _couponState(
-      BuildContext context, int? couponId, CouponInUse couponInUse, int limit) {
-    final screenSize = MediaQuery.of(context).size;
-    int state = controller.checkCouponState();
-    if (state == 2 || state == 3)
+    BuildContext context,
+    Coupon coupon,
+    CouponInUse couponInUse,
+    int limit,
+  ) {
+    // final screenSize = MediaQuery.of(context).size;
+
+    if (couponInUse.status == "NotUsed" &&
+        coupon.status == "Active" &&
+        coupon.expireDate!.compareTo(DateTime.now()) > 0) {
       return [
-        if (state == 3)
-          ElevatedButton.icon(
-            onPressed: () => controller.gotoShowQR(),
-            icon: Icon(Icons.qr_code),
-            label: Text('Apply now'),
-          ),
-        if (state == 2)
-          couponInUse.feedbackContent == null
-              ? Container(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: AppColors.primary,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 10,
-                      ),
-                    ),
-                    onPressed: () {
-                      sharedData.couponInUse.value = couponInUse;
-                      Get.toNamed(Routes.feedbackCoupon);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.library_add_check_rounded,
-                            color: Colors.white),
-                        Container(
-                          margin: const EdgeInsets.only(left: 10),
-                          child: Text('Give feedback'),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              : Container(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.lightGreen,
-                    ),
-                    onPressed: () {
-                      // sharedData.couponInUse.value = couponInUse;
-                      // Get.toNamed(Routes.feedbackCoupon);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.library_add_check_rounded,
-                            color: Colors.white),
-                        Text('  Feedbacked'),
-                      ],
-                    ),
-                  ),
-                ),
-        SvgPicture.asset(
-          state == 3 ? ConstImg.couponSaved : ConstImg.couponExpired,
-          semanticsLabel: 'Acme Logo',
+        ElevatedButton.icon(
+          onPressed: () => controller.gotoShowQR(),
+          icon: Icon(Icons.qr_code),
+          label: Text('Apply now'),
+        ),
+        Image.asset(
+          ConstImg.couponSaved,
           width: 70,
           height: 70,
         ),
       ];
+    } else if (couponInUse.status == "Used") {
+      return [
+        if (couponInUse.rateScore == null)
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: AppColors.primary,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 10,
+              ),
+            ),
+            onPressed: () {
+              sharedData.couponInUse.value = couponInUse;
+              Get.toNamed(Routes.feedbackCoupon);
+            },
+            child: Row(
+              children: [
+                Icon(Icons.library_add_check_rounded, color: Colors.white),
+                Container(
+                  margin: const EdgeInsets.only(left: 10),
+                  child: Text('Give feedback'),
+                ),
+              ],
+            ),
+          ),
+        if (couponInUse.rateScore != null)
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.lightGreen,
+            ),
+            onPressed: () {
+              // sharedData.couponInUse.value = couponInUse;
+              // Get.toNamed(Routes.feedbackCoupon);
+            },
+            child: Row(
+              children: [
+                Icon(Icons.library_add_check_rounded, color: Colors.white),
+                Text('  Feedbacked'),
+              ],
+            ),
+          ),
+        Image.asset(
+          ConstImg.couponUsed,
+          width: 70,
+          height: 70,
+        ),
+      ];
+    }
+    if (coupon.status == "Inactive") {
+      return [
+        Container(),
+        Image.asset(
+          ConstImg.couponDeleted,
+          width: 70,
+          height: 70,
+        ),
+      ];
+    } else if (coupon.expireDate!.compareTo(DateTime.now()) < 0) {
+      return [
+        Container(),
+        Image.asset(
+          ConstImg.couponExpired,
+          width: 70,
+          height: 70,
+        ),
+      ];
+    }
     return [
       Container(),
       ElevatedButton(
-        onPressed: () => controller.saveCouponInUse(context, couponId, limit),
+        onPressed: () => controller.saveCouponInUse(context, coupon.id, limit),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
           child: Text('SAVE'),

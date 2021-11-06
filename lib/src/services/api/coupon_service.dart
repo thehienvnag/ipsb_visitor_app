@@ -43,12 +43,14 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
       "name": keySearch,
       "buildingId": buildingId,
       'lowerExpireDate': DateTime.now().toString(),
+      'status': 'Active',
     });
     var byDescription = getAllBase({
       "isAll": "true",
       "description": keySearch,
       "buildingId": buildingId,
       'lowerExpireDate': DateTime.now().toString(),
+      'status': 'Active',
     });
     var result = await Future.wait([byName, byDescription]);
     var list = result.expand((element) => element).toList();
