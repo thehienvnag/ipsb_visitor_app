@@ -17,6 +17,15 @@ abstract class BaseService<T> {
   /// Set api endpoint for entity
   String endpoint();
 
+  Future<bool> putPure(String endpoint, Map<String, dynamic> data) async {
+    final callback = () => _apiHelper.putPure(endpoint, data);
+    Response response = await AuthServices.handleUnauthorized(callback);
+    if (response.statusCode == 204) {
+      return true;
+    }
+    return false;
+  }
+
   Future<T?> postNoAuth(String endpoint, Map<String, String> body) async {
     Response res = await _apiHelper.postOne(endpoint, body);
     if (res.statusCode == HttpStatus.ok) {
@@ -60,7 +69,7 @@ abstract class BaseService<T> {
       [bool cacheAllow = false]) async {
     final callback = () => _apiHelper.count(endpoint() + "/count", query);
     Response res = await AuthServices.handleUnauthorized(callback);
-    print("This is body "+res.body.toString());
+    print("This is body " + res.body.toString());
     return res.body;
   }
 

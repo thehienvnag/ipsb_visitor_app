@@ -48,6 +48,9 @@ class Endpoints {
   /// Refresh token endpoint version /api/v1
   static const refreshToken = '$apiVer1/auth/refresh-token';
 
+  /// Refresh token endpoint version /api/v1
+  static const changePassword = '$apiVer1/auth/change-password';
+
   /// Shopping list endpoint version /api/v1
   static const shoppingList = '$apiVer1/shopping-lists';
 
