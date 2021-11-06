@@ -11,6 +11,9 @@ mixin IApiHelper {
     Map<String, dynamic> query = Constants.defaultPagingQuery,
   });
 
+  /// Put pure
+  Future<Response> putPure(String uri, Map<String, dynamic> data);
+
   /// Count element got from an API [endpoint] using [uri] and [query]
   Future<Response> count<T>(String uri, Map<String, dynamic> query);
 
@@ -190,5 +193,10 @@ class ApiHelper extends GetConnect with IApiHelper {
   @override
   List<T> convertToList<T>(body, Function fromJson) {
     return (body as List).map<T>((x) => fromJson(x)).toList();
+  }
+
+  @override
+  Future<Response> putPure(String endpoint, Map<String, dynamic> data) {
+    return put('$endpoint', data);
   }
 }

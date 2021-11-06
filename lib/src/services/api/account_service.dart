@@ -7,6 +7,7 @@ mixin IAccountService {
   Future<Account?> loginWithFirebase(String idToken);
   Future<Account?> loginWithPhone(String phone, String password);
   Future<Account?> refreshToken(String refreshToken);
+  Future<bool> changePassword(int accountId, String newPassword);
   Future<Account?> getById(int id);
   Future<bool> updateProfile(int id, Map<String, String> data, String filePath);
 }
@@ -48,6 +49,14 @@ class AccountService extends BaseService<Account> with IAccountService {
     return postNoAuth(Endpoints.loginPhone, {
       "phone": phone,
       "password": password,
+    });
+  }
+
+  @override
+  Future<bool> changePassword(int accountId, String newPassword) {
+    return putPure(Endpoints.changePassword, {
+      "accountId": accountId,
+      "password": newPassword,
     });
   }
 }
