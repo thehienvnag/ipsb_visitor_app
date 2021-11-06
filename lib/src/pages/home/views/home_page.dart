@@ -91,11 +91,7 @@ class HomePage extends GetView<HomeController> {
                                             height: screenSize.height *0.0646,
                                             padding: const EdgeInsets.all(4),
                                             margin: const EdgeInsets.only(bottom: 7),
-                                            child: Image.asset(
-                                              item.imageUrl ?? '',
-                                              height: 38,
-                                              width: 38,
-                                            ),
+                                            child: Image(image: CachedNetworkImageProvider(item.imageUrl ?? ""), width: 38,height: 38, ),
                                             decoration: BoxDecoration(
                                               border: Border.all(color: Colors.black12),
                                               borderRadius: BorderRadius.circular(7),
