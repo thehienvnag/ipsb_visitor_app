@@ -53,18 +53,21 @@ class MyCouponDetailController extends GetxController {
     final couponId = Get.parameters['couponId'];
     if (couponId == null) return;
     if (!AuthServices.isLoggedIn()) return;
+    isLoading.value = true;
     final result = await couponInUseService.getByVisitorIdAndCouponId(
       AuthServices.userLoggedIn.value.id!,
       int.parse(couponId),
     );
-    if (result == null) return;
-    if (result.status == couponInUse.value.status) {
-      return;
-    } else {
-      isLoading.value = true;
+    // if (result == null) return;
+    // if (result.status == couponInUse.value.status) {
+    //   return;
+    // } else {
+    //   isLoading.value = true;
+    // }
+    if (result != null) {
+      couponInUse.value = result;
     }
 
-    couponInUse.value = result;
     isLoading.value = false;
   }
 
@@ -88,8 +91,8 @@ class MyCouponDetailController extends GetxController {
   }
 
   Future<int> _countCouponInUseByCouponId(int couponId) async {
-    return await couponInUseService
-        .countCouponInUseByCouponId({"couponId": couponId.toString(), "status" : "Used"});
+    return await couponInUseService.countCouponInUseByCouponId(
+        {"couponId": couponId.toString(), "status": "Used"});
   }
 
   Future<void> saveCouponInUse(

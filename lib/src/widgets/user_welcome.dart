@@ -80,8 +80,9 @@ class ProfileIcon extends StatelessWidget {
       },
       icon: Material(
         elevation: 6,
-        shape:
-            CircleBorder(side: BorderSide(color: Colors.white10, width: 0.5)),
+        shape: CircleBorder(
+          side: BorderSide(color: Colors.white10, width: 0.5),
+        ),
         child: Obx(
           () => CircleAvatar(
             backgroundColor: Colors.grey[100],

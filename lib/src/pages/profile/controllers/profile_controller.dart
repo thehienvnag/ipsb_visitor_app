@@ -10,7 +10,7 @@ class ProfileController extends GetxController {
     GoogleSignIn _googleSignIn = GoogleSignIn();
     if (AuthServices.isLoggedIn()) {
       await FirebaseAuth.instance.signOut();
-      await _googleSignIn.signOut();
+      // await _googleSignIn.signOut();
       AuthServices.logout();
       BotToast.showText(text: "Đăng xuất thành công");
     }
