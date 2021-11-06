@@ -3,9 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/services/api/notification_service.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 
 class FirebaseHelper {
+
+  final SharedStates states = Get.find();
+  INotificationService _service = Get.find();
+
   static FirebaseMessaging _messaging = FirebaseMessaging.instance;
 
   static FlutterLocalNotificationsPlugin? _flutterLocalNotificationsPlugin;
@@ -49,8 +56,14 @@ class FirebaseHelper {
         unsubscribeFromTopic(
             "coupon_in_use_id_" + message.data['couponInUseId']);
       }
+      loadUnreadNotification();
       Get.dialog(_buildDialog(data.title, data.body, message.data));
     }
+  }
+
+  void loadUnreadNotification() async {
+    states.unreadNotification.value =
+    await _service.countNotification({"status": Constants.unread, "accountId" : states.account!.id.toString()});
   }
 
   requestingPermissionForIOS() async {

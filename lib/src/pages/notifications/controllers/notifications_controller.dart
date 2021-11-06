@@ -26,6 +26,9 @@ class NotificationsController extends GetxController {
 
   void updateNotifications(int id, String status) async {
     await _service.updateNotification(id, {"id" : id.toString(), "status": status});
-    sharedStates.unreadNotification.value = await _service.countNotification({"status": Constants.unread});
+    sharedStates.unreadNotification.value =
+    await _service.countNotification({"status": Constants.unread, "accountId" : sharedStates.account!.id.toString()});
+    notifications.value = await _service.getNotificationsByAccountId(sharedStates.account!.id!);
+    notifications.sort((a, b) => -a.date!.compareTo(b.date!));
   }
 }
