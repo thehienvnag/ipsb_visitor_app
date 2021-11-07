@@ -14,6 +14,7 @@ import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/notification_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/product_category_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/store_service.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 
 class HomeController extends GetxController {
@@ -77,8 +78,10 @@ class HomeController extends GetxController {
   }
 
   void updateNotifications() async {
-    states.unreadNotification.value =
-    await _notificationService.countNotification({"status": Constants.unread, "accountId" : states.account!.id.toString()});
+    if (AuthServices.userLoggedIn.value.id != null) {
+      states.unreadNotification.value =
+      await _notificationService.countNotification({"status": Constants.unread, "accountId" : AuthServices.userLoggedIn.value.id!.toString()});
+    }
   }
 
   void gotoDetails([int? id]) {

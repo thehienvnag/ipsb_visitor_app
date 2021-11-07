@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/models/shopping_list.dart';
 import 'package:ipsb_visitor_app/src/pages/shopping_list/controllers/shopping_list_controller.dart';
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:ipsb_visitor_app/src/widgets/custom_bottom_bar.dart';
@@ -52,6 +54,46 @@ class ShoppingListPage extends GetView<ShoppingListController> {
 
   Widget listItem() {
     return Obx(() {
+      if (AuthServices.userLoggedIn.value.id == null) {
+        return Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 40, right: 20),
+                height: 200,
+                width: 200,
+                child: Image.asset(
+                    ConstImg.emptyList),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 30),
+                child: Text(
+                  'Shopping list is not available',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 24,
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 15),
+                width: 320,
+                child: Text(
+                  'Come back to check after login in your account',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
       final list = controller.shoppingLists;
       if (controller.loading.value) {
         return Container(
@@ -68,8 +110,8 @@ class ShoppingListPage extends GetView<ShoppingListController> {
                 margin: EdgeInsets.only(top: 40, right: 20),
                 height: 200,
                 width: 210,
-                child: Image.network(
-                    'https://image.flaticon.com/icons/png/512/891/891462.png'),
+                child: Image.asset(
+                    ConstImg.emptyList),
               ),
               Container(
                 margin: EdgeInsets.only(top: 30),

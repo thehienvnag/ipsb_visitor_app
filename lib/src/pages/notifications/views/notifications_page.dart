@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/pages/notifications/controllers/notifications_controller.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:ipsb_visitor_app/src/widgets/custom_bottom_bar.dart';
 import 'package:ipsb_visitor_app/src/models/notification.dart';
@@ -38,6 +40,46 @@ class NotificationsPage extends GetView<NotificationsController> {
 
   Widget listNotification() {
     return Obx(() {
+      if (AuthServices.userLoggedIn.value.id == null) {
+        return Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 40, right: 20),
+                height: 200,
+                width: 200,
+                child: Image.asset(
+                    ConstImg.empty),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 30),
+                child: Text(
+                  'Notification is not available',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 24,
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 15),
+                width: 320,
+                child: Text(
+                  'Come back to check after login in your account',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
       final list = controller.notifications;
       if (controller.loading.value) {
         return Center(child: CircularProgressIndicator());
@@ -48,13 +90,13 @@ class NotificationsPage extends GetView<NotificationsController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Container(
-              //   margin: EdgeInsets.only(top: 40, right: 20),
-              //   height: 200,
-              //   width: 200,
-              //   child: Image.network(
-              //       'https://image.flaticon.com/icons/png/512/891/891462.png'),
-              // ),
+              Container(
+                margin: EdgeInsets.only(top: 40, right: 20),
+                height: 200,
+                width: 200,
+                child: Image.asset(
+                    ConstImg.empty),
+              ),
               Container(
                 margin: EdgeInsets.only(top: 30),
                 child: Text(
@@ -83,16 +125,8 @@ class NotificationsPage extends GetView<NotificationsController> {
           ),
         );
       }
-      return ListView.separated(
-        separatorBuilder: (context, index) => Divider(
-          height: 10,
-          thickness: 0.8,
-          color: Colors.grey,
-          indent: 10,
-          endIndent: 12,
-        ),
+      return ListView.builder(
         itemBuilder: (context, index) {
-          print(list);
           // return ListView.builder(
           //   shrinkWrap: true,
           //   itemBuilder: (context, index) =>
@@ -120,88 +154,69 @@ class NotificationsPage extends GetView<NotificationsController> {
           },
         )
       },
-      child: Row(
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        // mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(left: 5),
-            height: 100,
-            width: 100,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                  // 'https://raw.githubusercontent.com/thehienvnag/beauty-at-home-mobile/main/public/img/notification.PNG'),
-                  // 'https://ibb.co/DfHrstZ'
-                  element.imageUrl != null
-                      ? element.imageUrl!
-                      : 'https://ibb.co/DfHrstZ',
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 10,
+        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Row(
+          children: [
+            Container(
+              height: context.height * 0.105,
+              width: context.height * 0.105,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                    // 'https://raw.githubusercontent.com/thehienvnag/beauty-at-home-mobile/main/public/img/notification.PNG'),
+                    // 'https://ibb.co/DfHrstZ'
+                    element.imageUrl != null
+                        ? element.imageUrl!
+                        : 'https://ibb.co/DfHrstZ',
+                  ),
                 ),
               ),
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 20),
-            width: context.width * 0.69,
-            height: context.height * 0.15,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // Container(
-                //     child: Column(
-                //   children: [
-
-                // element.status == 'Unread'
-                //     ? Text(
-                //         element.title!,
-                //         style: TextStyle(
-                //             fontSize: 15, fontWeight: FontWeight.bold),
-                //       )
-                //     :
-                Text(
-                  element.title!,
-                  style: TextStyle(fontSize: 16),
-                ),
-                // element.status == 'Unread'
-                //     ?
-                // Text(element.body!,
-                //         style: TextStyle(
-                //             fontSize: 14, fontWeight: FontWeight.bold))
-                //     :
-                Text(element.body!),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // element.status == 'Unread'
-                    //     ? Text(
-                    //         Utils.parseDateTimeToDate(element.date!),
-                    //         style: TextStyle(
-                    //             fontSize: 13, fontWeight: FontWeight.bold),
-                    //       )
-                    //     :
-                    Text(
-                      Utils.parseDateTimeToDate(element.date!),
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    element.status == 'Unread'
-                        ? TextButton.icon(
-                            onPressed: () {},
-                            icon: Icon(Icons.info),
-                            label: Text('New'),
-                          )
-                        : SizedBox(),
-                  ],
-                )
-              ],
+            Container(
+              margin: const EdgeInsets.only(left: 20),
+              width: context.width * 0.69,
+              height: context.height * 0.18,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    element.title!,
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                  ),
+                  Text(element.body!, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        Utils.parseDateTimeToDate(element.date!),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                      element.status == 'Unread'
+                          ? Image.asset(
+                              ConstImg.newNotification,
+                              width: context.height * 0.08,
+                              height: context.height * 0.08,
+                            )
+                          : SizedBox(),
+                    ],
+                  )
+                ],
+              ),
             ),
-          ),
 
-          // ],
-          // ),
-          // ),
-        ],
+            // ],
+            // ),
+            // ),
+          ],
+        ),
       ),
     );
   }

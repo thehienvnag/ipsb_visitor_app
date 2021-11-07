@@ -95,7 +95,7 @@ class Utils {
     if (date == null) {
       return "Data not set";
     }
-    var formatter = new DateFormat('dd-MM-yyyy');
+    var formatter = new DateFormat.yMMMEd('en-US');
     String formatDate = formatter.format(date);
     return formatDate;
   }
