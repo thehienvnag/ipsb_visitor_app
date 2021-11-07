@@ -12,7 +12,7 @@ class ProfileController extends GetxController {
       await FirebaseAuth.instance.signOut();
       // await _googleSignIn.signOut();
       AuthServices.logout();
-      BotToast.showText(text: "Đăng xuất thành công");
+      BotToast.showText(text: "Logout Success");
     }
     Get.toNamed(Routes.home);
   }

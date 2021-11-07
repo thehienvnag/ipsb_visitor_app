@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/pages/profile_detail/controllers/profile_detail_controller.dart';
+import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 
@@ -33,6 +34,19 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
             ),
           ],
         ),
+        actions: [
+          GestureDetector(
+            onTap: (){
+              Get.toNamed(Routes.changePassword);
+            },
+            child: Container(
+              margin: const EdgeInsets.only(top: 20),
+              child: Text('Change password',
+                style: TextStyle(color: Colors.blue, fontSize: 15),
+              ),
+            ),
+          )
+        ],
       ),
       body: Container(
         padding: EdgeInsets.only(left: 16, top: 25, right: 16),

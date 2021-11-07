@@ -421,7 +421,7 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
                   );
                 }
               },
-              child: Text('XÁC NHẬN'),
+              child: Text('CONFIRM'),
             ),
           ],
         ),

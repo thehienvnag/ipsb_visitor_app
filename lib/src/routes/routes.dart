@@ -18,7 +18,7 @@ class Routes {
   static const String profileDetail = "/profileDetail";
   static const String setting = "/setting";
   static const String updateProfile = "/updateProfile";
-
+  static const String changePassword = "/changePassword";
   static const String productDetail = "/productDetail";
   static const String productComboDetail = "/comboProductDetail";
   static const String shoppingList = "/shoppingList";
