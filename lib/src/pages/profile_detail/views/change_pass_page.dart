@@ -47,8 +47,8 @@ class ChangePasswordPage extends GetView<ProfileDetailController> {
                     height: 48,
                     margin: EdgeInsets.only(top: 15, right: 20, left: 20),
                     child: TextField(
-                      onSubmitted: (value) {
-                        controller.setPassword(value);
+                      onChanged: (value) {
+                        controller.setOldPassword(value);
                       },
                       obscureText: controller.isOldShowPass.value ? true : false,
                       decoration: InputDecoration(
@@ -81,7 +81,7 @@ class ChangePasswordPage extends GetView<ProfileDetailController> {
                 height: 48,
                 margin: EdgeInsets.only(top: 15, right: 20, left: 20),
                 child: TextField(
-                  onSubmitted: (value) {
+                  onChanged: (value) {
                     controller.setPassword(value);
                   },
                   obscureText: controller.isShowPass.value ? true : false,
@@ -117,7 +117,7 @@ class ChangePasswordPage extends GetView<ProfileDetailController> {
                 height: 48,
                 margin: EdgeInsets.only(top: 15, right: 20, left: 20),
                 child: TextField(
-                  onSubmitted: (value) {
+                  onChanged: (value) {
                     controller.setRePassword(value);
                   },
                   obscureText: controller.isRePass.value ? true : false,

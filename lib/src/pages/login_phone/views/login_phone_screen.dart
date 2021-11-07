@@ -88,7 +88,7 @@ class LoginPhonePage extends GetView<LoginPhoneController> {
                   ),
                 ),
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 30),
               Center(
                   child: Text(
                 'You can also login with these methods',

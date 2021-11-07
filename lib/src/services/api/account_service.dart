@@ -54,6 +54,6 @@ class AccountService extends BaseService<Account> with IAccountService {
 
   @override
   Future<bool> changePassword(int accountId, Map<String, String> data) {
-    return putPure(Endpoints.changePassword, data);
+    return putPure(Endpoints.changePassword, data, accountId);
   }
 }

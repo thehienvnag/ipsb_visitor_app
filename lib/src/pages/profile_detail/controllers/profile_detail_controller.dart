@@ -67,8 +67,9 @@ class ProfileDetailController extends GetxController {
         bool result = await accountService.changePassword(
           id,
           {
+            "accountId" : id.toString(),
             "oldPassword": oldPassword.value,
-            "password": password.value,
+            "newPassword": password.value,
           },
         );
         if (result) {
@@ -79,6 +80,13 @@ class ProfileDetailController extends GetxController {
             duration: const Duration(seconds: 4),
           );
           Get.toNamed(Routes.home);
+        }else{
+          BotToast.showText(
+            contentColor: Color(0xffea2727),
+            text: "Change Failed",
+            textStyle: TextStyle(fontSize: 16,color: Color(0xfffcfcfc)),
+            duration: const Duration(seconds: 4),
+          );
         }
       } else {
         BotToast.showText(
@@ -90,15 +98,13 @@ class ProfileDetailController extends GetxController {
       BotToast.closeAllLoading();
     } else {
       BotToast.showText(
-        contentColor: Color(0xff64B0E7),
+        contentColor: Color(0xffea2727),
           text: "Required Information!",
           textStyle: TextStyle(fontSize: 16,color: Color(0xfffcfcfc)),
           duration: const Duration(seconds: 5));
     }
   }
-  void gotoCouponDetails(CouponInUse coupon) {
-    Get.toNamed(Routes.couponDetail, parameters: {
-      'couponId': coupon.couponId.toString(),
-    });
+  void gotoChagePassPage() {
+    Get.toNamed(Routes.changePassword);
   }
 }

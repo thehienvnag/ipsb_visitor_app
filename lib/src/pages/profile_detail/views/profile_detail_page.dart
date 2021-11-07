@@ -37,7 +37,8 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
         actions: [
           GestureDetector(
             onTap: (){
-              Get.toNamed(Routes.changePassword);
+              // Get.toNamed(Routes.changePassword);
+              controller.gotoChagePassPage();
             },
             child: Container(
               margin: const EdgeInsets.only(top: 20),

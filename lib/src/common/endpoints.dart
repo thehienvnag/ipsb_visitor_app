@@ -48,8 +48,8 @@ class Endpoints {
   /// Refresh token endpoint version /api/v1
   static const refreshToken = '$apiVer1/auth/refresh-token';
 
-  /// Refresh token endpoint version /api/v1
-  static const changePassword = '$apiVer1/auth/change-password';
+  // /// Refresh token endpoint version /api/v1
+  // static const changePassword = '$apiVer1/auth/change-password';
 
   /// Shopping list endpoint version /api/v1
   static const shoppingList = '$apiVer1/shopping-lists';
@@ -62,4 +62,7 @@ class Endpoints {
 
   /// Notification endpoint version /api/v1
   static const locatorTag = '$apiVer1/locator-tags';
+
+  /// Login via firebase endpoint version /api/v1
+  static const changePassword = '$apiVer1/auth/change-password-mobile';
 }
