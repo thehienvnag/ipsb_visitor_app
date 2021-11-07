@@ -2,6 +2,7 @@ import 'package:ipsb_visitor_app/src/pages/create_shopping_item/bindings/create_
 import 'package:ipsb_visitor_app/src/pages/create_shopping_item/views/create_shopping_item_page.dart';
 import 'package:ipsb_visitor_app/src/pages/create_shopping_list/bindings/create_shopping_list_binding.dart';
 import 'package:ipsb_visitor_app/src/pages/create_shopping_list/views/create_shopping_list_page.dart';
+import 'package:ipsb_visitor_app/src/pages/profile_detail/views/change_pass_page.dart';
 import 'package:ipsb_visitor_app/src/pages/shopping_list/bindings/shopping_list_binding.dart';
 import 'package:ipsb_visitor_app/src/pages/shopping_list/views/shopping_list_page.dart';
 import 'package:get/get.dart';
@@ -129,6 +130,11 @@ class AppPages {
     GetPage(
       name: Routes.profileDetail,
       page: () => ProfileDetailPage(),
+      binding: ProfileDetailBinding(),
+    ),
+    GetPage(
+      name: Routes.changePassword,
+      page: () => ChangePasswordPage(),
       binding: ProfileDetailBinding(),
     ),
     GetPage(

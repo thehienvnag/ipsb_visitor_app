@@ -17,10 +17,20 @@ abstract class BaseService<T> {
   /// Set api endpoint for entity
   String endpoint();
 
-  Future<bool> putPure(String endpoint, Map<String, dynamic> data) async {
-    final callback = () => _apiHelper.putPure(endpoint, data);
+  Future<bool> putPure(String endpoint, Map<String, dynamic> data,dynamic id,) async {
+    final callback = () => _apiHelper.putOne(endpoint, id, data);
     Response response = await AuthServices.handleUnauthorized(callback);
     if (response.statusCode == 204) {
+      return true;
+    }
+    return false;
+  }
+
+  /// Put an instance with [id] and [body]
+  Future<bool> putBase(dynamic id, Map<String, dynamic> body) async {
+    final callback = () => _apiHelper.putOne(endpoint(), id, body);
+    Response res = await AuthServices.handleUnauthorized(callback);
+    if (res.statusCode == HttpStatus.noContent) {
       return true;
     }
     return false;
@@ -114,15 +124,6 @@ abstract class BaseService<T> {
     }
   }
 
-  /// Put an instance with [id] and [body]
-  Future<bool> putBase(dynamic id, Map<String, dynamic> body) async {
-    final callback = () => _apiHelper.putOne(endpoint(), id, body);
-    Response res = await AuthServices.handleUnauthorized(callback);
-    if (res.statusCode == HttpStatus.noContent) {
-      return true;
-    }
-    return false;
-  }
 
   /// Put an instance with [body] and a file path [filePath]
   Future<bool> putWithOneFileBase(

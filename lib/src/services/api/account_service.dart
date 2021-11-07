@@ -7,7 +7,7 @@ mixin IAccountService {
   Future<Account?> loginWithFirebase(String idToken);
   Future<Account?> loginWithPhone(String phone, String password);
   Future<Account?> refreshToken(String refreshToken);
-  Future<bool> changePassword(int accountId, String newPassword);
+  Future<bool> changePassword(int accountId, Map<String, String> data);
   Future<Account?> getById(int id);
   Future<bool> updateProfile(int id, Map<String, String> data, String filePath);
 }
@@ -53,10 +53,7 @@ class AccountService extends BaseService<Account> with IAccountService {
   }
 
   @override
-  Future<bool> changePassword(int accountId, String newPassword) {
-    return putPure(Endpoints.changePassword, {
-      "accountId": accountId,
-      "password": newPassword,
-    });
+  Future<bool> changePassword(int accountId, Map<String, String> data) {
+    return putPure(Endpoints.changePassword, data, accountId);
   }
 }
