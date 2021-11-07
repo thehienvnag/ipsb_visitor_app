@@ -126,11 +126,6 @@ class MapSearchBar extends GetView<MapController> {
 }
 
 class HomeSearchBar extends GetView<HomeController> {
-  final String buildingName;
-  HomeSearchBar({
-    required this.buildingName,
-  });
-
   @override
   Widget build(BuildContext context) {
     final screen = MediaQuery.of(context).size;

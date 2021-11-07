@@ -4,8 +4,10 @@ import 'package:ipsb_visitor_app/src/services/api/base_service.dart';
 
 mixin IBuildingService {
   Future<Building?> getBuildingById(int id);
-  Future<List<Building>> getBuildings();
+  Future<List<Building>> getBuildings([double? lat, double? lng]);
   Future<List<Building>> searchBuildings([String? search]);
+  Future<Building?> getByLocatorTagUuid(String uuid);
+  Future<Building?> findCurrentBuilding(double lat, double lng);
 }
 
 class BuildingService extends BaseService<Building>
@@ -26,8 +28,15 @@ class BuildingService extends BaseService<Building>
   }
 
   @override
-  Future<List<Building>> getBuildings() {
-    return getAllBase({"pageSize": "5"});
+  Future<List<Building>> getBuildings([double? lat, double? lng]) {
+    var params = {"pageSize": "5"};
+    if (lat != null) {
+      params.putIfAbsent("lat", () => lat.toString());
+    }
+    if (lng != null) {
+      params.putIfAbsent("lng", () => lng.toString());
+    }
+    return getAllBase(params);
   }
 
   @override
@@ -41,5 +50,23 @@ class BuildingService extends BaseService<Building>
       params.putIfAbsent("isAll", () => "true");
     }
     return getAllBase(params);
+  }
+
+  @override
+  Future<Building?> getByLocatorTagUuid(String uuid) {
+    return getByEndpoint(uuid);
+  }
+
+  @override
+  Future<Building?> findCurrentBuilding(double lat, double lng) async {
+    final list = await getAllBase({
+      "lat": lat.toString(),
+      "lng": lng.toString(),
+      "findCurrentBuilding": "true",
+      "status": "Active",
+    });
+    if (list.isNotEmpty) {
+      return list.first;
+    }
   }
 }

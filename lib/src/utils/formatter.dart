@@ -8,9 +8,9 @@ class Formatter {
     return DateFormat(formatter).format(date);
   }
 
-  static String shorten(String? s, [int n = 30]) {
+  static String shorten(String? s, [int n = 30, String? defaultValue = ""]) {
     if (s == null) {
-      return '';
+      return defaultValue ?? "";
     }
     if (s.length < n) {
       return s;

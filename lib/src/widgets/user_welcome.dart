@@ -8,9 +8,13 @@ import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 
 class UserWelcome extends StatelessWidget {
   final Color textColor;
+  final String? currentPosition;
 
-  const UserWelcome({Key? key, this.textColor = Colors.white})
-      : super(key: key);
+  const UserWelcome({
+    Key? key,
+    this.textColor = Colors.white,
+    this.currentPosition,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,6 +24,7 @@ class UserWelcome extends StatelessWidget {
         children: [
           LocationButton(
             textColor: textColor,
+            currentPosition: currentPosition,
           ),
           ProfileIcon(),
         ],
@@ -30,39 +35,46 @@ class UserWelcome extends StatelessWidget {
 
 class LocationButton extends StatelessWidget {
   final Color textColor;
+  final String? currentPosition;
 
-  const LocationButton({Key? key, required this.textColor}) : super(key: key);
+  const LocationButton(
+      {Key? key, required this.textColor, this.currentPosition})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final SharedStates states = Get.find();
-    final building = states.building.value;
-    return TextButton(
-      onPressed: () {
-        Get.toNamed(Routes.buildingDetails, parameters: {
-          "id": building.id.toString(),
-        });
-      },
-      child: Row(
-        children: [
-          Icon(
-            Icons.location_on_rounded,
-            color: Colors.redAccent,
-            size: 22,
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 5),
-            child: Text(
-              Formatter.shorten(building.name, 12),
-              style: TextStyle(
-                color: textColor,
-                fontWeight: FontWeight.w600,
-                fontSize: 17,
+    return Obx(() {
+      final SharedStates states = Get.find();
+      final building = states.building.value;
+      return TextButton(
+        onPressed: () {
+          if (building.id != null) {
+            Get.toNamed(Routes.buildingDetails, parameters: {
+              "id": building.id.toString(),
+            });
+          }
+        },
+        child: Row(
+          children: [
+            Icon(
+              building.id != null ? Icons.apartment : Icons.location_on_rounded,
+              color: building.id != null ? Colors.white : Colors.redAccent,
+              size: 22,
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 5),
+              child: Text(
+                Formatter.shorten(building.name, 16, currentPosition),
+                style: TextStyle(
+                  color: textColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 17,
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 }
 
