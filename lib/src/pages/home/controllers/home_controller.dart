@@ -77,9 +77,11 @@ class HomeController extends GetxController {
   }
 
   void updateNotifications() async {
-    states.unreadNotification.value =
-    await _notificationService.countNotification({"status": Constants.unread, "accountId" : states.account!.id.toString()});
-  }
+    if (states.account != null) {
+      states.unreadNotification.value =
+      await _notificationService.countNotification({"status": Constants.unread, "accountId" : states.account!.id.toString()});
+    }
+    }
 
   void gotoDetails([int? id]) {
     Get.toNamed(Routes.buildingDetails, parameters: {
