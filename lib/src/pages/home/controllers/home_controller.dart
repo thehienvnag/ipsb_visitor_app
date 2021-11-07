@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/models/building.dart';
 import 'package:ipsb_visitor_app/src/models/coupon.dart';
 import 'package:ipsb_visitor_app/src/models/product_category.dart';
@@ -10,6 +11,7 @@ import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/building_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
+import 'package:ipsb_visitor_app/src/services/api/notification_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/product_category_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/store_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
@@ -18,6 +20,7 @@ class HomeController extends GetxController {
   IStoreService storeService = Get.find();
   ICouponService couponService = Get.find();
   IBuildingService buildingService = Get.find();
+  INotificationService _notificationService = Get.find();
   ScrollController? scrollController;
   final showSlider = true.obs;
   final buildingId = 0.obs;
@@ -54,6 +57,7 @@ class HomeController extends GetxController {
     getCoupons();
     getBuildings();
     getProductCategory();
+    updateNotifications();
   }
 
   SharedStates states = Get.find();
@@ -71,6 +75,13 @@ class HomeController extends GetxController {
     buildingName.value = states.building.value.name!;
     return true;
   }
+
+  void updateNotifications() async {
+    if (states.account != null) {
+      states.unreadNotification.value =
+      await _notificationService.countNotification({"status": Constants.unread, "accountId" : states.account!.id.toString()});
+    }
+    }
 
   void gotoDetails([int? id]) {
     Get.toNamed(Routes.buildingDetails, parameters: {

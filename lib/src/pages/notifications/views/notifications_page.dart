@@ -144,43 +144,19 @@ class NotificationsPage extends GetView<NotificationsController> {
           Container(
             margin: const EdgeInsets.only(left: 20),
             width: context.width * 0.69,
-            height: context.height * 0.15,
+            height: context.height * 0.17,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // Container(
-                //     child: Column(
-                //   children: [
-
-                // element.status == 'Unread'
-                //     ? Text(
-                //         element.title!,
-                //         style: TextStyle(
-                //             fontSize: 15, fontWeight: FontWeight.bold),
-                //       )
-                //     :
                 Text(
                   element.title!,
                   style: TextStyle(fontSize: 16),
                 ),
-                // element.status == 'Unread'
-                //     ?
-                // Text(element.body!,
-                //         style: TextStyle(
-                //             fontSize: 14, fontWeight: FontWeight.bold))
-                //     :
                 Text(element.body!),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // element.status == 'Unread'
-                    //     ? Text(
-                    //         Utils.parseDateTimeToDate(element.date!),
-                    //         style: TextStyle(
-                    //             fontSize: 13, fontWeight: FontWeight.bold),
-                    //       )
-                    //     :
                     Text(
                       Utils.parseDateTimeToDate(element.date!),
                       style: TextStyle(fontSize: 14),
