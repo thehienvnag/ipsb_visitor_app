@@ -113,7 +113,7 @@ dependencies:
 
   #Get current location
   geocode: ^1.0.1
-  # geolocator: ^7.2.0
+  geolocator: ^7.0.2
   url_launcher: ^6.0.9
   location: ^4.3.0
 

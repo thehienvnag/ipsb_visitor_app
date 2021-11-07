@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:geocode/geocode.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/models/building.dart';
@@ -24,7 +26,7 @@ class HomeController extends GetxController {
   ScrollController? scrollController;
   final showSlider = true.obs;
   final buildingId = 0.obs;
-  final buildingName = "".obs;
+  final currentAddress = "".obs;
   final listCategories = <ProductCategory>[].obs; //categories.obs;
 
   final buildings = [].obs;
@@ -49,19 +51,21 @@ class HomeController extends GetxController {
   final listBuilding = <Building>[].obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    if (!initPage()) return;
-    initPage();
-    getStores();
-    getCoupons();
-    getBuildings();
-    getProductCategory();
+    Position? location;
+    try {
+      location = await Geolocator.getCurrentPosition();
+    } catch (e) {}
+
+    getBuildings(location);
+    initPage(location);
     updateNotifications();
   }
 
   SharedStates states = Get.find();
-  bool initPage() {
+  void initPage(Position? myLocation) async {
+    if (myLocation == null) return;
     scrollController = ScrollController();
     scrollController?.addListener(() {
       final fromTop = scrollController!.position.pixels;
@@ -71,21 +75,50 @@ class HomeController extends GetxController {
         showSlider.value = true;
       }
     });
+    await initBuilding(myLocation);
+    if (states.building.value.id == null) return;
     buildingId.value = states.building.value.id!;
-    buildingName.value = states.building.value.name!;
-    return true;
+    getStores();
+    getCoupons();
+    getProductCategory();
+  }
+
+  Future<void> initBuilding(Position myLocation) async {
+    final building = await buildingService.findCurrentBuilding(
+      myLocation.latitude,
+      myLocation.longitude,
+    );
+    if (building != null) {
+      states.building.value = building;
+    } else {
+      try {
+        var address = await GeoCode().reverseGeocoding(
+          latitude: myLocation.latitude,
+          longitude: myLocation.longitude,
+        );
+        if (address.streetAddress != null) {
+          currentAddress.value =
+              '${address.streetNumber ?? ""} ${address.streetAddress}, ${address.city}';
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
   }
 
   void updateNotifications() async {
     if (states.account != null) {
-      states.unreadNotification.value =
-      await _notificationService.countNotification({"status": Constants.unread, "accountId" : states.account!.id.toString()});
+      states.unreadNotification.value = await _notificationService
+          .countNotification({
+        "status": Constants.unread,
+        "accountId": states.account!.id.toString()
+      });
     }
-    }
+  }
 
   void gotoDetails([int? id]) {
     Get.toNamed(Routes.buildingDetails, parameters: {
-      "id": id != null ? id.toString() : buildingId.value.toString()
+      "id": id.toString(),
     });
   }
 
@@ -111,8 +144,17 @@ class HomeController extends GetxController {
     listCoupon.value = (await couponService.getCoupons()).content ?? [];
   }
 
-  Future<void> getBuildings() async {
-    listBuilding.value = (await buildingService.getBuildings());
+  Future<void> getBuildings([Position? myLocation]) async {
+    final list = await buildingService.getBuildings(
+      myLocation?.latitude,
+      myLocation?.longitude,
+    );
+    if (list.isNotEmpty &&
+        list.first.distanceTo != null &&
+        list.first.distanceTo! < 0.5) {
+      list.removeAt(0);
+    }
+    listBuilding.value = list;
   }
 
   Future<void> search(String keySearch) async {
@@ -170,9 +212,12 @@ class HomeController extends GetxController {
   //   return valueDistan;
   // }
   IProductCategoryService _categoryService = Get.find();
+
   /// Get list ProductCategory by api
   Future<void> getProductCategory() async {
     final paging = await _categoryService.getProductCategory();
     listCategories.value = paging.content!;
   }
 }
+
+class Geocoder {}

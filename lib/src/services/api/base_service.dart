@@ -43,6 +43,14 @@ abstract class BaseService<T> {
     }
   }
 
+  Future<T?> getByEndpoint(String uri) async {
+    final callback = () => _apiHelper.getById(endpoint(), uri);
+    Response response = await AuthServices.handleUnauthorized(callback);
+    if (response.isOk) {
+      return fromJson(response.body);
+    }
+  }
+
   Future<T?> getByIdBase(int id) async {
     final callback = () => _apiHelper.getById(endpoint(), id);
     Response response = await AuthServices.handleUnauthorized(callback);
