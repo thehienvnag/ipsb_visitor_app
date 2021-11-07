@@ -7,6 +7,7 @@ mixin ICouponService {
   Future<List<Coupon>> getCouponsByStoreId(int storeId);
   Future<Paging<Coupon>> getCoupons();
   Future<List<Coupon>> searchCoupons(String keySearch, String buildingId);
+  Future<List<Coupon>> getCouponsByBuildingId(int storeId);
 }
 
 class CouponService extends BaseService<Coupon> implements ICouponService {
@@ -64,5 +65,12 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
     final ids = list.map((e) => e.id).toSet();
     list.retainWhere((x) => ids.remove(x.id));
     return list;
+  }
+
+  @override
+  Future<List<Coupon>> getCouponsByBuildingId(int buildingId) {
+    return getAllBase({
+      'buildingId': buildingId.toString(),
+    });
   }
 }

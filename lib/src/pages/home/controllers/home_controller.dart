@@ -141,7 +141,8 @@ class HomeController extends GetxController {
   }
 
   Future<void> getCoupons() async {
-    listCoupon.value = (await couponService.getCoupons()).content ?? [];
+    listCoupon.value =
+        await couponService.getCouponsByBuildingId(buildingId.value);
   }
 
   Future<void> getBuildings([Position? myLocation]) async {
