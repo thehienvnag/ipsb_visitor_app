@@ -6,7 +6,7 @@ part 'building.g.dart';
 @JsonSerializable()
 class Building {
   final int? id, managerId, adminId, numberOfFloor;
-  final double? distanceTo;
+  final double? distanceTo, lat, lng;
   final String? imageUrl, name;
   final String? address;
   final List<FloorPlan>? floorPlans;
@@ -15,6 +15,8 @@ class Building {
     this.id,
     this.name,
     this.distanceTo,
+    this.lat,
+    this.lng,
     this.managerId,
     this.adminId,
     this.numberOfFloor,

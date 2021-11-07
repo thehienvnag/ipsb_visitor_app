@@ -125,12 +125,7 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                               color: Colors.blueAccent,
                                               fontSize: 16),
                                         ),
-                                        onPressed: () {
-                                          MapUtils.openMap(
-                                              controller.currentAddress.value,
-                                              buildingSelected.address
-                                                  .toString());
-                                        },
+                                        onPressed: () => controller.openMap(),
                                       )
                                     ],
                                   ),

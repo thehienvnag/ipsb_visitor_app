@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:geocode/geocode.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
@@ -92,19 +92,38 @@ class HomeController extends GetxController {
     if (building != null) {
       states.building.value = building;
     } else {
-      try {
-        var address = await GeoCode().reverseGeocoding(
-          latitude: myLocation.latitude,
-          longitude: myLocation.longitude,
-        );
-        if (address.streetAddress != null) {
-          currentAddress.value =
-              '${address.streetNumber ?? ""} ${address.streetAddress}, ${address.city}';
-        }
-      } catch (e) {
-        print(e);
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        myLocation.latitude,
+        myLocation.longitude,
+      );
+      if (placemarks.isNotEmpty) {
+        final place = placemarks.first;
+        currentAddress.value = formatAddress(place);
+      } else {
+        currentAddress.value = 'Location not found';
       }
     }
+  }
+
+  String formatAddress(Placemark place) {
+    String result = "";
+    if (place.street!.isNotEmpty && !place.street!.contains("+")) {
+      result += place.street!;
+    } else {
+      if (place.subThoroughfare!.isNotEmpty) {
+        result += ', ${place.subThoroughfare}';
+      }
+      if (place.thoroughfare!.isNotEmpty) {
+        result += ' ${place.thoroughfare}';
+      }
+    }
+    if (place.subAdministrativeArea!.isNotEmpty) {
+      result += ', ${place.subAdministrativeArea}';
+    }
+    if (place.administrativeArea!.isNotEmpty) {
+      result += ', ${place.administrativeArea}';
+    }
+    return result.replaceFirst(RegExp("Đường"), "Đ.");
   }
 
   void updateNotifications() async {

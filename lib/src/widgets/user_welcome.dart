@@ -63,7 +63,7 @@ class LocationButton extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(left: 5),
               child: Text(
-                Formatter.shorten(building.name, 16, currentPosition),
+                Formatter.shorten(building.name, 24, currentPosition),
                 style: TextStyle(
                   color: textColor,
                   fontWeight: FontWeight.w600,
