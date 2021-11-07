@@ -25,14 +25,19 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
     return getAllBase(
       {
         'storeId': storeId.toString(),
+        'checkLimit': 'true',
         'lowerExpireDate': DateTime.now().toString(),
+        'isAll': 'true',
       },
     );
   }
 
   @override
   Future<Paging<Coupon>> getCoupons() async {
-    return getPagingBase({});
+    return getPagingBase({
+      'checkLimit': 'true',
+      'isAll': 'true',
+    });
   }
 
   @override
@@ -42,6 +47,7 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
       "isAll": "true",
       "name": keySearch,
       "buildingId": buildingId,
+      'checkLimit': 'true',
       'lowerExpireDate': DateTime.now().toString(),
       'status': 'Active',
     });
@@ -49,6 +55,7 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
       "isAll": "true",
       "description": keySearch,
       "buildingId": buildingId,
+      'checkLimit': 'true',
       'lowerExpireDate': DateTime.now().toString(),
       'status': 'Active',
     });

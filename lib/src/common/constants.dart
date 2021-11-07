@@ -104,6 +104,7 @@ class ConstImg {
   static const String stairCase = "assets/images/staircase.png";
   static const String elevator = "assets/images/elevator.png";
   static const String restRoom = "assets/images/toilet.png";
+  static const String couponOverLimit = "assets/images/OverLimit.png";
   static const String couponSaved = "assets/images/Saved.png";
   static const String couponDeleted = "assets/images/Deleted.png";
   static const String couponExpired = "assets/images/Expired.png";
