@@ -186,7 +186,9 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                                 decoration: BoxDecoration(
                                   color: Colors.grey,
                                   image: DecorationImage(
-                                    image: NetworkImage(product.imageUrl ?? ''),
+                                    image: CachedNetworkImageProvider(
+                                      product.imageUrl ?? '',
+                                    ),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -258,7 +260,7 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
     );
   }
 
-  Widget _buildFeedbacks(BuildContext context){
+  Widget _buildFeedbacks(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
       width: size.width,
@@ -279,21 +281,19 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                     padding: const EdgeInsets.all(6),
                     child: CommentTreeWidget<Comment, Comment>(
                       Comment(
-                          avatar: 'null',
-                          userName: 'null',
-                          content: 'null'),
+                          avatar: 'null', userName: 'null', content: 'null'),
                       [
                         Comment(
-                            avatar: 'null',
-                            userName: 'null',
-                            content: 'null'),
+                            avatar: 'null', userName: 'null', content: 'null'),
                       ],
-                      treeThemeData: TreeThemeData(lineColor: Colors.grey.shade400, lineWidth: 3),
+                      treeThemeData: TreeThemeData(
+                          lineColor: Colors.grey.shade400, lineWidth: 3),
                       avatarRoot: (context, data) => PreferredSize(
                         child: CircleAvatar(
                           radius: 18,
                           backgroundColor: Colors.grey,
-                          backgroundImage: NetworkImage(feedback.visitor!.imageUrl!),
+                          backgroundImage:
+                              NetworkImage(feedback.visitor!.imageUrl!),
                         ),
                         preferredSize: Size.fromRadius(18),
                       ),
@@ -301,7 +301,8 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                         child: CircleAvatar(
                           radius: 12,
                           backgroundColor: Colors.grey,
-                          backgroundImage: NetworkImage(store.imageUrl.toString()),
+                          backgroundImage:
+                              NetworkImage(store.imageUrl.toString()),
                         ),
                         preferredSize: Size.fromRadius(12),
                       ),
@@ -310,8 +311,9 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              width: size.width*0.72,
-                              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                              width: size.width * 0.72,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 8),
                               decoration: BoxDecoration(
                                   color: Colors.white.withOpacity(0.6),
                                   borderRadius: BorderRadius.circular(12)),
@@ -319,15 +321,19 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                   store.name.toString() + ' store',
-                                    style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black),
+                                    store.name.toString() + ' store',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black),
                                   ),
                                   SizedBox(
                                     height: 4,
                                   ),
                                   Text(
                                     feedback.feedbackReply ?? 'Not Reply',
-                                    style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black),
                                   ),
                                 ],
                               ),
@@ -340,20 +346,29 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(12)),
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(12)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         feedback.visitor!.name!,
-                                        style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black, fontSize: 16),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black,
+                                            fontSize: 16),
                                       ),
                                       Text(
-                                        Formatter.dateCaculator(feedback.feedbackDate),
-                                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                        Formatter.dateCaculator(
+                                            feedback.feedbackDate),
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   ),
@@ -364,7 +379,8 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                                     direction: Axis.horizontal,
                                     allowHalfRating: true,
                                     itemCount: 5,
-                                    itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
+                                    itemBuilder: (context, _) =>
+                                        Icon(Icons.star, color: Colors.amber),
                                     onRatingUpdate: (value) => true,
                                     updateOnDrag: true,
                                   ),
@@ -373,16 +389,24 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                                   ),
                                   Text(
                                     feedback.feedbackContent ?? 'Not content',
-                                    style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black),
                                   ),
                                   Container(
-                                      width:  size.width * 0.4,
+                                      width: size.width * 0.4,
                                       height: size.height * 0.12,
                                       alignment: Alignment.centerLeft,
                                       child: feedback.feedbackImage != null
-                                          ? Card(child: Image(image: CachedNetworkImageProvider(feedback.feedbackImage.toString()),))
-                                          : Image(image: CachedNetworkImageProvider('https://pngimg.com/uploads/mouth_smile/mouth_smile_PNG42.png'))
-                                  ),
+                                          ? Card(
+                                              child: Image(
+                                              image: CachedNetworkImageProvider(
+                                                  feedback.feedbackImage
+                                                      .toString()),
+                                            ))
+                                          : Image(
+                                              image: CachedNetworkImageProvider(
+                                                  'https://pngimg.com/uploads/mouth_smile/mouth_smile_PNG42.png'))),
                                 ],
                               ),
                             ),

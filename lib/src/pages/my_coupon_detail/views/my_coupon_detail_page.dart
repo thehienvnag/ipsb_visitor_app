@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bullet_list/flutter_bullet_list.dart';
@@ -61,7 +62,6 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
         body: Center(
           child: SingleChildScrollView(
             child: Column(children: [
-              SizedBox(height: 20),
               TicketBox(
                 xAxisMain: false,
                 fromEdgeMain: 500,
@@ -93,8 +93,9 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                         height: 100,
                                         decoration: BoxDecoration(
                                           image: DecorationImage(
-                                            image:
-                                                NetworkImage(coupon.imageUrl!),
+                                            image: CachedNetworkImageProvider(
+                                              coupon.imageUrl!,
+                                            ),
                                             fit: BoxFit.fill,
                                           ),
                                           borderRadius:
@@ -255,7 +256,19 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
     int limit,
   ) {
     // final screenSize = MediaQuery.of(context).size;
-
+    const double iconSize = 75;
+    if (coupon.overLimit != null &&
+        coupon.overLimit! &&
+        (couponInUse.id == null || couponInUse.status == "NotUsed")) {
+      return [
+        Container(),
+        Image.asset(
+          ConstImg.couponOverLimit,
+          width: iconSize,
+          height: iconSize,
+        ),
+      ];
+    }
     if (couponInUse.status == "NotUsed" &&
         coupon.status == "Active" &&
         coupon.expireDate!.compareTo(DateTime.now()) > 0) {
@@ -267,8 +280,8 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
         ),
         Image.asset(
           ConstImg.couponSaved,
-          width: 70,
-          height: 70,
+          width: iconSize,
+          height: iconSize,
         ),
       ];
     } else if (couponInUse.status == "Used") {
@@ -314,8 +327,8 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
           ),
         Image.asset(
           ConstImg.couponUsed,
-          width: 70,
-          height: 70,
+          width: iconSize,
+          height: iconSize,
         ),
       ];
     }
@@ -324,8 +337,8 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
         Container(),
         Image.asset(
           ConstImg.couponDeleted,
-          width: 70,
-          height: 70,
+          width: iconSize,
+          height: iconSize,
         ),
       ];
     } else if (coupon.expireDate!.compareTo(DateTime.now()) < 0) {
@@ -333,8 +346,8 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
         Container(),
         Image.asset(
           ConstImg.couponExpired,
-          width: 70,
-          height: 70,
+          width: iconSize,
+          height: iconSize,
         ),
       ];
     }
@@ -386,35 +399,37 @@ void showCustomDialog(BuildContext context, Coupon coupon) => showDialog(
                     ],
                   ),
                 ),
-                Container(
-                  padding:
-                      EdgeInsets.only(left: screenSize.width * 0.08, bottom: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                          width: screenSize.width * 0.4,
-                          child: Text("Min. spend: ")),
-                      Text(
-                          "${Formatter.price(coupon.minSpend ?? 0).toUpperCase()}")
-                    ],
+                if (coupon.minSpend != null)
+                  Container(
+                    padding: EdgeInsets.only(
+                        left: screenSize.width * 0.08, bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                            width: screenSize.width * 0.4,
+                            child: Text("Min. spend: ")),
+                        Text(
+                            "${Formatter.price(coupon.minSpend).toUpperCase()}")
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  color: Color(0xfffafafa),
-                  padding:
-                      EdgeInsets.only(left: screenSize.width * 0.08, bottom: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                          width: screenSize.width * 0.4,
-                          child: Text("Max. discount: ")),
-                      Text(
-                          "${Formatter.price(coupon.maxDiscount ?? 0).toUpperCase()}")
-                    ],
+                if (coupon.maxDiscount != null)
+                  Container(
+                    color: Color(0xfffafafa),
+                    padding: EdgeInsets.only(
+                        left: screenSize.width * 0.08, bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                            width: screenSize.width * 0.4,
+                            child: Text("Max. discount: ")),
+                        Text(
+                            "${Formatter.price(coupon.maxDiscount ?? 0).toUpperCase()}")
+                      ],
+                    ),
                   ),
-                ),
                 SizedBox(height: screenSize.height * 0.0164),
                 TextButton(
                   child: Text('Close',

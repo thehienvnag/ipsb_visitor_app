@@ -13,6 +13,7 @@ class Coupon {
       productInclude,
       productExclude,
       status;
+  final bool? overLimit;
 
   final double? amount, maxDiscount, minSpend;
   final int? storeId, couponTypeId, limit;
@@ -31,6 +32,7 @@ class Coupon {
     this.productExclude,
     this.status,
     this.amount,
+    this.overLimit,
     this.maxDiscount,
     this.minSpend,
     this.limit,

@@ -29,19 +29,7 @@ class MyCouponDetailController extends GetxController {
   @override
   onInit() {
     super.onInit();
-
-    //checkStatus();
     getCouponInUse();
-  }
-
-  void checkStatus() {
-    bool firstTime = true;
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      if (!firstTime) {
-        getCouponInUse();
-      }
-      firstTime = false;
-    });
   }
 
   void gotoShowQR() {
@@ -69,25 +57,6 @@ class MyCouponDetailController extends GetxController {
     }
 
     isLoading.value = false;
-  }
-
-  /// Check coupons of visitor save before with status is 'NotUse'
-  int checkCouponState() {
-    final coupon = sharedStates.coupon.value;
-    final couponUse = couponInUse.value;
-    if (coupon.id != null && couponUse.id == null) {
-      return 1;
-    }
-    final now = DateTime.now();
-    if (couponUse.status == 'Used' ||
-        couponUse.coupon!.expireDate!.isBefore(now)) {
-      return 2;
-    }
-    if (couponUse.status == 'NotUsed') {
-      return 3;
-    }
-
-    return 1;
   }
 
   Future<int> _countCouponInUseByCouponId(int couponId) async {
