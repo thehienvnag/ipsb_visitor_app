@@ -109,6 +109,9 @@ class ConstImg {
   static const String couponDeleted = "assets/images/Deleted.png";
   static const String couponExpired = "assets/images/Expired.png";
   static const String couponUsed = "assets/images/Used.png";
+  static const String newNotification = "assets/images/new.png";
+  static const String emptyList = "assets/images/empty_list.png";
+  static const String empty = "assets/images/empty.png";
 }
 
 class AppHiveType {
