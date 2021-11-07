@@ -10,7 +10,8 @@ class Formatter {
 
   static String shorten(String? s, [int n = 30, String? defaultValue = ""]) {
     if (s == null) {
-      return defaultValue ?? "";
+      if (defaultValue == null) return "";
+      s = defaultValue;
     }
     if (s.length < n) {
       return s;
