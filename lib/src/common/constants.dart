@@ -112,6 +112,7 @@ class ConstImg {
   static const String newNotification = "assets/images/new.png";
   static const String emptyList = "assets/images/empty_list.png";
   static const String empty = "assets/images/empty.png";
+  static const String error = "assets/images/error.png";
 }
 
 class AppHiveType {

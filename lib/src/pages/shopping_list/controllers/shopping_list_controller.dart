@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/models/shopping_list.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/shopping_list_service.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_visitor_app/src/utils/firebase_helper.dart';
 
 class ShoppingListController extends GetxController {
@@ -20,13 +21,7 @@ class ShoppingListController extends GetxController {
     // shoppingLists.value = await _iShoppingListService
     //     .getByAccountId(AuthServices.userLoggedIn.value.id!);
     loading.value = true;
-    shoppingLists.value = await _iShoppingListService.getByAccountId(18);
-    FirebaseHelper helper = FirebaseHelper();
-    await Future.wait(
-      shoppingLists.map(
-        (e) => helper.subscribeToTopic("shopping_list_id_${e.id}"),
-      ),
-    );
+    shoppingLists.value = await _iShoppingListService.getByAccountId(AuthServices.userLoggedIn.value.id);
     loading.value = false;
   }
 
@@ -43,8 +38,6 @@ class ShoppingListController extends GetxController {
     bool result = await _iShoppingListService.delete(id);
     if (result) {
       BotToast.showText(text: "Successfully removed!");
-      FirebaseHelper helper = FirebaseHelper();
-      await helper.unsubscribeFromTopic("shopping_list_id_" + id.toString());
       loadShoppingLists();
     }
   }

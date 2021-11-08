@@ -187,7 +187,7 @@ class NotificationsPage extends GetView<NotificationsController> {
                 children: [
                   Text(
                     element.title!,
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                   ),
                   Text(element.body!,
                       style:
@@ -198,7 +198,7 @@ class NotificationsPage extends GetView<NotificationsController> {
                       Text(
                         Utils.parseDateTimeToDate(element.date!),
                         style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w600),
+                            fontSize: 12.5, fontWeight: FontWeight.w600),
                       ),
                       element.status == 'Unread'
                           ? Image.asset(

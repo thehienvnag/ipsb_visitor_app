@@ -14,10 +14,12 @@ class NotificationsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    print("Before load notification");
     loadNotifications();
   }
 
   void loadNotifications() async {
+    print("AccountId: " + AuthServices.userLoggedIn.value.id!.toString());
     loading.value = true;
     notifications.value = await _service.getNotificationsByAccountId(AuthServices.userLoggedIn.value.id!.toInt());
     notifications.sort((a, b) => -a.date!.compareTo(b.date!));

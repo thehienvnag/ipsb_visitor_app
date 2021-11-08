@@ -36,14 +36,14 @@ class LoginPhoneController extends GetxController {
         if (verificationFailed.message!.contains(
             "We have blocked all requests from this device due to unusual activity. Try again later.")) {
           BotToast.showText(
-              text: "Bạn đã thử nhiều lần, vui lòng thử lại sau !",
+              text: "You have tried many times, please try again later !",
               textStyle: TextStyle(fontSize: 16),
               duration: const Duration(seconds: 7));
         }
         if (verificationFailed.message!.contains(
             "phone numbers are written in the format [+][country code][subscriber number including area code]")) {
           BotToast.showText(
-              text: "Sai định dạng. +84[SDT của bạn]",
+              text: "Wrong format. +84[Your phone number]",
               textStyle: TextStyle(fontSize: 16),
               duration: const Duration(seconds: 7));
         }

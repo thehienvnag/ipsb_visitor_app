@@ -36,6 +36,45 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
           ),
         );
       }
+      if (coupon.id == null && controller.isLoading.isFalse) {
+        return Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 40, right: 20),
+                height: 200,
+                width: 200,
+                child: Image.asset(ConstImg.error),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 30),
+                child: Text(
+                  'Oops! Can not load coupon',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 24,
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 15),
+                width: 320,
+                child: Text(
+                  'Coupon may have been removed',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
       return Scaffold(
         appBar: AppBar(
           centerTitle: true,

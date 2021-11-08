@@ -20,15 +20,6 @@ class MyCouponController extends GetxController {
       AuthServices.userLoggedIn.value.id!,
     );
     listCouponInUse.value = paging.content!;
-    FirebaseHelper helper = FirebaseHelper();
-    await Future.wait(
-      listCouponInUse.map(
-        (e) => e.coupon!.status == Constants.active &&
-                e.status == Constants.notUsed
-            ? helper.subscribeToTopic("coupon_in_use_id_${e.id}")
-            : helper.unsubscribeFromTopic("coupon_in_use_id_${e.id}"),
-      ),
-    );
   }
 
   void gotoCouponDetails(CouponInUse coupon) {

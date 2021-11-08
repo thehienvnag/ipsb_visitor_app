@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_visitor_app/src/utils/firebase_helper.dart';
 
 class LoginEmailController extends GetxController {
   // Share states across app
@@ -42,6 +43,8 @@ class LoginEmailController extends GetxController {
         /// Login with firebase
         bool successLogin = await AuthServices.loginWithFirebase(result.user!);
         if (successLogin) {
+          FirebaseHelper helper = new FirebaseHelper();
+          await helper.subscribeToTopic("account_id_" + AuthServices.userLoggedIn.value.id.toString());
           BotToast.showText(text: "Sign In Successfull");
           Get.back();
         }
@@ -65,6 +68,8 @@ class LoginEmailController extends GetxController {
       BotToast.showLoading();
       bool successLogin = await AuthServices.loginWithPhone(phone, pass);
       if (successLogin) {
+        FirebaseHelper helper = new FirebaseHelper();
+        await helper.subscribeToTopic("account_id_" + AuthServices.userLoggedIn.value.id.toString());
         BotToast.showText(text: "Sign In Successfull");
         Get.back();
       }
