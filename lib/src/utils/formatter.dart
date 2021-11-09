@@ -1,3 +1,4 @@
+import 'package:geocoding/geocoding.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -48,5 +49,26 @@ class Formatter {
     final fifteenAgo =
         new DateTime.now().subtract(new Duration(hours: differenceInDays));
     return timeago.format(fifteenAgo, locale: 'en');
+  }
+
+  static String formatAddress(Placemark place) {
+    String result = "";
+    if (place.street!.isNotEmpty && !place.street!.contains("+")) {
+      result += place.street! + ", ";
+    } else {
+      if (place.subThoroughfare!.isNotEmpty) {
+        result += '${place.subThoroughfare}, ';
+      }
+      if (place.thoroughfare!.isNotEmpty) {
+        result += ' ${place.thoroughfare}, ';
+      }
+    }
+    if (place.subAdministrativeArea!.isNotEmpty) {
+      result += '${place.subAdministrativeArea}, ';
+    }
+    if (place.administrativeArea!.isNotEmpty) {
+      result += '${place.administrativeArea}, ';
+    }
+    return result.replaceFirst(RegExp("Đường"), "Đ.");
   }
 }

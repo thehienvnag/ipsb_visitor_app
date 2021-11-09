@@ -13,6 +13,7 @@ class ShoppingListDetailController extends GetxController {
   final IShoppingItemService _shoppingItemService = Get.find();
   final shoppingListDetails = ShoppingList().obs;
   final SharedStates _sharedStates = Get.find();
+  final isLoading = false.obs;
 
   @override
   void onInit() {
@@ -23,11 +24,13 @@ class ShoppingListDetailController extends GetxController {
   void loadShoppingListDetails() async {
     String? shoppingListId = Get.parameters["shoppingListId"];
     if (shoppingListId == null) return;
+    isLoading.value = true;
     final result =
         await _shoppingListService.getById(int.parse(shoppingListId));
     if (result != null) {
       shoppingListDetails.value = result;
     }
+    isLoading.value = false;
   }
 
   bool checkDataPresent() => shoppingListDetails.value.id != null;

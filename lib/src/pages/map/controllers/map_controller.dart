@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/ipsb_positioning.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/beacon.dart';
@@ -17,6 +19,7 @@ import 'package:ipsb_visitor_app/src/models/product.dart';
 import 'package:ipsb_visitor_app/src/models/shopping_list.dart';
 import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
+import 'package:ipsb_visitor_app/src/services/api/building_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/edge_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/floor_plan_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/location_service.dart';
@@ -24,6 +27,7 @@ import 'package:ipsb_visitor_app/src/services/api/locator_tag_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 import 'package:ipsb_visitor_app/src/utils/edge_helper.dart';
+import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:ipsb_visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -54,6 +58,9 @@ class MapController extends GetxController {
 
   /// Service for interacting with LocatorTag API
   ILocatorTagService _locatorTagService = Get.find();
+
+  /// Service for interacting with Building API
+  IBuildingService buildingService = Get.find();
 
   /// List edges of all of the building
   final edges = <Edge>[].obs;
@@ -109,6 +116,9 @@ class MapController extends GetxController {
   /// List shopping routes;
   final listShoppingRoutes = <List<Location>>[].obs;
 
+  /// Current position address
+  final currentAddress = "".obs;
+
   /// Ble config
   BlePositioningConfig? _bleConfig;
 
@@ -118,13 +128,17 @@ class MapController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getFloorPlan().then((value) {
-      initPositioning();
-      loadEdgesInBuilding();
+    initBuilding().then((value) {
+      if (value) {
+        getFloorPlan().then((value) {
+          initPositioning();
+          loadEdgesInBuilding();
+        });
+        onSelectedFloorChange();
+        onLocationChanged();
+        initShoppingList();
+      }
     });
-    onSelectedFloorChange();
-    onLocationChanged();
-    initShoppingList();
   }
 
   @override
@@ -133,6 +147,38 @@ class MapController extends GetxController {
     closeShopping();
     IpsbPositioning.stop();
   }
+
+  Future<bool> initBuilding() async {
+    Position? myLocation;
+    try {
+      myLocation = await Geolocator.getCurrentPosition();
+    } catch (e) {}
+
+    if (myLocation == null) return false;
+
+    final building = await buildingService.findCurrentBuilding(
+      myLocation.latitude,
+      myLocation.longitude,
+    );
+    if (building != null) {
+      sharedData.building.value = building;
+      return true;
+    } else {
+      List<geocoding.Placemark> placeMarks = await geocoding.placemarkFromCoordinates(
+        myLocation.latitude,
+        myLocation.longitude,
+      );
+      if (placeMarks.isNotEmpty) {
+        final place = placeMarks.first;
+        currentAddress.value = Formatter.formatAddress(place);
+      } else {
+        currentAddress.value = 'Location not found';
+      }
+    }
+
+    return false;
+  }
+
 
   void initPositioning() async {
     if (listFloorPlan.isEmpty) return; // If get none floorplan, stop!

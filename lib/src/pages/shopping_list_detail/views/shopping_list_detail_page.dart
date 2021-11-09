@@ -12,6 +12,45 @@ import 'package:ipsb_visitor_app/src/widgets/rounded_button.dart';
 class ShoppingListDetailsPage extends GetView<ShoppingListDetailController> {
   @override
   Widget build(BuildContext context) {
+    if (controller.shoppingListDetails.value.name == null && !controller.isLoading.value) {
+      return Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 40, right: 20),
+              height: 200,
+              width: 200,
+              child: Image.asset(ConstImg.error),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 30),
+              child: Text(
+                'Oops! Can not load shopping list',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 24,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 15),
+              width: 320,
+              child: Text(
+                'Shopping list may have been removed',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -24,10 +63,12 @@ class ShoppingListDetailsPage extends GetView<ShoppingListDetailController> {
             size: 40,
           ),
         ),
-        title: Text(
-          'Weekend List',
-          style: TextStyle(color: Colors.black),
-        ),
+        title: Obx(() {
+          return Text(
+            controller.shoppingListDetails.value.name ?? "Default",
+            style: TextStyle(color: Colors.black),
+          );
+        }),
         centerTitle: true,
         titleTextStyle: TextStyle(color: Colors.white),
       ),
@@ -159,6 +200,7 @@ class ShoppingItems extends StatefulWidget {
   final List<Store>? stores;
   final Function(List<int>) removeCallback;
   final Function(int, String) updateCallback;
+
   const ShoppingItems({
     Key? key,
     this.stores,
@@ -172,6 +214,7 @@ class ShoppingItems extends StatefulWidget {
 
 class _ShoppingItemsState extends State<ShoppingItems> {
   String? note;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
