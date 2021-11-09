@@ -32,9 +32,9 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
           children: [
             Container(
               alignment: Alignment.center,
-              width: 290,
+              width: screenSize.width*0.705,
               child: Text(
-                'MÃ QR CODE',
+                'QR CODE',
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -53,15 +53,15 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('HIGH LAND COFFEE',
+                      Text('ADIDAS',
                         style: TextStyle(
                             color: Colors.black54,
                             fontSize: 20,
                             fontWeight: FontWeight.bold),
                       ),
-                      Text('(${coupon.description})',
-                        style: TextStyle(color: Colors.black54, fontSize: 15),
-                      ),
+                      // Text('(${coupon.description})',
+                      //   style: TextStyle(color: Colors.black54, fontSize: 15),
+                      // ),
                       SizedBox(height: 10),
                       QrImage(
                         data: controller.genCode(coupon, couponInUse.id),
@@ -71,7 +71,7 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                       SizedBox(height: 10),
                       Center(
                         child: Text(
-                          'Đưa mã này cho nhân viên quét kích hoạt',
+                          'Give this code to the staff scans',
                           style: TextStyle(
                             color: Colors.black54,
                             fontSize: 16,
@@ -98,24 +98,24 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                         child: FlutterBulletList(
                           data: [
                             ListItemModel(
-                                label: "Chương trình: ",
+                                label: "Promotion: ",
                                 data: [ListItemModel(label: "${coupon.name}")]),
-                            ListItemModel(label: "Áp dụng cho: ", data: [
-                              ListItemModel(label: "Toàn menu (không áp dụng combo)"),
-                              ListItemModel(label: "Giá chưa bao gồm VAT}"),
+                            ListItemModel(label: "Apply for: ", data: [
+                              ListItemModel(label: "Full menu (does not apply combos)"),
+                              ListItemModel(label: "Price does not include VAT"),
                             ]),
                             ListItemModel(
-                              label: "Lưu ý: ",
+                              label: "Note: ",
                               data: [
-                                ListItemModel(
-                                  label: "Chỉ áp dụng tại cửa hàng",
-                                ),
-                                ListItemModel(
-                                    label:
-                                        "Khi thanh toán chỉ áp dụng duy nhất 1 mã"),
+                                // ListItemModel(
+                                //   label: "Apply at store only",
+                                // ),
                                 ListItemModel(
                                     label:
-                                        "Áp dụng cho nhiều sản phẩm trong cùng hóa đơn"),
+                                        "When paying, only 1 code can be applied"),
+                                ListItemModel(
+                                    label:
+                                        "Applies to multiple products in the same invoice"),
                               ],
                             ),
                           ],
@@ -130,15 +130,15 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: Row(
-                                children: [
-                                  Icon(Icons.directions, color: Colors.white),
-                                  Text('Chỉ đường'),
-                                ],
-                              ),
-                            ),
+                            // ElevatedButton(
+                            //   onPressed: () {},
+                            //   child: Row(
+                            //     children: [
+                            //       Icon(Icons.directions, color: Colors.white),
+                            //       Text('Direction'),
+                            //     ],
+                            //   ),
+                            // ),
                             SizedBox(
                               width: 6,
                             ),
@@ -146,7 +146,7 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                               onPressed: () {},
                               label: Row(
                                 children: [
-                                  Text('Gọi cửa hàng'),
+                                  Text('Call store'),
                                 ],
                               ),
                               icon: Icon(Icons.phone),

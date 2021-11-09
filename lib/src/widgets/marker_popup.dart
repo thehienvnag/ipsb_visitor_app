@@ -77,7 +77,7 @@ class MarkerPopup extends GetView<ImageViewController> {
                             'id': state.location!.storeId.toString()
                           }),
                       icon: Icon(Icons.store),
-                      label: Text('Xem thông tin'),
+                      label: Text('View Information'),
                     ),
                   ),
                   Container(

@@ -21,7 +21,6 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-
     return Obx(() {
       final couponInUse = controller.couponInUse.value;
       final coupon = couponInUse.coupon ?? sharedData.coupon.value;
@@ -43,8 +42,8 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 40, right: 20),
-                height: 200,
-                width: 200,
+                height: screenSize.height * 0.258,
+                width: screenSize.width * 0.486,
                 child: Image.asset(ConstImg.error),
               ),
               Container(
@@ -60,7 +59,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 15),
-                width: 320,
+                width: screenSize.width * 0.778 ,
                 child: Text(
                   'Coupon may have been removed',
                   textAlign: TextAlign.center,
@@ -103,14 +102,14 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
             child: Column(children: [
               TicketBox(
                 xAxisMain: false,
-                fromEdgeMain: 500,
+                fromEdgeMain: screenSize.height*0.645,
                 fromEdgeSeparator: 134,
                 isOvalSeparator: false,
                 smallClipRadius: 15,
                 clipRadius: 15,
                 numberOfSmallClips: 11,
                 ticketWidth: screenSize.width * 0.9,
-                ticketHeight: 660,
+                ticketHeight: screenSize.height*0.85,
                 child: Stack(
                   children: [
                     Column(
@@ -128,8 +127,8 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                     margin: const EdgeInsets.only(right: 20),
                                     child: Card(
                                       child: Container(
-                                        width: 125,
-                                        height: 100,
+                                        width: screenSize.width*0.283,
+                                        height: screenSize.height*0.129,
                                         decoration: BoxDecoration(
                                           image: DecorationImage(
                                             image: CachedNetworkImageProvider(
@@ -227,7 +226,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                           ],
                         ),
                         Container(
-                          height: 150,
+                          height: screenSize.height*0.1935,
                           padding: const EdgeInsets.only(bottom: 15),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

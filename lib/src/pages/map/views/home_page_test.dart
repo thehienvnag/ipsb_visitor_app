@@ -240,7 +240,7 @@ class HomePage2 extends GetView<MapController> {
                                               children: [
                                                 OutlinedButton(
                                                   onPressed: () {},
-                                                  child: Text('Xem chi tiết'),
+                                                  child: Text('View Detail'),
                                                 ),
                                               ],
                                             ),
