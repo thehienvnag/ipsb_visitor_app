@@ -52,11 +52,7 @@ class FirebaseHelper {
           .then((value) => Future.delayed(const Duration(seconds: 2), () {
                 FirebaseHelper.flutterLocalNotificationInstance().cancel(0);
               }));
-      if (message.data['notificationType'] == 'coupon_changed' ||
-          message.data['notificationType'] == 'coupon_in_use_changed') {
-        unsubscribeFromTopic(
-            "coupon_in_use_id_" + message.data['couponInUseId']);
-      }
+
       loadUnreadNotification();
       Get.dialog(_buildDialog(data.title, data.body, message.data));
     }

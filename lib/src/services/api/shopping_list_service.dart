@@ -3,7 +3,7 @@ import 'package:ipsb_visitor_app/src/models/shopping_list.dart';
 import 'base_service.dart';
 
 mixin IShoppingListService {
-  Future<List<ShoppingList>> getByAccountId(int accountId);
+  Future<List<ShoppingList>> getByAccountId(int? accountId);
   Future<ShoppingList?> getById(int id);
   Future<ShoppingList?> create(Map<String, dynamic> body);
   Future<bool> delete(int id);
@@ -22,7 +22,7 @@ class ShoppingListService extends BaseService<ShoppingList>
   }
 
   @override
-  Future<List<ShoppingList>> getByAccountId(int accountId) {
+  Future<List<ShoppingList>> getByAccountId(int? accountId) {
     return getAllBase({
       "accountId": accountId.toString(),
       "status": "Active",
