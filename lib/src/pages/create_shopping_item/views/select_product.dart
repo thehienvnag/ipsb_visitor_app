@@ -29,7 +29,7 @@ class SelectProduct extends StatelessWidget {
           width: 80,
         ),
         title: Text(Formatter.shorten(item.name)),
-        subtitle: Text(Formatter.shorten(item.description)),
+        subtitle: Text(Formatter.price(item.price)),
         trailing: Checkbox(
           value: selected,
           onChanged: (value) => changeSelected(value!),
