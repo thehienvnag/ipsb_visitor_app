@@ -57,7 +57,7 @@ class LocationButton extends StatelessWidget {
           children: [
             Icon(
               building.id != null ? Icons.apartment : Icons.location_on_rounded,
-              color: building.id != null ? Colors.white : Colors.redAccent,
+              color: building.id != null ? textColor : Colors.redAccent,
               size: 22,
             ),
             Container(

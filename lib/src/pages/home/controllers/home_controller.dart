@@ -18,6 +18,7 @@ import 'package:ipsb_visitor_app/src/services/api/product_category_service.dart'
 import 'package:ipsb_visitor_app/src/services/api/store_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 
 class HomeController extends GetxController {
   IStoreService storeService = Get.find();
@@ -92,38 +93,17 @@ class HomeController extends GetxController {
     if (building != null) {
       states.building.value = building;
     } else {
-      List<Placemark> placemarks = await placemarkFromCoordinates(
+      List<Placemark> placeMarks = await placemarkFromCoordinates(
         myLocation.latitude,
         myLocation.longitude,
       );
-      if (placemarks.isNotEmpty) {
-        final place = placemarks.first;
-        currentAddress.value = formatAddress(place);
+      if (placeMarks.isNotEmpty) {
+        final place = placeMarks.first;
+        currentAddress.value = Formatter.formatAddress(place);
       } else {
         currentAddress.value = 'Location not found';
       }
     }
-  }
-
-  String formatAddress(Placemark place) {
-    String result = "";
-    if (place.street!.isNotEmpty && !place.street!.contains("+")) {
-      result += place.street!;
-    } else {
-      if (place.subThoroughfare!.isNotEmpty) {
-        result += ', ${place.subThoroughfare}';
-      }
-      if (place.thoroughfare!.isNotEmpty) {
-        result += ' ${place.thoroughfare}';
-      }
-    }
-    if (place.subAdministrativeArea!.isNotEmpty) {
-      result += ', ${place.subAdministrativeArea}';
-    }
-    if (place.administrativeArea!.isNotEmpty) {
-      result += ', ${place.administrativeArea}';
-    }
-    return result.replaceFirst(RegExp("Đường"), "Đ.");
   }
 
   void updateNotifications() async {

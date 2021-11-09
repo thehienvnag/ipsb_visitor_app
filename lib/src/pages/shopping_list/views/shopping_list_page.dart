@@ -33,13 +33,13 @@ class ShoppingListPage extends GetView<ShoppingListController> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: AuthServices.isLoggedIn() ? FloatingActionButton(
         backgroundColor: AppColors.primary,
         child: Icon(
           Icons.add,
         ),
         onPressed: () => controller.createShoppingList(),
-      ),
+      ) : SizedBox(),
       body: SingleChildScrollView(
         child: Column(children: [
           listItem(),

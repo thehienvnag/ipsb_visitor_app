@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
 import 'package:ipsb_visitor_app/src/pages/map/controllers/map_controller.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:ipsb_visitor_app/src/widgets/custom_bottom_bar.dart';
@@ -19,6 +20,9 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class MapPage extends GetView<MapController> {
   final double tabBarHeight = 80;
 
+  /// Shared data
+  SharedStates sharedData = Get.find();
+
   @override
   Widget build(BuildContext context) {
     // final screenSize = MediaQuery.of(context).size;
@@ -27,30 +31,83 @@ class MapPage extends GetView<MapController> {
       body: SafeArea(
         child: Stack(
           children: [
-            buildMap(),
-            Container(
-              height: 95,
-              decoration: BoxDecoration(
-                boxShadow: [AppBoxShadow.boxShadowLight],
-                color: Colors.white,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 5),
-              child: UserWelcome(
-                textColor: Colors.black,
-              ),
-            ),
-            Obx(
-              () => MapSearchBar(
-                items: controller.listFloorPlan,
-                selected: controller.selectedFloor.value,
-              ),
-            ),
+            sharedData.building.value.id != null
+                ? buildMap()
+                : Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 100, right: 20),
+                          height: 200,
+                          width: 200,
+                          child: Image.asset(ConstImg.error),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 30),
+                          child: Text(
+                            'Oops! Can not load map',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 24,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 15),
+                          width: 320,
+                          child: Text(
+                            'You may not be in a building existing in our system.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+            sharedData.building.value.id != null
+                ? Container(
+                    height: 95,
+                    decoration: BoxDecoration(
+                      boxShadow: [AppBoxShadow.boxShadowLight],
+                      color: Colors.white,
+                    ),
+                  )
+                : Container(
+                    height: 55,
+                    decoration: BoxDecoration(
+                      boxShadow: [AppBoxShadow.boxShadowLight],
+                      color: Colors.white,
+                    ),
+                  ),
+            Obx(() {
+              return Container(
+                margin: const EdgeInsets.only(top: 5),
+                child: UserWelcome(
+                  textColor: Colors.black,
+                  currentPosition: controller.currentAddress.value,
+                ),
+              );
+            }),
+            sharedData.building.value.id != null
+                ? Obx(
+                    () => MapSearchBar(
+                      items: controller.listFloorPlan,
+                      selected: controller.selectedFloor.value,
+                    ),
+                  )
+                : SizedBox(),
           ],
         ),
       ),
-      floatingActionButton: getFloatingButton(context),
+      floatingActionButton: sharedData.building.value.id != null
+          ? getFloatingButton(context)
+          : SizedBox(),
       bottomNavigationBar: getBottomNavBar(),
       bottomSheet: getShoppingListBottomSheet(context),
     );
