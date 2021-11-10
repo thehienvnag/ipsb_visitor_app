@@ -12,7 +12,8 @@ import 'package:ipsb_visitor_app/src/widgets/rounded_button.dart';
 class ShoppingListDetailsPage extends GetView<ShoppingListDetailController> {
   @override
   Widget build(BuildContext context) {
-    if (controller.shoppingListDetails.value.name == null && !controller.isLoading.value) {
+    if (controller.shoppingListDetails.value.name == null &&
+        !controller.isLoading.value) {
       return Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -397,7 +398,7 @@ class _ShoppingItemsState extends State<ShoppingItems> {
       builder: (BuildContext context) => AlertDialog(
         content: Container(
           height: 165,
-          width: 350,
+          width: MediaQuery.of(context).size.width * 0.8,
           child: Column(
             children: [
               ListTile(

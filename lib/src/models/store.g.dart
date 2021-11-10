@@ -26,13 +26,14 @@ class StoreAdapter extends TypeAdapter<Store> {
       productCategoryId: fields[5] as String?,
       status: fields[6] as String?,
       location: fields[8] as Location?,
+      building: fields[9] as Building?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Store obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -50,7 +51,9 @@ class StoreAdapter extends TypeAdapter<Store> {
       ..writeByte(7)
       ..write(obj.floorPlan)
       ..writeByte(8)
-      ..write(obj.location);
+      ..write(obj.location)
+      ..writeByte(9)
+      ..write(obj.building);
   }
 
   @override
@@ -86,6 +89,9 @@ Store _$StoreFromJson(Map<String, dynamic> json) {
     location: json['location'] == null
         ? null
         : Location.fromJson(json['location'] as Map<String, dynamic>),
+    building: json['building'] == null
+        ? null
+        : Building.fromJson(json['building'] as Map<String, dynamic>),
   )..pos = json['pos'] as int?;
 }
 
@@ -99,6 +105,7 @@ Map<String, dynamic> _$StoreToJson(Store instance) => <String, dynamic>{
       'status': instance.status,
       'floorPlan': instance.floorPlan,
       'location': instance.location,
+      'building': instance.building,
       'products': instance.products,
       'pos': instance.pos,
     };

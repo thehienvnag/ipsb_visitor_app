@@ -6,7 +6,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
-import 'package:ipsb_visitor_app/src/models/store.dart';
 
 import 'package:ipsb_visitor_app/src/pages/store_details/controllers/store_details_controller.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
@@ -14,6 +13,7 @@ import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:ipsb_visitor_app/src/widgets/rounded_button.dart';
 import 'package:ipsb_visitor_app/src/widgets/animate_wrapper.dart';
 import 'package:comment_tree/comment_tree.dart';
+import 'package:readmore/readmore.dart';
 
 class StoreDetailsPage extends GetView<StoreDetailsController> {
   @override
@@ -80,8 +80,16 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                           ),
                         ),
                         ListTile(
-                          title: Text(Formatter.shorten(store.description)),
-                          subtitle: Column(
+                          subtitle: ReadMoreText(
+                            store.description ?? "",
+                            trimLines: 2,
+                            style: TextStyle(color: Colors.black),
+                            colorClickableText: Colors.blueAccent,
+                            trimMode: TrimMode.Line,
+                            trimCollapsedText: 'Show more',
+                            trimExpandedText: 'Show less',
+                          ),
+                          title: Column(
                             children: [
                               Row(
                                 children: [
@@ -91,7 +99,7 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                                       color: Color(0xff0DB5B4),
                                     ),
                                   ),
-                                  Text('Tầng 1 - Vincom Lê Văn Việt'),
+                                  Text(store.formattedLocation()),
                                 ],
                               ),
                             ],
@@ -151,6 +159,23 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
     );
   }
 
+  Widget _buildEmpty(String description, BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 20),
+      child: Column(
+        children: [
+          Image.asset(
+            ConstImg.empty,
+            height: 80,
+            width: 80,
+          ),
+          SizedBox(height: 20),
+          Text(description),
+        ],
+      ),
+    );
+  }
+
   Widget _buildProducts(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
@@ -158,6 +183,8 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Obx(() {
         final products = controller.listProduct;
+        if (products.isEmpty)
+          return _buildEmpty("Store has no products!", context);
         return AnimationLimiter(
           child: GridView.count(
             physics: NeverScrollableScrollPhysics(),
@@ -225,6 +252,8 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
       width: size.width,
       child: Obx(() {
         final coupons = controller.listCoupon;
+        if (coupons.isEmpty)
+          return _buildEmpty("Store has no coupons!", context);
         return ListView.builder(
           itemCount: coupons.length,
           itemBuilder: (context, index) {
@@ -244,11 +273,11 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                       ),
                       title: Text(Formatter.shorten(coupon.name)),
                       subtitle: Text(Formatter.shorten(coupon.description)),
-                      trailing: TextButton.icon(
-                        onPressed: () {},
-                        icon: Icon(Icons.local_activity),
-                        label: Text('View Detail'),
-                      ),
+                      // trailing: TextButton.icon(
+                      //   onPressed: () {},
+                      //   icon: Icon(Icons.local_activity),
+                      //   label: Text('View Detail'),
+                      // ),
                     ),
                   ),
                 ),
@@ -266,6 +295,8 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
       width: size.width,
       child: Obx(() {
         final feedbacks = controller.listFeedbacked;
+        if (feedbacks.isEmpty)
+          return _buildEmpty("Store has no feedbacks!", context);
         var store = controller.store.value;
         return ListView.builder(
           itemCount: feedbacks.length,
@@ -329,11 +360,17 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                                   SizedBox(
                                     height: 4,
                                   ),
-                                  Text(
+                                  ReadMoreText(
                                     feedback.feedbackReply ?? 'Not Reply',
+                                    trimLines: 1,
                                     style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.black),
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black,
+                                    ),
+                                    colorClickableText: Colors.blueAccent,
+                                    trimMode: TrimMode.Line,
+                                    trimCollapsedText: 'Show more',
+                                    trimExpandedText: 'Show less',
                                   ),
                                 ],
                               ),
@@ -387,26 +424,31 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
                                   SizedBox(
                                     height: 4,
                                   ),
-                                  Text(
+                                  ReadMoreText(
                                     feedback.feedbackContent ?? 'Not content',
+                                    trimLines: 1,
                                     style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.black),
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black,
+                                    ),
+                                    colorClickableText: Colors.blueAccent,
+                                    trimMode: TrimMode.Line,
+                                    trimCollapsedText: 'Show more',
+                                    trimExpandedText: 'Show less',
                                   ),
-                                  Container(
+                                  if (feedback.feedbackImage != null)
+                                    Container(
                                       width: size.width * 0.4,
                                       height: size.height * 0.12,
                                       alignment: Alignment.centerLeft,
-                                      child: feedback.feedbackImage != null
-                                          ? Card(
-                                              child: Image(
-                                              image: CachedNetworkImageProvider(
-                                                  feedback.feedbackImage
-                                                      .toString()),
-                                            ))
-                                          : Image(
-                                              image: CachedNetworkImageProvider(
-                                                  'https://pngimg.com/uploads/mouth_smile/mouth_smile_PNG42.png'))),
+                                      child: Card(
+                                        child: Image(
+                                          image: CachedNetworkImageProvider(
+                                            feedback.feedbackImage!,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                 ],
                               ),
                             ),
