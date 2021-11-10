@@ -61,22 +61,45 @@ class AuthServices {
     return false;
   }
 
+  static bool saveUpdateInfo(Account accountInfo) {
+    String accessToken = userLoggedIn.value.accessToken!;
+    String refreshToken = userLoggedIn.value.refreshToken!;
+    final accountLoggedIn = Account(
+      id: accountInfo.id,
+      name: accountInfo.name,
+      imageUrl: accountInfo.imageUrl,
+      email: accountInfo.email,
+      phone: accountInfo.phone,
+      role: accountInfo.role,
+      status: accountInfo.status,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    );
+    userLoggedIn.value = accountLoggedIn;
+    saveSecretCred(accountLoggedIn);
+    return false;
+  }
+
+  static void saveSecretCred(Account accountInfo) {
+    SecureStorage.save(
+      SecureStorage.refreshTokenKey,
+      accountInfo.refreshToken,
+    );
+    SecureStorage.save(
+      SecureStorage.accessTokenKey,
+      accountInfo.accessToken,
+    );
+    SecureStorage.save(
+      SecureStorage.accountId,
+      accountInfo.id.toString(),
+    );
+  }
+
   /// Save auth info
   static bool saveAuthInfo(Account? accountInfo) {
     if (accountInfo != null) {
       userLoggedIn.value = accountInfo;
-      SecureStorage.save(
-        SecureStorage.refreshTokenKey,
-        accountInfo.refreshToken,
-      );
-      SecureStorage.save(
-        SecureStorage.refreshTokenKey,
-        accountInfo.refreshToken,
-      );
-      SecureStorage.save(
-        SecureStorage.accountId,
-        accountInfo.id.toString(),
-      );
+      if (accountInfo.status == "Active") saveSecretCred(accountInfo);
       return true;
     }
     return false;

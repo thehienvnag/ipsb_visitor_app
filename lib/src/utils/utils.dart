@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:math';
 import 'dart:ui';
 import 'dart:io';
@@ -31,7 +30,7 @@ class Utils {
       width: width,
       // loadingBuilder: (context, child, loadingProgress) =>
       //     CircularProgressIndicator(),
-      image: NetworkImage(url),
+      image: CachedNetworkImageProvider(url),
       errorBuilder: (context, error, stackTrace) =>
           Image.asset(Constants.imageErr),
     );
@@ -52,7 +51,7 @@ class Utils {
       throw Exception("Required image or alternative image");
     }
     if (url != null && url.isNotEmpty) {
-      return NetworkImage(url);
+      return CachedNetworkImageProvider(url);
     }
     return AssetImage(altUrl!);
   }

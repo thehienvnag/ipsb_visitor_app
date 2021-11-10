@@ -11,6 +11,7 @@ import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/positioning/pdr_
 import 'package:ipsb_visitor_app/src/algorithm/shortest_path/graph.dart';
 import 'package:ipsb_visitor_app/src/algorithm/shortest_path/shortest_path.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
+import 'package:ipsb_visitor_app/src/models/building.dart';
 import 'package:ipsb_visitor_app/src/models/coupon.dart';
 import 'package:ipsb_visitor_app/src/models/edge.dart';
 import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
@@ -164,6 +165,7 @@ class MapController extends GetxController {
       sharedData.building.value = building;
       return true;
     } else {
+      sharedData.building.value = Building();
       List<geocoding.Placemark> placeMarks =
           await geocoding.placemarkFromCoordinates(
         myLocation.latitude,

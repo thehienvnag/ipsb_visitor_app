@@ -44,7 +44,8 @@ class LoginEmailController extends GetxController {
         bool successLogin = await AuthServices.loginWithFirebase(result.user!);
         if (successLogin) {
           FirebaseHelper helper = new FirebaseHelper();
-          await helper.subscribeToTopic("account_id_" + AuthServices.userLoggedIn.value.id.toString());
+          await helper.subscribeToTopic(
+              "account_id_" + AuthServices.userLoggedIn.value.id.toString());
           BotToast.showText(text: "Sign In Successfull");
           Get.back();
         }
@@ -69,9 +70,13 @@ class LoginEmailController extends GetxController {
       bool successLogin = await AuthServices.loginWithPhone(phone, pass);
       if (successLogin) {
         FirebaseHelper helper = new FirebaseHelper();
-        await helper.subscribeToTopic("account_id_" + AuthServices.userLoggedIn.value.id.toString());
+        await helper.subscribeToTopic(
+            "account_id_" + AuthServices.userLoggedIn.value.id.toString());
         BotToast.showText(text: "Sign In Successfull");
         Get.back();
+      } else {
+        BotToast.showText(
+            text: "Your phone or password wrong ! Login In Failed");
       }
     } catch (e) {
       log("Lỗi: " + e.toString());

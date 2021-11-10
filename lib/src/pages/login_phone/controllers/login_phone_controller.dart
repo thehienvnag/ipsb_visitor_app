@@ -68,12 +68,17 @@ class LoginPhoneController extends GetxController {
           await _auth.signInWithCredential(phoneAuthCredential);
       if (authCredential.user != null) {
         BotToast.showText(
-          text: "Verification Success",
-          duration: const Duration(seconds: 5),
-          contentColor: Colors.white,
-        );
+            text: "Verification Success",
+            duration: const Duration(seconds: 5),
+            contentColor: Colors.white,
+            textStyle: TextStyle(color: Colors.black54));
+
         if (await AuthServices.loginWithFirebase(authCredential.user!)) {
-          Get.toNamed(Routes.updateProfile);
+          if (AuthServices.userLoggedIn.value.status == "New") {
+            Get.offNamed(Routes.updateProfile);
+          } else {
+            Get.offNamed(Routes.home);
+          }
         }
       }
     } on FirebaseAuthException catch (e) {
