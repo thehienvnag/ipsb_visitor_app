@@ -33,42 +33,10 @@ class MapPage extends GetView<MapController> {
           children: [
             sharedData.building.value.id != null
                 ? buildMap()
-                : Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 100, right: 20),
-                          height: 200,
-                          width: 200,
-                          child: Image.asset(ConstImg.error),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 30),
-                          child: Text(
-                            'Oops! Can not load map',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 24,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 15),
-                          width: 320,
-                          child: Text(
-                            'You may not be in a building existing in our system.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                : buildErrorMap(
+                    title: 'Oops! Can not load map',
+                    description:
+                        'You may not be in a building existing in our system.',
                   ),
             sharedData.building.value.id != null
                 ? Container(
@@ -110,6 +78,46 @@ class MapPage extends GetView<MapController> {
           : SizedBox(),
       bottomNavigationBar: getBottomNavBar(),
       bottomSheet: getShoppingListBottomSheet(context),
+    );
+  }
+
+  Widget buildErrorMap({required String title, required String description}) {
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 100, right: 20),
+            height: 200,
+            width: 200,
+            child: Image.asset(ConstImg.error),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 30),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 24,
+                color: Colors.red,
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 15),
+            width: 320,
+            child: Text(
+              description,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -336,12 +344,14 @@ class MapPage extends GetView<MapController> {
     return Center(
       child: Obx(() {
         FloorPlan floorplan = controller.selectedFloor.value;
-        if (floorplan.imageUrl == null) {
-          return CircularProgressIndicator();
-        }
         return IndoorMap(
-          image: CachedNetworkImageProvider(floorplan.imageUrl!),
-          loading: CircularProgressIndicator(),
+          imageUrl: floorplan.imageUrl,
+          isLoading: controller.isLoading.value,
+          loadingWidget: CircularProgressIndicator(),
+          errorWidget: buildErrorMap(
+            title: 'Oops! Can not load map',
+            description: 'Error in loading map image.',
+          ),
         );
       }),
     );

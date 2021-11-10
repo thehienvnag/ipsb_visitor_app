@@ -20,6 +20,7 @@ import 'package:ipsb_visitor_app/src/models/shopping_list.dart';
 import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/building_service.dart';
+import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/edge_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/floor_plan_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/location_service.dart';
@@ -48,7 +49,7 @@ class MapController extends GetxController {
   IFloorPlanService _floorPlanService = Get.find();
 
   /// Service for interacting with Coupon API
-  // ICouponService _service = Get.find();
+  ICouponService _couponService = Get.find();
 
   /// Service for interacting with Location API
   ILocationService _locationService = Get.find();
@@ -81,13 +82,7 @@ class MapController extends GetxController {
   var selectedFloor = FloorPlan().obs;
 
   /// Current position of visitor, determine by locationId
-  final currentPosition = Location(
-    id: 276,
-    x: 149.38747406005859,
-    y: 204.60000228881836,
-    floorPlanId: 12,
-    locationTypeId: 2,
-  ).obs;
+  final currentPosition = Location().obs;
 
   /// Destination position where visitor want to come
   final destPosition = 0.obs;
@@ -119,6 +114,9 @@ class MapController extends GetxController {
   /// Current position address
   final currentAddress = "".obs;
 
+  /// Loading map
+  final isLoading = false.obs;
+
   /// Ble config
   BlePositioningConfig? _bleConfig;
 
@@ -128,11 +126,13 @@ class MapController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    isLoading.value = true;
     initBuilding().then((value) {
       if (value) {
         getFloorPlan().then((value) {
           initPositioning();
           loadEdgesInBuilding();
+          isLoading.value = false;
         });
         onSelectedFloorChange();
         onLocationChanged();
@@ -164,7 +164,8 @@ class MapController extends GetxController {
       sharedData.building.value = building;
       return true;
     } else {
-      List<geocoding.Placemark> placeMarks = await geocoding.placemarkFromCoordinates(
+      List<geocoding.Placemark> placeMarks =
+          await geocoding.placemarkFromCoordinates(
         myLocation.latitude,
         myLocation.longitude,
       );
@@ -178,7 +179,6 @@ class MapController extends GetxController {
 
     return false;
   }
-
 
   void initPositioning() async {
     if (listFloorPlan.isEmpty) return; // If get none floorplan, stop!
@@ -448,9 +448,11 @@ class MapController extends GetxController {
   }
 
   /// Get list Coupon from api
-  Future<void> getCoupons() async {
-    // final paging = await _service.getCoupons();
-    // listCoupon.value = paging.content!;
+  void getCoupons(int? floorPlanId) async {
+    if (floorPlanId == null) return;
+    listCoupon.value = await _couponService.getCounponsByFloorPlanId(
+      floorPlanId,
+    );
   }
 
   /// Get list FloorPlan from api by buildingID
@@ -470,6 +472,7 @@ class MapController extends GetxController {
     selectedFloor.listen((floor) {
       onShoppingListChange();
       loadPlaceOnFloor(floor.id!);
+      getCoupons(floor.id);
       _pdrConfig?.rotationAngle = floor.rotationAngle!;
       _pdrConfig?.mapScale = floor.mapScale!;
       _bleConfig?.mapScale = floor.mapScale!;

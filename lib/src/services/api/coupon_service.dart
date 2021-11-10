@@ -8,6 +8,7 @@ mixin ICouponService {
   Future<Paging<Coupon>> getCoupons();
   Future<List<Coupon>> searchCoupons(String keySearch, String buildingId);
   Future<List<Coupon>> getCouponsByBuildingId(int storeId);
+  Future<List<Coupon>> getCounponsByFloorPlanId(int floorPlanId);
 }
 
 class CouponService extends BaseService<Coupon> implements ICouponService {
@@ -71,6 +72,14 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
   Future<List<Coupon>> getCouponsByBuildingId(int buildingId) {
     return getAllBase({
       'buildingId': buildingId.toString(),
+    });
+  }
+
+  @override
+  Future<List<Coupon>> getCounponsByFloorPlanId(int floorPlanId) {
+    return getAllBase({
+      "floorPlanId": floorPlanId.toString(),
+      "isAll": "true",
     });
   }
 }
