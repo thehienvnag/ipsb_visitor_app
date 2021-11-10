@@ -97,7 +97,7 @@ class UpdateProfilePage extends GetView<UpdateProfileController> {
                 height: 48,
                 margin: EdgeInsets.only(top: 60, right: 20, left: 20),
                 child: TextField(
-                  onSubmitted: (value) {
+                  onChanged: (value) {
                     controller.setUserName(value);
                   },
                   decoration: InputDecoration(
@@ -120,7 +120,7 @@ class UpdateProfilePage extends GetView<UpdateProfileController> {
                   height: 48,
                   margin: EdgeInsets.only(top: 15, right: 20, left: 20),
                   child: TextField(
-                    onSubmitted: (value) {
+                    onChanged: (value) {
                       controller.setPassword(value);
                     },
                     obscureText: controller.isShowPass.value ? true : false,
@@ -156,7 +156,7 @@ class UpdateProfilePage extends GetView<UpdateProfileController> {
                   height: 48,
                   margin: EdgeInsets.only(top: 15, right: 20, left: 20),
                   child: TextField(
-                    onSubmitted: (value) {
+                    onChanged: (value) {
                       controller.setRePassword(value);
                     },
                     obscureText: controller.isRePass.value ? true : false,

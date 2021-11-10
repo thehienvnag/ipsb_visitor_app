@@ -83,7 +83,7 @@ class LoginPhonePage extends GetView<LoginPhoneController> {
                     child: Text(
                       "Send Verification Code",
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),
                 ),
@@ -98,7 +98,7 @@ class LoginPhonePage extends GetView<LoginPhoneController> {
               SizedBox(height: 20),
               SignInButton(
                 Buttons.GoogleDark,
-                text: "Sign up with Google",
+                text: "Sign in with Google",
                 onPressed: () {
                   LoginEmailController loginController = Get.find();
                   loginController.loginWithGoogle();

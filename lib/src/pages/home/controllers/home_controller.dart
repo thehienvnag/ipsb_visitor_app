@@ -20,12 +20,12 @@ import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 
-class HomeController extends GetxController {
+class HomeController extends FullLifeCycleController {
   IStoreService storeService = Get.find();
   ICouponService couponService = Get.find();
   IBuildingService buildingService = Get.find();
   INotificationService _notificationService = Get.find();
-  ScrollController? scrollController;
+  final scrollController = ScrollController().obs;
   final showSlider = true.obs;
   final buildingId = 0.obs;
   final currentAddress = "".obs;
@@ -65,18 +65,23 @@ class HomeController extends GetxController {
     updateNotifications();
   }
 
-  SharedStates states = Get.find();
-  void initPage(Position? myLocation) async {
-    if (myLocation == null) return;
-    scrollController = ScrollController();
-    scrollController?.addListener(() {
-      final fromTop = scrollController!.position.pixels;
+  ScrollController initScrollController() {
+    final scroll = ScrollController();
+    scroll.addListener(() {
+      final fromTop = scroll.position.pixels;
       if (fromTop > 10) {
         showSlider.value = false;
       } else if (fromTop == 0) {
         showSlider.value = true;
       }
     });
+    return scroll;
+  }
+
+  SharedStates states = Get.find();
+  void initPage(Position? myLocation) async {
+    if (myLocation == null) return;
+
     await initBuilding(myLocation);
     if (states.building.value.id == null) return;
     buildingId.value = states.building.value.id!;
@@ -93,6 +98,7 @@ class HomeController extends GetxController {
     if (building != null) {
       states.building.value = building;
     } else {
+      states.building.value = Building();
       List<Placemark> placeMarks = await placemarkFromCoordinates(
         myLocation.latitude,
         myLocation.longitude,

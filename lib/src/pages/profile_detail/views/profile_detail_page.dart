@@ -36,13 +36,14 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
         ),
         actions: [
           GestureDetector(
-            onTap: (){
+            onTap: () {
               // Get.toNamed(Routes.changePassword);
               controller.gotoChagePassPage();
             },
             child: Container(
               margin: const EdgeInsets.only(top: 20),
-              child: Text('Change password',
+              child: Text(
+                'Change password',
                 style: TextStyle(color: Colors.blue, fontSize: 15),
               ),
             ),
@@ -119,13 +120,13 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
               buildTextField(
                   "Email",
                   AuthServices.isLoggedIn()
-                      ? AuthServices.userLoggedIn.value.email.toString()
+                      ? AuthServices.userLoggedIn.value.email ?? ""
                       : "Not sigin",
                   false),
               buildTextField(
                   "Phone",
                   AuthServices.isLoggedIn()
-                      ? AuthServices.userLoggedIn.value.phone.toString()
+                      ? AuthServices.userLoggedIn.value.phone ?? ""
                       : "Not sigin",
                   false),
               SizedBox(

@@ -13,15 +13,14 @@ class ProfileController extends GetxController {
       await FirebaseAuth.instance.signOut();
       try {
         await _googleSignIn.signOut();
-      } catch (Exception) {
-
-      }
+      } catch (Exception) {}
 
       FirebaseHelper helper = new FirebaseHelper();
-      await helper.unsubscribeFromTopic("account_id_" + AuthServices.userLoggedIn.value.id.toString());
+      await helper.unsubscribeFromTopic(
+          "account_id_" + AuthServices.userLoggedIn.value.id.toString());
       AuthServices.logout();
       BotToast.showText(text: "Logout Success");
     }
-    Get.offAndToNamed(Routes.home);
+    Get.offNamed(Routes.home);
   }
 }

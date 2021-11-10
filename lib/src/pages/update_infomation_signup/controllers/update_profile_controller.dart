@@ -87,15 +87,23 @@ class UpdateProfileController extends GetxController {
           {
             "name": userName.value,
             "password": password.value,
+            "phone":
+                AuthServices.userLoggedIn.value.phone!.replaceFirst("+84", "0"),
+            "firstUpdateProfile": "true",
           },
           filePath.value,
         );
+
         if (result) {
-          BotToast.showText(
-            text: "Sign Up Success",
-            duration: const Duration(seconds: 4),
-          );
-          Get.toNamed(Routes.home);
+          final accountLoggedIn = await accountService.getById(id);
+          if (accountLoggedIn != null) {
+            AuthServices.saveUpdateInfo(accountLoggedIn);
+            BotToast.showText(
+              text: "Sign Up Success",
+              duration: const Duration(seconds: 4),
+            );
+            Get.toNamed(Routes.home);
+          }
         }
       } else {
         BotToast.showText(

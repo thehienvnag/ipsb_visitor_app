@@ -141,7 +141,7 @@ class SharedStates extends GetxService {
                             Get.toNamed(Routes.loginPhone);
                           },
                           child: Text(
-                            'Sign Up',
+                            'OTP Sign In ',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
@@ -165,7 +165,6 @@ class SharedStates extends GetxService {
                               phoneController.value.text,
                               passController.value.text,
                             );
-
                           },
                           child: Text(
                             'Login',
@@ -177,19 +176,6 @@ class SharedStates extends GetxService {
                   ),
                 ),
                 SizedBox(height: 10),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 220,
-                    ),
-                    Text('Forgot Password ?',
-                        style:
-                            TextStyle(fontSize: 15, color: AppColors.primary)),
-                  ],
-                ),
-                SizedBox(
-                  height: 30,
-                ),
                 Center(
                     child: Text(
                   'You can also login with these methods',
@@ -199,7 +185,7 @@ class SharedStates extends GetxService {
                 SizedBox(height: 20),
                 SignInButton(
                   Buttons.GoogleDark,
-                  text: "Sign up with Google",
+                  text: "Sign in with Google",
                   onPressed: () {
                     LoginEmailController loginController = Get.find();
                     loginController.loginWithGoogle();

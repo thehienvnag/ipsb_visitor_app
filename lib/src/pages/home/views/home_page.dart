@@ -15,13 +15,14 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
+
     return Obx(() {
       return Scaffold(
         body: SafeArea(
           child: Stack(
             children: [
               SingleChildScrollView(
-                controller: controller.scrollController,
+                controller: controller.initScrollController(),
                 child: Column(
                   children: [
                     if (states.building.value.id != null)
@@ -177,8 +178,8 @@ class HomePage extends GetView<HomeController> {
                                 if (listStore.isEmpty)
                                   return Center(
                                     child: SizedBox(
-                                      width: 40,
-                                      height: 40,
+                                      width: 35,
+                                      height: 35,
                                       child: CircularProgressIndicator(),
                                     ),
                                   );
