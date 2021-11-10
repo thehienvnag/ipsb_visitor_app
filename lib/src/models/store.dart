@@ -5,6 +5,8 @@ import 'package:ipsb_visitor_app/src/models/location.dart';
 import 'package:ipsb_visitor_app/src/models/product.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'building.dart';
+
 part 'store.g.dart';
 
 @JsonSerializable()
@@ -37,6 +39,9 @@ class Store {
   @HiveField(8)
   final Location? location;
 
+  @HiveField(9)
+  final Building? building;
+
   List<Product>? products;
 
   int? pos;
@@ -61,6 +66,7 @@ class Store {
     this.productCategoryId,
     this.status,
     this.location,
+    this.building,
     this.isExpanded = false,
     this.complete = false,
     this.distance,
@@ -69,6 +75,17 @@ class Store {
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);
 
   Map<String, dynamic> toJson() => _$StoreToJson(this);
+
+  String formattedLocation() {
+    String result = "";
+    if (floorPlan?.floorCode != null) {
+      result += "Floor ${floorPlan!.floorCode}";
+    }
+    if (building?.name != null) {
+      result += " - ${building!.name}";
+    }
+    return result;
+  }
 
   void changeProductSelected(Product product) {
     this.products!.forEach((pro) {

@@ -13,6 +13,7 @@ import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:ipsb_visitor_app/src/widgets/ticket_box.dart';
+import 'package:readmore/readmore.dart';
 
 class MyCouponDetailPage extends GetView<MyCouponDetailController> {
   final dateTime = DateTime.now();
@@ -59,7 +60,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 15),
-                width: screenSize.width * 0.778 ,
+                width: screenSize.width * 0.778,
                 child: Text(
                   'Coupon may have been removed',
                   textAlign: TextAlign.center,
@@ -102,14 +103,14 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
             child: Column(children: [
               TicketBox(
                 xAxisMain: false,
-                fromEdgeMain: screenSize.height*0.645,
+                fromEdgeMain: screenSize.height * 0.645,
                 fromEdgeSeparator: 134,
                 isOvalSeparator: false,
                 smallClipRadius: 15,
                 clipRadius: 15,
                 numberOfSmallClips: 11,
                 ticketWidth: screenSize.width * 0.9,
-                ticketHeight: screenSize.height*0.85,
+                ticketHeight: screenSize.height * 0.85,
                 child: Stack(
                   children: [
                     Column(
@@ -127,8 +128,8 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                     margin: const EdgeInsets.only(right: 20),
                                     child: Card(
                                       child: Container(
-                                        width: screenSize.width*0.283,
-                                        height: screenSize.height*0.129,
+                                        width: screenSize.width * 0.283,
+                                        height: screenSize.height * 0.129,
                                         decoration: BoxDecoration(
                                           image: DecorationImage(
                                             image: CachedNetworkImageProvider(
@@ -200,22 +201,17 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                         label:
                                             'Have your coupon ready before purchasing services.',
                                       ),
-                                      // ListItemModel(
-                                      //   label:
-                                      //       'Only one coupon is applied to a specific order.',
-                                      // ),
+                                      ListItemModel(
+                                        label:
+                                            'Only one coupon is applied to a specific order.',
+                                      ),
                                       ListItemModel(
                                         label:
                                             'Coupon will be usable unless limit usage has been reached.',
                                       ),
                                     ],
                                   ),
-                                  ListItemModel(
-                                    label: "Description: ",
-                                    data: [
-                                      ListItemModel(label: coupon.description),
-                                    ],
-                                  ),
+                                  ListItemModel(label: "Description: "),
                                 ],
                                 textStyle: TextStyle(
                                     color: Colors.black54, fontSize: 16),
@@ -223,10 +219,26 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                 bulletSize: 3,
                               ),
                             ),
+                            Container(
+                              width: screenSize.width * 0.9,
+                              margin: const EdgeInsets.only(left: 45),
+                              child: ReadMoreText(
+                                '○  ${coupon.description}',
+                                trimLines: 2,
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 16,
+                                ),
+                                colorClickableText: Colors.blueAccent,
+                                trimMode: TrimMode.Line,
+                                trimCollapsedText: 'Show more',
+                                trimExpandedText: 'Show less',
+                              ),
+                            )
                           ],
                         ),
                         Container(
-                          height: screenSize.height*0.1935,
+                          height: screenSize.height * 0.1935,
                           padding: const EdgeInsets.only(bottom: 15),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

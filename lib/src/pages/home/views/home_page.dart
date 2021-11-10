@@ -78,7 +78,8 @@ class HomePage extends GetView<HomeController> {
                             Obx(
                               () {
                                 final list = controller.listCategories;
-                                if (list.isEmpty) return Text('Loading');
+                                if (list.isEmpty)
+                                  return CircularProgressIndicator();
                                 return Expanded(
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
@@ -173,6 +174,14 @@ class HomePage extends GetView<HomeController> {
                                   vertical: 10, horizontal: 15),
                               child: Obx(() {
                                 var listStore = controller.listStore;
+                                if (listStore.isEmpty)
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 40,
+                                      height: 40,
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
                                 int storeCount =
                                     listStore.length > 9 ? 9 : listStore.length;
                                 return Wrap(
@@ -203,8 +212,9 @@ class HomePage extends GetView<HomeController> {
                                                       screenSize.width * 0.146,
                                                   height:
                                                       screenSize.height * 0.077,
-                                                  child: Image.network(
-                                                    store.imageUrl ?? '',
+                                                  child: CachedNetworkImage(
+                                                    imageUrl:
+                                                        store.imageUrl ?? '',
                                                     fit: BoxFit.contain,
                                                   ),
                                                 ),
@@ -347,6 +357,8 @@ class HomePage extends GetView<HomeController> {
                           ),
                           Obx(() {
                             var listBuilding = controller.listBuilding;
+                            if (listBuilding.isEmpty)
+                              return CircularProgressIndicator();
                             return Container(
                               margin: states.building.value.id == null
                                   ? const EdgeInsets.only(top: 70)
