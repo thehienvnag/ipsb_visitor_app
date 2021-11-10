@@ -485,7 +485,8 @@ class HomePage extends GetView<HomeController> {
                           .toList();
                       if (images.isEmpty)
                         return Container(
-                          color: Colors.grey.shade200,
+                          child: Center(child: CircularProgressIndicator()),
+                          color: Colors.transparent,
                         );
                       return CarouselSlider(
                         options: CarouselOptions(

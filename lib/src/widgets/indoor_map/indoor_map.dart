@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/widgets/image_view/image_view.dart';
@@ -8,18 +9,29 @@ import 'package:ipsb_visitor_app/src/widgets/indoor_map/indoor_map_controller.da
 
 class IndoorMap extends GetView<IndoorMapController> {
   /// Provide a provider of image for display
-  final ImageProvider image;
+  final String? imageUrl;
+
+  /// Is loading status
+  final bool isLoading;
 
   /// Loading placehoder widget
-  final Widget loading;
+  final Widget loadingWidget;
+
+  /// Loading placehoder widget
+  final Widget errorWidget;
   IndoorMap({
-    required this.image,
-    required this.loading,
+    required this.imageUrl,
+    required this.errorWidget,
+    required this.isLoading,
+    required this.loadingWidget,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) return loadingWidget;
+    if (imageUrl == null) return errorWidget;
     final screenSize = MediaQuery.of(context).size;
+    final image = CachedNetworkImageProvider(imageUrl!);
     controller.screenSize.value = screenSize;
     return FutureBuilder<ui.Image>(
       future: controller.getImage(image),
@@ -37,8 +49,10 @@ class IndoorMap extends GetView<IndoorMapController> {
               image: image,
             ),
           );
+        } else if (snapshot.hasError) {
+          return errorWidget;
         } else {
-          return loading;
+          return loadingWidget;
         }
       },
     );
