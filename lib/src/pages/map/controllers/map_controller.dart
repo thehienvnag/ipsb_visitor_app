@@ -134,6 +134,8 @@ class MapController extends GetxController {
           initPositioning();
           loadEdgesInBuilding();
           isLoading.value = false;
+        }).catchError((err) {
+          isLoading.value = false;
         });
         onSelectedFloorChange();
         onLocationChanged();

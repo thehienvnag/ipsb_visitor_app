@@ -142,13 +142,18 @@ class HomeController extends FullLifeCycleController {
   }
 
   Future<void> getStores() async {
-    final stores = await storeService.getStoresByBuilding(buildingId.value);
+    final stores = await storeService.getStoresByBuilding(
+      buildingId.value,
+      random: true,
+    );
     listStore.value = stores.content ?? [];
   }
 
   Future<void> getCoupons() async {
-    listCoupon.value =
-        await couponService.getCouponsByBuildingId(buildingId.value);
+    listCoupon.value = await couponService.getCouponsByBuildingId(
+      buildingId.value,
+      random: true,
+    );
   }
 
   Future<void> getBuildings([Position? myLocation]) async {

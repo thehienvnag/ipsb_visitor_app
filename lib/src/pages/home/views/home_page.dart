@@ -147,7 +147,7 @@ class HomePage extends GetView<HomeController> {
                                   padding: EdgeInsets.only(left: 10),
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'OUTSTANDING STORES',
+                                    'STORES',
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600,
@@ -260,7 +260,7 @@ class HomePage extends GetView<HomeController> {
                                   padding: EdgeInsets.only(left: 10),
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'OUTSTANDING COUPONS',
+                                    'COUPONS',
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600,

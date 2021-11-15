@@ -7,7 +7,10 @@ mixin ICouponService {
   Future<List<Coupon>> getCouponsByStoreId(int storeId);
   Future<Paging<Coupon>> getCoupons();
   Future<List<Coupon>> searchCoupons(String keySearch, String buildingId);
-  Future<List<Coupon>> getCouponsByBuildingId(int storeId);
+  Future<List<Coupon>> getCouponsByBuildingId(
+    int storeId, {
+    bool random = false,
+  });
   Future<List<Coupon>> getCounponsByFloorPlanId(int floorPlanId);
 }
 
@@ -69,10 +72,17 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
   }
 
   @override
-  Future<List<Coupon>> getCouponsByBuildingId(int buildingId) {
-    return getAllBase({
+  Future<List<Coupon>> getCouponsByBuildingId(
+    int buildingId, {
+    bool random = false,
+  }) {
+    final params = {
       'buildingId': buildingId.toString(),
-    });
+    };
+    if (random) {
+      params.putIfAbsent("random", () => "true");
+    }
+    return getAllBase(params);
   }
 
   @override

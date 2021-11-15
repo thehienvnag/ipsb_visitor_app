@@ -6,7 +6,10 @@ import 'package:ipsb_visitor_app/src/services/api/base_service.dart';
 mixin IStoreService {
   Future<Store?> getStoreById(int id);
   Future<Paging<Store>> getStores(String searchName, int floorPlanId);
-  Future<Paging<Store>> getStoresByBuilding(int buildingId);
+  Future<Paging<Store>> getStoresByBuilding(
+    int buildingId, {
+    bool random = false,
+  });
   Future<List<Store>> searchStore(String search);
 }
 
@@ -41,10 +44,17 @@ class StoreService extends BaseService<Store> implements IStoreService {
   }
 
   @override
-  Future<Paging<Store>> getStoresByBuilding(int buildingId) {
-    return getPagingBase({
+  Future<Paging<Store>> getStoresByBuilding(
+    int buildingId, {
+    bool random = false,
+  }) {
+    final params = {
       "buildingId": buildingId.toString(),
       "status": 'Active',
-    });
+    };
+    if (random) {
+      params.putIfAbsent("random", () => "true");
+    }
+    return getPagingBase(params);
   }
 }
