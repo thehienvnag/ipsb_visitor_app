@@ -9,10 +9,10 @@ class Formatter {
     return DateFormat(formatter).format(date);
   }
 
-  static String distanceFormat(double? distanceTo) {
+  static String distanceFormat(double? distanceTo, {String unit = "km"}) {
     if (distanceTo == null) return "";
     if (distanceTo < 0.5) return "";
-    return "[${distanceTo.toStringAsFixed(1)} km]";
+    return "(${distanceTo.toStringAsFixed(1)} $unit)";
   }
 
   static String shorten(String? s, [int n = 30, String? defaultValue = ""]) {

@@ -1,5 +1,6 @@
 import 'package:ipsb_visitor_app/src/algorithm/shortest_path/node.dart';
 import 'package:ipsb_visitor_app/src/models/edge.dart';
+import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
 import 'package:ipsb_visitor_app/src/models/location.dart';
 import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/utils/utils.dart';
@@ -70,6 +71,8 @@ class Graph {
   void sortStoreByDistance(
     int currentPosition,
     List<Store> stores,
+    List<Edge> edges,
+    List<FloorPlan> floors,
     List<Location> Function(int, int) shortestPathSolver,
   ) {
     stores.forEach((e) {
@@ -86,17 +89,36 @@ class Graph {
         endLocationId,
       );
 
-      // Sum of distance from all points
-      int i = 0;
-      double distance = 0;
-      paths.forEach((e) {
-        if (i < paths.length - 1) {
-          distance += Utils.calDistance(e, paths[++i]);
-        }
-      });
-      e.distance = distance;
+      // Get distance
+      e.distance = getTotalDistance(paths, floors);
     });
     stores.sort((a, b) => a.distance!.compareTo(b.distance!));
+  }
+
+  double getTotalDistance(List<Location> paths, List<FloorPlan> floors) {
+    final meterToPixel = 3779.52755906; // covert meter to pixel units
+    int i = 0;
+    double distance = 0;
+    paths.forEach((e) {
+      if (i < paths.length - 1) {
+        int startId = e.id!;
+        int endId = paths[++i].id!;
+        final adjacents = nodes[startId]?.adjacents;
+        adjacents?.forEach((location, edgeDistance) {
+          if (endId == location.id &&
+              e.floorPlanId == location.value?.floorPlanId) {
+            double mapScale = 0;
+            floors.forEach((floor) {
+              if (floor.id == e.floorPlanId) {
+                mapScale = floor.mapScale!;
+              }
+            });
+            distance += (edgeDistance * mapScale / meterToPixel);
+          }
+        });
+      }
+    });
+    return distance;
   }
 
   /// Get shopping points on floor

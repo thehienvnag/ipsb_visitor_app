@@ -83,7 +83,12 @@ class MapController extends GetxController {
   var selectedFloor = FloorPlan().obs;
 
   /// Current position of visitor, determine by locationId
-  final currentPosition = Location().obs;
+  final currentPosition = Location(
+    id: 468,
+    x: 525.3875007629395,
+    y: 292.0,
+    floorPlanId: 13,
+  ).obs;
 
   /// Destination position where visitor want to come
   final destPosition = 0.obs;
@@ -134,6 +139,7 @@ class MapController extends GetxController {
           initPositioning();
           loadEdgesInBuilding();
           isLoading.value = false;
+          _mapController.setCurrentMarker(currentPosition.value);
         }).catchError((err) {
           isLoading.value = false;
         });
@@ -320,6 +326,8 @@ class MapController extends GetxController {
     graph.sortStoreByDistance(
       beginId,
       listStoreShopping,
+      edges,
+      listFloorPlan,
       solveForShortestPath,
     );
 
@@ -423,6 +431,26 @@ class MapController extends GetxController {
     isShowingDirection.value = false;
   }
 
+  double? calcDistanceBetween(
+    Graph graph,
+    int beginId,
+    int endId,
+    List<FloorPlan> floors,
+  ) {
+    double? distance;
+    try {
+      // Find all shortest paths to endLocationId
+      _shortestPathAlgorithm.solve(graph, endId);
+
+      // Get shortest path for current position
+      final paths = graph.getShortestPath(beginId);
+
+      // Total distance
+      distance = graph.getTotalDistance(paths, floors);
+    } catch (e) {}
+    return distance;
+  }
+
   Future<void> setCurrentLocation(Location? location,
       [pressBtn = false]) async {
     if (location == null) return;
@@ -445,10 +473,32 @@ class MapController extends GetxController {
     int? buildingId = sharedData.building.value.id;
     if (buildingId != null && !isSearchingLocationList.value) {
       isSearchingLocationList.value = true;
-      searchLocationList.value = await _locationService.getLocationByKeySearch(
+      var list = await _locationService.getLocationByKeySearch(
           buildingId.toString(), keySearch);
+      if (currentPosition.value.id != null) {
+        // Init graph for finding shortest path from edges
+        Graph graph = Graph.from(edges);
+
+        // Find all shortest paths to endLocationId
+        list.forEach((e) {
+          e.distanceTo = calcDistanceBetween(
+            graph,
+            currentPosition.value.id!,
+            e.id!,
+            listFloorPlan,
+          );
+        });
+      }
+      searchLocationList.value = list;
       Timer(Duration(seconds: 1), () => isSearchingLocationList.value = false);
     }
+  }
+
+  List<Location> locationsWithDistance(List<Location> list) {
+    if (currentPosition.value.id != null) {
+      list.forEach((loc) {});
+    }
+    return list;
   }
 
   /// Get list Coupon from api

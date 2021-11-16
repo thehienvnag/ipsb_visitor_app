@@ -40,7 +40,7 @@ class EdgeHelper {
     int id,
     double mapScale,
   ) {
-    const minDistance = 0.2; // Meter
+    const minDistance = 0.7; // Meter
     const meterToPixel = 3779.5275590551; // Meter to pixel
     double segment = minDistance / mapScale * meterToPixel;
 

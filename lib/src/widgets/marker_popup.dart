@@ -9,10 +9,10 @@ import 'package:ipsb_visitor_app/src/utils/utils.dart';
 import 'package:ipsb_visitor_app/src/widgets/image_view/image_view_controller.dart';
 
 class MarkerPopup extends GetView<ImageViewController> {
-  static const double serviceWidth = 320;
+  static const double serviceWidth = 260;
   static const double serviceHeight = 120;
-  static const double storeWidth = 320;
-  static const double storeHeight = 320;
+  static const double storeWidth = 260;
+  static const double storeHeight = 240;
 
   final PopupState state;
   final MapController homeController = Get.find();
@@ -35,7 +35,7 @@ class MarkerPopup extends GetView<ImageViewController> {
             if (isStore())
               Container(
                 width: storeWidth,
-                height: 180,
+                height: 110,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
                   image: DecorationImage(
@@ -56,10 +56,8 @@ class MarkerPopup extends GetView<ImageViewController> {
                 Formatter.shorten(determineTitle()).toUpperCase(),
                 style: TextStyle(fontWeight: FontWeight.w700),
               ),
-              subtitle: Text(Formatter.shorten(determineSubtitle(), 40)),
-              trailing: IconButton(
-                onPressed: () => controller.closePopup(state.popupType),
-                icon: Icon(Icons.close),
+              subtitle: Text(
+                determineSubtitle(),
               ),
             ),
             if (isStore())
@@ -67,7 +65,7 @@ class MarkerPopup extends GetView<ImageViewController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(left: 20),
+                    margin: const EdgeInsets.only(left: 10),
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         primary: const Color(0xff344CDD),
@@ -77,11 +75,11 @@ class MarkerPopup extends GetView<ImageViewController> {
                             'id': state.location!.storeId.toString()
                           }),
                       icon: Icon(Icons.store),
-                      label: Text('View Information'),
+                      label: Text('Details'),
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(right: 20),
+                    margin: const EdgeInsets.only(right: 10),
                     child: OutlinedButton(
                       onPressed: () =>
                           homeController.startShowDirection(state.location?.id),
@@ -119,10 +117,15 @@ class MarkerPopup extends GetView<ImageViewController> {
     return state.location?.locationType?.name;
   }
 
-  String? determineSubtitle() {
+  String determineSubtitle() {
+    String? value;
+    int shorten = 20;
     if (isStore()) {
-      return state.location?.store?.description;
+      value = state.location?.store?.description;
+    } else {
+      shorten = 60;
+      value = state.location?.locationType?.description;
     }
-    return state.location?.locationType?.description;
+    return Formatter.shorten(value, shorten);
   }
 }
