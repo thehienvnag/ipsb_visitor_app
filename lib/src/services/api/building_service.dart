@@ -5,7 +5,11 @@ import 'package:ipsb_visitor_app/src/services/api/base_service.dart';
 mixin IBuildingService {
   Future<Building?> getBuildingById(int id);
   Future<List<Building>> getBuildings([double? lat, double? lng]);
-  Future<List<Building>> searchBuildings([String? search]);
+  Future<List<Building>> searchBuildings([
+    String? search,
+    double? lat,
+    double? lng,
+  ]);
   Future<Building?> getByLocatorTagUuid(String uuid);
   Future<Building?> findCurrentBuilding(double lat, double lng);
 }
@@ -40,7 +44,11 @@ class BuildingService extends BaseService<Building>
   }
 
   @override
-  Future<List<Building>> searchBuildings([String? search]) {
+  Future<List<Building>> searchBuildings([
+    String? search,
+    double? lat,
+    double? lng,
+  ]) {
     final params = {
       "pageSize": "5",
       "status": "Active",
@@ -48,6 +56,10 @@ class BuildingService extends BaseService<Building>
     if (search != null) {
       params.putIfAbsent("name", () => search);
       params.putIfAbsent("isAll", () => "true");
+    }
+    if (lat != null && lng != null) {
+      params.putIfAbsent("lat", () => lat.toString());
+      params.putIfAbsent("lng", () => lng.toString());
     }
     return getAllBase(params);
   }

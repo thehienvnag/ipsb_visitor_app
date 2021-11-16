@@ -6,7 +6,11 @@ import 'package:ipsb_visitor_app/src/services/api/base_service.dart';
 mixin ICouponService {
   Future<List<Coupon>> getCouponsByStoreId(int storeId);
   Future<Paging<Coupon>> getCoupons();
-  Future<List<Coupon>> searchCoupons(String keySearch, String buildingId);
+  Future<List<Coupon>> searchCoupons(
+    String keySearch, {
+    double? lat,
+    double? lng,
+  });
   Future<List<Coupon>> getCouponsByBuildingId(
     int storeId, {
     bool random = false,
@@ -47,28 +51,22 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
 
   @override
   Future<List<Coupon>> searchCoupons(
-      String buildingId, String keySearch) async {
-    var byName = getAllBase({
+    String keySearch, {
+    double? lat,
+    double? lng,
+  }) async {
+    final params = {
       "isAll": "true",
-      "name": keySearch,
-      "buildingId": buildingId,
+      "searchKey": keySearch,
       'checkLimit': 'true',
       'lowerExpireDate': DateTime.now().toString(),
       'status': 'Active',
-    });
-    var byDescription = getAllBase({
-      "isAll": "true",
-      "description": keySearch,
-      "buildingId": buildingId,
-      'checkLimit': 'true',
-      'lowerExpireDate': DateTime.now().toString(),
-      'status': 'Active',
-    });
-    var result = await Future.wait([byName, byDescription]);
-    var list = result.expand((element) => element).toList();
-    final ids = list.map((e) => e.id).toSet();
-    list.retainWhere((x) => ids.remove(x.id));
-    return list;
+    };
+    if (lat != null && lng != null) {
+      params.putIfAbsent("lat", () => lat.toString());
+      params.putIfAbsent("lng", () => lng.toString());
+    }
+    return getAllBase(params);
   }
 
   @override

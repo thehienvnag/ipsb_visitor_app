@@ -9,6 +9,12 @@ class Formatter {
     return DateFormat(formatter).format(date);
   }
 
+  static String distanceFormat(double? distanceTo) {
+    if (distanceTo == null) return "";
+    if (distanceTo < 0.5) return "";
+    return "[${distanceTo.toStringAsFixed(1)} km]";
+  }
+
   static String shorten(String? s, [int n = 30, String? defaultValue = ""]) {
     if (s == null) {
       if (defaultValue == null) return "";
@@ -34,10 +40,10 @@ class Formatter {
     }
     if (couponTypeId == Constants.discountTypeFixed) {
       final formatter = new NumberFormat("###,###,###,###");
-      return '-' + formatter.format(amount) + ' $currency';
+      return '− ' + formatter.format(amount) + ' $currency';
     }
     final formatter = new NumberFormat("###");
-    return '-' + formatter.format(amount) + '%';
+    return '− ' + formatter.format(amount) + '%';
   }
 
   static String dateCaculator(DateTime? date) {

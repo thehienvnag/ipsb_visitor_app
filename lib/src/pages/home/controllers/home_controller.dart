@@ -25,6 +25,7 @@ class HomeController extends FullLifeCycleController {
   ICouponService couponService = Get.find();
   IBuildingService buildingService = Get.find();
   INotificationService _notificationService = Get.find();
+  IProductCategoryService _categoryService = Get.find();
   final scrollController = ScrollController().obs;
   final showSlider = true.obs;
   final buildingId = 0.obs;
@@ -52,16 +53,21 @@ class HomeController extends FullLifeCycleController {
   final listStore = <Store>[].obs;
   final listBuilding = <Building>[].obs;
 
+  // Current position: Lat, Lng
+  final Rx<double?> lat = Rx<double?>(null);
+  final Rx<double?> lng = Rx<double?>(null);
+
   @override
   void onInit() async {
     super.onInit();
     Position? location;
     try {
       location = await Geolocator.getCurrentPosition();
+      lat.value = location.latitude;
+      lng.value = location.longitude;
     } catch (e) {}
-
-    getBuildings(location);
-    initPage(location);
+    getBuildings();
+    initPage();
     updateNotifications();
   }
 
@@ -79,10 +85,8 @@ class HomeController extends FullLifeCycleController {
   }
 
   SharedStates states = Get.find();
-  void initPage(Position? myLocation) async {
-    if (myLocation == null) return;
-
-    await initBuilding(myLocation);
+  void initPage() async {
+    await initBuilding();
     if (states.building.value.id == null) return;
     buildingId.value = states.building.value.id!;
     getStores();
@@ -90,18 +94,19 @@ class HomeController extends FullLifeCycleController {
     getProductCategory();
   }
 
-  Future<void> initBuilding(Position myLocation) async {
+  Future<void> initBuilding() async {
+    if (lat.value == null && lng.value == null) return;
     final building = await buildingService.findCurrentBuilding(
-      myLocation.latitude,
-      myLocation.longitude,
+      lat.value!,
+      lng.value!,
     );
     if (building != null) {
       states.building.value = building;
     } else {
       states.building.value = Building();
       List<Placemark> placeMarks = await placemarkFromCoordinates(
-        myLocation.latitude,
-        myLocation.longitude,
+        lat.value!,
+        lng.value!,
       );
       if (placeMarks.isNotEmpty) {
         final place = placeMarks.first;
@@ -156,11 +161,8 @@ class HomeController extends FullLifeCycleController {
     );
   }
 
-  Future<void> getBuildings([Position? myLocation]) async {
-    final list = await buildingService.getBuildings(
-      myLocation?.latitude,
-      myLocation?.longitude,
-    );
+  Future<void> getBuildings() async {
+    final list = await buildingService.getBuildings(lat.value, lng.value);
     if (list.isNotEmpty &&
         list.first.distanceTo != null &&
         list.first.distanceTo! < 0.5) {
@@ -176,54 +178,32 @@ class HomeController extends FullLifeCycleController {
       listStoreSearch.clear();
       return;
     }
-    int? bId = buildingId.value;
 
     if (!isSearching.value) {
       isSearching.value = true;
       if (typeSearch.value == "Coupons") {
         listSearchCoupons.value = await couponService.searchCoupons(
-          bId.toString(),
           keySearch,
+          lat: lat.value,
+          lng: lng.value,
         );
       } else if (typeSearch.value == "Buildings") {
-        listBuildingSearch.value =
-            await buildingService.searchBuildings(keySearch);
+        listBuildingSearch.value = await buildingService.searchBuildings(
+          keySearch,
+          lat.value,
+          lng.value,
+        );
       } else if (typeSearch.value == "Stores") {
-        listStoreSearch.value = await storeService.searchStore(keySearch);
+        final stores = await storeService.searchStore(
+          keySearch,
+          lat: lat.value,
+          lng: lng.value,
+        );
+        listStoreSearch.value = stores;
       }
       Timer(Duration(seconds: 1), () => isSearching.value = false);
     }
   }
-
-  var distanceTwoPoin = "".obs;
-
-  // Future<String> getDistanceBetweenTwoLocation(String buildingAddress) async {
-  //   Location location = new Location();
-  //   GeoCode geoCode = GeoCode();
-  //   LocationData myLocation;
-  //   myLocation = await location.getLocation();
-  //   Coordinates coordinates =
-  //       await geoCode.forwardGeocoding(address: buildingAddress);
-  //   double distance = Geolocator.distanceBetween(
-  //       myLocation.latitude!.toDouble(),
-  //       myLocation.longitude!.toDouble(),
-  //       coordinates.latitude!.toDouble(),
-  //       coordinates.longitude!.toDouble());
-  //   final formatter = new NumberFormat("###,###,###,###");
-  //   distanceTwoPoin.value = formatter.format(distance / 1000) + ' Km';
-  //   print("nè nè : " + formatter.format(distance / 1000) + ' Km');
-  //   return formatter.format(distance / 1000) + ' Km';
-  // }
-
-  // String getDistanceDisplay(String address) {
-  //   var valueDistan = "";
-  //   getDistanceBetweenTwoLocation(address).then((value) {
-  //     valueDistan = value;
-  //   });
-  //   print("hello: " + valueDistan);
-  //   return valueDistan;
-  // }
-  IProductCategoryService _categoryService = Get.find();
 
   /// Get list ProductCategory by api
   Future<void> getProductCategory() async {
@@ -231,5 +211,3 @@ class HomeController extends FullLifeCycleController {
     listCategories.value = paging.content!;
   }
 }
-
-class Geocoder {}
