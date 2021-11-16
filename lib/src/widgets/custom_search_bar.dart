@@ -65,14 +65,28 @@ class MapSearchBar extends GetView<MapController> {
                 final listLocation = controller.searchLocationList;
                 if (controller.isSearchingLocationList.value)
                   return Container(
-                      padding:
-                          const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                      child: Center(child: CircularProgressIndicator()));
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      top: 10,
+                      bottom: 10,
+                    ),
+                    child: Center(
+                      child: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  );
                 if (listLocation.isEmpty)
                   return Container(
-                      padding:
-                          const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                      child: Text("No place found!"));
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      top: 10,
+                      bottom: 10,
+                    ),
+                    child: Text("No place found!"),
+                  );
                 int count = listLocation.length > 6 ? 6 : listLocation.length;
                 return ListView.separated(
                   shrinkWrap: true,
@@ -90,22 +104,27 @@ class MapSearchBar extends GetView<MapController> {
                         "";
                     final title = Formatter.shorten(
                         place.store?.name ?? place.locationType?.name);
-                    final description = Formatter.shorten(
-                        place.store?.description ??
-                            place.locationType?.description);
-                    final floorCode =
-                        Formatter.shorten(place.floorPlan?.floorCode);
+                    final description =
+                        "Floor ${Formatter.shorten(place.floorPlan?.floorCode)} ${Formatter.distanceFormat(place.distanceTo, unit: "meter")}";
+
                     return Container(
                       height: 75,
                       child: TextButton(
                         onPressed: () {},
                         child: ListTile(
                           contentPadding: const EdgeInsets.all(0),
-                          leading: CircleAvatar(
-                            radius: 25,
-                            backgroundImage: NetworkImage(img),
+                          leading: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: CachedNetworkImageProvider(img),
+                              ),
+                            ),
                           ),
-                          title: Text(title + " - Floor " + floorCode),
+                          title: Text(title),
                           subtitle: Text(description),
                           trailing: OutlinedButton(
                             onPressed: () =>
@@ -214,7 +233,7 @@ class HomeSearchBar extends GetView<HomeController> {
     if (data is Coupon) {
       img = data.imageUrl ?? "";
       title =
-          '${Formatter.shorten(data.store?.name)} (${Formatter.amount(data.amount, data.couponTypeId)})';
+          '${Formatter.shorten(data.store?.name)} - ${Formatter.shorten(data.name)}';
       description =
           '${Formatter.shorten(data.store?.building?.name)} ${Formatter.distanceFormat(data.store?.building?.distanceTo)}';
       navigate = () => controller.goToCouponDetails(data);

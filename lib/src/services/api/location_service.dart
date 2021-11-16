@@ -48,6 +48,7 @@ class LocationService extends BaseService<Location>
       'isAll': true.toString(),
       'locationTypeId': locationType.toString(),
       'floorPlanId': floorPlanId.toString(),
+      'status': "Active",
     });
   }
 
@@ -74,35 +75,20 @@ class LocationService extends BaseService<Location>
       'isAll': true.toString(),
       'floorPlanId': floorPlanId.toString(),
       'locationTypeId': locationTypeId.toString(),
+      'status': "Active",
     });
   }
 
   @override
   Future<List<Location>> getLocationByKeySearch(
       String buildingId, String keySearch) async {
-    var locationsByStore = getAllBase({
+    final params = {
       "isAll": "true",
-      "storeName": keySearch,
+      "searchKey": keySearch,
       "buildingId": buildingId,
-      "notLocationTypeId": "2"
-    });
-    var locationsByProduct = getAllBase({
-      "isAll": "true",
-      "productName": keySearch,
-      "buildingId": buildingId,
-      "notLocationTypeId": "2"
-    });
-    var locationsByTypeName = getAllBase({
-      "isAll": "true",
-      "locationTypeName": keySearch,
-      "buildingId": buildingId,
-      "notLocationTypeId": "2"
-    });
-    var result = await Future.wait(
-        [locationsByStore, locationsByProduct, locationsByTypeName]);
-    var list = result.expand((element) => element).toList();
-    final ids = list.map((e) => e.id).toSet();
-    list.retainWhere((x) => ids.remove(x.id));
-    return list;
+      "notLocationTypeIds": ["2", "5"], //Ignore Road & iBeacon
+      'status': "Active",
+    };
+    return getAllBase(params);
   }
 }

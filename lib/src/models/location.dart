@@ -39,6 +39,9 @@ class Location {
   @HiveField(8)
   final FloorPlan? floorPlan;
 
+  @HiveField(9)
+  double? distanceTo;
+
   Location({
     this.id,
     this.locationTypeId,
@@ -47,6 +50,7 @@ class Location {
     this.floorPlan,
     this.x,
     this.y,
+    this.distanceTo,
     this.locationType,
     this.store,
   });
