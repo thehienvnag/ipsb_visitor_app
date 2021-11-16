@@ -16,10 +16,9 @@ class LoginPhonePage extends GetView<LoginPhoneController> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           centerTitle: true,
-          // backgroundColor: Color(0xff2AD4D3),
           backgroundColor: Colors.white,
           title: Text(
-            'Sign Up',
+            'Sign In',
             style: TextStyle(color: Colors.black),
           ),
           leading: IconButton(

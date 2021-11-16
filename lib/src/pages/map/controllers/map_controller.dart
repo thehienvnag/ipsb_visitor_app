@@ -146,6 +146,7 @@ class MapController extends GetxController {
         onSelectedFloorChange();
         onLocationChanged();
         initShoppingList();
+
       }
     });
   }
