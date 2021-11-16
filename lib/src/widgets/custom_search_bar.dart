@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/models/building.dart';
@@ -213,8 +214,9 @@ class HomeSearchBar extends GetView<HomeController> {
     if (data is Coupon) {
       img = data.imageUrl ?? "";
       title =
-          '${Formatter.shorten(data.store?.name)} - ${Formatter.shorten(data.name)}';
-      description = Formatter.shorten(data.description);
+          '${Formatter.shorten(data.store?.name)} (${Formatter.amount(data.amount, data.couponTypeId)})';
+      description =
+          '${Formatter.shorten(data.store?.building?.name)} ${Formatter.distanceFormat(data.store?.building?.distanceTo)}';
       navigate = () => controller.goToCouponDetails(data);
     } else if (data is Building) {
       img = data.imageUrl ?? "";
@@ -225,8 +227,9 @@ class HomeSearchBar extends GetView<HomeController> {
           });
     } else if (data is Store) {
       img = data.imageUrl ?? "";
-      title = data.name ?? '';
-      description = Formatter.shorten(data.description);
+      title = data.name ?? "";
+      description =
+          '${Formatter.shorten(data.building?.name)} ${Formatter.distanceFormat(data.building?.distanceTo)}';
       navigate = () => Get.toNamed(Routes.storeDetails, parameters: {
             "id": data.id.toString(),
           });
@@ -290,18 +293,10 @@ class HomeSearchBar extends GetView<HomeController> {
         contentPadding: const EdgeInsets.all(0),
         leading: CircleAvatar(
           radius: 25,
-          backgroundImage: NetworkImage(img),
+          backgroundImage: CachedNetworkImageProvider(img),
         ),
         title: Text(title),
         subtitle: Text(description),
-        // trailing: OutlinedButton.icon(
-        //   onPressed: navigateTo,
-        //   icon: Icon(
-        //     Icons.local_activity,
-        //     size: 24,
-        //   ),
-        //   label: Text("Chi Tiết"),
-        // ),
       ),
     );
   }

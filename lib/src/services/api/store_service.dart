@@ -10,7 +10,11 @@ mixin IStoreService {
     int buildingId, {
     bool random = false,
   });
-  Future<List<Store>> searchStore(String search);
+  Future<List<Store>> searchStore(
+    String search, {
+    double? lat,
+    double? lng,
+  });
 }
 
 class StoreService extends BaseService<Store> implements IStoreService {
@@ -29,11 +33,20 @@ class StoreService extends BaseService<Store> implements IStoreService {
     return getByIdBase(id);
   }
 
-  Future<List<Store>> searchStore(String search) async {
-    return getAllBase({
+  Future<List<Store>> searchStore(
+    String search, {
+    double? lat,
+    double? lng,
+  }) async {
+    final params = {
       "name": search.toString(),
       "pageSize": "5",
-    });
+    };
+    if (lat != null && lng != null) {
+      params.putIfAbsent("lat", () => lat.toString());
+      params.putIfAbsent("lng", () => lng.toString());
+    }
+    return getAllBase(params);
   }
 
   Future<Paging<Store>> getStores(String searchName, int floorPlanId) async {
@@ -52,6 +65,7 @@ class StoreService extends BaseService<Store> implements IStoreService {
       "buildingId": buildingId.toString(),
       "status": 'Active',
     };
+
     if (random) {
       params.putIfAbsent("random", () => "true");
     }

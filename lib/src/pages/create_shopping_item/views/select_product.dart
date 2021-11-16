@@ -40,9 +40,11 @@ class SelectProduct extends StatelessWidget {
           item.imageUrl!,
           height: 40,
         ),
-        title: Text(Formatter.shorten(item.description, 25)),
-        trailing:
-            IconButton(onPressed: () => remove(), icon: Icon(Icons.close)),
+        title: Text(Formatter.shorten(item.name)),
+        trailing: IconButton(
+          onPressed: () => remove(),
+          icon: Icon(Icons.close),
+        ),
       ),
       onSubmitted: onSubmitted,
       required: required,
