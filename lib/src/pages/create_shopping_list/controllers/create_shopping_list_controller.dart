@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:ipsb_visitor_app/src/models/building.dart';
 import 'package:ipsb_visitor_app/src/services/api/building_service.dart';
 import 'package:get/get.dart';
@@ -32,19 +33,36 @@ class CreateShoppingListController extends GetxController {
   }
 
   void submitForm() async {
-    if (shoppingListName.isEmpty) return;
-    if (shoppingListBuilding.value == 0) return;
-    if (shoppingDate.isEmpty) return;
-    final data = {
-      "name": shoppingListName.value,
-      "buildingId": shoppingListBuilding.value,
-      "shoppingDate": shoppingDate.value,
-      "accountId": AuthServices.userLoggedIn.value.id,
-    };
-    final result = await _iShoppingListService.create(data);
-    if (result != null) {
-      BotToast.showText(text: "Successfully created shopping list");
-      Get.back(result: true);
+    if (shoppingListName.isEmpty) {
+      BotToast.showText(
+          text: "Input name shopping list",
+          textStyle: TextStyle(fontSize: 16,color: Color(0xffffffff)),
+          duration: const Duration(seconds: 3));
+    } else if (shoppingListBuilding.value == 0) {
+      BotToast.showText(
+          text: "Select building shopping!",
+          textStyle: TextStyle(fontSize: 16,color: Color(0xffffffff)),
+          duration: const Duration(seconds: 3));
+    } else if (shoppingDate.isEmpty){
+      BotToast.showText(
+          text: "Pick date shopping!",
+          textStyle: TextStyle(fontSize: 16,color: Color(0xffffffff)),
+          duration: const Duration(seconds: 3));
+    }
+    else {
+      BotToast.showLoading();
+      final data = {
+        "name": shoppingListName.value,
+        "buildingId": shoppingListBuilding.value,
+        "shoppingDate": shoppingDate.value,
+        "accountId": AuthServices.userLoggedIn.value.id,
+      };
+      final result = await _iShoppingListService.create(data);
+      BotToast.closeAllLoading();
+      if (result != null) {
+        BotToast.showText(text: "Successfully created shopping list");
+        Get.back(result: true);
+      }
     }
   }
 }

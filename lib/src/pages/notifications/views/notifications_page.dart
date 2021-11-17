@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -32,13 +31,12 @@ class NotificationsPage extends GetView<NotificationsController> {
       ),
       bottomNavigationBar: CustomBottombar(),
       body: Container(
-        // padding: const EdgeInsets.all(30),
-        child: listNotification(),
+        child: listNotification(context),
       ),
     );
   }
 
-  Widget listNotification() {
+  Widget listNotification(BuildContext context) {
     return Obx(() {
       if (AuthServices.userLoggedIn.value.id == null) {
         return Center(
@@ -47,8 +45,8 @@ class NotificationsPage extends GetView<NotificationsController> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 40, right: 20),
-                height: 200,
-                width: 200,
+                height: context.height*0.258,
+                width: context.width*0.486,
                 child: Image.asset(ConstImg.empty),
               ),
               Container(
@@ -64,7 +62,7 @@ class NotificationsPage extends GetView<NotificationsController> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 15),
-                width: 320,
+                width: context.width*0.778,
                 child: Text(
                   'Come back to check after login in your account',
                   textAlign: TextAlign.center,
@@ -82,7 +80,6 @@ class NotificationsPage extends GetView<NotificationsController> {
       final list = controller.notifications;
       if (controller.loading.value) {
         return Center(child: CircularProgressIndicator());
-        // );
       }
       if (list.isEmpty) {
         return Center(
@@ -91,8 +88,8 @@ class NotificationsPage extends GetView<NotificationsController> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 40, right: 20),
-                height: 200,
-                width: 200,
+                height: context.height*0.258,
+                width: context.width*0.486,
                 child: Image.asset(ConstImg.empty),
               ),
               Container(
@@ -108,7 +105,7 @@ class NotificationsPage extends GetView<NotificationsController> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 15),
-                width: 320,
+                width: context.width*0.778,
                 child: Text(
                   'Come back to check after receiving new notification',
                   textAlign: TextAlign.center,
@@ -125,12 +122,7 @@ class NotificationsPage extends GetView<NotificationsController> {
       }
       return ListView.builder(
         itemBuilder: (context, index) {
-          // return ListView.builder(
-          //   shrinkWrap: true,
-          //   itemBuilder: (context, index) =>
           return notificationItem(list[index], context);
-          // itemCount: list.length,
-          // );
         },
         itemCount: list.length,
       );
@@ -163,13 +155,11 @@ class NotificationsPage extends GetView<NotificationsController> {
           children: [
             Container(
               height: context.height * 0.105,
-              width: context.height * 0.105,
+              width: context.height * 0.095,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(
-                    // 'https://raw.githubusercontent.com/thehienvnag/beauty-at-home-mobile/main/public/img/notification.PNG'),
-                    // 'https://ibb.co/DfHrstZ'
                     element.imageUrl != null
                         ? element.imageUrl!
                         : 'https://ibb.co/DfHrstZ',
@@ -212,10 +202,6 @@ class NotificationsPage extends GetView<NotificationsController> {
                 ],
               ),
             ),
-
-            // ],
-            // ),
-            // ),
           ],
         ),
       ),

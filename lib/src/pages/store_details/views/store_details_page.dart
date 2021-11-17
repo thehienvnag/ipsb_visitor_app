@@ -161,15 +161,15 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
 
   Widget _buildEmpty(String description, BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 10),
       child: Column(
         children: [
           Image.asset(
             ConstImg.empty,
-            height: 80,
+            height: 60,
             width: 80,
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           Text(description),
         ],
       ),

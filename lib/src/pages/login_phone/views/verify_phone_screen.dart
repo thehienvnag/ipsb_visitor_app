@@ -15,10 +15,9 @@ class VerifyPhoneScreen extends GetView<LoginPhoneController> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           centerTitle: true,
-          //backgroundColor: Color(0xff2AD4D3),
           backgroundColor: Colors.white,
           title: Text(
-            'Sign Up',
+            'Sign In',
             style: TextStyle(color: Colors.black),
           ),
           leading: IconButton(
@@ -54,12 +53,6 @@ class VerifyPhoneScreen extends GetView<LoginPhoneController> {
                   child: PinCodeTextField(
                     appContext: context,
                     length: 6,
-                    //obscureText: true,
-                    //obscuringCharacter: '*',
-                    // obscuringWidget: FlutterLogo(
-                    //   size: 24,
-                    // )
-
                     blinkWhenObscuring: true,
                     animationType: AnimationType.fade,
                     pinTheme: PinTheme(
@@ -77,7 +70,6 @@ class VerifyPhoneScreen extends GetView<LoginPhoneController> {
                     cursorColor: Colors.black,
                     animationDuration: Duration(milliseconds: 300),
                     enableActiveFill: true,
-                    // controller: textEditingController,
                     keyboardType: TextInputType.number,
                     boxShadows: [
                       BoxShadow(

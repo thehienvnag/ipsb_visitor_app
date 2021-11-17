@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:ipsb_visitor_app/src/models/building.dart';
 import 'package:ipsb_visitor_app/src/models/product.dart';
 import 'package:get/get.dart';
@@ -43,17 +44,36 @@ class CreateShoppingItemController extends GetxController {
   }
 
   void submitForm() async {
-    if (productId.value == 0) return;
-    if (shoppingListId.value == 0) return;
-    final data = {
-      "productId": productId.value,
-      "note": note.value,
-      "shoppingListId": shoppingListId.value,
-    };
-    final result = await _shoppingItemService.create(data);
-    if (result != null) {
-      BotToast.showText(text: "Successfully created shopping list");
-      Get.back(result: true);
+    if (shoppingListId.value == 0) {
+      BotToast.showText(
+          text: "Shopping list did't exist!",
+          textStyle: TextStyle(fontSize: 16,color: Color(0xffffffff)),
+          duration: const Duration(seconds: 3));
+    }
+    if (productId.value == 0) {
+      BotToast.showText(
+          text: "Select product!",
+          textStyle: TextStyle(fontSize: 16,color: Color(0xffffffff)),
+          duration: const Duration(seconds: 3));
+    } else if (note.value.isEmpty) {
+      BotToast.showText(
+          text: "Enter note shopping item",
+          textStyle: TextStyle(fontSize: 16,color: Color(0xffffffff)),
+          duration: const Duration(seconds: 3));
+    }
+    else {
+      final data = {
+        "productId": productId.value,
+        "note": note.value,
+        "shoppingListId": shoppingListId.value,
+      };
+      BotToast.showLoading();
+      final result = await _shoppingItemService.create(data);
+      BotToast.closeAllLoading();
+      if (result != null) {
+        BotToast.showText(text: "Successfully created shopping list");
+        Get.back(result: true);
+      }
     }
   }
 }

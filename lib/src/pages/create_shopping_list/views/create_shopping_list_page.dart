@@ -70,13 +70,6 @@ class CreateShoppingListPage extends GetView<CreateShoppingListController> {
                     ),
                   ),
                 ),
-                // Container(
-                //   margin: EdgeInsets.only(top: 20),
-                //   child: Text(
-                //     'Add Building Name',
-                //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                //   ),
-                // ),
                 Container(
                   margin: EdgeInsets.only(top: 25, left: 28, right: 28),
                   child: SelectBuilding(
@@ -86,13 +79,6 @@ class CreateShoppingListPage extends GetView<CreateShoppingListController> {
                         controller.setShoppingBuilding(value),
                   ),
                 ),
-                // Container(
-                //   margin: EdgeInsets.only(top: 20),
-                //   child: Text(
-                //     'Shopping Date',
-                //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                //   ),
-                // ),
                 Container(
                   height: 43,
                   margin: EdgeInsets.only(top: 25, right: 30, left: 30),
@@ -116,95 +102,8 @@ class CreateShoppingListPage extends GetView<CreateShoppingListController> {
                     firstDate: DateTime(2000),
                     lastDate: DateTime(2100),
                     onChanged: (val) => controller.shoppingDate.value = val,
-                    // validator: (val) {
-                    //   return null;
-                    // },
-                    // onSaved: (val) {
-                    //   controller.shoppingDate.value = val ?? "";
-                    // },
                   ),
                 ),
-                // Container(
-                //   margin: EdgeInsets.only(top: 20),
-                //   child: Text(
-                //     'Set Priority',
-                //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                //   ),
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Container(
-                //       margin: EdgeInsets.only(left: 40),
-                //       child: Column(
-                //         children: [
-                //           Container(
-                //             margin: const EdgeInsets.only(top: 10),
-                //             padding: const EdgeInsets.all(22),
-                //             decoration: BoxDecoration(
-                //               //border: Border.all(color: Colors.black26, width: 1),
-                //               shape: BoxShape.circle,
-                //               color: Color(0xff64B0E7),
-                //             ),
-                //           ),
-                //           Container(
-                //             child: Text(
-                //               'High',
-                //               style: TextStyle(
-                //                 fontWeight: FontWeight.w500,
-                //                 fontSize: 16,
-                //               ),
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //     Column(
-                //       children: [
-                //         Container(
-                //           margin: const EdgeInsets.only(top: 10),
-                //           padding: const EdgeInsets.all(22),
-                //           decoration: BoxDecoration(
-                //             //border: Border.all(color: Colors.black26, width: 1),
-                //             shape: BoxShape.circle,
-                //             color: Color(0xff57E770),
-                //           ),
-                //         ),
-                //         Text(
-                //           'Medium',
-                //           style: TextStyle(
-                //             fontWeight: FontWeight.w500,
-                //             fontSize: 16,
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //     Container(
-                //       margin: EdgeInsets.only(right: 40),
-                //       child: Column(
-                //         children: [
-                //           Container(
-                //             margin: const EdgeInsets.only(top: 10),
-                //             padding: const EdgeInsets.all(22),
-                //             decoration: BoxDecoration(
-                //               //border: Border.all(color: Colors.black26, width: 1),
-                //               shape: BoxShape.circle,
-                //               color: Color(0xffFFB547),
-                //             ),
-                //           ),
-                //           Text(
-                //             'Low',
-                //             style: TextStyle(
-                //               fontWeight: FontWeight.w500,
-                //               fontSize: 16,
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ],
-                // ),
-
                 Container(
                   margin: EdgeInsets.only(top: 30),
                   child: OutlinedButton(

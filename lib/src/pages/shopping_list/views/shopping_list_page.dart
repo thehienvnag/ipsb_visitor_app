@@ -42,9 +42,9 @@ class ShoppingListPage extends GetView<ShoppingListController> {
       ) : SizedBox(),
       body: SingleChildScrollView(
         child: Column(children: [
-          listItem(),
+          listItem(context),
           SizedBox(
-            height: 100,
+            height: context.height*0.13,
           )
         ]),
       ),
@@ -52,7 +52,7 @@ class ShoppingListPage extends GetView<ShoppingListController> {
     );
   }
 
-  Widget listItem() {
+  Widget listItem(BuildContext context) {
     return Obx(() {
       if (AuthServices.userLoggedIn.value.id == null) {
         return Center(
@@ -61,8 +61,8 @@ class ShoppingListPage extends GetView<ShoppingListController> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 40, right: 20),
-                height: 200,
-                width: 200,
+                height: context.height*0.258,
+                width: context.width*0.486,
                 child: Image.asset(
                     ConstImg.emptyList),
               ),
@@ -79,7 +79,7 @@ class ShoppingListPage extends GetView<ShoppingListController> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 15),
-                width: 320,
+                width: context.width*0.778,
                 child: Text(
                   'Come back to check after login in your account',
                   textAlign: TextAlign.center,
@@ -108,8 +108,8 @@ class ShoppingListPage extends GetView<ShoppingListController> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 40, right: 20),
-                height: 200,
-                width: 210,
+                height: context.height*0.258,
+                width: context.width*0.51,
                 child: Image.asset(
                     ConstImg.emptyList),
               ),
@@ -126,7 +126,7 @@ class ShoppingListPage extends GetView<ShoppingListController> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 15),
-                width: 320,
+                width: context.width*0.778,
                 child: Text(
                   'Create list and add them to your trolley for an easier shopping experience.',
                   textAlign: TextAlign.center,
@@ -211,7 +211,6 @@ class ShoppingListPage extends GetView<ShoppingListController> {
         ),
         decoration: BoxDecoration(
           color: Colors.grey[100],
-          //border: Border.all(color: Colors.black26, width: 1),
           borderRadius: BorderRadius.circular(2),
         ),
         child: Row(
