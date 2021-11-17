@@ -63,7 +63,7 @@ class TestAlgorithmController extends GetxController {
   }
 
   Future<void> setLocationOnFloor() async {
-    final locations = await _locationService.getLocationOnFloor(12);
+    final locations = await _locationService.getLocationOnBuilding(12);
     _mapController.loadLocationsOnMap(locations);
   }
 }

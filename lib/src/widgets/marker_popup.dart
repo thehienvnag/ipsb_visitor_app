@@ -82,7 +82,7 @@ class MarkerPopup extends GetView<ImageViewController> {
                     margin: const EdgeInsets.only(right: 10),
                     child: OutlinedButton(
                       onPressed: () =>
-                          homeController.startShowDirection(state.location?.id),
+                          homeController.openDirectionMenu(state.location?.id),
                       child: Icon(
                         Icons.directions,
                         size: 32,

@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:ipsb_visitor_app/src/models/building.dart';
 import 'package:ipsb_visitor_app/src/services/api/building_service.dart';
 import 'package:get/get.dart';
@@ -14,14 +15,24 @@ class CreateShoppingListController extends GetxController {
   final shoppingListName = "".obs;
   final shoppingListBuilding = 0.obs;
   final shoppingDate = "".obs;
+  final position = Rx<Position?>(null);
 
   @override
   void onInit() {
     super.onInit();
+    initPosition();
+  }
+
+  void initPosition() async {
+    position.value = await Geolocator.getCurrentPosition();
   }
 
   Future<List<Building>> loadBuilding([String? search]) async {
-    return buildingService.searchBuildings(search);
+    return buildingService.searchBuildings(
+      search,
+      position.value?.latitude,
+      position.value?.longitude,
+    );
   }
 
   void setShoppingBuilding(Building? building) {
@@ -36,20 +47,19 @@ class CreateShoppingListController extends GetxController {
     if (shoppingListName.isEmpty) {
       BotToast.showText(
           text: "Input name shopping list",
-          textStyle: TextStyle(fontSize: 16,color: Color(0xffffffff)),
+          textStyle: TextStyle(fontSize: 16, color: Color(0xffffffff)),
           duration: const Duration(seconds: 3));
     } else if (shoppingListBuilding.value == 0) {
       BotToast.showText(
           text: "Select building shopping!",
-          textStyle: TextStyle(fontSize: 16,color: Color(0xffffffff)),
+          textStyle: TextStyle(fontSize: 16, color: Color(0xffffffff)),
           duration: const Duration(seconds: 3));
-    } else if (shoppingDate.isEmpty){
+    } else if (shoppingDate.isEmpty) {
       BotToast.showText(
           text: "Pick date shopping!",
-          textStyle: TextStyle(fontSize: 16,color: Color(0xffffffff)),
+          textStyle: TextStyle(fontSize: 16, color: Color(0xffffffff)),
           duration: const Duration(seconds: 3));
-    }
-    else {
+    } else {
       BotToast.showLoading();
       final data = {
         "name": shoppingListName.value,

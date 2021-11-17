@@ -10,10 +10,9 @@ mixin ILocationService {
   /// Get locations from a [floorPlanId] based on [locationType]
   Future<List<Location>> getLocationsByType(int locationType, int floorPlanId);
 
-  Future<List<Location>> getLocationOnFloor(int floorPlanId);
+  Future<List<Location>> getLocationOnBuilding(int buildingId);
 
-  Future<List<Location>> getLocationOnFloorWithLocationTypeId(int floorPlanId,
-      [int locationTypeId = 2]);
+  Future<List<Location>> getLocationOnFloorWithLocationTypeId(int buildingId);
 
   Future<Location?> getLocationById(int id);
 
@@ -53,12 +52,11 @@ class LocationService extends BaseService<Location>
   }
 
   @override
-  Future<List<Location>> getLocationOnFloor(int floorPlanId,
-      [int locationTypeId = 2]) async {
+  Future<List<Location>> getLocationOnBuilding(int buildingId) async {
     return await getAllBase({
       'isAll': true.toString(),
-      'floorPlanId': floorPlanId.toString(),
-      'notLocationTypeId': '5',
+      'buildingId': buildingId.toString(),
+      'notLocationTypeIds': ["2", "5"],
       'status': "Active"
     });
   }

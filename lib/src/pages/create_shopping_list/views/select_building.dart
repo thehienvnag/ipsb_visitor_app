@@ -29,7 +29,8 @@ class SelectBuilding extends StatelessWidget {
           width: 80,
         ),
         title: Text(Formatter.shorten(item.name)),
-        subtitle: Text(Formatter.shorten(item.address)),
+        subtitle: Text(
+            '${Formatter.shorten(item.address)} ${Formatter.distanceFormat(item.distanceTo, buildingId: item.id)}'),
         trailing: Checkbox(
           value: selected,
           onChanged: (value) => changeSelected(value!),

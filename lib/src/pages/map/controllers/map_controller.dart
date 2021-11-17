@@ -30,6 +30,7 @@ import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 import 'package:ipsb_visitor_app/src/utils/edge_helper.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
+import 'package:ipsb_visitor_app/src/widgets/custom_bottom_bar.dart';
 import 'package:ipsb_visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -67,6 +68,9 @@ class MapController extends GetxController {
   /// List edges of all of the building
   final edges = <Edge>[].obs;
 
+  /// List locations on map
+  final locationsOnMap = <Location>[].obs;
+
   /// List search of location
   final searchLocationList = <Location>[].obs;
 
@@ -95,6 +99,9 @@ class MapController extends GetxController {
 
   /// Determine whether a path is shown
   final isShowingDirection = false.obs;
+
+  /// Is direction bottom sheet visible
+  final directionBottomSheet = false.obs;
 
   /// Shortest path for one specific current and destination
   final shortestPath = <Location>[].obs;
@@ -133,11 +140,12 @@ class MapController extends GetxController {
   void onInit() {
     super.onInit();
     isLoading.value = true;
-    initBuilding().then((value) {
-      if (value) {
+    initBuilding().then((result) {
+      if (result) {
         getFloorPlan().then((value) {
           initPositioning();
           loadEdgesInBuilding();
+          loadPlaceOnBuilding();
           isLoading.value = false;
           _mapController.setCurrentMarker(currentPosition.value);
         }).catchError((err) {
@@ -159,6 +167,7 @@ class MapController extends GetxController {
   }
 
   Future<bool> initBuilding() async {
+    if (sharedData.building.value.id != null) return true;
     Position? myLocation;
     try {
       myLocation = await Geolocator.getCurrentPosition();
@@ -370,10 +379,30 @@ class MapController extends GetxController {
     listShoppingRoutes.clear();
   }
 
-  void startShowDirection(int? destLocationId) {
+  void openDirectionMenu(int? destLocationId) {
     if (destLocationId == null) return;
+    directionBottomSheet.value = true;
     destPosition.value = destLocationId;
-    showDirection();
+  }
+
+  void closeDirectionMenu() {
+    if (directionBottomSheet.isTrue) {
+      stopDirection();
+      directionBottomSheet.value = false;
+    }
+  }
+
+  void startShowDirection() {
+    if (directionBottomSheet.isTrue) {
+      showDirection();
+    }
+  }
+
+  void stopDirection() {
+    if (directionBottomSheet.isTrue) {
+      isShowingDirection.value = false;
+      _mapController.setActiveRoute([]);
+    }
   }
 
   void onLocationChanged() {
@@ -429,7 +458,7 @@ class MapController extends GetxController {
     _mapController.setActiveRoute(
       Graph.getRouteOnFloor(shortestPath, selectedFloor.value.id!),
     );
-    isShowingDirection.value = false;
+    // isShowingDirection.value = false;
   }
 
   double? calcDistanceBetween(
@@ -517,7 +546,6 @@ class MapController extends GetxController {
     if (paging.content != null) {
       listFloorPlan.value = paging.content!;
       selectedFloor.value = listFloorPlan[0];
-      loadPlaceOnFloor(listFloorPlan[0].id!);
     }
     return listFloorPlan.map((element) => element.id!).toList();
   }
@@ -526,8 +554,10 @@ class MapController extends GetxController {
   void onSelectedFloorChange() {
     selectedFloor.listen((floor) {
       onShoppingListChange();
-      loadPlaceOnFloor(floor.id!);
       getCoupons(floor.id);
+      _mapController.loadLocationsOnMap(
+        locationsOnMap.where((e) => e.floorPlanId == floor.id).toList(),
+      );
       _pdrConfig?.rotationAngle = floor.rotationAngle!;
       _pdrConfig?.mapScale = floor.mapScale!;
       _bleConfig?.mapScale = floor.mapScale!;
@@ -575,9 +605,15 @@ class MapController extends GetxController {
     }
   }
 
-  Future<void> loadPlaceOnFloor(int floorId) async {
-    final locations = await _locationService.getLocationOnFloor(floorId);
-    _mapController.loadLocationsOnMap(locations);
+  Future<void> loadPlaceOnBuilding() async {
+    locationsOnMap.value = await _locationService.getLocationOnBuilding(
+      states.building.value.id!,
+    );
+    _mapController.loadLocationsOnMap(
+      locationsOnMap
+          .where((e) => e.floorPlanId == selectedFloor.value.id)
+          .toList(),
+    );
   }
 
   /// Change ishow value with true
