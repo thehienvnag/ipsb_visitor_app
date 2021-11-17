@@ -1,6 +1,8 @@
 import 'package:geocoding/geocoding.dart';
+import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:intl/intl.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Formatter {
@@ -9,9 +11,14 @@ class Formatter {
     return DateFormat(formatter).format(date);
   }
 
-  static String distanceFormat(double? distanceTo, {String unit = "km"}) {
+  static String distanceFormat(
+    double? distanceTo, {
+    String unit = "km",
+    int? buildingId,
+  }) {
     if (distanceTo == null) return "";
-    if (distanceTo < 0.5) return "";
+    SharedStates states = Get.find();
+    if (buildingId != null && states.building.value.id == buildingId) return "";
     return "(${distanceTo.toStringAsFixed(1)} $unit)";
   }
 

@@ -77,7 +77,7 @@ class MapPage extends GetView<MapController> {
           ? getFloatingButton(context)
           : SizedBox(),
       bottomNavigationBar: getBottomNavBar(),
-      bottomSheet: getShoppingListBottomSheet(context),
+      bottomSheet: determineBottomSheet(context),
     );
   }
 
@@ -87,7 +87,7 @@ class MapPage extends GetView<MapController> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 100, right: 20),
+            margin: EdgeInsets.only(top: 100),
             height: 200,
             width: 200,
             child: Image.asset(ConstImg.error),
@@ -123,8 +123,8 @@ class MapPage extends GetView<MapController> {
 
   Widget getBottomNavBar() {
     return Obx(() {
-      final shoppingListVisible = controller.shoppingListVisble.value;
-      if (shoppingListVisible) {
+      if (controller.shoppingListVisble.isTrue ||
+          controller.directionBottomSheet.isTrue) {
         return Container(
           height: 0,
         );
@@ -133,161 +133,230 @@ class MapPage extends GetView<MapController> {
     });
   }
 
+  Widget determineBottomSheet(BuildContext context) {
+    return Obx(() {
+      if (controller.directionBottomSheet.isTrue) {
+        return getRouteDirectionBottomSheet(context);
+      }
+      if (controller.shoppingListVisble.isTrue) {
+        return getShoppingListBottomSheet(context);
+      }
+      return Container(height: 0);
+    });
+  }
+
+  Widget getRouteDirectionBottomSheet(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    return Obx(() {
+      return Container(
+        padding: const EdgeInsets.only(top: 10),
+        width: screenSize.width,
+        height: 140,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [AppBoxShadow.boxShadowLight],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    "DIRECTIONS",
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => controller.closeDirectionMenu(),
+                  icon: Icon(Icons.close_rounded),
+                ),
+              ],
+            ),
+            ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                backgroundImage: CachedNetworkImageProvider(
+                    "https://sites.google.com/site/thietkewebtaihanoi/_/rsrc/1480308136221/kien-thuc-web/tim-kiem-hinh-anh-dep-cho-giao-dien-website/T%C3%ACm%20ki%E1%BA%BFm%20h%C3%ACnh%20%E1%BA%A3nh%20%C4%91%E1%BA%B9p%20cho%20giao%20di%E1%BB%87n%20website-1.jpg"),
+              ),
+              title: Text(
+                "Nike Store - Floor L1",
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+              subtitle: Text("70 (meter)"),
+              trailing: controller.isShowingDirection.value == true
+                  ? OutlinedButton.icon(
+                      onPressed: () => controller.stopDirection(),
+                      icon: Icon(Icons.stop, color: Colors.redAccent, size: 30),
+                      label: Text(
+                        "Exit",
+                        style: TextStyle(color: Colors.redAccent),
+                      ),
+                    )
+                  : OutlinedButton.icon(
+                      onPressed: () => controller.startShowDirection(),
+                      icon: Icon(Icons.arrow_right, size: 30),
+                      label: Text("Start"),
+                    ),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
   Widget getShoppingListBottomSheet(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Obx(() {
-      final shoppingListVisible = controller.shoppingListVisble.value;
-      if (!shoppingListVisible) {
-        return Container(
-          height: 0,
-        );
-      }
-      return Obx(() {
-        final shoppingList = controller.sharedData.shoppingList.value;
-
-        return Container(
-          height: controller.startShopping.value ? 90 : 210,
-          padding: const EdgeInsets.only(top: 10),
-          // width: screenSize.width,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [AppBoxShadow.boxShadowLight],
-          ),
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  ListTile(
-                    leading: GestureDetector(
-                      onTap: () => controller.testGoingShoppingRoutes(),
-                      child: Container(
-                        width: 100,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          image: Utils.resolveDecoImg(
-                              shoppingList.building?.imageUrl),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                    ),
-                    title: Text(
-                      shoppingList.name!,
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
-                    ),
-                    subtitle: Text(
-                        Formatter.shorten(shoppingList.building?.name, 30)),
-                    trailing: Container(
-                      margin: const EdgeInsets.only(bottom: 20),
-                      child: IconButton(
-                        onPressed: () => controller.closeShopping(),
-                        icon: controller.isShoppingComplete() &&
-                                controller.startShopping.isTrue
-                            ? Icon(
-                                Icons.check_circle_outline_outlined,
-                                color: Colors.greenAccent,
-                                size: 40,
-                              )
-                            : Icon(Icons.close),
+      final shoppingList = controller.sharedData.shoppingList.value;
+      return Container(
+        height: controller.startShopping.value ? 90 : 210,
+        padding: const EdgeInsets.only(top: 10),
+        // width: screenSize.width,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [AppBoxShadow.boxShadowLight],
+        ),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                ListTile(
+                  leading: GestureDetector(
+                    onTap: () => controller.testGoingShoppingRoutes(),
+                    child: Container(
+                      width: 100,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        image: Utils.resolveDecoImg(
+                            shoppingList.building?.imageUrl),
+                        borderRadius: BorderRadius.circular(5),
                       ),
                     ),
                   ),
-                  // if (controller.startShopping.value)
-                  //   Positioned(
-                  //     top: 4,
-                  //     left: 16,
-                  //     child: Container(
-                  //       width: 100,
-                  //       height: 60,
-                  //       child: SpinKitWave(
-                  //         color: AppColors.primary.withOpacity(0.9),
-                  //         type: SpinKitWaveType.start,
-                  //       ),
-                  //       decoration: BoxDecoration(
-                  //         color: Colors.black38,
-                  //         borderRadius: BorderRadius.circular(5),
-                  //       ),
-                  //     ),
-                  //   ),
-                ],
-              ),
-              if (!controller.startShopping.value)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 10,
+                  title: Text(
+                    shoppingList.name!,
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: screenSize.width * 0.6,
-                        height: 40,
-                        child: Wrap(
-                          runSpacing: 0,
-                          spacing: 0,
-                          runAlignment: WrapAlignment.start,
-                          direction: Axis.horizontal,
-                          children: [
-                            Text(
-                              'Shopping items:',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            ...shoppingList.shoppingItems!
-                                .map(
-                                  (e) => Chip(
-                                    label: Text(
-                                      Formatter.shorten(e.product!.name!, 15),
-                                    ),
-                                  ),
-                                )
-                                .take(2)
-                                .toList(),
-                            if (shoppingList.shoppingItems!.length > 2)
-                              Chip(label: Text("...")),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                  subtitle:
+                      Text(Formatter.shorten(shoppingList.building?.name, 30)),
+                  trailing: Container(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    child: IconButton(
+                      onPressed: () => controller.closeShopping(),
+                      icon: controller.isShoppingComplete() &&
+                              controller.startShopping.isTrue
+                          ? Icon(
+                              Icons.check_circle_outline_outlined,
+                              color: Colors.greenAccent,
+                              size: 40,
+                            )
+                          : Icon(Icons.close),
+                    ),
+                  ),
+                ),
+                // if (controller.startShopping.value)
+                //   Positioned(
+                //     top: 4,
+                //     left: 16,
+                //     child: Container(
+                //       width: 100,
+                //       height: 60,
+                //       child: SpinKitWave(
+                //         color: AppColors.primary.withOpacity(0.9),
+                //         type: SpinKitWaveType.start,
+                //       ),
+                //       decoration: BoxDecoration(
+                //         color: Colors.black38,
+                //         borderRadius: BorderRadius.circular(5),
+                //       ),
+                //     ),
+                //   ),
+              ],
+            ),
+            if (!controller.startShopping.value)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: screenSize.width * 0.6,
+                      height: 40,
+                      child: Wrap(
+                        runSpacing: 0,
+                        spacing: 0,
+                        runAlignment: WrapAlignment.start,
+                        direction: Axis.horizontal,
                         children: [
-                          ElevatedButton(
-                            style: OutlinedButton.styleFrom(
-                              primary: AppColors.secondary,
-                            ),
-                            onPressed: () => controller.beginShopping(),
-                            child: Text(
-                              ' BEGIN  ',
-                              style: TextStyle(color: Colors.white),
+                          Text(
+                            'Shopping items:',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              primary: Colors.black54,
-                            ),
-                            onPressed: () => controller.closeShopping(),
-                            child: Text('CANCEL'),
-                          ),
+                          ...shoppingList.shoppingItems!
+                              .map(
+                                (e) => Chip(
+                                  label: Text(
+                                    Formatter.shorten(e.product!.name!, 15),
+                                  ),
+                                ),
+                              )
+                              .take(2)
+                              .toList(),
+                          if (shoppingList.shoppingItems!.length > 2)
+                            Chip(label: Text("...")),
                         ],
                       ),
-                    ],
-                  ),
-                )
-            ],
-          ),
-        );
-      });
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                          style: OutlinedButton.styleFrom(
+                            primary: AppColors.secondary,
+                          ),
+                          onPressed: () => controller.beginShopping(),
+                          child: Text(
+                            ' BEGIN  ',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            primary: Colors.black54,
+                          ),
+                          onPressed: () => controller.closeShopping(),
+                          child: Text('CANCEL'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+          ],
+        ),
+      );
     });
   }
 
   Widget getFloatingButton(BuildContext context) {
     return Obx(() {
-      final shoppingListVisible = controller.shoppingListVisble.value;
-      if (shoppingListVisible) {
+      if (controller.shoppingListVisble.isTrue ||
+          controller.directionBottomSheet.isTrue) {
         return Container(
           height: 0,
         );

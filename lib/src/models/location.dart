@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'location_type.dart';
 import 'store.dart';
@@ -69,7 +70,7 @@ class Location {
     ImageProvider? image;
     var storeImg = this.store?.imageUrl;
     if (storeImg != null) {
-      image = NetworkImage(storeImg);
+      image = CachedNetworkImageProvider(storeImg);
     } else {
       image = AssetImage(Constants.imageErr);
     }

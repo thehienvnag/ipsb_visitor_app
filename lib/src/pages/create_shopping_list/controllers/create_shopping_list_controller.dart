@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:ipsb_visitor_app/src/models/building.dart';
 import 'package:ipsb_visitor_app/src/services/api/building_service.dart';
 import 'package:get/get.dart';
@@ -13,14 +14,24 @@ class CreateShoppingListController extends GetxController {
   final shoppingListName = "".obs;
   final shoppingListBuilding = 0.obs;
   final shoppingDate = "".obs;
+  final position = Rx<Position?>(null);
 
   @override
   void onInit() {
     super.onInit();
+    initPosition();
+  }
+
+  void initPosition() async {
+    position.value = await Geolocator.getCurrentPosition();
   }
 
   Future<List<Building>> loadBuilding([String? search]) async {
-    return buildingService.searchBuildings(search);
+    return buildingService.searchBuildings(
+      search,
+      position.value?.latitude,
+      position.value?.longitude,
+    );
   }
 
   void setShoppingBuilding(Building? building) {

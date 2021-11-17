@@ -128,7 +128,7 @@ class MapSearchBar extends GetView<MapController> {
                           subtitle: Text(description),
                           trailing: OutlinedButton(
                             onPressed: () =>
-                                controller.startShowDirection(place.id),
+                                controller.openDirectionMenu(place.id),
                             child: Icon(Icons.directions, size: 24),
                           ),
                         ),
@@ -235,12 +235,13 @@ class HomeSearchBar extends GetView<HomeController> {
       title =
           '${Formatter.shorten(data.store?.name)} - ${Formatter.shorten(data.name)}';
       description =
-          '${Formatter.shorten(data.store?.building?.name)} ${Formatter.distanceFormat(data.store?.building?.distanceTo)}';
+          '${Formatter.shorten(data.store?.building?.name)} ${Formatter.distanceFormat(data.store?.building?.distanceTo, buildingId: data.store?.building?.id)}';
       navigate = () => controller.goToCouponDetails(data);
     } else if (data is Building) {
       img = data.imageUrl ?? "";
       title = data.name ?? '';
-      description = Formatter.shorten(data.address);
+      description =
+          '${Formatter.shorten(data.address, 20)} ${Formatter.distanceFormat(data.distanceTo, buildingId: data.id)}';
       navigate = () => Get.toNamed(Routes.buildingDetails, parameters: {
             "id": data.id.toString(),
           });
@@ -248,7 +249,7 @@ class HomeSearchBar extends GetView<HomeController> {
       img = data.imageUrl ?? "";
       title = data.name ?? "";
       description =
-          '${Formatter.shorten(data.building?.name)} ${Formatter.distanceFormat(data.building?.distanceTo)}';
+          '${Formatter.shorten(data.building?.name)} ${Formatter.distanceFormat(data.building?.distanceTo, buildingId: data.building?.id)}';
       navigate = () => Get.toNamed(Routes.storeDetails, parameters: {
             "id": data.id.toString(),
           });
