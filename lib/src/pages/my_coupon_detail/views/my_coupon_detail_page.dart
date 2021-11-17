@@ -37,41 +37,65 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
         );
       }
       if (coupon.id == null && controller.isLoading.isFalse) {
-        return Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: 40, right: 20),
-                height: screenSize.height * 0.258,
-                width: screenSize.width * 0.486,
-                child: Image.asset(ConstImg.error),
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
               ),
-              Container(
-                margin: EdgeInsets.only(top: 30),
-                child: Text(
-                  'Oops! Can not load coupon',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 24,
-                    color: Colors.red,
+              onPressed: () {
+                Get.back(closeOverlays: true);
+              },
+            ),
+            backgroundColor: Colors.white,
+            elevation: 1,
+            title: Column(
+              children: [
+                Text(
+                  'Removed',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ],
+            ),
+          ),
+          body: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 40, right: 20),
+                  height: screenSize.height * 0.258,
+                  width: screenSize.width * 0.486,
+                  child: Image.asset(ConstImg.error),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 30),
+                  child: Text(
+                    'Oops! Can not load coupon',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24,
+                      color: Colors.red,
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 15),
-                width: screenSize.width * 0.778,
-                child: Text(
-                  'Coupon may have been removed',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    color: Colors.black,
+                Container(
+                  margin: EdgeInsets.only(top: 15),
+                  width: screenSize.width * 0.778,
+                  child: Text(
+                    'Coupon may have been removed',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       }

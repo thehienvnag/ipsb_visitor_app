@@ -12,188 +12,210 @@ import 'package:ipsb_visitor_app/src/widgets/rounded_button.dart';
 class ShoppingListDetailsPage extends GetView<ShoppingListDetailController> {
   @override
   Widget build(BuildContext context) {
-    if (controller.shoppingListDetails.value.name == null &&
-        !controller.isLoading.value) {
-      return Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 40, right: 20),
-              height: 200,
-              width: 200,
-              child: Image.asset(ConstImg.error),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 30),
-              child: Text(
-                'Oops! Can not load shopping list',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 24,
-                  color: Colors.red,
-                ),
+    return Obx(() {
+      if (controller.shoppingListDetails.value.name == null &&
+          !controller.isLoading.value) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            leading: IconButton(
+              onPressed: () => Get.back(),
+              icon: Icon(
+                Icons.chevron_left_outlined,
+                color: Colors.black,
+                size: 40,
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 15),
-              width: 320,
-              child: Text(
-                'Shopping list may have been removed',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
+            title: Text(
+              "Removed",
+              style: TextStyle(color: Colors.black),
             ),
-          ],
-        ),
-      );
-    }
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () => Get.back(),
-          icon: Icon(
-            Icons.chevron_left_outlined,
-            color: Colors.black,
-            size: 40,
+            centerTitle: true,
+            titleTextStyle: TextStyle(color: Colors.white),
           ),
-        ),
-        title: Obx(() {
-          return Text(
-            controller.shoppingListDetails.value.name ?? "Default",
-            style: TextStyle(color: Colors.black),
-          );
-        }),
-        centerTitle: true,
-        titleTextStyle: TextStyle(color: Colors.white),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              padding: const EdgeInsets.only(
-                top: 15,
-                left: 20,
-                right: 20,
-                bottom: 15,
-              ),
-              decoration: BoxDecoration(
-                //border: Border.all(color: Colors.black26, width: 1),
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Add New Product',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Container(
-                        height: 30,
-                        width: 30,
-                        child: FloatingActionButton(
-                          onPressed: () => controller.createShoppingItem(),
-                          backgroundColor: AppColors.primary,
-                          child: Icon(
-                            Icons.add,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'You Can Add New Product in here.',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 15,
-                        color: Colors.black87,
-                      ),
+          body: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 40, right: 20),
+                  height: 200,
+                  width: 200,
+                  child: Image.asset(ConstImg.error),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 30),
+                  child: Text(
+                    'Oops! An error occurred',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24,
+                      color: Colors.red,
                     ),
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 15),
+                  width: 320,
+                  child: Text(
+                    'Shopping list may have been removed',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Obx(() {
-                if (!controller.checkDataPresent()) {
-                  return Container(
-                    margin: const EdgeInsets.only(top: 100),
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                final details = controller.shoppingListDetails.value;
-                if (details.shoppingItems!.isEmpty) {
-                  return Container();
-                }
-                return Column(
+          ),
+        );
+      }
+      return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            onPressed: () => Get.back(),
+            icon: Icon(
+              Icons.chevron_left_outlined,
+              color: Colors.black,
+              size: 40,
+            ),
+          ),
+          title: Obx(() {
+            return Text(
+              controller.shoppingListDetails.value.name ?? "Default",
+              style: TextStyle(color: Colors.black),
+            );
+          }),
+          centerTitle: true,
+          titleTextStyle: TextStyle(color: Colors.white),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                padding: const EdgeInsets.only(
+                  top: 15,
+                  left: 20,
+                  right: 20,
+                  bottom: 15,
+                ),
+                decoration: BoxDecoration(
+                  //border: Border.all(color: Colors.black26, width: 1),
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          details.name!,
+                          'Add New Product',
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
-                            letterSpacing: 1,
+                            fontSize: 18,
                             color: Colors.black,
                           ),
                         ),
-                        RoundedButton(
-                          radius: 45,
-                          color: Colors.grey[200],
-                          onPressed: () {
-                            controller.startShopping(context);
-                          },
-                          icon: Icon(
-                            Icons.directions,
-                            color: AppColors.primary,
-                            size: 30,
+                        Container(
+                          height: 30,
+                          width: 30,
+                          child: FloatingActionButton(
+                            onPressed: () => controller.createShoppingItem(),
+                            backgroundColor: AppColors.primary,
+                            child: Icon(
+                              Icons.add,
+                            ),
                           ),
                         ),
                       ],
                     ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'You Can Add New Product in here.',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
                   ],
-                );
-              }),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              child: Obx(() {
-                if (!controller.checkDataPresent()) {
-                  return Container();
-                }
-                final shoppingListDetails =
-                    controller.shoppingListDetails.value;
-                final stores = shoppingListDetails.getListStores();
-                return ShoppingItems(
-                  stores: stores,
-                  removeCallback: controller.deleteShoppingItem,
-                  updateCallback: controller.updateShoppingItem,
-                );
-              }),
-            )
-          ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: Obx(() {
+                  if (!controller.checkDataPresent()) {
+                    return Container(
+                      margin: const EdgeInsets.only(top: 100),
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  final details = controller.shoppingListDetails.value;
+                  if (details.shoppingItems!.isEmpty) {
+                    return Container();
+                  }
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            details.name!,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                              letterSpacing: 1,
+                              color: Colors.black,
+                            ),
+                          ),
+                          RoundedButton(
+                            radius: 45,
+                            color: Colors.grey[200],
+                            onPressed: () {
+                              controller.startShopping(context);
+                            },
+                            icon: Icon(
+                              Icons.directions,
+                              color: AppColors.primary,
+                              size: 30,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                }),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 10),
+                child: Obx(() {
+                  if (!controller.checkDataPresent()) {
+                    return Container();
+                  }
+                  final shoppingListDetails =
+                      controller.shoppingListDetails.value;
+                  final stores = shoppingListDetails.getListStores();
+                  return ShoppingItems(
+                    stores: stores,
+                    removeCallback: controller.deleteShoppingItem,
+                    updateCallback: controller.updateShoppingItem,
+                  );
+                }),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
