@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -32,7 +31,6 @@ import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 import 'package:ipsb_visitor_app/src/utils/edge_helper.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
-import 'package:ipsb_visitor_app/src/widgets/custom_bottom_bar.dart';
 import 'package:ipsb_visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -91,9 +89,10 @@ class MapController extends GetxController {
   /// Current position of visitor, determine by locationId
   final currentPosition = Location(
     id: 468,
-    x: 525.3875007629395,
-    y: 292.0,
+    x: 525.38750076293945,
+    y: 292,
     floorPlanId: 13,
+    locationTypeId: 2,
   ).obs;
 
   /// Destination position where visitor want to come
@@ -116,9 +115,6 @@ class MapController extends GetxController {
 
   /// Determine whether to show Shopping bottom sheet
   final shoppingListVisble = false.obs;
-
-  /// Determine whether shopping is starting
-  final startShopping = false.obs;
 
   /// List store in turn of distance
   final listStoreShopping = <Store>[].obs;
@@ -155,7 +151,7 @@ class MapController extends GetxController {
       if (result) {
         getFloorPlan().then((value) {
           initPositioning();
-          loadEdgesInBuilding();
+          loadEdgesInBuilding().then((value) => initShoppingList());
           loadPlaceOnBuilding();
           isLoading.value = false;
           _mapController.setCurrentMarker(currentPosition.value);
@@ -164,7 +160,6 @@ class MapController extends GetxController {
         });
         onSelectedFloorChange();
         onLocationChanged();
-        initShoppingList();
       }
     });
   }
@@ -172,7 +167,7 @@ class MapController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-    closeShopping();
+    // closeShopping();
     IpsbPositioning.stop();
   }
 
@@ -281,12 +276,15 @@ class MapController extends GetxController {
 
     /// Stream of list shopping routes changed
     listShoppingRoutes.listen((e) => setShoppingRoutes(e));
+    if (sharedData.startShopping.isTrue) {
+      beginShopping();
+    }
   }
 
   bool isShoppingComplete() => listStoreShopping.every((e) => e.complete);
 
   void setShoppingRoutes(List<List<Location>> shoppingRoutes) {
-    if (startShopping.isFalse) {
+    if (sharedData.startShopping.isFalse) {
       // Set locations as Active routes
       _mapController.setActiveRoute([]);
       // Set locations as Inactive routes
@@ -316,7 +314,7 @@ class MapController extends GetxController {
   void beginShopping() {
     if (edges.isEmpty) return;
 
-    startShopping.value = true;
+    sharedData.startShopping.value = true;
 
     // Init list shopping points (store on map)
     listStoreShopping.value = sharedData.shoppingList.value.getListStores();
@@ -331,7 +329,7 @@ class MapController extends GetxController {
   }
 
   void showShoppingDirections() {
-    if (startShopping.isFalse) return;
+    if (sharedData.startShopping.isFalse) return;
     if (listStoreShopping.every((e) => e.complete)) {
       listShoppingRoutes.clear();
       _mapController.setActiveRoute([]);
@@ -382,7 +380,7 @@ class MapController extends GetxController {
 
   void closeShopping() {
     shoppingListVisble.value = false;
-    startShopping.value = false;
+    sharedData.startShopping.value = false;
     sharedData.shoppingList.value = ShoppingList();
     listStoreShopping.clear();
     listShoppingRoutes.clear();
@@ -637,7 +635,7 @@ class MapController extends GetxController {
 
   /// On Shopping List Change
   void onShoppingListChange() {
-    if (startShopping.isFalse) return;
+    if (sharedData.startShopping.isFalse) return;
     // Set shopping stores
     _mapController.setShoppingPoints(Graph.getShoppingPoints(
       listStoreShopping,
@@ -678,7 +676,7 @@ class MapController extends GetxController {
 
   Future<void> loadPlaceOnBuilding() async {
     locationsOnMap.value = await _locationService.getLocationOnBuilding(
-      states.building.value.id!,
+      sharedData.building.value.id!,
     );
     _mapController.loadLocationsOnMap(
       locationsOnMap

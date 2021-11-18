@@ -35,7 +35,6 @@ class BottomItem extends SalomonBottomBarItem {
 }
 
 final SharedStates states = Get.find();
-
 final items = [
   BottomItem(
     text: 'Home',
