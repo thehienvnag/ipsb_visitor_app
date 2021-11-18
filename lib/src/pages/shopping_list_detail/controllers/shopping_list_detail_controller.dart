@@ -57,13 +57,22 @@ class ShoppingListDetailController extends GetxController {
       );
       return;
     }
-    shoppingListDetails.value.shoppingItems?.forEach((e) {
-      e.product?.checked = false;
-      e.product?.store?.complete = false;
-    });
-    _sharedStates.shoppingList.value = shoppingListDetails.value;
 
-    Get.toNamed(Routes.map);
+    if(_sharedStates.building.value.id != shoppingListDetails.value.buildingId){
+      showErrorDialog(
+        context,
+        "Building is not available!",
+        "Please go to correct building!",
+      );
+      return;
+    }else {
+      shoppingListDetails.value.shoppingItems?.forEach((e) {
+        e.product?.checked = false;
+        e.product?.store?.complete = false;
+      });
+      _sharedStates.shoppingList.value = shoppingListDetails.value;
+      Get.toNamed(Routes.map);
+    }
   }
 
   void createShoppingItem() async {

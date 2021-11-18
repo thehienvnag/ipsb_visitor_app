@@ -2,27 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 
-class DirectionDialog extends StatelessWidget {
-  final String storeName;
-
-  const DirectionDialog({Key? key, required this.storeName}) : super(key: key);
+class PlaceNotRegisteredDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Row(
-        children: [
-          Image.asset(ConstImg.checkWatermark, width: 30),
-          Container(
-            margin: const EdgeInsets.only(left: 20),
-            child: Text("Complete route!"),
-          ),
-        ],
+      title: Container(
+        alignment: Alignment.center,
+        child: Text("Direction route!"),
       ),
       content: Row(
         children: [
           Container(
             width: 260,
-            child: Text("You have come to $storeName"),
+            child: Text("Place has not been registered !"),
           ),
         ],
       ),
