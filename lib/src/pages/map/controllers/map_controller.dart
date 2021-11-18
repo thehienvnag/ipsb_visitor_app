@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ import 'package:ipsb_visitor_app/src/models/location.dart';
 import 'package:ipsb_visitor_app/src/models/product.dart';
 import 'package:ipsb_visitor_app/src/models/shopping_list.dart';
 import 'package:ipsb_visitor_app/src/models/store.dart';
+import 'package:ipsb_visitor_app/src/pages/map/views/direction_dialog.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/building_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/coupon_service.dart';
@@ -130,6 +132,12 @@ class MapController extends GetxController {
   /// Loading map
   final isLoading = false.obs;
 
+  /// Distance to destination
+  final distanceToDest = (-1.0).obs;
+
+  /// Show complete route dialog
+  final completeRoute = false.obs;
+
   /// Ble config
   BlePositioningConfig? _bleConfig;
 
@@ -154,7 +162,6 @@ class MapController extends GetxController {
         onSelectedFloorChange();
         onLocationChanged();
         initShoppingList();
-
       }
     });
   }
@@ -380,9 +387,14 @@ class MapController extends GetxController {
   }
 
   void openDirectionMenu(int? destLocationId) {
-    if (destLocationId == null) return;
+    if (destLocationId == null || currentPosition.value.id == null) return;
     directionBottomSheet.value = true;
     destPosition.value = destLocationId;
+    solveForShortestPath(
+      currentPosition.value.id!,
+      destLocationId,
+      showDirection: true,
+    );
   }
 
   void closeDirectionMenu() {
@@ -390,6 +402,32 @@ class MapController extends GetxController {
       stopDirection();
       directionBottomSheet.value = false;
     }
+  }
+
+  Map<String, dynamic>? getDirectionDetails(int? destId, double? distanceTo) {
+    Map<String, dynamic>? data;
+    if (destId != null) {
+      data = {};
+      if (distanceTo != -1) {
+        data.putIfAbsent("distanceTo", () => distanceTo);
+      }
+      final location = locationsOnMap.firstWhere(
+        (element) => element.id == destId,
+        orElse: () => Location(),
+      );
+      var title = 'Floor ${location.floorPlan?.floorCode}';
+      String? imageUrl;
+      if (location.locationTypeId == 1) {
+        imageUrl = location.store?.imageUrl;
+        title = '${location.store?.name} - $title';
+      } else {
+        imageUrl = location.locationType?.imageUrl;
+        title = '${location.locationType?.name} - $title';
+      }
+      data.putIfAbsent("imageUrl", () => imageUrl);
+      data.putIfAbsent("title", () => title);
+    }
+    return data;
   }
 
   void startShowDirection() {
@@ -401,6 +439,8 @@ class MapController extends GetxController {
   void stopDirection() {
     if (directionBottomSheet.isTrue) {
       isShowingDirection.value = false;
+      completeRoute.value = false;
+      distanceToDest.value = -1;
       _mapController.setActiveRoute([]);
     }
   }
@@ -430,7 +470,11 @@ class MapController extends GetxController {
     }
   }
 
-  List<Location> solveForShortestPath(int beginId, int endId) {
+  List<Location> solveForShortestPath(
+    int beginId,
+    int endId, {
+    bool showDirection = false,
+  }) {
     // Init graph for finding shortest path from edges
     Graph graph = Graph.from(edges);
     // Find all shortest paths to endLocationId
@@ -438,7 +482,21 @@ class MapController extends GetxController {
 
     // Get shortest path for current position
     final paths = graph.getShortestPath(beginId);
-    // paths.insert(0, graph.nodes[beginId]);
+
+    if (showDirection) {
+      distanceToDest.value = graph.getTotalDistance(paths, listFloorPlan);
+      if (distanceToDest.value < 6) {
+        if (completeRoute.isFalse) {
+          completeRoute.value = true;
+          // nearer than 6 meter
+          Get.dialog(DirectionDialog()).then((exit) {
+            if (exit) {
+              completeRoute.value = false;
+            }
+          });
+        }
+      }
+    }
     return paths;
   }
 
@@ -452,13 +510,16 @@ class MapController extends GetxController {
     int beginLocationId = currentPosition.value.id!;
     int endLocationId = destPosition.value;
 
-    shortestPath.value = solveForShortestPath(beginLocationId, endLocationId);
+    shortestPath.value = solveForShortestPath(
+      beginLocationId,
+      endLocationId,
+      showDirection: true,
+    );
 
     // Set path on map
     _mapController.setActiveRoute(
       Graph.getRouteOnFloor(shortestPath, selectedFloor.value.id!),
     );
-    // isShowingDirection.value = false;
   }
 
   double? calcDistanceBetween(
@@ -522,13 +583,6 @@ class MapController extends GetxController {
       searchLocationList.value = list;
       Timer(Duration(seconds: 1), () => isSearchingLocationList.value = false);
     }
-  }
-
-  List<Location> locationsWithDistance(List<Location> list) {
-    if (currentPosition.value.id != null) {
-      list.forEach((loc) {});
-    }
-    return list;
   }
 
   /// Get list Coupon from api
@@ -628,11 +682,11 @@ class MapController extends GetxController {
 
   /// TEST FUNCTION (Removed when completed)
   void testLocationChange() {
-    if (shoppingListVisble.isFalse) {
+    if (shoppingListVisble.isFalse && isShowingDirection.isTrue) {
       int index = -1;
       final paths = shortestPath.map((e) => e).toList();
-      Timer.periodic(Duration(milliseconds: 500), (timer) {
-        if (isShowingDirection.isFalse) {
+      Timer.periodic(Duration(milliseconds: 120), (timer) {
+        if (isShowingDirection.isTrue) {
           if (index >= 0 && index < paths.length) {
             setCurrentLocation(paths[index]);
           }
@@ -643,7 +697,7 @@ class MapController extends GetxController {
           index++;
         }
       });
-    } else {}
+    }
   }
 
   final testRoute = <Location>[].obs;

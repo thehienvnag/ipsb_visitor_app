@@ -148,6 +148,10 @@ class MapPage extends GetView<MapController> {
   Widget getRouteDirectionBottomSheet(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Obx(() {
+      final data = controller.getDirectionDetails(
+        controller.destPosition.value,
+        controller.distanceToDest.value,
+      );
       return Container(
         padding: const EdgeInsets.only(top: 10),
         width: screenSize.width,
@@ -181,16 +185,23 @@ class MapPage extends GetView<MapController> {
               ],
             ),
             ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                backgroundImage: CachedNetworkImageProvider(
-                    "https://sites.google.com/site/thietkewebtaihanoi/_/rsrc/1480308136221/kien-thuc-web/tim-kiem-hinh-anh-dep-cho-giao-dien-website/T%C3%ACm%20ki%E1%BA%BFm%20h%C3%ACnh%20%E1%BA%A3nh%20%C4%91%E1%BA%B9p%20cho%20giao%20di%E1%BB%87n%20website-1.jpg"),
+              leading: GestureDetector(
+                onTap: () => controller.testLocationChange(),
+                child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  backgroundImage: Utils.resolveNetworkImg(
+                    data?["imageUrl"],
+                    Constants.imageErr,
+                  ),
+                ),
               ),
               title: Text(
-                "Nike Store - Floor L1",
+                data?["title"] ?? "",
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
-              subtitle: Text("70 (meter)"),
+              subtitle: Text(
+                Formatter.distanceFormat(data?["distanceTo"], unit: "meter"),
+              ),
               trailing: controller.isShowingDirection.value == true
                   ? OutlinedButton.icon(
                       onPressed: () => controller.stopDirection(),
@@ -354,59 +365,59 @@ class MapPage extends GetView<MapController> {
   }
 
   Widget getFloatingButton(BuildContext context) {
-    return Obx(() {
-      if (controller.shoppingListVisble.isTrue ||
-          controller.directionBottomSheet.isTrue) {
-        return Container(
-          height: 0,
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        shape: CircleBorder(),
+        padding: EdgeInsets.all(12),
+        backgroundColor: Colors.white,
+      ),
+      onPressed: () {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierColor: Colors.transparent,
+          builder: (context) {
+            return buildCouponPanel();
+          },
         );
-      }
-      return AnimatedFloatingActionButton(
-        fabButtons: <Widget>[
-          OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              shape: CircleBorder(),
-              padding: EdgeInsets.all(12),
-              backgroundColor: Colors.white,
-            ),
-            onPressed: () {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                barrierColor: Colors.transparent,
-                builder: (context) {
-                  return buildCouponPanel();
-                },
-              );
-            },
-            child: Icon(
-              Icons.local_activity_outlined,
-              color: AppColors.primary,
-              size: 30,
-            ),
-          ),
-          OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              shape: CircleBorder(
-                  // side: BorderSide(color: Colors.purpleAccent, width: 2),
-                  ),
-              padding: EdgeInsets.all(12),
-              backgroundColor: Colors.white,
-            ),
-            onPressed: () => controller.testLocationChange(),
-            child: Icon(
-              Icons.directions,
-              color: AppColors.primary,
-              size: 30,
-            ),
-          )
-        ],
-        key: key,
-        colorStartAnimation: AppColors.primary,
-        colorEndAnimation: Colors.pinkAccent,
-        animatedIconData: AnimatedIcons.menu_close,
-      );
-    });
+      },
+      child: Icon(
+        Icons.local_activity_outlined,
+        color: AppColors.primary,
+        size: 30,
+      ),
+    );
+    // return Obx(() {
+    //   if (controller.shoppingListVisble.isTrue ||
+    //       controller.directionBottomSheet.isTrue) {
+    //     return Container(
+    //       height: 0,
+    //     );
+    //   }
+    //   return AnimatedFloatingActionButton(
+    //     fabButtons: <Widget>[
+    //       // OutlinedButton(
+    //       //   style: OutlinedButton.styleFrom(
+    //       //     shape: CircleBorder(
+    //       //         // side: BorderSide(color: Colors.purpleAccent, width: 2),
+    //       //         ),
+    //       //     padding: EdgeInsets.all(12),
+    //       //     backgroundColor: Colors.white,
+    //       //   ),
+    //       //   onPressed: () => controller.testLocationChange(),
+    //       //   child: Icon(
+    //       //     Icons.directions,
+    //       //     color: AppColors.primary,
+    //       //     size: 30,
+    //       //   ),
+    //       // )
+    //     ],
+    //     key: key,
+    //     colorStartAnimation: AppColors.primary,
+    //     colorEndAnimation: Colors.pinkAccent,
+    //     animatedIconData: AnimatedIcons.menu_close,
+    //   );
+    // });
   }
 
   Widget buildMap() {

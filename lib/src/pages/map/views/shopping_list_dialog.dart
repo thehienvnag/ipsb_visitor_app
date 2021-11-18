@@ -109,21 +109,6 @@ class ShoppingListDialog extends GetView<MapController> {
   }
 }
 
-List<Store> generateItems(int numberOfItems) {
-  return List<Store>.generate(numberOfItems, (int index) {
-    return Store(
-      name: "Highland Coffee",
-      description: "Thương hiệu cafe chất lượng cao",
-      imageUrl: 'https://img.vn/uploads/danhmuc/highland-1564630760-rch7n.jpg',
-      products: [
-        Product(name: "Trà đào cam sả", price: 40000),
-        Product(name: "Trà đào cam sả", price: 40000),
-        Product(name: "Trà đào cam sả", price: 40000),
-      ],
-    );
-  });
-}
-
 class ShoppingItems extends StatefulWidget {
   final List<Product>? items;
   final Function(Product) onSelected;

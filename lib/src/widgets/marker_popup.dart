@@ -10,7 +10,7 @@ import 'package:ipsb_visitor_app/src/widgets/image_view/image_view_controller.da
 
 class MarkerPopup extends GetView<ImageViewController> {
   static const double serviceWidth = 260;
-  static const double serviceHeight = 120;
+  static const double serviceHeight = 160;
   static const double storeWidth = 260;
   static const double storeHeight = 240;
 
@@ -29,6 +29,7 @@ class MarkerPopup extends GetView<ImageViewController> {
       child: Card(
         elevation: 7,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -60,10 +61,10 @@ class MarkerPopup extends GetView<ImageViewController> {
                 determineSubtitle(),
               ),
             ),
-            if (isStore())
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (isStore())
                   Container(
                     margin: const EdgeInsets.only(left: 10),
                     child: ElevatedButton.icon(
@@ -78,20 +79,21 @@ class MarkerPopup extends GetView<ImageViewController> {
                       label: Text('Details'),
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: OutlinedButton(
-                      onPressed: () =>
-                          homeController.openDirectionMenu(state.location?.id),
-                      child: Icon(
-                        Icons.directions,
-                        size: 32,
-                        color: const Color(0xff344CDD),
-                      ),
+                if (!isStore()) Container(),
+                Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  child: OutlinedButton(
+                    onPressed: () =>
+                        homeController.openDirectionMenu(state.location?.id),
+                    child: Icon(
+                      Icons.directions,
+                      size: 32,
+                      color: const Color(0xff344CDD),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -123,7 +125,7 @@ class MarkerPopup extends GetView<ImageViewController> {
     if (isStore()) {
       value = state.location?.store?.description;
     } else {
-      shorten = 60;
+      shorten = 70;
       value = state.location?.locationType?.description;
     }
     return Formatter.shorten(value, shorten);
