@@ -350,29 +350,12 @@ class MapController extends GetxController {
       listFloorPlan,
       solveForShortestPath,
     );
-    if (listStoreShopping.isNotEmpty) {
-      // Sort the store by the distance from current position
-      listShoppingRoutes.value = graph.getShoppingRoutes(
-        beginId,
-        listStoreShopping.where((e) => !e.complete).toList(),
-        solveForShortestPath,
-      );
-      final store = listStoreShopping[0];
-      String? floorName;
-      listFloorPlan.forEach((e) {
-        if (e.id == store.floorPlanId) {
-          floorName = "- Floor ${e.floorCode}";
-        }
-      });
-      currentStoreName.value = '${store.name} ${floorName ?? ""}';
-      if (listShoppingRoutes.isNotEmpty) {
-        showNearbyDialog(
-          graph,
-          listShoppingRoutes[0],
-          distance: store.distance,
-        );
-      }
-    }
+    // Sort the store by the distance from current position
+    listShoppingRoutes.value = graph.getShoppingRoutes(
+      beginId,
+      listStoreShopping.where((e) => !e.complete).toList(),
+      solveForShortestPath,
+    );
   }
 
   /// Check complete
@@ -494,7 +477,7 @@ class MapController extends GetxController {
   }
 
   List<Location> solveForShortestPath(int beginId, int endId,
-      {bool showDirection = false}) {
+      {bool showDirection = true}) {
     // Init graph for finding shortest path from edges
     Graph graph = Graph.from(edges);
     // Find all shortest paths to endLocationId
@@ -504,21 +487,24 @@ class MapController extends GetxController {
     final paths = graph.getShortestPath(beginId);
 
     if (showDirection) {
-      showNearbyDialog(graph, paths);
+      showNearbyDialog(graph, paths, endId);
     }
     return paths;
   }
 
-  void showNearbyDialog(Graph graph, List<Location> paths, {double? distance}) {
-    if (distance == null) {
-      distanceToDest.value = graph.getTotalDistance(paths, listFloorPlan);
-    } else {
-      distanceToDest.value = distance;
-    }
+  void showNearbyDialog(
+    Graph graph,
+    List<Location> paths,
+    int endId,
+  ) {
+    distanceToDest.value = graph.getTotalDistance(paths, listFloorPlan);
 
     if (distanceToDest.value < 4) {
       if (completeRoute.isFalse) {
         completeRoute.value = true;
+        currentStoreName.value =
+            getDirectionDetails(endId, null)?["title"] ?? "";
+
         // nearer than 6 meter
         Get.dialog(DirectionDialog(
           storeName: currentStoreName.value,
