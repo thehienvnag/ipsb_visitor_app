@@ -98,7 +98,8 @@ class Graph {
   double getTotalDistance(List<Location> paths, List<FloorPlan> floors) {
     final meterToPixel = 3779.52755906; // covert meter to pixel units
     int i = 0;
-    double distance = 0;
+    if (paths.isEmpty) return -1;
+    double distance = -1;
     paths.forEach((e) {
       if (i < paths.length - 1) {
         int startId = e.id!;

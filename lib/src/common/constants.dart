@@ -101,6 +101,7 @@ class MapKey {
 }
 
 class ConstImg {
+  static const String checkWatermark = "assets/images/check_watermark.png";
   static const String stairCase = "assets/images/staircase.png";
   static const String elevator = "assets/images/elevator.png";
   static const String restRoom = "assets/images/toilet.png";
