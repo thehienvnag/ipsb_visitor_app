@@ -58,19 +58,21 @@ class ShoppingListDetailController extends GetxController {
       return;
     }
 
-    if(_sharedStates.building.value.id != shoppingListDetails.value.buildingId){
+    if (_sharedStates.building.value.id !=
+        shoppingListDetails.value.buildingId) {
       showErrorDialog(
         context,
         "Building is not available!",
         "Please go to correct building!",
       );
       return;
-    }else {
+    } else {
       shoppingListDetails.value.shoppingItems?.forEach((e) {
         e.product?.checked = false;
         e.product?.store?.complete = false;
       });
       _sharedStates.shoppingList.value = shoppingListDetails.value;
+      _sharedStates.bottomBarSelectedIndex.value = 1;
       Get.toNamed(Routes.map);
     }
   }

@@ -27,6 +27,9 @@ class SharedStates extends GetxService {
   /// List shopping
   final shoppingList = ShoppingList().obs;
 
+  /// Determine whether shopping is starting
+  final startShopping = false.obs;
+
   /// Current shopping item
   final shoppingItemIndex = -1.obs;
 

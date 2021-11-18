@@ -20,9 +20,6 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class MapPage extends GetView<MapController> {
   final double tabBarHeight = 80;
 
-  /// Shared data
-  SharedStates sharedData = Get.find();
-
   @override
   Widget build(BuildContext context) {
     // final screenSize = MediaQuery.of(context).size;
@@ -31,14 +28,14 @@ class MapPage extends GetView<MapController> {
       body: SafeArea(
         child: Stack(
           children: [
-            sharedData.building.value.id != null
+            controller.sharedData.building.value.id != null
                 ? buildMap()
                 : buildErrorMap(
                     title: 'Oops! Can not load map',
                     description:
                         'You may not be in a building existing in our system.',
                   ),
-            sharedData.building.value.id != null
+            controller.sharedData.building.value.id != null
                 ? Container(
                     height: 95,
                     decoration: BoxDecoration(
@@ -62,7 +59,7 @@ class MapPage extends GetView<MapController> {
                 ),
               );
             }),
-            sharedData.building.value.id != null
+            controller.sharedData.building.value.id != null
                 ? Obx(
                     () => MapSearchBar(
                       items: controller.listFloorPlan,
@@ -73,7 +70,7 @@ class MapPage extends GetView<MapController> {
           ],
         ),
       ),
-      floatingActionButton: sharedData.building.value.id != null
+      floatingActionButton: controller.sharedData.building.value.id != null
           ? getFloatingButton(context)
           : SizedBox(),
       bottomNavigationBar: getBottomNavBar(),
@@ -122,15 +119,16 @@ class MapPage extends GetView<MapController> {
   }
 
   Widget getBottomNavBar() {
-    return Obx(() {
-      if (controller.shoppingListVisble.isTrue ||
-          controller.directionBottomSheet.isTrue) {
-        return Container(
-          height: 0,
-        );
-      }
-      return CustomBottombar();
-    });
+    return CustomBottombar();
+    // return Obx(() {
+    //   if (controller.shoppingListVisble.isTrue ||
+    //       controller.directionBottomSheet.isTrue) {
+    //     return Container(
+    //       height: 0,
+    //     );
+    //   }
+    //   return CustomBottombar();
+    // });
   }
 
   Widget determineBottomSheet(BuildContext context) {
@@ -229,7 +227,7 @@ class MapPage extends GetView<MapController> {
     return Obx(() {
       final shoppingList = controller.sharedData.shoppingList.value;
       return Container(
-        height: controller.startShopping.value ? 90 : 210,
+        height: controller.sharedData.startShopping.isTrue ? 90 : 210,
         padding: const EdgeInsets.only(top: 10),
         // width: screenSize.width,
         decoration: BoxDecoration(
@@ -264,7 +262,7 @@ class MapPage extends GetView<MapController> {
                     child: IconButton(
                       onPressed: () => controller.closeShopping(),
                       icon: controller.isShoppingComplete() &&
-                              controller.startShopping.isTrue
+                              controller.sharedData.startShopping.isTrue
                           ? Icon(
                               Icons.check_circle_outline_outlined,
                               color: Colors.greenAccent,
@@ -293,7 +291,7 @@ class MapPage extends GetView<MapController> {
                 //   ),
               ],
             ),
-            if (!controller.startShopping.value)
+            if (!controller.sharedData.startShopping.isTrue)
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
