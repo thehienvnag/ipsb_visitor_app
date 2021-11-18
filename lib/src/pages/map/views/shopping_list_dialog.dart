@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
@@ -69,7 +70,7 @@ class ShoppingListDialog extends GetView<MapController> {
       leading: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(item.imageUrl!),
+              image: CachedNetworkImageProvider(item.imageUrl!),
             ),
             color: Colors.white,
             borderRadius: BorderRadius.circular(10)),

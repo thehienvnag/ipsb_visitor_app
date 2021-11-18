@@ -138,6 +138,9 @@ class MapController extends GetxController {
   /// Show complete route dialog
   final completeRoute = false.obs;
 
+  /// Current direction storeName;
+  final currentStoreName = "".obs;
+
   /// Ble config
   BlePositioningConfig? _bleConfig;
 
@@ -347,13 +350,29 @@ class MapController extends GetxController {
       listFloorPlan,
       solveForShortestPath,
     );
-
-    // Sort the store by the distance from current position
-    listShoppingRoutes.value = graph.getShoppingRoutes(
-      beginId,
-      listStoreShopping.where((e) => !e.complete).toList(),
-      solveForShortestPath,
-    );
+    if (listStoreShopping.isNotEmpty) {
+      // Sort the store by the distance from current position
+      listShoppingRoutes.value = graph.getShoppingRoutes(
+        beginId,
+        listStoreShopping.where((e) => !e.complete).toList(),
+        solveForShortestPath,
+      );
+      final store = listStoreShopping[0];
+      String? floorName;
+      listFloorPlan.forEach((e) {
+        if (e.id == store.floorPlanId) {
+          floorName = "- Floor ${e.floorCode}";
+        }
+      });
+      currentStoreName.value = '${store.name} ${floorName ?? ""}';
+      if (listShoppingRoutes.isNotEmpty) {
+        showNearbyDialog(
+          graph,
+          listShoppingRoutes[0],
+          distance: store.distance,
+        );
+      }
+    }
   }
 
   /// Check complete
@@ -388,6 +407,7 @@ class MapController extends GetxController {
 
   void openDirectionMenu(int? destLocationId) {
     if (destLocationId == null || currentPosition.value.id == null) return;
+    stopDirection();
     directionBottomSheet.value = true;
     destPosition.value = destLocationId;
     solveForShortestPath(
@@ -417,6 +437,7 @@ class MapController extends GetxController {
       );
       var title = 'Floor ${location.floorPlan?.floorCode}';
       String? imageUrl;
+
       if (location.locationTypeId == 1) {
         imageUrl = location.store?.imageUrl;
         title = '${location.store?.name} - $title';
@@ -424,6 +445,7 @@ class MapController extends GetxController {
         imageUrl = location.locationType?.imageUrl;
         title = '${location.locationType?.name} - $title';
       }
+      currentStoreName.value = title;
       data.putIfAbsent("imageUrl", () => imageUrl);
       data.putIfAbsent("title", () => title);
     }
@@ -441,6 +463,7 @@ class MapController extends GetxController {
       isShowingDirection.value = false;
       completeRoute.value = false;
       distanceToDest.value = -1;
+      currentStoreName.value = "";
       _mapController.setActiveRoute([]);
     }
   }
@@ -470,11 +493,8 @@ class MapController extends GetxController {
     }
   }
 
-  List<Location> solveForShortestPath(
-    int beginId,
-    int endId, {
-    bool showDirection = false,
-  }) {
+  List<Location> solveForShortestPath(int beginId, int endId,
+      {bool showDirection = false}) {
     // Init graph for finding shortest path from edges
     Graph graph = Graph.from(edges);
     // Find all shortest paths to endLocationId
@@ -484,20 +504,31 @@ class MapController extends GetxController {
     final paths = graph.getShortestPath(beginId);
 
     if (showDirection) {
-      distanceToDest.value = graph.getTotalDistance(paths, listFloorPlan);
-      if (distanceToDest.value < 6) {
-        if (completeRoute.isFalse) {
-          completeRoute.value = true;
-          // nearer than 6 meter
-          Get.dialog(DirectionDialog()).then((exit) {
-            if (exit) {
-              completeRoute.value = false;
-            }
-          });
-        }
-      }
+      showNearbyDialog(graph, paths);
     }
     return paths;
+  }
+
+  void showNearbyDialog(Graph graph, List<Location> paths, {double? distance}) {
+    if (distance == null) {
+      distanceToDest.value = graph.getTotalDistance(paths, listFloorPlan);
+    } else {
+      distanceToDest.value = distance;
+    }
+
+    if (distanceToDest.value < 4) {
+      if (completeRoute.isFalse) {
+        completeRoute.value = true;
+        // nearer than 6 meter
+        Get.dialog(DirectionDialog(
+          storeName: currentStoreName.value,
+        )).then((exit) {
+          if (exit) {
+            completeRoute.value = false;
+          }
+        });
+      }
+    }
   }
 
   void showDirection() {
@@ -708,7 +739,7 @@ class MapController extends GetxController {
     if (currentRouteIndex < listShoppingRoutes.length) {
       int index = -1;
       final paths = testRoute.map((e) => e).toList();
-      Timer.periodic(Duration(milliseconds: 500), (timer) {
+      Timer.periodic(Duration(milliseconds: 120), (timer) {
         if (index >= paths.length - 1) {
           timer.cancel();
         } else {

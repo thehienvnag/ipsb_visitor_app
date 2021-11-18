@@ -102,12 +102,15 @@ class Graph {
     double distance = -1;
     paths.forEach((e) {
       if (i < paths.length - 1) {
+        final dest = paths[++i];
         int startId = e.id!;
-        int endId = paths[++i].id!;
+        int endId = dest.id!;
         final adjacents = nodes[startId]?.adjacents;
         adjacents?.forEach((location, edgeDistance) {
           if (endId == location.id &&
-              e.floorPlanId == location.value?.floorPlanId) {
+                  e.floorPlanId == location.value?.floorPlanId
+              // && (e.locationTypeId == dest.locationTypeId)
+              ) {
             double mapScale = 0;
             floors.forEach((floor) {
               if (floor.id == e.floorPlanId) {

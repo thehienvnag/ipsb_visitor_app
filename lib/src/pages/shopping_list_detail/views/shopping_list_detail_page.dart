@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
@@ -289,7 +290,7 @@ class _ShoppingItemsState extends State<ShoppingItems> {
                 leading: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(item.imageUrl!),
+                      image: CachedNetworkImageProvider(item.imageUrl!),
                     ),
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
@@ -424,7 +425,7 @@ class _ShoppingItemsState extends State<ShoppingItems> {
           child: Column(
             children: [
               ListTile(
-                leading: Image.network(product.imageUrl!),
+                leading: CachedNetworkImage(imageUrl: product.imageUrl!),
                 title: Text(product.name!),
                 onTap: () {},
               ),
