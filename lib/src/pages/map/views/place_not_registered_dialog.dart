@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ipsb_visitor_app/src/common/constants.dart';
 
 class PlaceNotRegisteredDialog extends StatelessWidget {
   @override
