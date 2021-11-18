@@ -295,7 +295,7 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                       context,
                                       coupon,
                                       couponInUse,
-                                      coupon.limit!,
+                                      coupon.limit ?? 0,
                                     ),
                                   ),
                                 ),
