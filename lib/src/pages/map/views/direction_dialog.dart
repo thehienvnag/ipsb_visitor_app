@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 
 class DirectionDialog extends StatelessWidget {
+  final String storeName;
+
+  const DirectionDialog({Key? key, required this.storeName}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -18,7 +21,8 @@ class DirectionDialog extends StatelessWidget {
       content: Row(
         children: [
           Container(
-            child: Text("You have come to your destination"),
+            width: 260,
+            child: Text("You have come to $storeName"),
           ),
         ],
       ),

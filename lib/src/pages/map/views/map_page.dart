@@ -187,11 +187,12 @@ class MapPage extends GetView<MapController> {
             ListTile(
               leading: GestureDetector(
                 onTap: () => controller.testLocationChange(),
-                child: CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: Utils.resolveNetworkImg(
-                    data?["imageUrl"],
-                    Constants.imageErr,
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    image: Utils.resolveDecoImg(data?["imageUrl"]),
                   ),
                 ),
               ),
