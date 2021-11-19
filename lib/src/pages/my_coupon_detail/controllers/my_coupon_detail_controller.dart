@@ -9,7 +9,6 @@ import 'package:ipsb_visitor_app/src/models/coupon_in_use.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/coupon_in_use_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
-import 'package:ipsb_visitor_app/src/utils/firebase_helper.dart';
 
 class MyCouponDetailController extends GetxController {
   /// save coupon for visitor
@@ -46,12 +45,6 @@ class MyCouponDetailController extends GetxController {
       AuthServices.userLoggedIn.value.id!,
       int.parse(couponId),
     );
-    // if (result == null) return;
-    // if (result.status == couponInUse.value.status) {
-    //   return;
-    // } else {
-    //   isLoading.value = true;
-    // }
     if (result != null) {
       couponInUse.value = result;
     }

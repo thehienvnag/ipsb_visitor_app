@@ -76,6 +76,8 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
   }) {
     final params = {
       'buildingId': buildingId.toString(),
+      'lowerExpireDate': DateTime.now().toString(),
+      'status': 'Active',
     };
     if (random) {
       params.putIfAbsent("random", () => "true");

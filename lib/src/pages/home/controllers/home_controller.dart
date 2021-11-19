@@ -147,10 +147,7 @@ class HomeController extends FullLifeCycleController {
   }
 
   Future<void> getStores() async {
-    final stores = await storeService.getStoresByBuilding(
-      buildingId.value,
-      random: true,
-    );
+    final stores = await storeService.getStoresByBuilding(buildingId.value);
     listStore.value = stores.content ?? [];
   }
 
@@ -209,5 +206,12 @@ class HomeController extends FullLifeCycleController {
   Future<void> getProductCategory() async {
     final paging = await _categoryService.getProductCategory();
     listCategories.value = paging.content!;
+  }
+
+  void goToBuildingStoreDetails() {
+    if (buildingId.value != null) {
+      Get.toNamed(Routes.buildingStore,
+          parameters: {"buildingID": buildingId.value.toString()});
+    }
   }
 }

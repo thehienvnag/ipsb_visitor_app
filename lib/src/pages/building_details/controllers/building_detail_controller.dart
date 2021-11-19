@@ -7,8 +7,6 @@ import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/building_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/store_service.dart';
 import 'package:url_launcher/url_launcher.dart';
-// import 'package:location/location.dart';
-// import 'package:geolocator/geolocator.dart';
 
 class BuildingDetailController extends GetxController {
   IStoreService _storeService = Get.find();
@@ -22,8 +20,7 @@ class BuildingDetailController extends GetxController {
 
   /// Get list Store from api by buildingID
   Future<void> getStore(String buildingId) async {
-    final paging =
-        await _storeService.getStoresByBuilding(int.parse(buildingId));
+    final paging = await _storeService.getStoresByBuilding(int.parse(buildingId));
     listStore.value = paging.content!;
   }
 
@@ -72,7 +69,6 @@ class BuildingDetailController extends GetxController {
       getStore(id);
       getBuildingDetails(id);
     }
-    // getUserLocation();
   }
 }
 

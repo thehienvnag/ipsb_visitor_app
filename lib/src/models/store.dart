@@ -42,6 +42,9 @@ class Store {
   @HiveField(9)
   final Building? building;
 
+  @HiveField(10)
+  final String? phone;
+
   List<Product>? products;
 
   int? pos;
@@ -59,6 +62,7 @@ class Store {
     this.products,
     this.floorPlan,
     this.id,
+    this.phone,
     this.name,
     this.description,
     this.imageUrl,
