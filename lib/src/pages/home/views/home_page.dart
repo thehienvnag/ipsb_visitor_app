@@ -30,7 +30,7 @@ class HomePage extends GetView<HomeController> {
                         return Container(
                           height: controller.showSlider.value
                               ? screenSize.height * 0.439
-                              : screenSize.height * 0.181,
+                              : screenSize.height * 0.161,
                           width: screenSize.width,
                           color: Colors.white,
                         );
@@ -44,7 +44,9 @@ class HomePage extends GetView<HomeController> {
                             bottom: BorderSide(color: Colors.grey.shade200),
                           ),
                         ),
-                        height: screenSize.height * 0.194,
+                        height: controller.showSlider.isTrue
+                            ? screenSize.height * 0.194
+                            : screenSize.height * 0.154,
                         child: Column(
                           children: [
                             Row(
@@ -52,6 +54,8 @@ class HomePage extends GetView<HomeController> {
                               children: [
                                 Container(
                                   padding: EdgeInsets.only(left: 10),
+                                  margin:
+                                      const EdgeInsets.only(bottom: 10, top: 7),
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'CATEGORIES',
@@ -62,18 +66,18 @@ class HomePage extends GetView<HomeController> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  child: TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      'View more >>',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                // Container(
+                                //   child: TextButton(
+                                //     onPressed: () {},
+                                //     child: Text(
+                                //       'View more >>',
+                                //       style: TextStyle(
+                                //         fontSize: 14,
+                                //         color: Colors.grey,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                             Obx(
@@ -145,6 +149,8 @@ class HomePage extends GetView<HomeController> {
                               children: [
                                 Container(
                                   padding: EdgeInsets.only(left: 10),
+                                  margin:
+                                      const EdgeInsets.only(bottom: 10, top: 7),
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'STORES',
@@ -155,20 +161,20 @@ class HomePage extends GetView<HomeController> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  child: TextButton(
-                                    onPressed: () {
-                                      controller.goToBuildingStoreDetails();
-                                    },
-                                    child: Text(
-                                      'View more >>',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                // Container(
+                                //   child: TextButton(
+                                //     onPressed: () {
+                                //       controller.goToBuildingStoreDetails();
+                                //     },
+                                //     child: Text(
+                                //       'View more >>',
+                                //       style: TextStyle(
+                                //         fontSize: 14,
+                                //         color: Colors.grey,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                             Container(
@@ -176,8 +182,7 @@ class HomePage extends GetView<HomeController> {
                               margin: const EdgeInsets.symmetric(
                                   vertical: 10, horizontal: 15),
                               child: Obx(() {
-                                var listStore = controller.listStore;
-                                if (listStore.isEmpty)
+                                if (controller.loading.isTrue)
                                   return Center(
                                     child: SizedBox(
                                       width: 35,
@@ -185,6 +190,12 @@ class HomePage extends GetView<HomeController> {
                                       child: CircularProgressIndicator(),
                                     ),
                                   );
+
+                                var listStore = controller.listStore;
+                                if (listStore.isEmpty) {
+                                  return buildEmpty();
+                                }
+
                                 int storeCount =
                                     listStore.length > 9 ? 9 : listStore.length;
                                 return Wrap(
@@ -260,6 +271,8 @@ class HomePage extends GetView<HomeController> {
                               children: [
                                 Container(
                                   padding: EdgeInsets.only(left: 10),
+                                  margin:
+                                      const EdgeInsets.only(bottom: 10, top: 7),
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'COUPONS',
@@ -270,22 +283,37 @@ class HomePage extends GetView<HomeController> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  child: TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      'View more >>',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                // Container(
+                                //   child: TextButton(
+                                //     onPressed: () {},
+                                //     child: Text(
+                                //       'View more >>',
+                                //       style: TextStyle(
+                                //         fontSize: 14,
+                                //         color: Colors.grey,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                             Obx(() {
+                              if (controller.loading.isTrue) {
+                                return Container(
+                                  margin: const EdgeInsets.only(bottom: 15),
+                                  child: Center(
+                                    child: SizedBox(
+                                      width: 35,
+                                      height: 35,
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  ),
+                                );
+                              }
                               var listCoupon = controller.listCoupon;
+                              if (listCoupon.isEmpty) {
+                                return buildEmpty();
+                              }
                               return Container(
                                 height: screenSize.height * 0.232,
                                 margin: const EdgeInsets.only(left: 5),
@@ -334,6 +362,8 @@ class HomePage extends GetView<HomeController> {
                             children: [
                               Container(
                                 padding: EdgeInsets.only(left: 10),
+                                margin:
+                                    const EdgeInsets.only(bottom: 10, top: 7),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'NEARBY BUILDINGS',
@@ -344,18 +374,18 @@ class HomePage extends GetView<HomeController> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                child: TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'View more >>',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // Container(
+                              //   child: TextButton(
+                              //     onPressed: () {},
+                              //     child: Text(
+                              //       'View more >>',
+                              //       style: TextStyle(
+                              //         fontSize: 14,
+                              //         color: Colors.grey,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                           Obx(() {
@@ -495,14 +525,15 @@ class HomePage extends GetView<HomeController> {
                       if (!controller.showSlider.value) {
                         return Container();
                       }
-                      final images = controller.listCoupon
-                          .map((element) => element.imageUrl!)
-                          .toList();
-                      if (images.isEmpty)
+                      if (controller.loading.isTrue) {
                         return Container(
                           child: Center(child: CircularProgressIndicator()),
                           color: Colors.transparent,
                         );
+                      }
+                      final images = controller.listCoupon
+                          .map((element) => element.imageUrl!)
+                          .toList();
                       return CarouselSlider(
                         options: CarouselOptions(
                           height: screenSize.height * 0.31,
@@ -567,5 +598,41 @@ class HomePage extends GetView<HomeController> {
         bottomNavigationBar: CustomBottombar(),
       );
     });
+  }
+
+  Widget buildEmpty() {
+    return Container(
+      width: 118,
+      height: 90,
+      padding: const EdgeInsets.only(top: 5),
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100.withOpacity(0.3),
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(7),
+      ),
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 50,
+              width: 50,
+              child: Image.asset(ConstImg.empty),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 5),
+              child: Text(
+                "Empty",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

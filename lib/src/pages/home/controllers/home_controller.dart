@@ -57,6 +57,8 @@ class HomeController extends FullLifeCycleController {
   final Rx<double?> lat = Rx<double?>(null);
   final Rx<double?> lng = Rx<double?>(null);
 
+  final loading = false.obs;
+
   @override
   void onInit() async {
     super.onInit();
@@ -77,7 +79,7 @@ class HomeController extends FullLifeCycleController {
       final fromTop = scroll.position.pixels;
       if (fromTop > 10) {
         showSlider.value = false;
-      } else if (fromTop == 0) {
+      } else if (fromTop == 0 && listCoupon.isNotEmpty) {
         showSlider.value = true;
       }
     });
@@ -89,9 +91,13 @@ class HomeController extends FullLifeCycleController {
     await initBuilding();
     if (states.building.value.id == null) return;
     buildingId.value = states.building.value.id!;
-    getStores();
-    getCoupons();
-    getProductCategory();
+    loading.value = true;
+    await Future.wait([
+      getStores(),
+      getCoupons(),
+      getProductCategory(),
+    ]);
+    loading.value = false;
   }
 
   Future<void> initBuilding() async {
@@ -156,6 +162,9 @@ class HomeController extends FullLifeCycleController {
       buildingId.value,
       random: true,
     );
+    if (listCoupon.isEmpty) {
+      showSlider.value = false;
+    }
   }
 
   Future<void> getBuildings() async {
