@@ -64,6 +64,7 @@ class StoreService extends BaseService<Store> implements IStoreService {
     final params = {
       "buildingId": buildingId.toString(),
       "status": 'Active',
+      "isAll": "true",
     };
 
     if (random) {

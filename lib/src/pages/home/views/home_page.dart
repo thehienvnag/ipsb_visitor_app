@@ -157,7 +157,9 @@ class HomePage extends GetView<HomeController> {
                                 ),
                                 Container(
                                   child: TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      controller.goToBuildingStoreDetails();
+                                    },
                                     child: Text(
                                       'View more >>',
                                       style: TextStyle(

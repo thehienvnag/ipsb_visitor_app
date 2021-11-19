@@ -11,8 +11,6 @@ import 'package:ipsb_visitor_app/src/widgets/rounded_button.dart';
 class BuildingDetailPage extends GetView<BuildingDetailController> {
   final SharedStates sharedData = Get.find();
 
-  // MapUtils.openMap(currentAddress, booking.endAddress);
-
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -77,25 +75,6 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                               'Shopping mall',
                               style: TextStyle(fontSize: 16),
                             ),
-                            // Container(
-                            //   margin: const EdgeInsets.only(top: 8),
-                            //   child: Row(
-                            //     mainAxisAlignment:
-                            //         MainAxisAlignment.spaceBetween,
-                            //     children: [
-                            //       Text(
-                            //         'Mở cửa 9:30',
-                            //         style: TextStyle(
-                            //             fontSize: 16, color: Colors.blueAccent),
-                            //       ),
-                            //       Text(
-                            //         '  Đóng cửa 22:30',
-                            //         style: TextStyle(
-                            //             fontSize: 16, color: Colors.blueAccent),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
                             Container(
                               width: screenSize.width,
                               height: 120,
@@ -144,8 +123,7 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                   ),
                                   GestureDetector(
                                       onTap: () {
-                                        controller.goToBuildingStoreDetails(
-                                            buildingSelected.id);
+                                        controller.goToBuildingStoreDetails(buildingSelected.id);
                                       },
                                       child: Text(
                                         'View more >>',
@@ -205,8 +183,7 @@ class BuildingDetailPage extends GetView<BuildingDetailController> {
                                                     ),
                                                   ),
                                                   Container(
-                                                    margin: EdgeInsets.only(
-                                                        top: 10),
+                                                    margin: EdgeInsets.only(top: 10),
                                                     width: 100,
                                                     height: 35,
                                                     child: Text(

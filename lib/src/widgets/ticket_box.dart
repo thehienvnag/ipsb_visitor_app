@@ -142,7 +142,7 @@ class TicketBox extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      Formatter.shorten(description, 20),
+                      Formatter.shorten(description, 17),
                       style: TextStyle(
                         fontSize: 14,
                       ),

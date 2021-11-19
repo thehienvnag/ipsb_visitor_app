@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/pages/show_coupon_qr/controllers/show_coupon_qr_controller.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ShowCouponQRPage extends GetView<ShowCouponQRController> {
   final SharedStates sharedData = Get.find();
@@ -53,15 +54,12 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('ADIDAS',
+                      Text(coupon.store!.name ?? "Adidas",
                         style: TextStyle(
                             color: Colors.black54,
                             fontSize: 20,
                             fontWeight: FontWeight.bold),
                       ),
-                      // Text('(${coupon.description})',
-                      //   style: TextStyle(color: Colors.black54, fontSize: 15),
-                      // ),
                       SizedBox(height: 10),
                       QrImage(
                         data: controller.genCode(coupon, couponInUse.id),
@@ -78,6 +76,7 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 10),
                     ],
                   ),
                 ),
@@ -143,7 +142,9 @@ class ShowCouponQRPage extends GetView<ShowCouponQRController> {
                               width: 6,
                             ),
                             OutlinedButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                launch("tel://${coupon.store!.phone ?? 0931182303}");
+                                },
                               label: Row(
                                 children: [
                                   Text('Call store'),
