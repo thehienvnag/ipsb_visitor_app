@@ -88,9 +88,9 @@ class MapController extends GetxController {
 
   /// Current position of visitor, determine by locationId
   final currentPosition = Location(
-    id: 468,
-    x: 525.38750076293945,
-    y: 292,
+    id: 555,
+    x: 119.38749885559082,
+    y: 369.5,
     floorPlanId: 13,
     locationTypeId: 2,
   ).obs;
