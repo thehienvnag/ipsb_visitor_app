@@ -145,7 +145,7 @@ class FeedbackCouponPage extends GetView<FeedbackCouponController> {
                                             'Add picture: ',
                                             style: TextStyle(
                                                 fontFamily: 'Montserrat',
-                                                fontSize: 17,
+                                                fontSize: 16,
                                                 color: AppColors.primary,
                                                 fontWeight: FontWeight.bold),
                                           ),
@@ -187,7 +187,7 @@ class FeedbackCouponPage extends GetView<FeedbackCouponController> {
                                                   children: [
                                                     Container(
                                                       width: screenSize.width*0.3,
-                                                      height: 120,
+                                                      height: 100,
                                                       padding: const EdgeInsets.all(10),
                                                       child: Image.file(
                                                         File(filePath),
@@ -195,8 +195,8 @@ class FeedbackCouponPage extends GetView<FeedbackCouponController> {
                                                       ),
                                                     ),
                                                     Container(
-                                                      width: 140,
-                                                      height: 120,
+                                                      width: context.width*0.34,
+                                                      height: context.height*0.1548,
                                                       child: Align(
                                                         alignment: Alignment.topRight,
                                                         child: Padding(

@@ -88,10 +88,10 @@ class MapController extends GetxController {
 
   /// Current position of visitor, determine by locationId
   final currentPosition = Location(
-    id: 555,
-    x: 119.38749885559082,
-    y: 369.5,
-    floorPlanId: 13,
+    id: 530,
+    x: 525.364990234375,
+    y: 294.16999053955078,
+    floorPlanId: 20,
     locationTypeId: 2,
   ).obs;
 
@@ -661,16 +661,16 @@ class MapController extends GetxController {
   Future<void> loadEdgesInBuilding() async {
     int? buildingId = sharedData.building.value.id;
     if (buildingId != null) {
-      final edgesResult = await HiveStorage.useStorageList<Edge>(
-        apiCallback: () => _edgeService.getByBuildingId(buildingId),
-        transformData: (edges) =>
-            EdgeHelper.splitToSegments(edges, selectedFloor.value.mapScale!),
-        storageBoxName: StorageConstants.edgeBox,
-        key: "edges_$buildingId",
-      );
-      // final dataFromAPI = await _edgeService.getByBuildingId(buildingId);
-      // edges.value = EdgeHelper.splitToSegments(dataFromAPI);
-      edges.value = edgesResult;
+      // final edgesResult = await HiveStorage.useStorageList<Edge>(
+      //   apiCallback: () => _edgeService.getByBuildingId(buildingId),
+      //   transformData: (edges) =>
+      //       EdgeHelper.splitToSegments(edges, selectedFloor.value.mapScale!),
+      //   storageBoxName: StorageConstants.edgeBox,
+      //   key: "edges_$buildingId",
+      // );
+      final dataFromAPI = await _edgeService.getByBuildingId(buildingId);
+      edges.value = EdgeHelper.splitToSegments(dataFromAPI,selectedFloor.value.mapScale!);
+       //edges.value = edgesResult;
     }
   }
 
