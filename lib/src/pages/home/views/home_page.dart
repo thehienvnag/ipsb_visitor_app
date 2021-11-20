@@ -161,20 +161,20 @@ class HomePage extends GetView<HomeController> {
                                     ),
                                   ),
                                 ),
-                                // Container(
-                                //   child: TextButton(
-                                //     onPressed: () {
-                                //       controller.goToBuildingStoreDetails();
-                                //     },
-                                //     child: Text(
-                                //       'View more >>',
-                                //       style: TextStyle(
-                                //         fontSize: 14,
-                                //         color: Colors.grey,
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
+                                Container(
+                                  child: TextButton(
+                                    onPressed: () {
+                                      controller.goToBuildingStoreDetails();
+                                    },
+                                    child: Text(
+                                      'View more >>',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                             Container(
