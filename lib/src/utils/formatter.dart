@@ -41,7 +41,7 @@ class Formatter {
   }
 
   static String amount(double? amount, int? couponTypeId,
-      [String currency = "VNĐ"]) {
+      [String currency = "VND"]) {
     if (amount == null || couponTypeId == null) {
       return '';
     }

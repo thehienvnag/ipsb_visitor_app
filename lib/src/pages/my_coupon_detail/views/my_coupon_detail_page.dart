@@ -191,7 +191,8 @@ class MyCouponDetailPage extends GetView<MyCouponDetailController> {
                                             margin:
                                                 const EdgeInsets.only(top: 8),
                                             child: Text(
-                                              Formatter.price(coupon.amount)
+                                              Formatter.amount(coupon.amount,
+                                                      coupon.couponTypeId)
                                                   .toUpperCase(),
                                               style: TextStyle(
                                                 fontSize: 23,
