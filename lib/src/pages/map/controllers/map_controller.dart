@@ -151,10 +151,14 @@ class MapController extends GetxController {
       if (result) {
         getFloorPlan().then((value) {
           initPositioning();
-          loadEdgesInBuilding().then((value) => initShoppingList());
+          loadEdgesInBuilding().then((value) {
+            initShoppingList();
+            currentPosition.value =
+                EdgeHelper.findNearestLocation(edges, currentPosition.value);
+            _mapController.setCurrentMarker(currentPosition.value);
+          });
           loadPlaceOnBuilding();
           isLoading.value = false;
-          _mapController.setCurrentMarker(currentPosition.value);
         }).catchError((err) {
           isLoading.value = false;
         });
@@ -669,8 +673,9 @@ class MapController extends GetxController {
       //   key: "edges_$buildingId",
       // );
       final dataFromAPI = await _edgeService.getByBuildingId(buildingId);
-      edges.value = EdgeHelper.splitToSegments(dataFromAPI,selectedFloor.value.mapScale!);
-       //edges.value = edgesResult;
+      edges.value = EdgeHelper.splitToSegments(
+          dataFromAPI, selectedFloor.value.mapScale!);
+      //edges.value = edgesResult;
     }
   }
 
