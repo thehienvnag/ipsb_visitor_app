@@ -31,16 +31,18 @@ class MyCouponDetailController extends GetxController {
     getCouponInUse();
   }
 
-  void gotoShowQR() {
+  void gotoShowQR() async {
     sharedStates.couponInUse.value = couponInUse.value;
-    Get.toNamed(Routes.showCouponQR);
+    await Get.toNamed(Routes.showCouponQR);
+    getCouponInUse(true);
   }
 
-  Future<void> getCouponInUse() async {
-    final couponId = Get.parameters['couponId'];
-    if (couponId == null) return;
+  Future<void> getCouponInUse([isReturn = false]) async {
+    var couponId = Get.parameters['couponId'];
+    if (couponId == null && !isReturn) return;
     if (!AuthServices.isLoggedIn()) return;
     isLoading.value = true;
+    couponId ??= couponInUse.value.couponId?.toString() ?? "0";
     final result = await couponInUseService.getByVisitorIdAndCouponId(
       AuthServices.userLoggedIn.value.id!,
       int.parse(couponId),
