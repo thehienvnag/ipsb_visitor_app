@@ -11,7 +11,10 @@ class CustomBottombarController extends GetxController {
   final SharedStates states = Get.find();
 
   Future<void> changeSelected(int index) async {
-    Get.offAndToNamed(items[index].route);
+    var routerName = items[index].route;
+
+    Get.offAndToNamed(routerName);
+
     states.bottomBarSelectedIndex.value = index;
   }
 }

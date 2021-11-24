@@ -24,6 +24,7 @@ class LocationAdapter extends TypeAdapter<Location> {
       floorPlan: fields[8] as FloorPlan?,
       x: fields[4] as double?,
       y: fields[5] as double?,
+      distanceTo: fields[9] as double?,
       locationType: fields[6] as LocationType?,
       store: fields[7] as Store?,
     );
@@ -32,7 +33,7 @@ class LocationAdapter extends TypeAdapter<Location> {
   @override
   void write(BinaryWriter writer, Location obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -50,7 +51,9 @@ class LocationAdapter extends TypeAdapter<Location> {
       ..writeByte(7)
       ..write(obj.store)
       ..writeByte(8)
-      ..write(obj.floorPlan);
+      ..write(obj.floorPlan)
+      ..writeByte(9)
+      ..write(obj.distanceTo);
   }
 
   @override
@@ -79,6 +82,7 @@ Location _$LocationFromJson(Map<String, dynamic> json) {
         : FloorPlan.fromJson(json['floorPlan'] as Map<String, dynamic>),
     x: (json['x'] as num?)?.toDouble(),
     y: (json['y'] as num?)?.toDouble(),
+    distanceTo: (json['distanceTo'] as num?)?.toDouble(),
     locationType: json['locationType'] == null
         ? null
         : LocationType.fromJson(json['locationType'] as Map<String, dynamic>),
@@ -98,4 +102,5 @@ Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
       'locationType': instance.locationType,
       'store': instance.store,
       'floorPlan': instance.floorPlan,
+      'distanceTo': instance.distanceTo,
     };

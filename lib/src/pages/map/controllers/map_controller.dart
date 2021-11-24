@@ -27,6 +27,7 @@ import 'package:ipsb_visitor_app/src/services/api/edge_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/floor_plan_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/location_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/locator_tag_service.dart';
+import 'package:ipsb_visitor_app/src/services/api/shopping_list_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 import 'package:ipsb_visitor_app/src/utils/edge_helper.dart';
@@ -43,6 +44,9 @@ class MapController extends GetxController {
 
   /// Shared data
   SharedStates sharedData = Get.find();
+
+  /// Shopping list service
+  IShoppingListService _shoppingListService = Get.find();
 
   /// Shortest path algorithm
   IShortestPath _shortestPathAlgorithm = Get.find();
@@ -382,6 +386,11 @@ class MapController extends GetxController {
     showShoppingDirections();
   }
 
+  void completeShopping(int id) {
+    _shoppingListService.completeShopping(id);
+    closeShopping();
+  }
+
   void closeShopping() {
     shoppingListVisble.value = false;
     sharedData.startShopping.value = false;
@@ -614,12 +623,9 @@ class MapController extends GetxController {
 
   /// Get list FloorPlan from api by buildingID
   Future<List<int>> getFloorPlan() async {
-    final paging =
+    listFloorPlan.value =
         await _floorPlanService.getFloorPlans(sharedData.building.value.id!);
-    if (paging.content != null) {
-      listFloorPlan.value = paging.content!;
-      selectedFloor.value = listFloorPlan[0];
-    }
+    selectedFloor.value = listFloorPlan[0];
     return listFloorPlan.map((element) => element.id!).toList();
   }
 
@@ -665,17 +671,7 @@ class MapController extends GetxController {
   Future<void> loadEdgesInBuilding() async {
     int? buildingId = sharedData.building.value.id;
     if (buildingId != null) {
-      // final edgesResult = await HiveStorage.useStorageList<Edge>(
-      //   apiCallback: () => _edgeService.getByBuildingId(buildingId),
-      //   transformData: (edges) =>
-      //       EdgeHelper.splitToSegments(edges, selectedFloor.value.mapScale!),
-      //   storageBoxName: StorageConstants.edgeBox,
-      //   key: "edges_$buildingId",
-      // );
-      final dataFromAPI = await _edgeService.getByBuildingId(buildingId);
-      edges.value = EdgeHelper.splitToSegments(
-          dataFromAPI, selectedFloor.value.mapScale!);
-      //edges.value = edgesResult;
+      edges.value = await _edgeService.getByBuildingId(buildingId);
     }
   }
 

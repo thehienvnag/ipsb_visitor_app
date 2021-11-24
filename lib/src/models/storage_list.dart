@@ -4,12 +4,8 @@ class StorageList<T> {
   @HiveField(0)
   List<T> value;
 
-  @HiveField(1)
-  DateTime updatedTime;
-
   StorageList({
     required this.value,
-    required this.updatedTime,
   });
 }
 
@@ -27,18 +23,15 @@ class StorageListAdapter<T> extends TypeAdapter<StorageList<T>> {
     };
     return StorageList(
       value: (fields[0] as List).cast<T>(),
-      updatedTime: fields[1] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, StorageList obj) {
     writer
-      ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.value)
       ..writeByte(1)
-      ..write(obj.updatedTime);
+      ..writeByte(0)
+      ..write(obj.value);
   }
 
   @override

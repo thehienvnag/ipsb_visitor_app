@@ -2,19 +2,10 @@ import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/common/endpoints.dart';
 import 'package:ipsb_visitor_app/src/models/location.dart';
 import 'package:ipsb_visitor_app/src/services/api/base_service.dart';
+import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 
 mixin ILocationService {
-  /// Get all stairs and lifts location from a [floorPlanId]
-  Future<List<Location>> getStairsAndLifts(int floorPlanId);
-
-  /// Get locations from a [floorPlanId] based on [locationType]
-  Future<List<Location>> getLocationsByType(int locationType, int floorPlanId);
-
   Future<List<Location>> getLocationOnBuilding(int buildingId);
-
-  Future<List<Location>> getLocationOnFloorWithLocationTypeId(int buildingId);
-
-  Future<Location?> getLocationById(int id);
 
   Future<List<Location>> getLocationByKeySearch(
       String buildingId, String keySearch);
@@ -33,48 +24,23 @@ class LocationService extends BaseService<Location>
   }
 
   @override
-  Future<List<Location>> getStairsAndLifts(int floorPlanId) async {
-    var stairs = getLocationsByType(Constants.locationTypeStair, floorPlanId);
-    var lifts = getLocationsByType(Constants.locationTypeLift, floorPlanId);
-    var result = await Future.wait([stairs, lifts]);
-    return result.expand((element) => element).toList();
-  }
-
-  @override
-  Future<List<Location>> getLocationsByType(
-      int locationType, int floorPlanId) async {
-    return await getAllBase({
-      'isAll': true.toString(),
-      'locationTypeId': locationType.toString(),
-      'floorPlanId': floorPlanId.toString(),
-      'status': "Active",
-    });
-  }
-
-  @override
   Future<List<Location>> getLocationOnBuilding(int buildingId) async {
-    return await getAllBase({
+    final query = {
       'isAll': true.toString(),
       'buildingId': buildingId.toString(),
       'notLocationTypeIds': ["2", "5"],
       'status': "Active"
-    });
-  }
-
-  @override
-  Future<Location?> getLocationById(int id) async {
-    return getByIdBase(id);
-  }
-
-  @override
-  Future<List<Location>> getLocationOnFloorWithLocationTypeId(int floorPlanId,
-      [int locationTypeId = 2]) async {
-    return await getAllBase({
-      'isAll': true.toString(),
-      'floorPlanId': floorPlanId.toString(),
-      'locationTypeId': locationTypeId.toString(),
-      'status': "Active",
-    });
+    };
+    final String key = getCacheKey(query);
+    final callback = (ifModifiedSince) => getCacheResponse(
+          query,
+          ifModifiedSince: ifModifiedSince,
+        );
+    return HiveStorage.useStorageList<Location>(
+      apiCallback: callback,
+      key: key,
+      storageBox: StorageConstants.locationDataBox,
+    );
   }
 
   @override

@@ -74,6 +74,7 @@ class BuildingService extends BaseService<Building>
     final list = await getAllBase({
       "lat": lat.toString(),
       "lng": lng.toString(),
+      "pageSize": "1",
       "findCurrentBuilding": "true",
       "status": "Active",
     });

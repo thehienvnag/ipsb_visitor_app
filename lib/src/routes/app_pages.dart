@@ -34,8 +34,6 @@ import 'package:ipsb_visitor_app/src/pages/setting/bindings/setting_binding.dart
 import 'package:ipsb_visitor_app/src/pages/setting/views/setting_page.dart';
 import 'package:ipsb_visitor_app/src/pages/shopping_list_detail/bindings/shopping_list_detail_binding.dart';
 import 'package:ipsb_visitor_app/src/pages/shopping_list_detail/views/shopping_list_detail_page.dart';
-import 'package:ipsb_visitor_app/src/pages/test_algorithm/bindings/test_algorithm_binding.dart';
-import 'package:ipsb_visitor_app/src/pages/test_algorithm/views/test_algorithm_page.dart';
 import 'package:ipsb_visitor_app/src/pages/update_infomation_signup/bindings/update_profile_binding.dart';
 import 'package:ipsb_visitor_app/src/pages/update_infomation_signup/views/update_profile_page.dart';
 import '../pages/my_coupon_detail/views/my_coupon_detail_page.dart';
@@ -51,12 +49,6 @@ import 'package:ipsb_visitor_app/src/pages/map/bindings/map_binding.dart';
 
 class AppPages {
   static final routes = [
-    GetPage(
-      name: Routes.testAlgorithm,
-      page: () => TestAlgorithmPage(),
-      binding: TestAlgorithmBinding(),
-      transition: Transition.noTransition,
-    ),
     GetPage(
       name: Routes.map,
       page: () => MapPage(),

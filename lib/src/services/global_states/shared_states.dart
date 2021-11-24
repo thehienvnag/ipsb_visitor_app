@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/models/account.dart';
@@ -26,6 +27,9 @@ class SharedStates extends GetxService {
 
   /// List shopping
   final shoppingList = ShoppingList().obs;
+
+  /// Current position
+  final Rx<Position?> currentPosition = Rx<Position?>(null);
 
   /// Determine whether shopping is starting
   final startShopping = false.obs;

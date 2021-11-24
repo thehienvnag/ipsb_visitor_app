@@ -54,19 +54,16 @@ class HomeController extends FullLifeCycleController {
   final listBuilding = <Building>[].obs;
 
   // Current position: Lat, Lng
-  final Rx<double?> lat = Rx<double?>(null);
-  final Rx<double?> lng = Rx<double?>(null);
+  final Rx<Position?> pos = Rx<Position?>(null);
 
   final loading = false.obs;
 
   @override
   void onInit() async {
     super.onInit();
-    Position? location;
+    loading.value = true;
     try {
-      location = await Geolocator.getCurrentPosition();
-      lat.value = location.latitude;
-      lng.value = location.longitude;
+      pos.value = await Geolocator.getCurrentPosition();
     } catch (e) {}
     getBuildings();
     initPage();
@@ -91,7 +88,6 @@ class HomeController extends FullLifeCycleController {
     await initBuilding();
     if (states.building.value.id == null) return;
     buildingId.value = states.building.value.id!;
-    loading.value = true;
     await Future.wait([
       getStores(),
       getCoupons(),
@@ -101,18 +97,18 @@ class HomeController extends FullLifeCycleController {
   }
 
   Future<void> initBuilding() async {
-    if (lat.value == null && lng.value == null) return;
+    if (pos.value?.latitude == null || pos.value?.longitude == null) return;
     final building = await buildingService.findCurrentBuilding(
-      lat.value!,
-      lng.value!,
+      pos.value!.latitude,
+      pos.value!.longitude,
     );
     if (building != null) {
       states.building.value = building;
     } else {
       states.building.value = Building();
       List<Placemark> placeMarks = await placemarkFromCoordinates(
-        lat.value!,
-        lng.value!,
+        pos.value!.latitude,
+        pos.value!.latitude,
       );
       if (placeMarks.isNotEmpty) {
         final place = placeMarks.first;
@@ -153,11 +149,13 @@ class HomeController extends FullLifeCycleController {
   }
 
   Future<void> getStores() async {
+    if (buildingId.value == 0) return;
     final stores = await storeService.getStoresByBuilding(buildingId.value);
     listStore.value = stores.content ?? [];
   }
 
   Future<void> getCoupons() async {
+    if (buildingId.value == 0) return;
     listCoupon.value = await couponService.getCouponsByBuildingId(
       buildingId.value,
       random: true,
@@ -168,7 +166,10 @@ class HomeController extends FullLifeCycleController {
   }
 
   Future<void> getBuildings() async {
-    final list = await buildingService.getBuildings(lat.value, lng.value);
+    final list = await buildingService.getBuildings(
+      pos.value!.latitude,
+      pos.value!.longitude,
+    );
     if (list.isNotEmpty &&
         list.first.distanceTo != null &&
         list.first.distanceTo! < 0.5) {
@@ -190,20 +191,20 @@ class HomeController extends FullLifeCycleController {
       if (typeSearch.value == "Coupons") {
         listSearchCoupons.value = await couponService.searchCoupons(
           keySearch,
-          lat: lat.value,
-          lng: lng.value,
+          lat: pos.value!.latitude,
+          lng: pos.value!.longitude,
         );
       } else if (typeSearch.value == "Buildings") {
         listBuildingSearch.value = await buildingService.searchBuildings(
           keySearch,
-          lat.value,
-          lng.value,
+          pos.value!.latitude,
+          pos.value!.longitude,
         );
       } else if (typeSearch.value == "Stores") {
         final stores = await storeService.searchStore(
           keySearch,
-          lat: lat.value,
-          lng: lng.value,
+          lat: pos.value!.latitude,
+          lng: pos.value!.longitude,
         );
         listStoreSearch.value = stores;
       }
@@ -218,7 +219,7 @@ class HomeController extends FullLifeCycleController {
   }
 
   void goToBuildingStoreDetails() {
-    if (buildingId.value != null) {
+    if (buildingId.value != 0) {
       Get.toNamed(Routes.buildingStore,
           parameters: {"buildingID": buildingId.value.toString()});
     }

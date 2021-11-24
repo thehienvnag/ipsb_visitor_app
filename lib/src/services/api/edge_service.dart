@@ -1,17 +1,10 @@
+import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/common/endpoints.dart';
 import 'package:ipsb_visitor_app/src/models/edge.dart';
 import 'package:ipsb_visitor_app/src/services/api/base_service.dart';
+import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 
 mixin IEdgeService {
-  /// Get list of edges from a floor plan
-  Future<List<Edge>> getByFloorPlanId(int floorPlanId);
-
-  /// Get all edges from n floor [floors]
-  Future<List<Edge>> getEdgesFromFloors(List<int> floors);
-
-  /// Get all edges from n floor [floors]
-  Future<List<Edge>> getAll();
-
   /// Get all edges from building
   Future<List<Edge>> getByBuildingId(int buildingId);
 }
@@ -28,33 +21,20 @@ class EdgeService extends BaseService<Edge> implements IEdgeService {
   }
 
   @override
-  Future<List<Edge>> getByFloorPlanId(int floorPlanId) async {
-    return await getAllBase({
-      'isAll': true.toString(),
-      'floorPlanId': floorPlanId.toString(),
-    });
-  }
-
-  @override
-  Future<List<Edge>> getEdgesFromFloors(List<int> floorIds) async {
-    var edges = await Future.wait(
-      floorIds.map((id) => getByFloorPlanId(id)),
-    );
-    return edges.expand((edge) => edge).toList();
-  }
-
-  @override
-  Future<List<Edge>> getAll() async {
-    return getAllBase({
-      "isAll": true.toString(),
-    });
-  }
-
-  @override
   Future<List<Edge>> getByBuildingId(int buildingId) {
-    return getAllBase({
+    final query = {
       "isAll": true.toString(),
       "buildingId": buildingId.toString(),
-    }, true);
+    };
+    final callback = (ifModifiedSince) => getCacheResponse(
+          query,
+          ifModifiedSince: ifModifiedSince,
+        );
+    final String key = getCacheKey(query);
+    return HiveStorage.useStorageList<Edge>(
+      apiCallback: callback,
+      key: key,
+      storageBox: StorageConstants.edgeDataBox,
+    );
   }
 }

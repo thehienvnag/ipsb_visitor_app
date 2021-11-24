@@ -19,6 +19,7 @@ class StoreAdapter extends TypeAdapter<Store> {
     return Store(
       floorPlan: fields[7] as FloorPlan?,
       id: fields[0] as int?,
+      phone: fields[10] as String?,
       name: fields[1] as String?,
       description: fields[2] as String?,
       imageUrl: fields[3] as String?,
@@ -27,15 +28,13 @@ class StoreAdapter extends TypeAdapter<Store> {
       status: fields[6] as String?,
       location: fields[8] as Location?,
       building: fields[9] as Building?,
-      phone: fields[10] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Store obj) {
     writer
-      ..writeByte(10)
-      ..write(obj.phone)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -55,7 +54,9 @@ class StoreAdapter extends TypeAdapter<Store> {
       ..writeByte(8)
       ..write(obj.location)
       ..writeByte(9)
-      ..write(obj.building);
+      ..write(obj.building)
+      ..writeByte(10)
+      ..write(obj.phone);
   }
 
   @override
@@ -82,13 +83,13 @@ Store _$StoreFromJson(Map<String, dynamic> json) {
         ? null
         : FloorPlan.fromJson(json['floorPlan'] as Map<String, dynamic>),
     id: json['id'] as int?,
+    phone: json['phone'] as String?,
     name: json['name'] as String?,
     description: json['description'] as String?,
     imageUrl: json['imageUrl'] as String?,
     floorPlanId: json['floorPlanId'] as int?,
     productCategoryId: json['productCategoryId'] as String?,
     status: json['status'] as String?,
-    phone:  json['phone'] as String?,
     location: json['location'] == null
         ? null
         : Location.fromJson(json['location'] as Map<String, dynamic>),
@@ -106,10 +107,10 @@ Map<String, dynamic> _$StoreToJson(Store instance) => <String, dynamic>{
       'floorPlanId': instance.floorPlanId,
       'productCategoryId': instance.productCategoryId,
       'status': instance.status,
-      'phone': instance.phone,
       'floorPlan': instance.floorPlan,
       'location': instance.location,
       'building': instance.building,
+      'phone': instance.phone,
       'products': instance.products,
       'pos': instance.pos,
     };

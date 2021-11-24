@@ -2,13 +2,13 @@ import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
-import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 
 mixin IApiHelper {
   /// Get all from an API [endpoint] using [uri] and [query]
   Future<Response> getAll<T>(
     String uri, {
     Map<String, dynamic> query = Constants.defaultPagingQuery,
+    String? ifModifiedSince,
   });
 
   /// Put pure
@@ -44,8 +44,9 @@ mixin IApiHelper {
   Future<Response> putOne(
     String endpoint,
     dynamic id,
-    Map<String, dynamic> data,
-  );
+    Map<String, dynamic> data, {
+    String? appendUri,
+  });
 
   /// Put 1 to API [endpoint] providing [data] with one file [files]
   Future<Response> putOneWithOneFile(String endpoint, Map<String, dynamic> data,
@@ -82,37 +83,19 @@ class ApiHelper extends GetConnect with IApiHelper {
       request.headers["Authorization"] = await AuthServices.getAuthHeader();
       return request;
     });
-
-    //Request modifier: [if-modified-since: header]
-    httpClient.addRequestModifier((Request request) async {
-      if (request.url.path.contains("edges")) {
-        final lastModified = await HiveStorage.getIfModifiedSinceHeader(
-          HiveStorage.getEndpoint(request.url),
-        );
-        if (lastModified != null) {
-          request.headers["if-modified-since"] = lastModified;
-        }
-      }
-      return request;
-    });
-
-    //Response modifier: [last-modified: header]
-    httpClient.addResponseModifier((request, response) async {
-      String? lastModified = response.headers?["last-modified"];
-      HiveStorage.saveLastModifiedHeader(
-        lastModified,
-        HiveStorage.getEndpoint(request.url),
-      );
-      return response;
-    });
   }
 
   @override
   Future<Response> getAll<T>(
     String uri, {
     Map<String, dynamic>? query = Constants.defaultPagingQuery,
+    String? ifModifiedSince,
   }) {
-    return get<T>(uri, query: query);
+    Map<String, String>? headers;
+    if (ifModifiedSince != null) {
+      headers = {"if-modified-since": ifModifiedSince};
+    }
+    return get<T>(uri, query: query, headers: headers);
   }
 
   @override
@@ -158,9 +141,10 @@ class ApiHelper extends GetConnect with IApiHelper {
   Future<Response> putOne(
     String endpoint,
     dynamic id,
-    Map<String, dynamic> data,
-  ) {
-    return put('$endpoint/$id', data);
+    Map<String, dynamic> data, {
+    String? appendUri,
+  }) {
+    return put('$endpoint/$id/${appendUri ?? ""}', data);
   }
 
   @override

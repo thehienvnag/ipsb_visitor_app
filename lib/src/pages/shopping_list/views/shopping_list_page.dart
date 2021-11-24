@@ -33,18 +33,20 @@ class ShoppingListPage extends GetView<ShoppingListController> {
           )
         ],
       ),
-      floatingActionButton: AuthServices.isLoggedIn() ? FloatingActionButton(
-        backgroundColor: AppColors.primary,
-        child: Icon(
-          Icons.add,
-        ),
-        onPressed: () => controller.createShoppingList(),
-      ) : SizedBox(),
+      floatingActionButton: AuthServices.isLoggedIn()
+          ? FloatingActionButton(
+              backgroundColor: AppColors.primary,
+              child: Icon(
+                Icons.add,
+              ),
+              onPressed: () => controller.createShoppingList(),
+            )
+          : SizedBox(),
       body: SingleChildScrollView(
         child: Column(children: [
           listItem(context),
           SizedBox(
-            height: context.height*0.13,
+            height: context.height * 0.13,
           )
         ]),
       ),
@@ -61,10 +63,9 @@ class ShoppingListPage extends GetView<ShoppingListController> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 40, right: 20),
-                height: context.height*0.258,
-                width: context.width*0.486,
-                child: Image.asset(
-                    ConstImg.emptyList),
+                height: context.height * 0.258,
+                width: context.width * 0.486,
+                child: Image.asset(ConstImg.emptyList),
               ),
               Container(
                 margin: EdgeInsets.only(top: 30),
@@ -79,7 +80,7 @@ class ShoppingListPage extends GetView<ShoppingListController> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 15),
-                width: context.width*0.778,
+                width: context.width * 0.778,
                 child: Text(
                   'Come back to check after login in your account',
                   textAlign: TextAlign.center,
@@ -108,10 +109,9 @@ class ShoppingListPage extends GetView<ShoppingListController> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 40, right: 20),
-                height: context.height*0.258,
-                width: context.width*0.51,
-                child: Image.asset(
-                    ConstImg.emptyList),
+                height: context.height * 0.258,
+                width: context.width * 0.51,
+                child: Image.asset(ConstImg.emptyList),
               ),
               Container(
                 margin: EdgeInsets.only(top: 30),
@@ -126,7 +126,7 @@ class ShoppingListPage extends GetView<ShoppingListController> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 15),
-                width: context.width*0.778,
+                width: context.width * 0.778,
                 child: Text(
                   'Create list and add them to your trolley for an easier shopping experience.',
                   textAlign: TextAlign.center,
@@ -258,14 +258,32 @@ class ShoppingListPage extends GetView<ShoppingListController> {
                 ),
               ],
             ),
-            Text(
-              Formatter.date(element.shoppingDate),
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 15,
-                color: Colors.grey,
+            if (element.status == "Complete")
+              Chip(
+                backgroundColor: Colors.white,
+                label: Row(
+                  children: [
+                    Icon(
+                      Icons.check_circle_outline_outlined,
+                      color: Colors.greenAccent,
+                      size: 25,
+                    ),
+                    Text(
+                      "Complete",
+                      style: TextStyle(color: Colors.black, fontSize: 12),
+                    ),
+                  ],
+                ),
               ),
-            ),
+            if (element.status != "Complete")
+              Text(
+                Formatter.date(element.shoppingDate),
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 15,
+                  color: Colors.grey,
+                ),
+              ),
           ],
         ),
       ),

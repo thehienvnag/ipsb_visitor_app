@@ -57,6 +57,14 @@ class ShoppingListDetailController extends GetxController {
       );
       return;
     }
+    if (shoppingListDetails.value.status == "Complete") {
+      showErrorDialog(
+        context,
+        "Already complete!",
+        "Please create new shopping list!",
+      );
+      return;
+    }
 
     if (_sharedStates.building.value.id !=
         shoppingListDetails.value.buildingId) {

@@ -15,7 +15,7 @@ class Constants {
   static final String baseUrl = "https://ipsb.azurewebsites.net/";
 
   /// Timeout when calling API
-  static final Duration timeout = Duration(seconds: 20);
+  static final Duration timeout = Duration(seconds: 30);
 
   /// Default query of paging parameters
   static const Map<String, dynamic> defaultPagingQuery = {
@@ -84,9 +84,10 @@ class AppColors {
 }
 
 class StorageConstants {
-  static const floorPlanBox = "floorPlanBox";
-  static const edgeBox = "edgeBox";
-  static const requestUriBox = "requestUriBox";
+  static const ifModifiedBox = "ifModifiedBox";
+  static const edgeDataBox = "edgeDataBox";
+  static const floorPlanDataBox = "floorPlanDataBox";
+  static const locationDataBox = "locationDataBox";
   static const lastModified = "last-modified";
   static final Duration expireDuration = Duration(days: 3);
   static const dataNotModified = "Data is not modified";
@@ -123,5 +124,6 @@ class AppHiveType {
   static const int edge = 3;
   static const int store = 4;
   static const int storageListEdge = 5;
-  static const int lastModifiedHeader = 6;
+  static const int storageListLocation = 6;
+  static const int storageListFloorPlan = 7;
 }

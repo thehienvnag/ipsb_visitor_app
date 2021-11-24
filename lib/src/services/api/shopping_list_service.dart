@@ -7,6 +7,7 @@ mixin IShoppingListService {
   Future<ShoppingList?> getById(int id);
   Future<ShoppingList?> create(Map<String, dynamic> body);
   Future<bool> delete(int id);
+  Future<bool> completeShopping(int id);
 }
 
 class ShoppingListService extends BaseService<ShoppingList>
@@ -25,7 +26,7 @@ class ShoppingListService extends BaseService<ShoppingList>
   Future<List<ShoppingList>> getByAccountId(int? accountId) {
     return getAllBase({
       "accountId": accountId.toString(),
-      "status": "Active",
+      "notStatus": "Inactive",
     });
   }
 
@@ -42,5 +43,10 @@ class ShoppingListService extends BaseService<ShoppingList>
   @override
   Future<bool> delete(int id) {
     return deleteBase(id);
+  }
+
+  @override
+  Future<bool> completeShopping(int id) {
+    return putAppendUri(id, "complete");
   }
 }

@@ -258,18 +258,24 @@ class MapPage extends GetView<MapController> {
                   subtitle:
                       Text(Formatter.shorten(shoppingList.building?.name, 30)),
                   trailing: Container(
-                    margin: const EdgeInsets.only(bottom: 20),
-                    child: IconButton(
-                      onPressed: () => controller.closeShopping(),
-                      icon: controller.isShoppingComplete() &&
-                              controller.sharedData.startShopping.isTrue
-                          ? Icon(
+                    margin: const EdgeInsets.only(top: 20),
+                    child: controller.isShoppingComplete() &&
+                            controller.sharedData.startShopping.isTrue
+                        ? OutlinedButton.icon(
+                            onPressed: () => controller.completeShopping(
+                                  controller.sharedData.shoppingList.value.id ??
+                                      0,
+                                ),
+                            icon: Icon(
                               Icons.check_circle_outline_outlined,
                               color: Colors.greenAccent,
-                              size: 40,
-                            )
-                          : Icon(Icons.close),
-                    ),
+                              size: 25,
+                            ),
+                            label: Text("Complete"))
+                        : IconButton(
+                            onPressed: () => controller.closeShopping(),
+                            icon: Icon(Icons.close),
+                          ),
                   ),
                 ),
                 // if (controller.startShopping.value)

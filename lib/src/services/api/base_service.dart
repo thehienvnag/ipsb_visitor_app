@@ -7,6 +7,7 @@ import 'package:ipsb_visitor_app/src/data/api_helper.dart';
 import 'package:ipsb_visitor_app/src/data/file_upload_utils.dart';
 import 'package:ipsb_visitor_app/src/models/paging.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
+import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 
 abstract class BaseService<T> {
   IApiHelper _apiHelper = Get.find();
@@ -17,7 +18,29 @@ abstract class BaseService<T> {
   /// Set api endpoint for entity
   String endpoint();
 
-  Future<bool> putPure(String endpoint, Map<String, dynamic> data,dynamic id,) async {
+  Future<bool> putAppendUri(
+    int id,
+    String appendUri, {
+    Map<String, dynamic> data = const {},
+  }) async {
+    final callback = () => _apiHelper.putOne(
+          endpoint(),
+          id,
+          data,
+          appendUri: appendUri,
+        );
+    Response response = await AuthServices.handleUnauthorized(callback);
+    if (response.statusCode == 204) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> putPure(
+    String endpoint,
+    Map<String, dynamic> data,
+    dynamic id,
+  ) async {
     final callback = () => _apiHelper.putOne(endpoint, id, data);
     Response response = await AuthServices.handleUnauthorized(callback);
     if (response.statusCode == 204) {
@@ -60,8 +83,7 @@ abstract class BaseService<T> {
   }
 
   /// Get paging instance from API with [query]
-  Future<Paging<T>> getPagingBase(Map<String, dynamic> query,
-      [bool cacheAllow = false]) async {
+  Future<Paging<T>> getPagingBase(Map<String, dynamic> query) async {
     final callback = () => _apiHelper.getAll(endpoint(), query: query);
     Response res = await AuthServices.handleUnauthorized(callback);
     if (res.isOk) {
@@ -69,16 +91,56 @@ abstract class BaseService<T> {
       paging.convertToList(fromJson);
       return paging;
     }
-    if (res.statusCode == HttpStatus.notModified && cacheAllow) {
-      throw StorageConstants.dataNotModified;
-    }
+
     return Paging.defaultInstance<T>();
   }
 
+  /// Get cache response with if-modified-since
+  Future<ApiCacheResponse<T>?> getCacheResponse(
+    Map<String, dynamic> query, {
+    String? ifModifiedSince,
+  }) async {
+    final callback = () => _apiHelper.getAll(
+          endpoint(),
+          query: query,
+          ifModifiedSince: ifModifiedSince,
+        );
+    Response res = await AuthServices.handleUnauthorized(callback);
+    ApiCacheResponse<T>? cacheResponse;
+    if (res.isOk) {
+      Paging<T> paging = Paging.fromJson(res.body);
+      paging.convertToList(fromJson);
+      cacheResponse = ApiCacheResponse<T>(
+        value: paging.content ?? [],
+        ifModifiedSince: res.headers?["last-modified"],
+      );
+    }
+    if (res.statusCode == HttpStatus.notModified) {
+      throw StorageConstants.dataNotModified;
+    }
+    return cacheResponse;
+  }
+
+  String getCacheKey(Map<String, dynamic> query) {
+    String cacheKey = "${endpoint()}?";
+    bool first = true;
+    query.forEach((key, value) {
+      if (!first) {
+        cacheKey += "&$key=$value";
+      } else {
+        first = false;
+        cacheKey += "$key=$value";
+      }
+    });
+    return cacheKey;
+  }
+
   /// Get list instances from API with [query]
-  Future<List<T>> getAllBase(Map<String, dynamic> query,
-      [bool cacheAllow = false]) async {
-    Paging<T> paging = await getPagingBase(query, cacheAllow);
+  Future<List<T>> getAllBase(
+    Map<String, dynamic> query, {
+    String? ifModifiedSince,
+  }) async {
+    Paging<T> paging = await getPagingBase(query);
     return paging.content ?? [];
   }
 
@@ -131,7 +193,6 @@ abstract class BaseService<T> {
       return fromJson(res.body);
     }
   }
-
 
   /// Put an instance with [body] and a file path [filePath]
   Future<bool> putWithOneFileBase(

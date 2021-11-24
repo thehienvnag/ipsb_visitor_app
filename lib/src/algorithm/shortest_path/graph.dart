@@ -40,7 +40,10 @@ class Graph {
 
   List<Location> getShortestPath(int beginLocationId) {
     final nodeToFind = this.nodes[beginLocationId];
-    return nodeToFind?.getShortestPath() ?? [];
+    if (nodeToFind == null) return [];
+    final list = nodeToFind.getShortestPath();
+    list.insert(0, nodeToFind.value!);
+    return list;
   }
 
   List<List<Location>> getShoppingRoutes(

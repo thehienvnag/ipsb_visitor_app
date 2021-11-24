@@ -6,7 +6,6 @@ import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/data/api_helper.dart';
 import 'package:ipsb_visitor_app/src/models/edge.dart';
 import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
-import 'package:ipsb_visitor_app/src/models/last_modified.dart';
 import 'package:ipsb_visitor_app/src/models/location.dart';
 import 'package:ipsb_visitor_app/src/models/location_type.dart';
 import 'package:ipsb_visitor_app/src/models/storage_list.dart';
@@ -61,9 +60,14 @@ class AppInit {
       ..registerAdapter<LocationType>(LocationTypeAdapter())
       ..registerAdapter<FloorPlan>(FloorPlanAdapter())
       ..registerAdapter<Store>(StoreAdapter())
-      ..registerAdapter<LastModified>(LastModifiedAdapter())
       ..registerAdapter<StorageList<Edge>>(
         StorageListAdapter<Edge>(typeId: AppHiveType.storageListEdge),
+      )
+      ..registerAdapter<StorageList<Location>>(
+        StorageListAdapter<Location>(typeId: AppHiveType.storageListLocation),
+      )
+      ..registerAdapter<StorageList<FloorPlan>>(
+        StorageListAdapter<FloorPlan>(typeId: AppHiveType.storageListFloorPlan),
       );
   }
 

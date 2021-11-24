@@ -1,69 +1,53 @@
 import 'package:hive/hive.dart';
 import 'package:ipsb_visitor_app/src/common/constants.dart';
-import 'package:ipsb_visitor_app/src/models/last_modified.dart';
 import 'package:ipsb_visitor_app/src/models/storage_list.dart';
+
+class ApiCacheResponse<T> {
+  final List<T> value;
+  final String? ifModifiedSince;
+
+  ApiCacheResponse({
+    this.value = const [],
+    this.ifModifiedSince,
+  });
+}
 
 class HiveStorage {
   static Future<List<T>> useStorageList<T>({
-    required Future<List<T>> Function() apiCallback,
-    required String storageBoxName,
-    required dynamic key,
+    required Future<ApiCacheResponse<T>?> Function(String?) apiCallback,
+    required String key,
+    required String storageBox,
     List<T> Function(List<T>)? transformData,
   }) async {
-    // Open data box with storage box name
-    final box = await Hive.openBox<StorageList<T>>(StorageConstants.edgeBox);
     // Get data stored in box
     StorageList<T>? dataStored;
+    String timeKey = key + "_Time";
+    // Open data box with storage box name
+    final box = await Hive.openLazyBox<StorageList<T>>(storageBox);
+
+    final timeBox =
+        await Hive.openLazyBox<String>(StorageConstants.ifModifiedBox);
+
+    final ifModifiedSince = await timeBox.get(timeKey);
     // In case data is not present in store, retrieve data from API callback
     try {
-      final dataFromAPI = await apiCallback.call();
-      dataStored = StorageList(
-        value: transformData != null ? transformData(dataFromAPI) : dataFromAPI,
-        updatedTime: DateTime.now(),
-      );
-      box.put(key, dataStored);
+      final dataFromAPI = await apiCallback.call(ifModifiedSince);
+      if (dataFromAPI != null) {
+        dataStored = StorageList(
+          value: transformData != null
+              ? transformData(dataFromAPI.value)
+              : dataFromAPI.value,
+        );
+        box.put(key, dataStored);
+        if (dataFromAPI.ifModifiedSince != null) {
+          timeBox.put(timeKey, dataFromAPI.ifModifiedSince!);
+        }
+      }
     } catch (e) {
       if (e == StorageConstants.dataNotModified) {
-        dataStored = box.get(key);
+        dataStored = await box.get(key);
       }
     }
     return dataStored?.value ?? [];
-  }
-
-  static Future<String?> getIfModifiedSinceHeader(String requestUri) async {
-    final box =
-        await Hive.openBox<LastModified>(StorageConstants.requestUriBox);
-    final data = box.get(requestUri);
-
-    if (data != null) {
-      final isValid = DateTime.now()
-          .isBefore(data.updateTime!.add(StorageConstants.expireDuration));
-      if (isValid) {
-        return data.lastModified;
-      } else {
-        box.delete(requestUri);
-      }
-    }
-  }
-
-  static String getEndpoint(Uri url) {
-    String endpoint = url.path.toString();
-    endpoint += url.query.isEmpty ? "" : '?${url.query}';
-    return endpoint;
-  }
-
-  static void saveLastModifiedHeader(
-      String? lastModified, String requestUri) async {
-    if (lastModified != null) {
-      final box =
-          await Hive.openBox<LastModified>(StorageConstants.requestUriBox);
-      await box.put(
-        requestUri,
-        LastModified(
-          lastModified: lastModified,
-          updateTime: DateTime.now(),
-        ),
-      );
-    }
   }
 }
