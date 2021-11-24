@@ -476,7 +476,7 @@ class MapPage extends GetView<MapController> {
             ),
             Expanded(child: Obx(() {
               final listCoupon = controller.listCoupon;
-              if (listCoupon.isNotEmpty) {
+              if (listCoupon.isEmpty) {
                 return buildEmpty(MediaQuery.of(context).size.width);
               }
               return ListView.builder(
