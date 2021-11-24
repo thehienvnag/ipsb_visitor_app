@@ -32,7 +32,7 @@ class HiveStorage {
     // In case data is not present in store, retrieve data from API callback
     try {
       final dataFromAPI = await apiCallback.call(ifModifiedSince);
-      if (dataFromAPI != null) {
+      if (dataFromAPI != null && dataFromAPI.value.isNotEmpty) {
         dataStored = StorageList(
           value: transformData != null
               ? transformData(dataFromAPI.value)

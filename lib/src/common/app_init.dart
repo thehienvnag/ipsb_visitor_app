@@ -8,6 +8,7 @@ import 'package:ipsb_visitor_app/src/models/edge.dart';
 import 'package:ipsb_visitor_app/src/models/floor_plan.dart';
 import 'package:ipsb_visitor_app/src/models/location.dart';
 import 'package:ipsb_visitor_app/src/models/location_type.dart';
+import 'package:ipsb_visitor_app/src/models/locator_tag.dart';
 import 'package:ipsb_visitor_app/src/models/storage_list.dart';
 import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/services/api/account_service.dart';
@@ -57,6 +58,7 @@ class AppInit {
     Hive
       ..registerAdapter<Edge>(EdgeAdapter())
       ..registerAdapter<Location>(LocationAdapter())
+      ..registerAdapter<LocatorTag>(LocatorTagAdapter())
       ..registerAdapter<LocationType>(LocationTypeAdapter())
       ..registerAdapter<FloorPlan>(FloorPlanAdapter())
       ..registerAdapter<Store>(StoreAdapter())
@@ -68,6 +70,10 @@ class AppInit {
       )
       ..registerAdapter<StorageList<FloorPlan>>(
         StorageListAdapter<FloorPlan>(typeId: AppHiveType.storageListFloorPlan),
+      )
+      ..registerAdapter<StorageList<LocatorTag>>(
+        StorageListAdapter<LocatorTag>(
+            typeId: AppHiveType.storageListLocatorTag),
       );
   }
 

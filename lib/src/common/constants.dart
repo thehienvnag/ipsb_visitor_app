@@ -86,8 +86,9 @@ class AppColors {
 class StorageConstants {
   static const ifModifiedBox = "ifModifiedBox";
   static const edgeDataBox = "edgeDataBox";
-  static const floorPlanDataBox = "floorPlanDataBox";
   static const locationDataBox = "locationDataBox";
+  static const floorPlanDataBox = "floorPlanDataBox";
+  static const locatorTagDataBox = "locatorTagDataBox";
   static const lastModified = "last-modified";
   static final Duration expireDuration = Duration(days: 3);
   static const dataNotModified = "Data is not modified";
@@ -126,4 +127,6 @@ class AppHiveType {
   static const int storageListEdge = 5;
   static const int storageListLocation = 6;
   static const int storageListFloorPlan = 7;
+  static const int storageListLocatorTag = 8;
+  static const int locatorTag = 9;
 }
