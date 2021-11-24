@@ -382,7 +382,7 @@ class MapPage extends GetView<MapController> {
           barrierDismissible: false,
           barrierColor: Colors.transparent,
           builder: (context) {
-            return buildCouponPanel();
+            return buildCouponPanel(context);
           },
         );
       },
@@ -442,7 +442,7 @@ class MapPage extends GetView<MapController> {
     );
   }
 
-  Widget buildCouponPanel() {
+  Widget buildCouponPanel(BuildContext context) {
     return SlidingUpPanel(
       onPanelClosed: () {
         // controller.changeVisible();
@@ -476,6 +476,9 @@ class MapPage extends GetView<MapController> {
             ),
             Expanded(child: Obx(() {
               final listCoupon = controller.listCoupon;
+              if (listCoupon.isNotEmpty) {
+                return buildEmpty(MediaQuery.of(context).size.width);
+              }
               return ListView.builder(
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
@@ -505,6 +508,45 @@ class MapPage extends GetView<MapController> {
               );
             })),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildEmpty(double width) {
+    return Container(
+      width: width,
+      child: Container(
+        width: 118,
+        height: 40,
+        padding: const EdgeInsets.only(top: 5),
+        margin: const EdgeInsets.only(bottom: 10),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade100.withOpacity(0.3),
+          border: Border.all(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(7),
+        ),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 50,
+                width: 50,
+                child: Image.asset(ConstImg.empty),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                child: Text(
+                  "Empty",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
