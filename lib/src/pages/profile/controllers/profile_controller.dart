@@ -13,7 +13,9 @@ class ProfileController extends GetxController {
       await FirebaseAuth.instance.signOut();
       try {
         await _googleSignIn.signOut();
-      } catch (Exception) {}
+      } catch (Exception) {
+        BotToast.showText(text: "Logout Failed");
+      }
 
       FirebaseHelper helper = new FirebaseHelper();
       await helper.unsubscribeFromTopic(

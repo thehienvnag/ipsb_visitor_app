@@ -48,6 +48,8 @@ class LoginEmailController extends GetxController {
               "account_id_" + AuthServices.userLoggedIn.value.id.toString());
           BotToast.showText(text: "Sign In Successfull");
           Get.back();
+        }else{
+          BotToast.showText(text: "Sign In Failed");
         }
       }
     } catch (e) {

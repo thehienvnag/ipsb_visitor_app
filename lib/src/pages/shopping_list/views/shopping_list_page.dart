@@ -226,9 +226,9 @@ class ShoppingListPage extends GetView<ShoppingListController> {
                     },
                   ),
                   child: Container(
-                    margin: EdgeInsets.only(right: 15),
-                    height: 50,
-                    width: 65,
+                    margin: EdgeInsets.only(right: 10),
+                    height: context.height*0.0645,
+                    width: context.width*0.097,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       image: Utils.resolveDecoImg(element.building?.imageUrl!),
@@ -266,11 +266,11 @@ class ShoppingListPage extends GetView<ShoppingListController> {
                     Icon(
                       Icons.check_circle_outline_outlined,
                       color: Colors.greenAccent,
-                      size: 25,
+                      size: 20,
                     ),
                     Text(
                       "Complete",
-                      style: TextStyle(color: Colors.black, fontSize: 12),
+                      style: TextStyle(color: Colors.black, fontSize: 11),
                     ),
                   ],
                 ),
