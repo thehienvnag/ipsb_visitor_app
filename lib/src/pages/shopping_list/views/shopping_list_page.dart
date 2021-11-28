@@ -219,12 +219,13 @@ class ShoppingListPage extends GetView<ShoppingListController> {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () => Get.toNamed(
-                    Routes.shoppingListDetail,
-                    parameters: {
-                      "shoppingListId": element.id.toString(),
-                    },
-                  ),
+                  onTap: () => controller.gotoShoppingListDetail(element.id!),
+                  //     Get.toNamed(
+                  //   Routes.shoppingListDetail,
+                  //   parameters: {
+                  //     "shoppingListId": element.id.toString(),
+                  //   },
+                  // ),
                   child: Container(
                     margin: EdgeInsets.only(right: 10),
                     height: context.height*0.0645,
