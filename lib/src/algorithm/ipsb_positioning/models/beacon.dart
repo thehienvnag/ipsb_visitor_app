@@ -49,7 +49,7 @@ class Beacon {
       );
 
       // If distance smaller than 10
-      if (distanceMeter > 0 && distanceMeter < 10) {
+      if (distanceMeter > 0 && distanceMeter < 15) {
         return distanceMeter / mapScale * meterToPixel;
       }
     }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,6 +23,9 @@ class IndoorMapController extends GetxController {
   /// Screen size
   final screenSize = Size(0, 0).obs;
 
+  /// Rotate angle
+  final rotateAngle = 0.0.obs;
+
   /// move to scene
   void moveToScene(Location? location) {
     if (location == null) return;
@@ -33,6 +37,13 @@ class IndoorMapController extends GetxController {
       toScene.dx + screenSize.value.width / 2,
       toScene.dy + screenSize.value.height / 2 - 100,
     );
+  }
+
+  /// Rotate camera
+  void rotateCamera(double rotate) {
+    if ((rotate - rotateAngle.value).abs() > 2) {
+      rotateAngle.value = rotate * pi / 180;
+    }
   }
 
   /// Get image size from image provider

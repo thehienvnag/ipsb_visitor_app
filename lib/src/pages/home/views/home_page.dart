@@ -161,20 +161,20 @@ class HomePage extends GetView<HomeController> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  child: TextButton(
-                                    onPressed: () {
-                                      controller.goToBuildingStoreDetails();
-                                    },
-                                    child: Text(
-                                      'View more >>',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                // Container(
+                                //   child: TextButton(
+                                //     onPressed: () {
+                                //       controller.goToBuildingStoreDetails();
+                                //     },
+                                //     child: Text(
+                                //       'View more >>',
+                                //       style: TextStyle(
+                                //         fontSize: 14,
+                                //         color: Colors.grey,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                             Container(
@@ -312,7 +312,12 @@ class HomePage extends GetView<HomeController> {
                               }
                               var listCoupon = controller.listCoupon;
                               if (listCoupon.isEmpty) {
-                                return buildEmpty();
+                                return Container(
+                                  width: screenSize.width,
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 15),
+                                  child: buildEmpty(),
+                                );
                               }
                               return Container(
                                 height: screenSize.height * 0.232,

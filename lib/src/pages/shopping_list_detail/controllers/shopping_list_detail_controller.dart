@@ -61,8 +61,8 @@ class ShoppingListDetailController extends GetxController {
     if (_sharedStates.building.value.id != shoppingListDetails.value.buildingId) {
       showErrorDialog(
         context,
-        "Building is not available!",
-        "Please go to correct building!",
+        "Current building is not supported!",
+        "Shopping directions feature does not support this building!",
       );
       return;
     } else {
@@ -98,7 +98,10 @@ class ShoppingListDetailController extends GetxController {
   }
 
   void updateShoppingItem(int id, String note) async {
-    if (note.isEmpty) return;
+    if (note.isEmpty) {
+      BotToast.showText(text: "Successfully removed!!");
+      return;
+    }
     final result = await _shoppingItemService.update(id, {"note": note});
     if (result) {
       Get.back();

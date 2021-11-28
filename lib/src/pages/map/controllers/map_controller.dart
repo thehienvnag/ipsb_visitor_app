@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_compass/flutter_compass.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,6 @@ import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/positioning/ble_
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/positioning/pdr_positioning.dart';
 import 'package:ipsb_visitor_app/src/algorithm/shortest_path/graph.dart';
 import 'package:ipsb_visitor_app/src/algorithm/shortest_path/shortest_path.dart';
-import 'package:ipsb_visitor_app/src/common/constants.dart';
 import 'package:ipsb_visitor_app/src/models/building.dart';
 import 'package:ipsb_visitor_app/src/models/coupon.dart';
 import 'package:ipsb_visitor_app/src/models/edge.dart';
@@ -29,7 +29,6 @@ import 'package:ipsb_visitor_app/src/services/api/location_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/locator_tag_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/shopping_list_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
-import 'package:ipsb_visitor_app/src/services/storage/hive_storage.dart';
 import 'package:ipsb_visitor_app/src/utils/edge_helper.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
 import 'package:ipsb_visitor_app/src/widgets/indoor_map/indoor_map_controller.dart';
@@ -92,10 +91,10 @@ class MapController extends GetxController {
 
   /// Current position of visitor, determine by locationId
   final currentPosition = Location(
-    id: 530,
-    x: 525.364990234375,
-    y: 294.16999053955078,
-    floorPlanId: 20,
+    id: -1,
+    x: 2340.364990234375,
+    y: 350.16999053955078,
+    floorPlanId: 19,
     locationTypeId: 2,
   ).obs;
 
@@ -157,9 +156,7 @@ class MapController extends GetxController {
           initPositioning();
           loadEdgesInBuilding().then((value) {
             initShoppingList();
-            currentPosition.value =
-                EdgeHelper.findNearestLocation(edges, currentPosition.value);
-            _mapController.setCurrentMarker(currentPosition.value);
+            // currentPosition.refresh();
           });
           loadPlaceOnBuilding();
           isLoading.value = false;
@@ -170,12 +167,14 @@ class MapController extends GetxController {
         onLocationChanged();
       }
     });
+    // initRotateMap();
   }
 
   @override
   void onClose() {
     super.onClose();
     // closeShopping();
+    closeRotateMap();
     IpsbPositioning.stop();
   }
 
@@ -213,11 +212,35 @@ class MapController extends GetxController {
     return false;
   }
 
+  /// Rotate angle
+  final rotateAngle = 0.0.obs;
+
+  /// Compass subscription
+  StreamSubscription<CompassEvent>? compassSubscription;
+  void initRotateMap() {
+    rotateAngle.listen((e) => onRotateChange(e));
+    compassSubscription = FlutterCompass.events?.listen((e) {
+      rotateAngle.value = e.heading ?? 0;
+    });
+  }
+
+  /// Close rotate on map
+  void closeRotateMap() {
+    compassSubscription?.cancel();
+    rotateAngle.value = 0;
+  }
+
+  /// On rotate value changes
+  void onRotateChange(double rotate) {
+    _mapController.rotateCamera(rotate);
+  }
+
   void initPositioning() async {
     if (listFloorPlan.isEmpty) return; // If get none floorplan, stop!
 
-    final beacons = (await _locatorTagService.getByBuildingId(
-            sharedData.building.value.id!)) // Hard code buildingId
+    final beacons = (await _locatorTagService
+            .getByBuildingId(sharedData.building.value.id!))
+        .where((e) => e.location != null) // Hard code buildingId
         .map(
           (e) => Beacon(
             id: e.id,
@@ -247,8 +270,10 @@ class MapController extends GetxController {
       pdrConfig: _pdrConfig!,
       bleConfig: _bleConfig!,
       resultTranform: (location2d) => Location(
+        id: -1,
         x: location2d.x,
         y: location2d.y,
+        locationTypeId: 2,
         floorPlanId: location2d.floorPlanId,
       ),
       onChange: (newLocation, currentFloor, setCurrent) {
@@ -261,11 +286,13 @@ class MapController extends GetxController {
             changeSelectedFloor(floor);
           }
         }
-        final location = EdgeHelper.findNearestLocation(edges, newLocation);
-        if (location.x != null) {
-          currentPosition.value = location;
-        }
-        print('New location');
+        currentPosition.value = newLocation;
+        print('new');
+        // final location =
+        //     EdgeHelper.edgesWithCurrentLocation(edges, newLocation).projection;
+        // if (location?.x != null) {
+        //   currentPosition.value = location!;
+        // }
       },
     );
   }
@@ -345,8 +372,11 @@ class MapController extends GetxController {
       return;
     }
 
-    int beginId = currentPosition.value.id!;
-    Graph graph = Graph.from(edges);
+    int? beginId = currentPosition.value.id;
+    if (beginId == null) return;
+    Graph graph = Graph.from(
+      EdgeHelper.edgesWithCurrentLocation(edges, currentPosition.value).edges,
+    );
 
     // Sort the store by the distance from current position
     graph.sortStoreByDistance(
@@ -473,24 +503,26 @@ class MapController extends GetxController {
       } else {
         _mapController.setCurrentMarker(null);
       }
-      // _mapController.moveToScene(location);
+      _mapController.moveToScene(location);
     });
   }
 
   void checkCurrentLocationOnFloor() {
     if (currentPosition.value.floorPlanId != selectedFloor.value.id) {
-      changeSelectedFloor(
-        listFloorPlan
-            .where((floor) => floor.id == currentPosition.value.floorPlanId)
-            .first,
-      );
+      final floors = listFloorPlan
+          .where((floor) => floor.id == currentPosition.value.floorPlanId);
+      if (floors.isNotEmpty) {
+        changeSelectedFloor(floors.first);
+      }
     }
   }
 
   List<Location> solveForShortestPath(int beginId, int endId,
       {bool showDirection = true}) {
     // Init graph for finding shortest path from edges
-    Graph graph = Graph.from(edges);
+    Graph graph = Graph.from(
+      EdgeHelper.edgesWithCurrentLocation(edges, currentPosition.value).edges,
+    );
     // Find all shortest paths to endLocationId
     _shortestPathAlgorithm.solve(graph, endId);
 
@@ -510,7 +542,10 @@ class MapController extends GetxController {
   ) {
     distanceToDest.value = graph.getTotalDistance(paths, listFloorPlan);
 
-    if (distanceToDest.value < 4) {
+    double minDistance = selectedFloor.value.mapScale == null
+        ? 1
+        : selectedFloor.value.mapScale! / 100 * 2;
+    if (distanceToDest.value < minDistance) {
       if (completeRoute.isFalse) {
         completeRoute.value = true;
         currentStoreName.value =
@@ -596,7 +631,10 @@ class MapController extends GetxController {
           buildingId.toString(), keySearch);
       if (currentPosition.value.id != null) {
         // Init graph for finding shortest path from edges
-        Graph graph = Graph.from(edges);
+        Graph graph = Graph.from(
+          EdgeHelper.edgesWithCurrentLocation(edges, currentPosition.value)
+              .edges,
+        );
 
         // Find all shortest paths to endLocationId
         list.forEach((e) {

@@ -23,6 +23,7 @@ class StoreDetailsController extends GetxController
   final listFeedbacks = <CouponInUse>[].obs;
   final listFeedbacked = <CouponInUse>[].obs;
   final storeId = 0.obs;
+  final loading = false.obs;
 
   @override
   void onClose() {
@@ -31,17 +32,23 @@ class StoreDetailsController extends GetxController
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     tabController = TabController(vsync: this, length: 3);
     String? id = Get.parameters['id'];
     print(id);
     if (id == null) return;
     storeId.value = int.parse(id);
-    getStoreDetail();
-    getProducts();
-    getCoupons();
-    getFeedback();
+    loading.value = true;
+    try {
+      await Future.wait([
+        getStoreDetail(),
+        getProducts(),
+        getCoupons(),
+        getFeedback(),
+      ]);
+    } catch (e) {}
+    loading.value = false;
   }
 
   ICouponInUseService couponInUseService = Get.find();

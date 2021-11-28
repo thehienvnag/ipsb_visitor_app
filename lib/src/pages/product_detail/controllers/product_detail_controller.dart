@@ -53,13 +53,14 @@ class ProductDetailController extends GetxController {
 
   void changeHeight() async {
     try {
-      const scrollHeightJs = "document.documentElement.scrollHeight;";
+      const scrollHeightJs = "document.documentElement?.scrollHeight;";
+
       double height = double.parse(
         await webViewController.evaluateJavascript(scrollHeightJs),
       );
       webHeight.value = height + 10;
       Future.delayed(
-          Duration(milliseconds: 1000), () => webLoading.value = false);
+          Duration(milliseconds: 2000), () => webLoading.value = false);
     } catch (e) {}
   }
 
