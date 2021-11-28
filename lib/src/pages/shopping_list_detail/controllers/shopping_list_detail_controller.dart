@@ -23,32 +23,24 @@ class ShoppingListDetailController extends GetxController {
 
   void loadShoppingListDetails() async {
     String? shoppingListId = Get.parameters["shoppingListId"];
-    if (shoppingListId == null) return;
+    if (shoppingListId == null) {
+      BotToast.showText(text: "Load shopping failed");
+      return;
+    };
     isLoading.value = true;
-    final result =
-        await _shoppingListService.getById(int.parse(shoppingListId));
+    final result = await _shoppingListService.getById(int.parse(shoppingListId));
     if (result != null) {
       shoppingListDetails.value = result;
+    }else{
+      BotToast.showText(text: "Load shopping failed");
     }
     isLoading.value = false;
   }
 
   bool checkDataPresent() => shoppingListDetails.value.id != null;
 
-  // bool shoppingIsEmpty() =>
-  //     shoppingListDetails.value.shoppingItems == null ||
-  //     shoppingListDetails.value.shoppingItems!.isEmpty;
-
   void startShopping(BuildContext context) {
     if (!checkDataPresent()) return;
-    // if (!shoppingIsEmpty()) {
-    //   showErrorDialog(
-    //     context,
-    //     "Shopping list is empty!",
-    //     "Please add more items to your list!!",
-    //   );
-    //   return;
-    // }
     if (!checkItemsValid()) {
       showErrorDialog(
         context,
@@ -66,8 +58,7 @@ class ShoppingListDetailController extends GetxController {
       return;
     }
 
-    if (_sharedStates.building.value.id !=
-        shoppingListDetails.value.buildingId) {
+    if (_sharedStates.building.value.id != shoppingListDetails.value.buildingId) {
       showErrorDialog(
         context,
         "Building is not available!",
@@ -81,7 +72,7 @@ class ShoppingListDetailController extends GetxController {
       });
       _sharedStates.shoppingList.value = shoppingListDetails.value;
       _sharedStates.bottomBarSelectedIndex.value = 1;
-      Get.toNamed(Routes.map);
+      Get.offAllNamed(Routes.map);
     }
   }
 

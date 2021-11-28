@@ -4,11 +4,13 @@ import 'package:ipsb_visitor_app/src/models/shopping_list.dart';
 import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/shopping_list_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/auth_services.dart';
-import 'package:ipsb_visitor_app/src/utils/firebase_helper.dart';
+import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
 
 class ShoppingListController extends GetxController {
   final shoppingLists = <ShoppingList>[].obs;
   final IShoppingListService _iShoppingListService = Get.find();
+  final SharedStates shareState = Get.find();
+
   final loading = false.obs;
   @override
   void onInit() {
@@ -16,12 +18,22 @@ class ShoppingListController extends GetxController {
     loadShoppingLists();
   }
 
-  void loadShoppingLists() async {
-    // if (!AuthServices.isLoggedIn()) return;
-    // shoppingLists.value = await _iShoppingListService
-    //     .getByAccountId(AuthServices.userLoggedIn.value.id!);
+  void gotoShoppingListDetail(int id) async {
+    await Get.toNamed(
+      Routes.shoppingListDetail,
+      parameters: {
+        "shoppingListId": id.toString(),
+      },
+    );
+    loadShoppingLists(true);
+  }
+
+  void loadShoppingLists([isReturn = false]) async {
+    var userId = AuthServices.userLoggedIn.value.id;
+    if (userId == null && !isReturn) return;
+    if (!AuthServices.isLoggedIn()) return;
     loading.value = true;
-    shoppingLists.value = await _iShoppingListService.getByAccountId(AuthServices.userLoggedIn.value.id);
+    shoppingLists.value = await _iShoppingListService.getByAccountId(userId);
     loading.value = false;
   }
 
@@ -39,6 +51,9 @@ class ShoppingListController extends GetxController {
     if (result) {
       BotToast.showText(text: "Successfully removed!");
       loadShoppingLists();
+      Get.offAllNamed(Routes.shoppingList);
+    }else{
+      BotToast.showText(text: "Remove failed");
     }
   }
 }
