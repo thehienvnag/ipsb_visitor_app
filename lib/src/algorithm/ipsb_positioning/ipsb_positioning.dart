@@ -2,7 +2,6 @@ import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/fusion/data_fusi
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/location_2d.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/positioning/ble_positioning.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/positioning/pdr_positioning.dart';
-import 'package:ipsb_visitor_app/src/models/location.dart';
 
 class IpsbPositioning {
   static IDataFusion? _dataFusion;

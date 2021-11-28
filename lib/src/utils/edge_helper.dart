@@ -5,6 +5,11 @@ import 'utils.dart';
 
 const List<int> stairAndLift = [3, 4];
 
+class EdgeHelperResponse {
+  late List<Edge> edges;
+  Location? projection;
+}
+
 class EdgeHelper {
   static List<Edge> splitToSegments(List<Edge> edges, double mapScale) {
     if (edges.isEmpty) return [];
@@ -121,5 +126,116 @@ class EdgeHelper {
       }
     });
     return location;
+  }
+
+  static EdgeHelperResponse edgesWithCurrentLocation(
+    List<Edge> edges,
+    Location current,
+  ) {
+    Iterable<Edge>? edgesToProject;
+    List<int>? edgeIdsToRemoved;
+    double? minDistance;
+    Location? projection;
+    EdgeHelperResponse response = EdgeHelperResponse();
+    if (current.x == null || current.y == null) {
+      response.edges = edges;
+      return response;
+    }
+
+    edges.forEach((e) {
+      if (e.fromLocation?.floorPlanId == current.floorPlanId &&
+          e.toLocation?.floorPlanId == current.floorPlanId) {
+        double A = current.x! - e.fromLocation!.x!;
+        double B = current.y! - e.fromLocation!.y!;
+        double C = e.toLocation!.x! - e.fromLocation!.x!;
+        double D = e.toLocation!.y! - e.fromLocation!.y!;
+
+        double dot = A * C + B * D;
+        double lengthSquared = C * C + D * D;
+        double param = -1;
+        if (lengthSquared != 0) {
+          //in case of 0 length line
+          param = dot / lengthSquared;
+        }
+
+        if (param < 0) {
+          final distance = Utils.calDistance(e.fromLocation!, current);
+          if (minDistance == null || distance < minDistance!) {
+            minDistance = distance;
+            projection = e.fromLocation!;
+            edgesToProject = [
+              Edge(
+                fromLocationId: e.fromLocationId,
+                fromLocation: e.fromLocation,
+                toLocationId: current.id,
+                toLocation: current,
+                distance: distance,
+              )
+            ];
+          }
+        } else if (param > 1) {
+          final distance = Utils.calDistance(e.toLocation!, current);
+          if (minDistance == null || distance < minDistance!) {
+            minDistance = distance;
+            projection = e.fromLocation!;
+            edgesToProject = [
+              Edge(
+                fromLocationId: e.toLocationId,
+                fromLocation: e.toLocation,
+                toLocationId: current.id,
+                toLocation: current,
+                distance: distance,
+              )
+            ];
+          }
+        } else {
+          projection = Location(
+            id: -2,
+            x: e.fromLocation!.x! + param * C,
+            y: e.fromLocation!.y! + param * D,
+            locationTypeId: 2,
+            floorPlanId: current.floorPlanId,
+          );
+          final distance = Utils.calDistance(projection!, current);
+          if (minDistance == null || distance < minDistance!) {
+            minDistance = distance;
+            edgesToProject = [
+              Edge(
+                fromLocationId: current.id,
+                fromLocation: current,
+                toLocationId: projection!.id,
+                toLocation: projection,
+                distance: distance,
+              ),
+              Edge(
+                toLocationId: e.toLocationId,
+                toLocation: e.toLocation,
+                fromLocationId: projection!.id,
+                fromLocation: projection,
+                distance: Utils.calDistance(projection!, e.toLocation!),
+              ),
+              Edge(
+                toLocationId: e.fromLocationId,
+                toLocation: e.fromLocation,
+                fromLocationId: projection!.id,
+                fromLocation: projection,
+                distance: Utils.calDistance(projection!, e.fromLocation!),
+              ),
+            ];
+            edgeIdsToRemoved = [e.id ?? -1];
+          }
+        }
+      }
+    });
+
+    if (edgesToProject != null) {
+      edges.addAll(edgesToProject!);
+      response.edges = edges
+          .where((e) => !(edgeIdsToRemoved?.contains(e.id) ?? false))
+          .toList();
+      response.projection = projection;
+    }
+
+    return response;
   }
 }

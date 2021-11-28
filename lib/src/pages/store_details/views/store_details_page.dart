@@ -176,6 +176,16 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
     );
   }
 
+  Widget _buildLoading() {
+    return Center(
+      child: SizedBox(
+        height: 40,
+        width: 40,
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
   Widget _buildProducts(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
@@ -183,6 +193,9 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Obx(() {
         final products = controller.listProduct;
+        if (controller.loading.isTrue) {
+          return _buildLoading();
+        }
         if (products.isEmpty)
           return _buildEmpty("Store has no products!", context);
         return AnimationLimiter(
@@ -252,6 +265,9 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
       width: size.width,
       child: Obx(() {
         final coupons = controller.listCoupon;
+        if (controller.loading.isTrue) {
+          return _buildLoading();
+        }
         if (coupons.isEmpty)
           return _buildEmpty("Store has no coupons!", context);
         return ListView.builder(
@@ -295,6 +311,9 @@ class StoreDetailsPage extends GetView<StoreDetailsController> {
       width: size.width,
       child: Obx(() {
         final feedbacks = controller.listFeedbacked;
+        if (controller.loading.isTrue) {
+          return _buildLoading();
+        }
         if (feedbacks.isEmpty)
           return _buildEmpty("Store has no feedbacks!", context);
         var store = controller.store.value;

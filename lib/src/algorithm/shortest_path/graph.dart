@@ -84,7 +84,7 @@ class Graph {
         return;
       }
 
-      int endLocationId = e.location!.id!;
+      int endLocationId = e.location?.id ?? -1;
 
       // Find all shortest paths from current position to endLocationId
       final paths = shortestPathSolver.call(

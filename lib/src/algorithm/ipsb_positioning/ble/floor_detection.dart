@@ -30,7 +30,7 @@ class FloorDetection extends BaseFloorDetection {
   @override
   void init(BlePositioningConfig config) {
     _config = config;
-    _beaconManager = BeaconManager(beacons: config.beacons);
+    _beaconManager = BeaconManager(beacons: _config.beacons);
     periodicFloorDetection();
   }
 
@@ -56,7 +56,7 @@ class FloorDetection extends BaseFloorDetection {
   /// Perform floor detection
   void floorDetection() {
     final usableBeacons = _beaconManager.getUsableBeacons();
-    if (usableBeacons.length >= 3) {
+    if (usableBeacons.isNotEmpty) {
       int? currentFloor = determineFloor(usableBeacons);
       if (currentFloor != null) {
         onChange(currentFloor);
@@ -136,10 +136,10 @@ class FloorDetection extends BaseFloorDetection {
 
   /// Calculate mean distance from all Beacon of a floor to user device
   double calMeanDistanceByFloor(List<Beacon> list, int floorId) {
+    var satisfied = list.where((e) => e.location!.floorPlanId == floorId);
+    if (satisfied.isEmpty) return double.infinity;
     return MeanFilter.average(
-      list
-          .where((e) => e.location!.floorPlanId == floorId)
-          .map((e) => e.getDistanceAvg()),
+      satisfied.map((e) => e.getDistanceAvg()),
     );
   }
 
