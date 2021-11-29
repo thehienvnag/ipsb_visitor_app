@@ -18,7 +18,7 @@ mixin IDataFusion {
 
 class DataFusion implements IDataFusion {
   /// Delay duration
-  final Duration longerInterval = const Duration(milliseconds: 4000);
+  final Duration longerInterval = const Duration(milliseconds: 2700);
 
   /// 2d kalman filter
   final KalmanFilter2d _filter = KalmanFilter2d(
@@ -61,7 +61,7 @@ class DataFusion implements IDataFusion {
   void start() async {
     runPeriodic();
     initBleMethod();
-    initPdrMethod();
+    // initPdrMethod();
   }
 
   void initBleMethod() {

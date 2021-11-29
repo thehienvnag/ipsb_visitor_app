@@ -23,16 +23,18 @@ class Beacon {
     this.txPower,
   });
 
-  double getDistanceAvg() {
+  double? getDistanceAvg() {
     // Average Rssi
-    double rssi = MeanFilter.average(packetManager.getListRssi());
-    packetManager.removeAll();
+    if (packetManager.isNotEmpty()) {
+      double rssi = MeanFilter.average(packetManager.getListRssi());
+      packetManager.removeAll();
 
-    // Calculate distance
-    return Utils.rssiDistance(
-      rssi,
-      txPower!,
-    );
+      // Calculate distance
+      return Utils.rssiDistance(
+        rssi,
+        txPower!,
+      );
+    }
   }
 
   double? getDistance(double mapScale) {

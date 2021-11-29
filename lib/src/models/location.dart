@@ -14,7 +14,7 @@ part 'location.g.dart';
 @HiveType(typeId: AppHiveType.location)
 class Location {
   @HiveField(0)
-  final int? id;
+  int? id;
 
   @HiveField(1)
   final int? locationTypeId;
