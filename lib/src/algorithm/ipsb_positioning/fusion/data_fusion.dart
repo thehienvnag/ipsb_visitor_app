@@ -61,7 +61,7 @@ class DataFusion implements IDataFusion {
   void start() async {
     runPeriodic();
     initBleMethod();
-    // initPdrMethod();
+    initPdrMethod();
   }
 
   void initBleMethod() {
