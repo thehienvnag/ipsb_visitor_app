@@ -43,7 +43,7 @@ class IndoorMap extends GetView<IndoorMapController> {
               angle: controller.rotateAngle.value,
               child: InteractiveViewer(
                 maxScale: 1,
-                minScale: 0.1,
+                minScale: 0.0001,
                 constrained: false,
                 transformationController: controller.transformationController,
                 child: ImageView(

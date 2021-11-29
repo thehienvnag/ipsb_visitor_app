@@ -49,9 +49,61 @@ class FloorDetection extends BaseFloorDetection {
     const interval = const Duration(seconds: 3);
 
     _timer = Timer.periodic(interval, (timer) {
-      floorDetection();
+      // floorDetection();
+      // testFloorDetection();
+      testFloorDetection2();
     });
   }
+
+  void testFloorDetection2() {
+    final usableBeacons = _beaconManager.getUsableBeacons();
+    if (usableBeacons.isEmpty) return;
+    final ids = getFloorIds(usableBeacons);
+    if (ids.isEmpty) return;
+    int floorId = ids.first;
+    double minDistance = calMeanDistanceByFloor(usableBeacons, floorId);
+
+    ids.forEach((floor) {
+      double distance = calMeanDistanceByFloor(usableBeacons, floor);
+      if (distance < minDistance) {
+        minDistance = distance;
+        floorId = floor;
+      }
+    });
+    onChange(floorId);
+  }
+
+  // void testFloorDetection() {
+  //   final usableBeacons = _beaconManager.getUsableBeacons();
+  //   if (usableBeacons.isEmpty) return;
+  //   Map<int, double> floorAndDistance = {};
+  //   if (usableBeacons.isNotEmpty) {
+  //     usableBeacons.forEach((e) {
+  //       var floorId = e.location!.floorPlanId;
+  //       if (floorAndDistance.containsKey(floorId)) {
+  //         double distance = e.getDistanceAvg();
+  //         if (floorAndDistance[floorId]! > distance) {
+  //           floorAndDistance[floorId] = distance;
+  //         }
+  //       } else {
+  //         floorAndDistance.putIfAbsent(
+  //           floorId,
+  //           () => e.getDistanceAvg(),
+  //         );
+  //       }
+  //     });
+  //     if (floorAndDistance.isNotEmpty) {
+  //       int floorId = floorAndDistance.keys.first;
+  //       double minDistance = floorAndDistance.values.first;
+  //       floorAndDistance.forEach((floor, distance) {
+  //         if (distance < minDistance) {
+  //           floorId = floor;
+  //         }
+  //       });
+  //       onChange(floorId);
+  //     }
+  //   }
+  // }
 
   /// Perform floor detection
   void floorDetection() {
@@ -138,9 +190,11 @@ class FloorDetection extends BaseFloorDetection {
   double calMeanDistanceByFloor(List<Beacon> list, int floorId) {
     var satisfied = list.where((e) => e.location!.floorPlanId == floorId);
     if (satisfied.isEmpty) return double.infinity;
-    return MeanFilter.average(
-      satisfied.map((e) => e.getDistanceAvg()),
-    );
+    Iterable<double> rssiList = satisfied
+        .where((e) => e.packetManager.isNotEmpty())
+        .map((e) => e.getDistanceAvg()!);
+    if (rssiList.isEmpty) return double.infinity;
+    return MeanFilter.average(rssiList);
   }
 
   /// Get current floor

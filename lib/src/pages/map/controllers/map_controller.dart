@@ -92,9 +92,9 @@ class MapController extends GetxController {
   /// Current position of visitor, determine by locationId
   final currentPosition = Location(
     id: -1,
-    x: 2340.364990234375,
-    y: 350.16999053955078,
-    floorPlanId: 19,
+    x: 500.364990234375,
+    y: 280.16999053955078,
+    floorPlanId: 13,
     locationTypeId: 2,
   ).obs;
 
@@ -156,7 +156,8 @@ class MapController extends GetxController {
           initPositioning();
           loadEdgesInBuilding().then((value) {
             initShoppingList();
-            // currentPosition.refresh();
+            currentPosition.value =
+                EdgeHelper.findNearestLocation(edges, currentPosition.value);
           });
           loadPlaceOnBuilding();
           isLoading.value = false;
@@ -270,7 +271,7 @@ class MapController extends GetxController {
       pdrConfig: _pdrConfig!,
       bleConfig: _bleConfig!,
       resultTranform: (location2d) => Location(
-        id: -1,
+        // id: 20000,
         x: location2d.x,
         y: location2d.y,
         locationTypeId: 2,
@@ -286,12 +287,15 @@ class MapController extends GetxController {
             changeSelectedFloor(floor);
           }
         }
-        currentPosition.value = newLocation;
-        print('new');
+        final location = EdgeHelper.findNearestLocation(edges, newLocation);
+        if (location.id != null) {
+          currentPosition.value = location;
+        }
         // final location =
-        //     EdgeHelper.edgesWithCurrentLocation(edges, newLocation).projection;
-        // if (location?.x != null) {
-        //   currentPosition.value = location!;
+        //     EdgeHelper.edgesWithCurrentLocation(edges, currentPosition.value)
+        //         .projection;
+        // if (location != null) {
+        //   currentPosition.value = location;
         // }
       },
     );
@@ -375,7 +379,8 @@ class MapController extends GetxController {
     int? beginId = currentPosition.value.id;
     if (beginId == null) return;
     Graph graph = Graph.from(
-      EdgeHelper.edgesWithCurrentLocation(edges, currentPosition.value).edges,
+      // EdgeHelper.edgesWithCurrentLocation(edges, currentPosition.value).
+      edges,
     );
 
     // Sort the store by the distance from current position
@@ -503,7 +508,7 @@ class MapController extends GetxController {
       } else {
         _mapController.setCurrentMarker(null);
       }
-      _mapController.moveToScene(location);
+      // _mapController.moveToScene(location);
     });
   }
 
@@ -521,7 +526,8 @@ class MapController extends GetxController {
       {bool showDirection = true}) {
     // Init graph for finding shortest path from edges
     Graph graph = Graph.from(
-      EdgeHelper.edgesWithCurrentLocation(edges, currentPosition.value).edges,
+      // EdgeHelper.edgesWithCurrentLocation(edges, currentPosition.value).
+      edges,
     );
     // Find all shortest paths to endLocationId
     _shortestPathAlgorithm.solve(graph, endId);
@@ -530,7 +536,7 @@ class MapController extends GetxController {
     final paths = graph.getShortestPath(beginId);
 
     if (showDirection) {
-      showNearbyDialog(graph, paths, endId);
+      // showNearbyDialog(graph, paths, endId);
     }
     return paths;
   }
@@ -581,7 +587,10 @@ class MapController extends GetxController {
 
     // Set path on map
     _mapController.setActiveRoute(
-      Graph.getRouteOnFloor(shortestPath, selectedFloor.value.id!),
+      [
+        // currentPosition.value,
+        ...Graph.getRouteOnFloor(shortestPath, selectedFloor.value.id!)
+      ],
     );
   }
 
@@ -632,8 +641,8 @@ class MapController extends GetxController {
       if (currentPosition.value.id != null) {
         // Init graph for finding shortest path from edges
         Graph graph = Graph.from(
-          EdgeHelper.edgesWithCurrentLocation(edges, currentPosition.value)
-              .edges,
+          // EdgeHelper.edgesWithCurrentLocation(edges, currentPosition.value).
+          edges,
         );
 
         // Find all shortest paths to endLocationId
@@ -709,7 +718,10 @@ class MapController extends GetxController {
   Future<void> loadEdgesInBuilding() async {
     int? buildingId = sharedData.building.value.id;
     if (buildingId != null) {
-      edges.value = await _edgeService.getByBuildingId(buildingId);
+      edges.value = EdgeHelper.splitToSegments(
+        await _edgeService.getByBuildingId(buildingId),
+        selectedFloor.value.mapScale ?? 15,
+      );
     }
   }
 

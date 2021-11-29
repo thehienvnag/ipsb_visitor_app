@@ -227,13 +227,18 @@ class EdgeHelper {
         }
       }
     });
-
+    response.projection = Location(
+      id: -1,
+      x: projection?.x,
+      y: projection?.y,
+      locationTypeId: 2,
+      floorPlanId: projection?.floorPlanId,
+    );
     if (edgesToProject != null) {
       edges.addAll(edgesToProject!);
       response.edges = edges
           .where((e) => !(edgeIdsToRemoved?.contains(e.id) ?? false))
           .toList();
-      response.projection = projection;
     }
 
     return response;
