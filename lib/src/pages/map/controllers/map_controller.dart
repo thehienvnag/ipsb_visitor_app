@@ -156,8 +156,8 @@ class MapController extends GetxController {
           initPositioning();
           loadEdgesInBuilding().then((value) {
             initShoppingList();
-            currentPosition.value =
-                EdgeHelper.findNearestLocation(edges, currentPosition.value);
+            // currentPosition.value =
+            //     EdgeHelper.findNearestLocation(edges, currentPosition.value);
           });
           loadPlaceOnBuilding();
           isLoading.value = false;
@@ -536,7 +536,7 @@ class MapController extends GetxController {
     final paths = graph.getShortestPath(beginId);
 
     if (showDirection) {
-      // showNearbyDialog(graph, paths, endId);
+      showNearbyDialog(graph, paths, endId);
     }
     return paths;
   }

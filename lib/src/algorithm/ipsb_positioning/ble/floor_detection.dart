@@ -49,9 +49,9 @@ class FloorDetection extends BaseFloorDetection {
     const interval = const Duration(seconds: 3);
 
     _timer = Timer.periodic(interval, (timer) {
-      // floorDetection();
+      floorDetection();
       // testFloorDetection();
-      testFloorDetection2();
+      // testFloorDetection2();
     });
   }
 
