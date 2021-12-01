@@ -92,8 +92,8 @@ class MapController extends GetxController {
   /// Current position of visitor, determine by locationId
   final currentPosition = Location(
     id: -1,
-    x: 500.364990234375,
-    y: 280.16999053955078,
+    x: 200.364990234375,
+    y: 1100.16999053955078,
     floorPlanId: 13,
     locationTypeId: 2,
   ).obs;
@@ -156,8 +156,12 @@ class MapController extends GetxController {
           initPositioning();
           loadEdgesInBuilding().then((value) {
             initShoppingList();
-            // currentPosition.value =
-            //     EdgeHelper.findNearestLocation(edges, currentPosition.value);
+            final location = EdgeHelper.edgesWithCurrentLocation(
+                    edges, currentPosition.value)
+                .projection;
+            if (location != null) {
+              currentPosition.value = location;
+            }
           });
           loadPlaceOnBuilding();
           isLoading.value = false;
@@ -718,10 +722,7 @@ class MapController extends GetxController {
   Future<void> loadEdgesInBuilding() async {
     int? buildingId = sharedData.building.value.id;
     if (buildingId != null) {
-      edges.value = EdgeHelper.splitToSegments(
-        await _edgeService.getByBuildingId(buildingId),
-        selectedFloor.value.mapScale ?? 15,
-      );
+      edges.value = await _edgeService.getByBuildingId(buildingId);
     }
   }
 

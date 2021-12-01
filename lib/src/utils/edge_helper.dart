@@ -228,7 +228,7 @@ class EdgeHelper {
       }
     });
     response.projection = Location(
-      id: -1,
+      id: -2,
       x: projection?.x,
       y: projection?.y,
       locationTypeId: 2,
