@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/location_2d.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/trilateration/trileration.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/utils/utils.dart';

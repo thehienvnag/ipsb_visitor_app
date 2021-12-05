@@ -38,18 +38,6 @@ Future _showNotificationWithDefaultSound(String? title, String? message) async {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage? message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  // await Firebase.initializeApp();
-  // if (message.data['notificationType'] == 'shopping_list_changed') {
-  //   Get.toNamed(
-  //     Routes.shoppingListDetail,
-  //     parameters: {
-  //       "shoppingListId": message.data['shoppingListId'],
-  //     },
-  //   );
-  // }
-
   if (message?.data != null) {
     await _showNotificationWithDefaultSound(
         message?.notification?.title, message?.notification?.body);
@@ -67,7 +55,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  // This widget is the root of application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

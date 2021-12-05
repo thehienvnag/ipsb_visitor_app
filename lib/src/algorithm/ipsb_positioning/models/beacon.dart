@@ -10,6 +10,7 @@ class Beacon {
   final String? uuid;
   final double? txPower;
   final int? beaconGroupId;
+  double? distance;
 
   final Location2d? location;
   late IPacketManager packetManager = PacketManager();
@@ -34,6 +35,8 @@ class Beacon {
         rssi,
         txPower!,
       );
+    } else {
+      return double.infinity;
     }
   }
 
@@ -51,7 +54,7 @@ class Beacon {
       );
 
       // If distance smaller than 10
-      if (distanceMeter > 0 && distanceMeter < 8) {
+      if (distanceMeter > 0 && distanceMeter < 3.5) {
         return distanceMeter / mapScale * meterToPixel;
       }
     }

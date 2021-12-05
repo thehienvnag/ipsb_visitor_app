@@ -136,7 +136,8 @@ class PdrPositioning implements IPdrPositioning {
 
   void onStep(DateTime dateTime) async {
     final meterToPixel = 3779.52755906;
-    double stepLength = _config.stepLength / _config.mapScale * meterToPixel;
+    double stepLength =
+        _config.stepLength * 100 / _config.mapScale * meterToPixel;
     double rotation = _config.rotationAngle;
     if (_heading == null) return; // No new location if _heading == null
     if (_initial == null) return; // No new location if initial == null
@@ -145,6 +146,7 @@ class PdrPositioning implements IPdrPositioning {
     final location = Location2d(
       x: _initial!.x + stepLength * cos(radians(_heading! - rotation)),
       y: _initial!.y + stepLength * sin(radians(_heading! - rotation)),
+      floorPlanId: _initial!.floorPlanId,
     );
     _locationController?.add(location);
   }

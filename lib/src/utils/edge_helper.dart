@@ -45,7 +45,7 @@ class EdgeHelper {
     int id,
     double mapScale,
   ) {
-    const minDistance = 0.7; // Meter
+    const minDistance = 0.2; // Meter
     const meterToPixel = 3779.5275590551; // Meter to pixel
     double segment = minDistance / mapScale * meterToPixel;
 
@@ -99,14 +99,20 @@ class EdgeHelper {
     return result;
   }
 
-  static Location findNearestLocation(List<Edge> edges, Location loc) {
+  static Location findNearestLocation(
+      List<Edge> edges, Location loc, int? floorId) {
     if (edges.isEmpty) return loc;
+    if (floorId == null) return loc;
     Location location = edges[0].fromLocation!;
     double minDistance = Utils.calDistance(
       location,
       loc,
     );
-    edges.forEach((e) {
+    edges
+        .where((e) =>
+            e.fromLocation?.floorPlanId == floorId &&
+            e.toLocation?.floorPlanId == floorId)
+        .forEach((e) {
       double fromDistance = Utils.calDistance(
         loc,
         e.fromLocation!,
@@ -190,7 +196,7 @@ class EdgeHelper {
           }
         } else {
           projection = Location(
-            id: -2,
+            id: -1,
             x: e.fromLocation!.x! + param * C,
             y: e.fromLocation!.y! + param * D,
             locationTypeId: 2,
@@ -228,7 +234,7 @@ class EdgeHelper {
       }
     });
     response.projection = Location(
-      id: -2,
+      id: -1,
       x: projection?.x,
       y: projection?.y,
       locationTypeId: 2,

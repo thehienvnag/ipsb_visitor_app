@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/ble/base_ble_action.dart';
-import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/ble/managers/beacon_manager.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/filters/mean_filter.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/beacon.dart';
-
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/location_2d.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/positioning/ble_positioning.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/trilateration/lsq_trilateration.dart';
 
+import 'managers/beacon_manager.dart';
+
 abstract class BaseTrilateration extends BaseBleAction {
-  Location2d? resolveLocation();
+  Location2d? resolveLocation(int floorId);
   void stop();
 }
 
@@ -82,11 +82,13 @@ class Trilateration extends BaseTrilateration {
   }
 
   @override
-  Location2d? resolveLocation() {
+  Location2d? resolveLocation(int floorId) {
     if (locationsCalculated.isNotEmpty) {
       final location = MeanFilter.filter(locationsCalculated);
       locationsCalculated.clear();
-      return location;
+      if (location.floorPlanId == floorId) {
+        return location;
+      }
     }
   }
 

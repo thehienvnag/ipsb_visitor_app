@@ -167,8 +167,8 @@ class HomeController extends FullLifeCycleController {
 
   Future<void> getBuildings() async {
     final list = await buildingService.getBuildings(
-      pos.value!.latitude,
-      pos.value!.longitude,
+      pos.value?.latitude,
+      pos.value?.longitude,
     );
     if (list.isNotEmpty &&
         list.first.distanceTo != null &&

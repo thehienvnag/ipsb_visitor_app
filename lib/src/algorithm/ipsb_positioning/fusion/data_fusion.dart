@@ -5,7 +5,6 @@ import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/location_
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/positioning/ble_positioning.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/positioning/pdr_positioning.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/positioning/positioning.dart';
-import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/utils/const.dart';
 
 mixin IDataFusion {
   void init({
@@ -18,7 +17,7 @@ mixin IDataFusion {
 
 class DataFusion implements IDataFusion {
   /// Delay duration
-  final Duration longerInterval = const Duration(milliseconds: 1200);
+  final Duration longerInterval = const Duration(milliseconds: 3500);
 
   /// 2d kalman filter
   final KalmanFilter2d _filter = KalmanFilter2d(
@@ -41,10 +40,12 @@ class DataFusion implements IDataFusion {
   /// Current floor
   int? _currentFloor;
 
-  /// On location updated
-  final void Function(Location2d, int?, void Function(Location2d)) onChange;
+  final void Function(int) onFloorChange;
 
-  DataFusion({required this.onChange});
+  /// On location updated
+  final void Function(Location2d?, void Function(Location2d)) onChange;
+
+  DataFusion({required this.onChange, required this.onFloorChange});
 
   @override
   void init({required bleConfig, required pdrConfig}) {
@@ -67,14 +68,8 @@ class DataFusion implements IDataFusion {
   void initBleMethod() {
     _blePositioning.start();
     _blePositioning.currentFloorEvents.listen((e) async {
-      if (_currentFloor != null && e != _currentFloor) {
-        _timer?.cancel();
-        _pdrPositioning.pause();
-        _current = await initLocation();
-        _pdrPositioning.setInitial(_current);
-        runPeriodic();
-      }
       _currentFloor = e;
+      onFloorChange(e);
     });
   }
 
@@ -83,8 +78,10 @@ class DataFusion implements IDataFusion {
     _pdrPositioning.start();
     _pdrPositioning.setInitial(_current);
     _pdrPositioning.locationEvents.listen((e) {
-      _current = e;
-      onChange(e, _currentFloor, setCurrent);
+      if (e.floorPlanId == _currentFloor) {
+        _current = e;
+        onChange(e, setCurrent);
+      }
     });
   }
 
@@ -95,18 +92,19 @@ class DataFusion implements IDataFusion {
   void runPeriodic() async {
     _current = await initLocation();
     _timer = Timer.periodic(longerInterval, (timer) async {
+      _pdrPositioning.pause();
       if (_current != null) {
-        _pdrPositioning.pause();
         _filter.predict(_current!);
-        final measured = _blePositioning.resolve();
+        final measured = _blePositioning.resolve(_currentFloor);
         if (measured != null) {
           _filter.correct(measured);
           _current = _filter.state;
         }
-        onChange(_current!, _currentFloor, setCurrent);
+        onChange(_current, setCurrent);
       } else {
         _current = await initLocation();
       }
+      _pdrPositioning.setInitial(_current);
       _pdrPositioning.resume();
     });
   }
@@ -121,7 +119,7 @@ class DataFusion implements IDataFusion {
   Future<Location2d?> initLocation() async {
     const initialInterval = const Duration(milliseconds: 2500);
     final location = await Future.delayed(initialInterval, () {
-      return _blePositioning.resolve();
+      return _blePositioning.resolve(_currentFloor);
     });
     return location;
   }

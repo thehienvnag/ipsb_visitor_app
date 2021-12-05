@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:beacons_plugin/beacons_plugin.dart';
-import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/beacon.dart';
-import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/location_2d.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/ble/floor_detection.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/ble/trilateration.dart';
+import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/beacon.dart';
+import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/models/location_2d.dart';
 import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/positioning/positioning.dart';
 
 class BlePositioningConfig extends PositioningConfig {
@@ -19,7 +19,7 @@ class BlePositioningConfig extends PositioningConfig {
 
 mixin IBlePositioning on Positioning {
   Stream<int> get currentFloorEvents;
-  Location2d? resolve();
+  Location2d? resolve(int? floorId);
   void start();
   void stop();
 }
@@ -49,8 +49,10 @@ class BlePositioning implements IBlePositioning {
   }
 
   @override
-  Location2d? resolve() {
-    return _trilateration?.resolveLocation();
+  Location2d? resolve(int? floorId) {
+    if (floorId != null) {
+      return _trilateration?.resolveLocation(floorId);
+    }
   }
 
   @override

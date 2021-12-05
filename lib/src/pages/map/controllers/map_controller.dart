@@ -240,6 +240,7 @@ class MapController extends GetxController {
     _mapController.rotateCamera(rotate);
   }
 
+  DateTime? timeFloorChange;
   void initPositioning() async {
     if (listFloorPlan.isEmpty) return; // If get none floorplan, stop!
 
@@ -275,31 +276,50 @@ class MapController extends GetxController {
       pdrConfig: _pdrConfig!,
       bleConfig: _bleConfig!,
       resultTranform: (location2d) => Location(
-        // id: 20000,
-        x: location2d.x,
-        y: location2d.y,
+        id: -1,
+        x: location2d?.x,
+        y: location2d?.y,
         locationTypeId: 2,
-        floorPlanId: location2d.floorPlanId,
+        floorPlanId: location2d?.floorPlanId,
       ),
-      onChange: (newLocation, currentFloor, setCurrent) {
-        if (currentFloor != null) {
-          final floor = listFloorPlan.firstWhere(
-            (floor) => floor.id == currentFloor,
-            orElse: () => FloorPlan(),
-          );
-          if (floor.id != null) {
-            changeSelectedFloor(floor);
+      onFloorChange: (currentFloor) {
+        final floor = listFloorPlan.firstWhere(
+          (floor) => floor.id == currentFloor,
+          orElse: () => FloorPlan(),
+        );
+        if (floor.id != null && floor.id != selectedFloor.value.id) {
+          changeSelectedFloor(floor);
+          currentPosition.value = Location();
+          // timeFloorChange = DateTime.now();
+        }
+      },
+      onChange: (newLocation, setCurrent) {
+        if (timeFloorChange
+                ?.add(Duration(seconds: 4))
+                .isAfter(DateTime.now()) ??
+            true) {
+          final location = EdgeHelper.findNearestLocation(
+              edges, newLocation, selectedFloor.value.id);
+          if (location.id != null) {
+            currentPosition.value = location;
+            setCurrent(Location2d(
+              x: location.x!,
+              y: location.y!,
+              floorPlanId: location.floorPlanId!,
+            ));
           }
         }
-        final location = EdgeHelper.findNearestLocation(edges, newLocation);
-        if (location.id != null) {
-          currentPosition.value = location;
-        }
+
         // final location =
         //     EdgeHelper.edgesWithCurrentLocation(edges, currentPosition.value)
         //         .projection;
         // if (location != null) {
         //   currentPosition.value = location;
+        //   setCurrent(Location2d(
+        //     x: location.x!,
+        //     y: location.y!,
+        //     floorPlanId: location.floorPlanId!,
+        //   ));
         // }
       },
     );
@@ -580,7 +600,11 @@ class MapController extends GetxController {
     if (destPosition.value <= 0) return;
     isShowingDirection.value = true;
 
-    int beginLocationId = currentPosition.value.id!;
+    int? beginLocationId = currentPosition.value.id;
+    if (beginLocationId == null) {
+      _mapController.setActiveRoute([]);
+      return;
+    }
     int endLocationId = destPosition.value;
 
     shortestPath.value = solveForShortestPath(
@@ -722,7 +746,11 @@ class MapController extends GetxController {
   Future<void> loadEdgesInBuilding() async {
     int? buildingId = sharedData.building.value.id;
     if (buildingId != null) {
-      edges.value = await _edgeService.getByBuildingId(buildingId);
+      edges.value = EdgeHelper.splitToSegments(
+        await _edgeService.getByBuildingId(buildingId),
+        selectedFloor.value.mapScale!,
+      );
+      print(1);
     }
   }
 
