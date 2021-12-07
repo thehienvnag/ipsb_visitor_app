@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:flutter_compass/flutter_compass.dart';
@@ -65,7 +66,7 @@ class PdrPositioning implements IPdrPositioning {
   StreamSubscription<UserAccelerometerEvent>? _userAccelerometerEventSub;
 
   /// Initial location [initial]
-  late Location2d? _initial;
+  Location2d? _initial;
 
   @override
   Location2d? get initial => _initial;
@@ -122,7 +123,10 @@ class PdrPositioning implements IPdrPositioning {
   /// Init the compass for determine heading direction
   void initCompass() {
     _compassEventSub = FlutterCompass.events?.listen((event) {
-      _heading = event.heading;
+      if (event.heading != null) {
+        dev.log((event.heading!.abs() - _config.rotationAngle).toString());
+        _heading = event.heading;
+      }
     });
   }
 
@@ -136,16 +140,14 @@ class PdrPositioning implements IPdrPositioning {
 
   void onStep(DateTime dateTime) async {
     final meterToPixel = 3779.52755906;
-    double stepLength =
-        _config.stepLength * 100 / _config.mapScale * meterToPixel;
+    double stepLength = _config.stepLength / _config.mapScale * meterToPixel;
     double rotation = _config.rotationAngle;
     if (_heading == null) return; // No new location if _heading == null
     if (_initial == null) return; // No new location if initial == null
-
     // PDR equation with step length and heading
     final location = Location2d(
-      x: _initial!.x + stepLength * cos(radians(_heading! - rotation)),
-      y: _initial!.y + stepLength * sin(radians(_heading! - rotation)),
+      x: _initial!.x + stepLength * cos(radians((_heading! - rotation))),
+      y: _initial!.y + stepLength * sin(radians((_heading! - rotation))),
       floorPlanId: _initial!.floorPlanId,
     );
     _locationController?.add(location);

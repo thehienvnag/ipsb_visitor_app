@@ -10,7 +10,9 @@ mixin IStepDetector {
 }
 
 class StepDetector implements IStepDetector {
-  double mLimit = 1; // Sperimentally found on my slow walk. It was 10.0 before
+  /// Sperimentally found on my slow walk. It was 10.0 before
+  double mLimit = 1.8;
+
   List<double> mLastValues = List.generate(6, (index) => 0);
   List<double> mScale = [
     -(480 * 0.5 * (1.0 / (StepDetectorConfig.STANDARD_GRAVITY * 2))),

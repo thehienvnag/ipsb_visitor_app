@@ -4,7 +4,6 @@ import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/utils/utils.dart
 
 mixin IBeaconManager {
   void addBeaconFound(String uuid, int rssi);
-  void removeOldBeacon();
   List<Beacon> getUsableBeacons([int? floorPlanId]);
   List<int> getBeaconGroups();
 }
@@ -33,16 +32,13 @@ class BeaconManager implements IBeaconManager {
   }
 
   @override
-  void removeOldBeacon() {
-    _beaconsFound.removeWhere((e) => !e.isRecentlySeen());
-  }
-
-  @override
   List<Beacon> getUsableBeacons([int? floorPlanId]) {
     _beaconsFound.forEach((e) {
       e.distance = null;
+      e.location?.distance = null;
     });
     if (floorPlanId == null) {
+      _beaconsFound.forEach((e) {});
       return _beaconsFound.where((e) => e.packetManager.isNotEmpty()).toList();
     }
     return _beaconsFound
@@ -72,34 +68,6 @@ class BeaconManager implements IBeaconManager {
     if (b.uuid != null) {
       return b;
     }
-  }
-
-  @override
-  List<Beacon> getFloorUsableBeacons() {
-    // try {
-    //   final groupIds = beacons
-    //       .where((e) => e.beaconGroupId != null)
-    //       .map((e) => e.beaconGroupId);
-    //   final beaconInGroup = beacons
-    //       .where((e) =>
-    //           groupIds.contains(e.id) || groupIds.contains(e.beaconGroupId))
-    //       .map((e) => e.clone());
-    //   final beaconFoundInGroupIds = _beaconsFound.map((e) => e.id);
-    //   final result = [
-    //     ..._beaconsFound,
-    //     ...beaconInGroup.where((e) => !beaconFoundInGroupIds.contains(e.id))
-    //   ];
-    //   result.forEach((e) {
-    //     e.distance = null;
-    //   });
-    //   return result;
-    // } catch (e) {
-    //   print(1);
-    // }
-    return beacons.map((e) {
-      e.packetManager = PacketManager();
-      return e.clone();
-    }).toList();
   }
 
   @override

@@ -14,6 +14,9 @@ class Const {
   /// Interval between a location estimation
   static final Duration longInterval = Duration(milliseconds: 2500);
 
+  /// Interval between rssi expired
+  static final Duration expiredLocation = Duration(milliseconds: 3500);
+
   /// Delay for first time init location estimation
   static final Duration initDuration = Duration(milliseconds: 500);
 

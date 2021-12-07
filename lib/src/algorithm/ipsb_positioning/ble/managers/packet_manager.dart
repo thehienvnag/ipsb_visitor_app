@@ -5,14 +5,8 @@ mixin IPacketManager {
   /// Add new advertising packets
   void addPacket(int rssi, int timeStamp);
 
-  /// Remove old advertising packets
-  void removeOldPackets();
-
-  /// Remove first
-  void removeFirst();
-
   /// remove all
-  void removeAll();
+  void removeAll({bool spareOne: false});
 
   /// Not empty
   bool isNotEmpty();
@@ -34,18 +28,8 @@ class PacketManager implements IPacketManager {
   }
 
   @override
-  void removeOldPackets() {
-    _packets.removeWhere((element) => element.isOld());
-  }
-
-  @override
   Iterable<double> getListRssi() {
     return _packets.map((e) => e.rssi.toDouble());
-  }
-
-  @override
-  void removeFirst() {
-    _packets.removeAt(0);
   }
 
   @override
@@ -54,7 +38,13 @@ class PacketManager implements IPacketManager {
   }
 
   @override
-  void removeAll() {
-    _packets.clear();
+  void removeAll({bool spareOne = false}) {
+    if (_packets.isNotEmpty) {
+      final last = _packets.last;
+      _packets.clear();
+      if (spareOne) {
+        _packets.add(last);
+      }
+    }
   }
 }

@@ -53,14 +53,14 @@ class FloorDetection extends BaseFloorDetection {
     const interval = const Duration(seconds: 3);
 
     _timer = Timer.periodic(interval, (timer) {
-      floorDetectionV2();
+      floorDetection();
       // floorDetection();
       // testFloorDetection();
       // testFloorDetection2();
     });
   }
 
-  void floorDetectionV2() {
+  void floorDetection() {
     final beacons = _beaconManager.getUsableBeacons();
     // final beacons = _beaconManager.getFloorUsableBeacons();
     final beaconMap = getGroupBeacons(beacons);
@@ -153,174 +153,4 @@ class FloorDetection extends BaseFloorDetection {
     });
     return result;
   }
-
-  // void testFloorDetection2() {
-  //   final usableBeacons = _beaconManager.getUsableBeacons();
-  //   if (usableBeacons.isEmpty) return;
-  //   final ids = getFloorIds(usableBeacons);
-  //   if (ids.isEmpty) return;
-  //   int floorId = ids.first;
-  //   double minDistance = calMeanDistanceByFloor(usableBeacons, floorId);
-
-  //   ids.forEach((floor) {
-  //     double distance = calMeanDistanceByFloor(usableBeacons, floor);
-  //     if (distance < minDistance) {
-  //       minDistance = distance;
-  //       floorId = floor;
-  //     }
-  //   });
-  //   onChange(floorId);
-  // }
-
-  // void testFloorDetection() {
-  //   final usableBeacons = _beaconManager.getUsableBeacons();
-  //   if (usableBeacons.isEmpty) return;
-  //   Map<int, double> floorAndDistance = {};
-  //   if (usableBeacons.isNotEmpty) {
-  //     usableBeacons.forEach((e) {
-  //       var floorId = e.location!.floorPlanId;
-  //       if (floorAndDistance.containsKey(floorId)) {
-  //         double distance = e.getDistanceAvg();
-  //         if (floorAndDistance[floorId]! > distance) {
-  //           floorAndDistance[floorId] = distance;
-  //         }
-  //       } else {
-  //         floorAndDistance.putIfAbsent(
-  //           floorId,
-  //           () => e.getDistanceAvg(),
-  //         );
-  //       }
-  //     });
-  //     if (floorAndDistance.isNotEmpty) {
-  //       int floorId = floorAndDistance.keys.first;
-  //       double minDistance = floorAndDistance.values.first;
-  //       floorAndDistance.forEach((floor, distance) {
-  //         if (distance < minDistance) {
-  //           floorId = floor;
-  //         }
-  //       });
-  //       onChange(floorId);
-  //     }
-  //   }
-  // }
-
-  /// Perform floor detection
-  // void floorDetection() {
-  //   final usableBeacons = _beaconManager.getUsableBeacons();
-  //   if (usableBeacons.isNotEmpty) {
-  //     int? floor = determineFloor(usableBeacons);
-  //     if (floor != null) {
-  //       onChange(floor);
-  //     }
-  //   }
-  // }
-
-  /// Determine floor
-  ///
-  /// If only one floor found, return the floor as current floor
-  /// Else perform min average distance for each floor
-  // int? determineFloor(List<Beacon> usableBeacons) {
-  //   int? result;
-  //   final floorIds = getFloorIds(usableBeacons);
-  //   if (floorIds.length == 1) {
-  //     result = usableBeacons.first.location!.floorPlanId;
-  //   } else {
-  //     final satisfiedBeacons = getBeaconSatisfied(usableBeacons);
-  //     if (satisfiedBeacons.isNotEmpty) {
-  //       result = getCurrentFloor(satisfiedBeacons, floorIds.toList());
-  //     } else {
-  //       result = getMostOccurenceFloorId(usableBeacons);
-  //     }
-  //   }
-
-  //   return result;
-  // }
-
-  /// Beacon group on vertical slice that is satisfied condition
-  ///
-  /// Condition: Each group must have min beacon found depends on the largest group
-  // List<Beacon> getBeaconSatisfied(List<Beacon> beacons) {
-  //   Map<int, List<Beacon>> beaconGroup = {};
-  //   beacons.forEach((e) {
-  //     if (e.beaconGroupId != null) {
-  //       var beaconList = beaconGroup.putIfAbsent(e.beaconGroupId!, () => []);
-  //       beaconList.add(e);
-  //     }
-  //   });
-  //   beacons.forEach((e) {
-  //     if (beaconGroup.containsKey(e.id)) {
-  //       beaconGroup[e.id!]!.add(e);
-  //     }
-  //   });
-  //   if (beaconGroup.isEmpty) {
-  //     return [];
-  //   }
-
-  //   int maxLength = getListMaxLength(beaconGroup);
-  //   return beaconGroup.values
-  //       .where((e) => e.length == maxLength)
-  //       .expand((e) => e)
-  //       .toList();
-  // }
-
-  // int getMostOccurenceFloorId(List<Beacon> beacons) {
-  //   Map<int, int> floorOccur = {};
-  //   beacons.forEach((e) {
-  //     if (floorOccur.containsKey(e.location!.floorPlanId)) {
-  //       floorOccur[e.location!.floorPlanId] =
-  //           floorOccur[e.location!.floorPlanId]! + 1;
-  //     } else {
-  //       floorOccur.putIfAbsent(e.location!.floorPlanId, () => 1);
-  //     }
-  //   });
-
-  //   int floorId = floorOccur.keys.first;
-  //   int occurs = floorOccur.values.first;
-  //   floorOccur.forEach((key, value) {
-  //     if (occurs < value) {
-  //       floorId = key;
-  //       occurs = value;
-  //     }
-  //   });
-  //   return floorId;
-  // }
-
-  // /// Calculate mean distance from all Beacon of a floor to user device
-  // double calMeanDistanceByFloor(List<Beacon> list, int floorId) {
-  //   var satisfied = list.where((e) => e.location!.floorPlanId == floorId);
-  //   if (satisfied.isEmpty) return double.infinity;
-  //   Iterable<double> rssiList = satisfied
-  //       .where((e) => e.packetManager.isNotEmpty())
-  //       .map((e) => e.getDistanceAvg()!);
-  //   if (rssiList.isEmpty) return double.infinity;
-  //   return MeanFilter.average(rssiList);
-  // }
-
-  // /// Get current floor
-  // int getCurrentFloor(List<Beacon> list, List<int> floorIds) {
-  //   int currentFloor = floorIds[0];
-  //   double minDistance = calMeanDistanceByFloor(list, floorIds.first);
-  //   floorIds.getRange(1, floorIds.length).forEach((id) {
-  //     double distance = calMeanDistanceByFloor(list, id);
-  //     if (distance < minDistance) {
-  //       minDistance = distance;
-  //       currentFloor = id;
-  //     }
-  //   });
-  //   return currentFloor;
-  // }
-
-  // /// Get the length of the largest beacon group
-  // int getListMaxLength(Map<int, List<Beacon>> beaconGroup) {
-  //   return beaconGroup.values.map((e) => e.length).reduce(max);
-  // }
-
-  // /// Get list of all floorId detected
-  // Set<int> getFloorIds(List<Beacon> beacons) {
-  //   Set<int> floorIds = Set();
-  //   beacons.map((e) => e.location!.floorPlanId).forEach((id) {
-  //     floorIds.add(id);
-  //   });
-  //   return floorIds;
-  // }
 }

@@ -45,7 +45,7 @@ class Beacon {
     if (packetManager.getListRssi().isNotEmpty) {
       // Average Rssi
       double rssi = MeanFilter.average(packetManager.getListRssi());
-      packetManager.removeAll();
+      packetManager.removeAll(spareOne: true);
 
       // Calculate distance
       final distanceMeter = Utils.rssiDistance(
@@ -58,12 +58,6 @@ class Beacon {
         return distanceMeter / mapScale * meterToPixel;
       }
     }
-  }
-
-  bool isRecentlySeen() {
-    const interval = const Duration(milliseconds: 4000);
-    int current = Utils.getCurrentTimeStamp();
-    return current - this.lastSeen <= interval.inMilliseconds;
   }
 
   Beacon clone() {

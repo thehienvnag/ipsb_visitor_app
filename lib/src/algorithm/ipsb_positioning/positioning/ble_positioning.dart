@@ -19,7 +19,7 @@ class BlePositioningConfig extends PositioningConfig {
 
 mixin IBlePositioning on Positioning {
   Stream<int> get currentFloorEvents;
-  Location2d? resolve(int? floorId);
+  Location2d? resolve(int? floorId, {bool removeOldLocation = true});
   void start();
   void stop();
 }
@@ -49,9 +49,9 @@ class BlePositioning implements IBlePositioning {
   }
 
   @override
-  Location2d? resolve(int? floorId) {
+  Location2d? resolve(int? floorId, {bool removeOldLocation = true}) {
     if (floorId != null) {
-      return _trilateration?.resolveLocation(floorId);
+      return _trilateration?.resolveLocation(floorId, removeOldLocation);
     }
   }
 

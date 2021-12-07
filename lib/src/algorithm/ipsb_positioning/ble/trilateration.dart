@@ -10,7 +10,7 @@ import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/trilateration/ls
 import 'managers/beacon_manager.dart';
 
 abstract class BaseTrilateration extends BaseBleAction {
-  Location2d? resolveLocation(int floorId);
+  Location2d? resolveLocation(int floorId, bool removeOldLocation);
   void stop();
 }
 
@@ -82,10 +82,13 @@ class Trilateration extends BaseTrilateration {
   }
 
   @override
-  Location2d? resolveLocation(int floorId) {
-    if (locationsCalculated.isNotEmpty) {
-      final location = MeanFilter.filter(locationsCalculated);
-      locationsCalculated.clear();
+  Location2d? resolveLocation(int floorId, bool removeOldLocation) {
+    final locations = locationsCalculated.where((e) => !e.isOld());
+    if (locations.isNotEmpty) {
+      final location = MeanFilter.filter(locations);
+      if (removeOldLocation) {
+        locationsCalculated.clear();
+      }
       if (location.floorPlanId == floorId) {
         return location;
       }

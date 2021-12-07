@@ -34,11 +34,17 @@ class DataFusion implements IDataFusion {
   /// Timer for periodic fusion workflow
   Timer? _timer;
 
-  /// Current location;
-  Location2d? _current;
-
   /// Current floor
   int? _currentFloor;
+
+  /// Current location
+  Location2d? _currentLocation;
+
+  /// floor changing status
+  bool onFloorChanging = false;
+
+  /// Location changing status
+  bool onLocationChanging = false;
 
   final void Function(int) onFloorChange;
 
@@ -60,67 +66,103 @@ class DataFusion implements IDataFusion {
 
   @override
   void start() async {
-    runPeriodic();
     initBleMethod();
     initPdrMethod();
+    runPeriodicBleLocation();
+  }
+
+  void runPeriodicBleLocation() {
+    Timer.periodic(Duration(seconds: 8), (timer) {
+      if (!onFloorChanging && _currentFloor != null) {
+        onLocationChanging = true;
+        try {
+          if (_currentLocation != null) {
+            _pdrPositioning.pause();
+            _filter.predict(_currentLocation!);
+            final measured = _blePositioning.resolve(_currentFloor);
+            if (measured != null) {
+              _filter.correct(measured);
+              onChange(_filter.state, setCurrent);
+            }
+            _pdrPositioning.resume();
+          } else {
+            final location = _blePositioning.resolve(_currentFloor);
+            if (location != null) {
+              onChange(location, setCurrent);
+            }
+          }
+        } catch (e) {}
+
+        onLocationChanging = false;
+      }
+    });
   }
 
   void initBleMethod() {
     _blePositioning.start();
     _blePositioning.currentFloorEvents.listen((e) async {
-      _currentFloor = e;
-      onFloorChange(e);
+      if (_currentFloor != e) {
+        _currentFloor = e;
+        onFloorChange(e);
+        getBleLocationFloorChange();
+      }
     });
   }
 
   void initPdrMethod() async {
-    // Set the initial location for pdr method
+    // _currentFloor = 18;
+    // onFloorChange(_currentFloor!);
+    // final initial = Location2d(
+    //   x: 190.364990234375,
+    //   y: 600,
+    //   floorPlanId: 18,
+    // );
+    // Future.delayed(Duration(milliseconds: 3000), () {
+    //   onChange(initial, setCurrent);
+    // });
+
     _pdrPositioning.start();
-    _pdrPositioning.setInitial(_current);
+    // _pdrPositioning.setInitial(initial);
     _pdrPositioning.locationEvents.listen((e) {
       if (e.floorPlanId == _currentFloor) {
-        _current = e;
         onChange(e, setCurrent);
       }
     });
   }
 
   void setCurrent(Location2d location2d) {
-    _current = location2d;
+    print(location2d);
+    _currentLocation = location2d;
+    _pdrPositioning.setInitial(location2d);
   }
 
-  void runPeriodic() async {
-    _current = await initLocation();
-    _timer = Timer.periodic(longerInterval, (timer) async {
-      _pdrPositioning.pause();
-      if (_current != null) {
-        _filter.predict(_current!);
-        final measured = _blePositioning.resolve(_currentFloor);
-        if (measured != null) {
-          _filter.correct(measured);
-          _current = _filter.state;
+  void getBleLocationFloorChange() async {
+    if (!onLocationChanging) {
+      onFloorChanging = true;
+      try {
+        final newLocation = await initLocation();
+        if (newLocation != null) {
+          _pdrPositioning.pause();
+          onChange(newLocation, setCurrent);
+          _pdrPositioning.resume();
         }
-        onChange(_current, setCurrent);
-      } else {
-        _current = await initLocation();
-      }
-      _pdrPositioning.setInitial(_current);
-      _pdrPositioning.resume();
+        onFloorChanging = false;
+      } catch (e) {}
+    }
+  }
+
+  Future<Location2d?> initLocation() async {
+    const initialInterval = const Duration(seconds: 5);
+    final location = await Future.delayed(initialInterval, () {
+      return _blePositioning.resolve(_currentFloor, removeOldLocation: false);
     });
+    return location;
   }
 
   @override
   void stop() {
     _timer?.cancel();
     _blePositioning.stop();
-    _pdrPositioning.stop();
-  }
-
-  Future<Location2d?> initLocation() async {
-    const initialInterval = const Duration(milliseconds: 2500);
-    final location = await Future.delayed(initialInterval, () {
-      return _blePositioning.resolve(_currentFloor);
-    });
-    return location;
+    // _pdrPositioning.stop();
   }
 }

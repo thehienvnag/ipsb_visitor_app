@@ -44,6 +44,7 @@ class IndoorMap extends GetView<IndoorMapController> {
               child: InteractiveViewer(
                 maxScale: 1,
                 minScale: 0.0001,
+                boundaryMargin: const EdgeInsets.all(double.infinity),
                 constrained: false,
                 transformationController: controller.transformationController,
                 child: ImageView(

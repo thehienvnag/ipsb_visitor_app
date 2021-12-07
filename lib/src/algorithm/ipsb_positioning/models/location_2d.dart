@@ -21,7 +21,7 @@ class Location2d {
 
   bool isOld() {
     int current = Utils.getCurrentTimeStamp();
-    return current - timeStamp > Const.longInterval.inMilliseconds;
+    return current - timeStamp > Const.expiredLocation.inMilliseconds;
   }
 
   @override

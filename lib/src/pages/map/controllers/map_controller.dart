@@ -92,9 +92,9 @@ class MapController extends GetxController {
   /// Current position of visitor, determine by locationId
   final currentPosition = Location(
     id: -1,
-    x: 200.364990234375,
-    y: 1100.16999053955078,
-    floorPlanId: 13,
+    x: 190.364990234375,
+    y: 600,
+    floorPlanId: 18,
     locationTypeId: 2,
   ).obs;
 
@@ -156,12 +156,6 @@ class MapController extends GetxController {
           initPositioning();
           loadEdgesInBuilding().then((value) {
             initShoppingList();
-            final location = EdgeHelper.edgesWithCurrentLocation(
-                    edges, currentPosition.value)
-                .projection;
-            if (location != null) {
-              currentPosition.value = location;
-            }
           });
           loadPlaceOnBuilding();
           isLoading.value = false;
@@ -179,7 +173,7 @@ class MapController extends GetxController {
   void onClose() {
     super.onClose();
     // closeShopping();
-    closeRotateMap();
+    // closeRotateMap();
     IpsbPositioning.stop();
   }
 
@@ -295,11 +289,12 @@ class MapController extends GetxController {
       },
       onChange: (newLocation, setCurrent) {
         if (timeFloorChange
-                ?.add(Duration(seconds: 4))
+                ?.add(Duration(seconds: 5))
                 .isAfter(DateTime.now()) ??
             true) {
           final location = EdgeHelper.findNearestLocation(
               edges, newLocation, selectedFloor.value.id);
+
           if (location.id != null) {
             currentPosition.value = location;
             setCurrent(Location2d(
@@ -309,18 +304,6 @@ class MapController extends GetxController {
             ));
           }
         }
-
-        // final location =
-        //     EdgeHelper.edgesWithCurrentLocation(edges, currentPosition.value)
-        //         .projection;
-        // if (location != null) {
-        //   currentPosition.value = location;
-        //   setCurrent(Location2d(
-        //     x: location.x!,
-        //     y: location.y!,
-        //     floorPlanId: location.floorPlanId!,
-        //   ));
-        // }
       },
     );
   }
