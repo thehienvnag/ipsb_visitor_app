@@ -21,7 +21,7 @@ class DirectionDialog extends StatelessWidget {
       content: Row(
         children: [
           Container(
-            width: 260,
+            width: 240,
             child: Text("You have come to $storeName"),
           ),
         ],

@@ -14,6 +14,7 @@ class ShoppingListDetailController extends GetxController {
   final shoppingListDetails = ShoppingList().obs;
   final SharedStates _sharedStates = Get.find();
   final isLoading = false.obs;
+  final id = "".obs;
 
   @override
   void onInit() {
@@ -22,16 +23,17 @@ class ShoppingListDetailController extends GetxController {
   }
 
   void loadShoppingListDetails() async {
-    String? shoppingListId = Get.parameters["shoppingListId"];
-    if (shoppingListId == null) {
+    id.value = Get.parameters["shoppingListId"] ?? id.value;
+    if (id.value.isEmpty) {
       BotToast.showText(text: "Load shopping failed");
       return;
-    };
+    }
+    ;
     isLoading.value = true;
-    final result = await _shoppingListService.getById(int.parse(shoppingListId));
+    final result = await _shoppingListService.getById(int.parse(id.value));
     if (result != null) {
       shoppingListDetails.value = result;
-    }else{
+    } else {
       BotToast.showText(text: "Load shopping failed");
     }
     isLoading.value = false;
@@ -58,7 +60,8 @@ class ShoppingListDetailController extends GetxController {
       return;
     }
 
-    if (_sharedStates.building.value.id != shoppingListDetails.value.buildingId) {
+    if (_sharedStates.building.value.id !=
+        shoppingListDetails.value.buildingId) {
       showErrorDialog(
         context,
         "Current building is not supported!",
