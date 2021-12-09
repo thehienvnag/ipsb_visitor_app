@@ -54,9 +54,6 @@ class FloorDetection extends BaseFloorDetection {
 
     _timer = Timer.periodic(interval, (timer) {
       floorDetection();
-      // floorDetection();
-      // testFloorDetection();
-      // testFloorDetection2();
     });
   }
 
@@ -67,21 +64,30 @@ class FloorDetection extends BaseFloorDetection {
     // final floorId = getFloorDetectionResult(beaconMap);
     final floorId = filterFloorNoise(
       getFloorDetectionResult(beaconMap),
-      enabled: false,
+      // enabled: false,
     );
     if (floorId != null) {
       _currentFloor = floorId;
+      _willUpdateFloor = null;
+      _updateFloorCounter = 0;
       onChange(floorId);
     }
   }
 
   int? filterFloorNoise(int? floorId, {bool enabled = true}) {
     if (!enabled) return floorId;
-
+    if (floorId == _currentFloor) return null;
     if (floorId != null) {
+      if (_currentFloor == null) return floorId;
       if (_currentFloor != _willUpdateFloor) {
+        _willUpdateFloor = floorId;
         if (_willUpdateFloor == null || _willUpdateFloor == floorId) {
           _updateFloorCounter += 1;
+        } else {
+          _updateFloorCounter = 0;
+        }
+        if (_updateFloorCounter >= 2) {
+          return floorId;
         }
       }
     }

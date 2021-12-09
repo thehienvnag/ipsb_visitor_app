@@ -558,7 +558,7 @@ class MapController extends GetxController {
     double minDistance = selectedFloor.value.mapScale == null
         ? 1
         : selectedFloor.value.mapScale! / 100 * 2;
-    if (distanceToDest.value < minDistance) {
+    if (distanceToDest.value < 2) {
       if (completeRoute.isFalse) {
         completeRoute.value = true;
         currentStoreName.value =

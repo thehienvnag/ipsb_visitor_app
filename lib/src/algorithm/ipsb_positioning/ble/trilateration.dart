@@ -11,6 +11,7 @@ import 'managers/beacon_manager.dart';
 
 abstract class BaseTrilateration extends BaseBleAction {
   Location2d? resolveLocation(int floorId, bool removeOldLocation);
+  void removeOldLocations();
   void stop();
 }
 
@@ -101,5 +102,10 @@ class Trilateration extends BaseTrilateration {
   @override
   void stop() {
     _timer?.cancel();
+  }
+
+  @override
+  void removeOldLocations() {
+    locationsCalculated.removeWhere((e) => e.isOld());
   }
 }

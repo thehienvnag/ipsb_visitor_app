@@ -72,27 +72,29 @@ class DataFusion implements IDataFusion {
   }
 
   void runPeriodicBleLocation() {
-    Timer.periodic(Duration(seconds: 8), (timer) {
+    Timer.periodic(Duration(seconds: 7), (timer) {
       if (!onFloorChanging && _currentFloor != null) {
         onLocationChanging = true;
         try {
           if (_currentLocation != null) {
             _pdrPositioning.pause();
             _filter.predict(_currentLocation!);
-            final measured = _blePositioning.resolve(_currentFloor);
+            final measured = _blePositioning.resolve(_currentFloor,
+                removeOldLocation: false);
             if (measured != null) {
               _filter.correct(measured);
               onChange(_filter.state, setCurrent);
             }
             _pdrPositioning.resume();
           } else {
-            final location = _blePositioning.resolve(_currentFloor);
+            final location = _blePositioning.resolve(_currentFloor,
+                removeOldLocation: false);
             if (location != null) {
               onChange(location, setCurrent);
             }
           }
         } catch (e) {}
-
+        _blePositioning.removeOldLocations();
         onLocationChanging = false;
       }
     });
