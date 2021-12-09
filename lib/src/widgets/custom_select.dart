@@ -449,8 +449,22 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
       List<Widget> list = [];
       groupItems().forEach((key, value) {
         if (value.isNotEmpty) {
-          list.add(Text(value.first.store?.name ?? ""));
-          list.add(ListView.separated(
+          list.add(
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                margin: const EdgeInsets.only(left: 20),
+                child: Text(
+                  value.first.store?.name?.toUpperCase() ?? "",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+            ),
+          );
+          list.add(ListView.builder(
             itemBuilder: (context, index) {
               final item = SelectItemWrapper(value: value[index] as T);
               return GestureDetector(
@@ -463,12 +477,12 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
               );
             },
             shrinkWrap: true,
-            separatorBuilder: (context, index) => Divider(
-              thickness: 1,
-              indent: 20,
-              endIndent: 20,
-            ),
-            itemCount: wrapperItems.length,
+            itemCount: value.length,
+          ));
+          list.add(Divider(
+            thickness: 2,
+            indent: 20,
+            endIndent: 20,
           ));
         }
       });
