@@ -23,6 +23,7 @@ class SelectBuilding extends StatelessWidget {
       dataCallback: dataCallback,
       label: label,
       type: "single",
+      listType: "building",
       itemBuilder: (item, selected, changeSelected) => ListTile(
         leading: Image.network(
           item.imageUrl!,

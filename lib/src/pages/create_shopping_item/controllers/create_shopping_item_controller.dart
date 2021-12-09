@@ -71,7 +71,7 @@ class CreateShoppingItemController extends GetxController {
       final result = await _shoppingItemService.create(data);
       BotToast.closeAllLoading();
       if (result != null) {
-        BotToast.showText(text: "Successfully created shopping list");
+        BotToast.showText(text: "Successfully added shopping item");
         Get.back(result: true);
       }
     }
