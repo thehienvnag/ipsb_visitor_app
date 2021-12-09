@@ -25,13 +25,20 @@ class SelectProduct extends StatelessWidget {
       dataCallback: dataCallback,
       label: label,
       type: "single",
+      listType: "product",
       itemBuilder: (item, selected, changeSelected) => ListTile(
         leading: Image.network(
           item.imageUrl!,
           width: 80,
         ),
-        title: Text(Formatter.shorten(item.name)),
-        subtitle: Text(Formatter.price(item.price)),
+        title: Text(
+          Formatter.shorten(item.name),
+          style: TextStyle(fontSize: 14),
+        ),
+        subtitle: Text(
+          Formatter.price(item.price),
+          style: TextStyle(fontSize: 14),
+        ),
         onTap: () {
           if (goToDetails != null) {
             goToDetails!(item.id);

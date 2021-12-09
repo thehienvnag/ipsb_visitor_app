@@ -10,6 +10,7 @@ class Product {
   final String? name, description, imageUrl;
   final double? price;
   final Store? store;
+  final int? storeId;
   final String? status;
   @JsonKey(ignore: true)
   int? shoppingItemId;
@@ -19,6 +20,7 @@ class Product {
   bool checked = false;
   Product({
     this.id,
+    this.storeId,
     this.name,
     this.description,
     this.price,

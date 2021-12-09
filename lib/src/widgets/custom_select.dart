@@ -1,12 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ipsb_visitor_app/src/models/product.dart';
+import 'package:ipsb_visitor_app/src/models/store.dart';
 import 'package:ipsb_visitor_app/src/widgets/rounded_button.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class CustomSelect<T> extends StatefulWidget {
   /// Type of select single
   final String singleType = "single";
+
+  /// List type
+  final String listType;
 
   /// Type of select
   final String type;
@@ -55,6 +62,7 @@ class CustomSelect<T> extends StatefulWidget {
     this.onSubmitted,
     this.onSubmittedMultiple,
     this.dataCallback,
+    required this.listType,
   }) : super(key: key);
 
   @override
@@ -214,6 +222,7 @@ class _CustomSelectState<T> extends State<CustomSelect<T>> {
         itemBuilder: widget.itemBuilder,
         selectedItems: selectedItems ?? [],
         dataCallback: widget.dataCallback,
+        listType: widget.listType,
       ),
     );
     if (widget.type == widget.singleType) {
@@ -251,6 +260,7 @@ class DialogWidget<T> extends StatefulWidget {
   final List<T>? selectedItems;
   final T? selectedItem;
   final Future<List<T>?> Function([String?])? dataCallback;
+  final String listType;
 
   /// Item in dropdown builder
   final itemBuilder;
@@ -262,6 +272,7 @@ class DialogWidget<T> extends StatefulWidget {
     this.selectedItems,
     required this.type,
     this.dataCallback,
+    required this.listType,
   }) : super(key: key);
   @override
   _DialogWidgetState<T> createState() => _DialogWidgetState<T>();
@@ -292,7 +303,11 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
         } else {
           selected = widget.selectedItems?.contains(e) ?? false;
         }
-        return SelectItemWrapper<T>(value: e, selected: selected);
+
+        return SelectItemWrapper<T>(
+          value: e,
+          selected: selected,
+        );
       }).toList();
     } else {
       loadDataByCallback();
@@ -313,7 +328,10 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
             } else {
               selected = widget.selectedItems?.contains(e) ?? false;
             }
-            return SelectItemWrapper<T>(value: e, selected: selected);
+            return SelectItemWrapper<T>(
+              value: e,
+              selected: selected,
+            );
           }).toList();
         });
       }
@@ -321,6 +339,18 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
         loading = false;
       });
     });
+  }
+
+  Map<int, List<Product>> groupItems() {
+    Map<int, List<Product>> result = {};
+    wrapperItems.forEach((e) {
+      final pro = e.value as Product;
+      final list = result.putIfAbsent(pro.storeId!, () => [pro]);
+      if (!list.contains(pro)) {
+        list.add(pro);
+      }
+    });
+    return result;
   }
 
   @override
@@ -377,29 +407,7 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
         child: Column(
           children: [
             Expanded(
-              child: loading
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : ListView.separated(
-                      itemBuilder: (context, index) {
-                        final item = wrapperItems[index];
-                        return GestureDetector(
-                          onTap: () => setSelected(wrapperItems, item),
-                          child: widget.itemBuilder(
-                            item.value,
-                            item.selected,
-                            (value) => setSelected(wrapperItems, item, value),
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, index) => Divider(
-                        thickness: 1,
-                        indent: 20,
-                        endIndent: 20,
-                      ),
-                      itemCount: wrapperItems.length,
-                    ),
+              child: buildList(),
             ),
             ElevatedButton(
               onPressed: () {
@@ -408,7 +416,9 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
                     result: wrapperItems
                         .firstWhere(
                           (e) => e.selected,
-                          orElse: () => SelectItemWrapper<T>(value: null),
+                          orElse: () => SelectItemWrapper<T>(
+                            value: null,
+                          ),
                         )
                         .value,
                   );
@@ -426,6 +436,63 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildList() {
+    if (loading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    if (widget.listType == "product") {
+      List<Widget> list = [];
+      groupItems().forEach((key, value) {
+        if (value.isNotEmpty) {
+          list.add(Text(value.first.store?.name ?? ""));
+          list.add(ListView.separated(
+            itemBuilder: (context, index) {
+              final item = SelectItemWrapper(value: value[index] as T);
+              return GestureDetector(
+                onTap: () => setSelected(wrapperItems, item),
+                child: widget.itemBuilder(
+                  item.value,
+                  item.selected,
+                  (value) => setSelected(wrapperItems, item, value),
+                ),
+              );
+            },
+            shrinkWrap: true,
+            separatorBuilder: (context, index) => Divider(
+              thickness: 1,
+              indent: 20,
+              endIndent: 20,
+            ),
+            itemCount: wrapperItems.length,
+          ));
+        }
+      });
+      return Column(children: list);
+    }
+
+    return ListView.separated(
+      itemBuilder: (context, index) {
+        final item = wrapperItems[index];
+        return GestureDetector(
+          onTap: () => setSelected(wrapperItems, item),
+          child: widget.itemBuilder(
+            item.value,
+            item.selected,
+            (value) => setSelected(wrapperItems, item, value),
+          ),
+        );
+      },
+      separatorBuilder: (context, index) => Divider(
+        thickness: 1,
+        indent: 20,
+        endIndent: 20,
+      ),
+      itemCount: wrapperItems.length,
     );
   }
 

@@ -102,7 +102,7 @@ class ShoppingListDetailController extends GetxController {
 
   void updateShoppingItem(int id, String note) async {
     if (note.isEmpty) {
-      BotToast.showText(text: "Successfully removed!!");
+      BotToast.showText(text: "Empty note!!");
       return;
     }
     final result = await _shoppingItemService.update(id, {"note": note});
