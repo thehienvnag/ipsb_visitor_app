@@ -172,7 +172,7 @@ class HomeController extends FullLifeCycleController {
     );
     if (list.isNotEmpty &&
         list.first.distanceTo != null &&
-        list.first.distanceTo! < 0.5) {
+        list.first.distanceTo! < 5) {
       list.removeAt(0);
     }
     listBuilding.value = list;
