@@ -9,6 +9,7 @@ class SelectProduct extends StatelessWidget {
   final Product? selected;
   final bool required;
   final Future<List<Product>?> Function([String?]) dataCallback;
+  final Function(int?)? goToDetails;
   const SelectProduct({
     Key? key,
     required this.label,
@@ -16,6 +17,7 @@ class SelectProduct extends StatelessWidget {
     this.required = false,
     this.selected,
     required this.dataCallback,
+    this.goToDetails,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,11 @@ class SelectProduct extends StatelessWidget {
         ),
         title: Text(Formatter.shorten(item.name)),
         subtitle: Text(Formatter.price(item.price)),
+        onTap: () {
+          if (goToDetails != null) {
+            goToDetails!(item.id);
+          }
+        },
         trailing: Checkbox(
           value: selected,
           onChanged: (value) => changeSelected(value!),

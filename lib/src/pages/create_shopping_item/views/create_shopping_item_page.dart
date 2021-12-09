@@ -58,6 +58,7 @@ class CreateShoppingItemPage extends GetView<CreateShoppingItemController> {
                     dataCallback: controller.loadProducts,
                     label: "Select product",
                     onSubmitted: (value) => controller.setProduct(value),
+                    goToDetails: controller.goToProductDetails,
                   ),
                 ),
                 Container(

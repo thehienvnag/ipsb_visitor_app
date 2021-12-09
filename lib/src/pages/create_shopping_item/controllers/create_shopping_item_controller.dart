@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:ipsb_visitor_app/src/models/building.dart';
 import 'package:ipsb_visitor_app/src/models/product.dart';
 import 'package:get/get.dart';
+import 'package:ipsb_visitor_app/src/routes/routes.dart';
 import 'package:ipsb_visitor_app/src/services/api/product_service.dart';
 import 'package:ipsb_visitor_app/src/services/api/shopping_item_service.dart';
 import 'package:ipsb_visitor_app/src/services/global_states/shared_states.dart';
@@ -47,21 +48,20 @@ class CreateShoppingItemController extends GetxController {
     if (shoppingListId.value == 0) {
       BotToast.showText(
           text: "Shopping list did't exist!",
-          textStyle: TextStyle(fontSize: 16,color: Color(0xffffffff)),
+          textStyle: TextStyle(fontSize: 16, color: Color(0xffffffff)),
           duration: const Duration(seconds: 3));
     }
     if (productId.value == 0) {
       BotToast.showText(
           text: "Select product!",
-          textStyle: TextStyle(fontSize: 16,color: Color(0xffffffff)),
+          textStyle: TextStyle(fontSize: 16, color: Color(0xffffffff)),
           duration: const Duration(seconds: 3));
     } else if (note.value.isEmpty) {
       BotToast.showText(
           text: "Enter note shopping item",
-          textStyle: TextStyle(fontSize: 16,color: Color(0xffffffff)),
+          textStyle: TextStyle(fontSize: 16, color: Color(0xffffffff)),
           duration: const Duration(seconds: 3));
-    }
-    else {
+    } else {
       final data = {
         "productId": productId.value,
         "note": note.value,
@@ -75,5 +75,13 @@ class CreateShoppingItemController extends GetxController {
         Get.back(result: true);
       }
     }
+  }
+
+  void goToProductDetails(int? id) {
+    if (id == null) return;
+    Get.toNamed(
+      Routes.productDetail,
+      parameters: {'productId': id.toString()},
+    );
   }
 }

@@ -35,7 +35,7 @@ class Formatter {
     return s.substring(0, cut) + ' ...';
   }
 
-  static String price(double? price, [String currency = "VNĐ"]) {
+  static String price(double? price, [String currency = "VND"]) {
     final formatter = new NumberFormat("###,###,###,###");
     return formatter.format(price) + ' $currency';
   }
@@ -82,6 +82,6 @@ class Formatter {
     if (place.administrativeArea!.isNotEmpty) {
       result += '${place.administrativeArea}, ';
     }
-    return result.replaceFirst(RegExp("Đường"), "Đ.");
+    return result.replaceFirst(RegExp("Đường"), "Str.");
   }
 }
