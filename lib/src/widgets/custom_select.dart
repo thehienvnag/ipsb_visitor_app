@@ -439,6 +439,15 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
     );
   }
 
+  SelectItemWrapper<T>? getWrapperItem(Product pro) {
+    final list = wrapperItems.where((e) {
+      final id = jsonDecode(jsonEncode(e.value))["id"];
+      if (id == null) return false;
+      return id == pro.id;
+    });
+    if (list.isNotEmpty) return list.first;
+  }
+
   Widget buildList() {
     if (loading) {
       return Center(
@@ -466,7 +475,8 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
           );
           list.add(ListView.builder(
             itemBuilder: (context, index) {
-              final item = SelectItemWrapper(value: value[index] as T);
+              final item = getWrapperItem(value[index]);
+              if (item == null) return Container();
               return GestureDetector(
                 onTap: () => setSelected(wrapperItems, item),
                 child: widget.itemBuilder(
