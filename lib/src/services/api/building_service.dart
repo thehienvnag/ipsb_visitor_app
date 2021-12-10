@@ -33,7 +33,7 @@ class BuildingService extends BaseService<Building>
 
   @override
   Future<List<Building>> getBuildings([double? lat, double? lng]) {
-    var params = {"pageSize": "5"};
+    var params = {"pageSize": "6", "status": "Active",};
     if (lat != null) {
       params.putIfAbsent("lat", () => lat.toString());
     }
