@@ -53,14 +53,16 @@ class StoreDetailsController extends GetxController
 
   ICouponInUseService couponInUseService = Get.find();
   Future<void> getFeedback() async {
-    final paging =
-        await couponInUseService.getCouponInUseByStoreId(storeId.value);
+    final paging = await couponInUseService.getCouponInUseByStoreId(storeId.value);
     listFeedbacks.value = paging.content!;
     for (int i = 0; i < listFeedbacks.length; i++) {
       if (listFeedbacks[i].feedbackReply.toString().compareTo('null') < 0) {
         listFeedbacked.add(listFeedbacks[i]);
       }
     }
+    listFeedbacked.sort((a,b){
+      return b.feedbackDate!.compareTo(a.feedbackDate!);
+    });
   }
 
   IStoreService storeService = Get.find();

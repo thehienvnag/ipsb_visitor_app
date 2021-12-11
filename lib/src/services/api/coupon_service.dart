@@ -37,6 +37,7 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
         'checkLimit': 'true',
         'lowerExpireDate': DateTime.now().toString(),
         'isAll': 'true',
+        'status': 'Active',
       },
     );
   }
@@ -46,6 +47,7 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
     return getPagingBase({
       'checkLimit': 'true',
       'isAll': 'true',
+
     });
   }
 
@@ -90,6 +92,7 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
     return getAllBase({
       "floorPlanId": floorPlanId.toString(),
       "isAll": "true",
+      'status': 'Active',
     });
   }
 }
