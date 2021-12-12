@@ -45,7 +45,15 @@ class EdgeHelper {
     int id,
     double mapScale,
   ) {
-    const minDistance = 0.2; // Meter
+    // if (edge.fromLocation?.locationTypeId != 2 ||
+    //     edge.toLocation?.locationTypeId != 2 &&
+    //         (edge.fromLocation?.locationTypeId != 3 ||
+    //             edge.toLocation?.locationTypeId != 3 ||
+    //             edge.toLocation?.locationTypeId != 4 ||
+    //             edge.fromLocation?.locationTypeId != 4)) {
+    //   return [];
+    // }
+    const minDistance = 0.3; // Meter
     const meterToPixel = 3779.5275590551; // Meter to pixel
     double segment = minDistance / mapScale * meterToPixel;
 

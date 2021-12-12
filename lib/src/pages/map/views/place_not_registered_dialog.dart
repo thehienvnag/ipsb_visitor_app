@@ -12,7 +12,7 @@ class PlaceNotRegisteredDialog extends StatelessWidget {
       content: Row(
         children: [
           Container(
-            width: 240,
+            width: 220,
             child: Text("Place has not been registered !"),
           ),
         ],

@@ -92,8 +92,8 @@ class MapController extends GetxController {
   /// Current position of visitor, determine by locationId
   final currentPosition = Location(
     id: -1,
-    x: 190.364990234375,
-    y: 600,
+    x: 140.364990234375,
+    y: 400,
     floorPlanId: 18,
     locationTypeId: 2,
   ).obs;
@@ -154,7 +154,11 @@ class MapController extends GetxController {
       if (result) {
         getFloorPlan().then((value) {
           initPositioning();
-          loadEdgesInBuilding().then((value) {
+          loadEdgesInBuilding().then((value) async {
+            // selectedFloor.value = listFloorPlan[0];
+            await Future.delayed(Duration(milliseconds: 4400));
+            currentPosition.value = EdgeHelper.findNearestLocation(
+                edges, currentPosition.value, selectedFloor.value.id);
             initShoppingList();
           });
           loadPlaceOnBuilding();
@@ -277,33 +281,33 @@ class MapController extends GetxController {
         floorPlanId: location2d?.floorPlanId,
       ),
       onFloorChange: (currentFloor) {
-        final floor = listFloorPlan.firstWhere(
-          (floor) => floor.id == currentFloor,
-          orElse: () => FloorPlan(),
-        );
-        if (floor.id != null && floor.id != selectedFloor.value.id) {
-          changeSelectedFloor(floor);
-          currentPosition.value = Location();
-          // timeFloorChange = DateTime.now();
-        }
+        // final floor = listFloorPlan.firstWhere(
+        //   (floor) => floor.id == currentFloor,
+        //   orElse: () => FloorPlan(),
+        // );
+        // if (floor.id != null && floor.id != selectedFloor.value.id) {
+        //   changeSelectedFloor(floor);
+        //   currentPosition.value = Location();
+        //   // timeFloorChange = DateTime.now();
+        // }
       },
       onChange: (newLocation, setCurrent) {
-        if (timeFloorChange
-                ?.add(Duration(seconds: 5))
-                .isAfter(DateTime.now()) ??
-            true) {
-          final location = EdgeHelper.findNearestLocation(
-              edges, newLocation, selectedFloor.value.id);
+        // if (timeFloorChange
+        //         ?.add(Duration(seconds: 5))
+        //         .isAfter(DateTime.now()) ??
+        //     true) {
+        //   final location = EdgeHelper.findNearestLocation(
+        //       edges, newLocation, selectedFloor.value.id);
 
-          if (location.id != null) {
-            currentPosition.value = location;
-            setCurrent(Location2d(
-              x: location.x!,
-              y: location.y!,
-              floorPlanId: location.floorPlanId!,
-            ));
-          }
-        }
+        //   if (location.id != null) {
+        //     currentPosition.value = location;
+        //     setCurrent(Location2d(
+        //       x: location.x!,
+        //       y: location.y!,
+        //       floorPlanId: location.floorPlanId!,
+        //     ));
+        //   }
+        // }
       },
     );
   }
@@ -359,8 +363,10 @@ class MapController extends GetxController {
   /// Begin shopping
   void beginShopping() {
     if (edges.isEmpty) return;
+    testLocationChange2();
 
     sharedData.startShopping.value = true;
+    paths = [];
 
     // Init list shopping points (store on map)
     listStoreShopping.value = sharedData.shoppingList.value.getListStores();
@@ -425,6 +431,7 @@ class MapController extends GetxController {
       }
       return e;
     }).toList();
+
     showShoppingDirections();
   }
 
@@ -558,7 +565,7 @@ class MapController extends GetxController {
     double minDistance = selectedFloor.value.mapScale == null
         ? 1
         : selectedFloor.value.mapScale! / 100 * 2;
-    if (distanceToDest.value < 2) {
+    if (distanceToDest.value < 5) {
       if (completeRoute.isFalse) {
         completeRoute.value = true;
         currentStoreName.value =
@@ -570,6 +577,7 @@ class MapController extends GetxController {
         )).then((exit) {
           if (exit) {
             completeRoute.value = false;
+            stopDirection();
           }
         });
       }
@@ -691,6 +699,18 @@ class MapController extends GetxController {
   void onSelectedFloorChange() {
     selectedFloor.listen((floor) {
       onShoppingListChange();
+      if (currentPosition.value.floorPlanId != floor.id) {
+        // currentPosition.value = EdgeHelper.findNearestLocation(
+        //     edges, currentPosition.value, floor.id);
+        _mapController.setCurrentMarker(null);
+
+        _mapController.setActiveRoute(
+          [
+            // currentPosition.value,
+            ...Graph.getRouteOnFloor(shortestPath, floor.id!)
+          ],
+        );
+      }
       getCoupons(floor.id);
       _mapController.loadLocationsOnMap(
         locationsOnMap.where((e) => e.floorPlanId == floor.id).toList(),
@@ -758,13 +778,296 @@ class MapController extends GetxController {
     isShowNavigationPanel.value = false;
   }
 
+  final listLocation = [
+    Location(
+      id: -1,
+      x: 140.364990234375,
+      y: 400,
+      floorPlanId: 18,
+      locationTypeId: 2,
+    ),
+    Location(
+      id: -1,
+      x: 140.364990234375,
+      y: 420,
+      floorPlanId: 13,
+      locationTypeId: 2,
+    ),
+    Location(
+      id: -1,
+      x: 140.364990234375,
+      y: 440,
+      floorPlanId: 13,
+      locationTypeId: 2,
+    ),
+    Location(
+      id: -1,
+      x: 140.364990234375,
+      y: 460,
+      floorPlanId: 13,
+      locationTypeId: 2,
+    ),
+    Location(
+      id: -1,
+      x: 140.364990234375,
+      y: 480,
+      floorPlanId: 13,
+      locationTypeId: 2,
+    ),
+    Location(
+      id: -1,
+      x: 140.364990234375,
+      y: 500,
+      floorPlanId: 13,
+      locationTypeId: 2,
+    ),
+    Location(
+      id: -1,
+      x: 140.364990234375,
+      y: 440,
+      floorPlanId: 13,
+      locationTypeId: 2,
+    ),
+    Location(
+      id: -1,
+      x: 140.364990234375,
+      y: 460,
+      floorPlanId: 13,
+      locationTypeId: 2,
+    ),
+    Location(
+      id: -1,
+      x: 140.364990234375,
+      y: 480,
+      floorPlanId: 13,
+      locationTypeId: 2,
+    ),
+    Location(
+      id: -1,
+      x: 140.364990234375,
+      y: 540,
+      floorPlanId: 13,
+      locationTypeId: 2,
+    ),
+    Location(
+      id: -1,
+      x: 140.364990234375,
+      y: 560,
+      floorPlanId: 13,
+      locationTypeId: 2,
+    ),
+    Location(
+      id: -1,
+      x: 140.364990234375,
+      y: 580,
+      floorPlanId: 13,
+      locationTypeId: 2,
+    ),
+    Location(
+      id: -1,
+      x: 140.364990234375,
+      y: 660,
+      floorPlanId: 13,
+      locationTypeId: 2,
+    ),
+  ];
+
+  Future<Location> goToY(
+    Location loc,
+    double offset, [
+    Duration duration = const Duration(milliseconds: 350),
+  ]) async {
+    final location = EdgeHelper.findNearestLocation(
+      edges,
+      Location(
+        id: -1,
+        x: loc.x,
+        y: loc.y! + offset,
+        locationTypeId: loc.locationTypeId,
+        floorPlanId: loc.floorPlanId,
+      ),
+      selectedFloor.value.id,
+    );
+    setCurrentLocation(location);
+    await Future.delayed(duration);
+    return location;
+  }
+
+  Future<Location> goToXY(
+    Location loc,
+    double offsetX,
+    double offsetY, [
+    Duration duration = const Duration(milliseconds: 350),
+  ]) async {
+    final location = EdgeHelper.findNearestLocation(
+      edges,
+      Location(
+        id: -1,
+        x: loc.x! + offsetX,
+        y: loc.y! + offsetY,
+        locationTypeId: loc.locationTypeId,
+        floorPlanId: loc.floorPlanId,
+      ),
+      selectedFloor.value.id,
+    );
+    setCurrentLocation(location);
+    await Future.delayed(duration);
+    return location;
+  }
+
+  Future<Location> goToX(
+    Location loc,
+    double offset, [
+    Duration duration = const Duration(milliseconds: 350),
+  ]) async {
+    final location = EdgeHelper.findNearestLocation(
+      edges,
+      Location(
+        id: -1,
+        x: loc.x! + offset,
+        y: loc.y!,
+        locationTypeId: loc.locationTypeId,
+        floorPlanId: loc.floorPlanId,
+      ),
+      selectedFloor.value.id,
+    );
+    setCurrentLocation(location);
+    await Future.delayed(duration);
+    return location;
+  }
+
+  var loc = Location(
+    id: -1,
+    x: 140.364990234375,
+    y: 400,
+    floorPlanId: 18,
+    locationTypeId: 2,
+  );
+
+  void testLocationChange2() async {
+    loc = await goToY(loc, 9, Duration(milliseconds: 300));
+    loc = await goToY(loc, 9, Duration(milliseconds: 300));
+    loc = await goToY(loc, 8, Duration(milliseconds: 300));
+    loc = await goToY(loc, 9, Duration(milliseconds: 300));
+    loc = await goToY(loc, 9, Duration(milliseconds: 300));
+    loc = await goToY(loc, 7, Duration(milliseconds: 300));
+    loc = await goToY(loc, 9, Duration(milliseconds: 300));
+    loc = await goToY(loc, 9, Duration(milliseconds: 300));
+    loc = await goToY(loc, -7);
+    loc = await goToY(loc, 7, Duration(milliseconds: 300));
+    loc = await goToY(loc, 9, Duration(milliseconds: 300));
+    loc = await goToY(loc, 7, Duration(milliseconds: 300));
+    loc = await goToY(loc, 8, Duration(milliseconds: 300));
+    loc = await goToY(loc, 9, Duration(milliseconds: 300));
+    loc = await goToY(loc, 7, Duration(milliseconds: 300));
+    loc = await goToY(loc, 9, Duration(milliseconds: 300));
+    // loc = await goToY(loc, 9);
+    // loc = await goToY(loc, -7);
+  }
+
+  void testLocationChange3() async {
+    // await Future.delayed(Duration(milliseconds: 2000));
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, -7);
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 7);
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 9);
+    loc = await goToX(loc, -9);
+    loc = await goToX(loc, -9);
+    loc = await goToX(loc, -9);
+    loc = await goToX(loc, -9);
+    loc = await goToX(loc, -9);
+    loc = await goToX(loc, -9);
+    loc = await goToX(loc, -9);
+    loc = await goToX(loc, -9);
+    loc = await goToXY(loc, 30, -30);
+    loc = await goToX(loc, -9);
+    await Future.delayed(Duration(milliseconds: 4100));
+    loc = await goToY(loc, 9);
+    loc = await goToY(loc, 9);
+    loc = await goToX(loc, 9);
+    loc = await goToX(loc, 9);
+    loc = await goToX(loc, 9);
+    loc = await goToX(loc, 9);
+    loc = await goToX(loc, 9);
+    loc = await goToX(loc, 9);
+    loc = await goToX(loc, 9);
+    loc = await goToX(loc, 9);
+    loc = await goToX(loc, 9);
+    loc = await goToX(loc, 9);
+    loc = await goToX(loc, 9);
+    loc = await goToX(loc, 9);
+    loc = await goToX(loc, 9);
+    loc = await goToX(loc, 9);
+
+    // loc = await goToY(loc, -9);
+    // loc = await goToY(loc, -8);
+    // loc = await goToY(loc, -9);
+    // loc = await goToY(loc, -8);
+    // loc = await goToY(loc, -9);
+    // loc = await goToY(loc, -8);
+    await testChangeFloor();
+  }
+
+  Future<void> testChangeFloor() async {
+    final floor = listFloorPlan.firstWhere(
+      (floor) => floor.id == 12,
+      orElse: () => FloorPlan(),
+    );
+
+    // await Future.delayed(Duration(milliseconds: 4000));
+    await Future.delayed(Duration(milliseconds: 4600));
+    changeSelectedFloor(floor);
+    _mapController.setCurrentMarker(null);
+    _mapController.setActiveRoute([]);
+    await Future.delayed(Duration(milliseconds: 5100));
+
+    loc = await goToXY(loc, 40, -30);
+    await Future.delayed(Duration(milliseconds: 700));
+    loc = await goToY(loc, -8, Duration(milliseconds: 400));
+    loc = await goToY(loc, -8, Duration(milliseconds: 400));
+    loc = await goToY(loc, -8, Duration(milliseconds: 400));
+    loc = await goToY(loc, -7, Duration(milliseconds: 400));
+    loc = await goToY(loc, -8, Duration(milliseconds: 400));
+    loc = await goToY(loc, -7, Duration(milliseconds: 400));
+    loc = await goToY(loc, -8, Duration(milliseconds: 400));
+    loc = await goToY(loc, -8, Duration(milliseconds: 400));
+    loc = await goToY(loc, -8, Duration(milliseconds: 400));
+    loc = await goToY(loc, -8, Duration(milliseconds: 400));
+    loc = await goToY(loc, -8, Duration(milliseconds: 400));
+    loc = await goToY(loc, -8, Duration(milliseconds: 400));
+    loc = await goToY(loc, -8, Duration(milliseconds: 400));
+    loc = await goToY(loc, -7, Duration(milliseconds: 300));
+    loc = await goToY(loc, -7, Duration(milliseconds: 300));
+  }
+
+  final test = false.obs;
+
   /// TEST FUNCTION (Removed when completed)
   void testLocationChange() {
-    if (shoppingListVisble.isFalse && isShowingDirection.isTrue) {
+    test.value = !test.value;
+    if (shoppingListVisble.isFalse &&
+        isShowingDirection.isTrue &&
+        test.isTrue) {
       int index = -1;
+
       final paths = shortestPath.map((e) => e).toList();
-      Timer.periodic(Duration(milliseconds: 120), (timer) {
-        if (isShowingDirection.isTrue) {
+
+      Timer.periodic(Duration(milliseconds: 5), (timer) {
+        if (isShowingDirection.isTrue && test.isTrue) {
           if (index >= 0 && index < paths.length) {
             setCurrentLocation(paths[index]);
           }
@@ -778,19 +1081,34 @@ class MapController extends GetxController {
     }
   }
 
+  final testFlag = false.obs;
+
   final testRoute = <Location>[].obs;
+  var paths = <Location>[];
   int currentRouteIndex = 0;
+
   void testGoingShoppingRoutes() {
     // final shoppings = listShoppingRoutes.map((e) => e).toList();
+
     testRoute.value = listShoppingRoutes[0];
+
     if (currentRouteIndex < listShoppingRoutes.length) {
       int index = -1;
-      final paths = testRoute.map((e) => e).toList();
-      Timer.periodic(Duration(milliseconds: 120), (timer) {
+
+      paths = testRoute.map((e) => e).toList();
+
+      Timer.periodic(Duration(milliseconds: 100), (timer) {
         if (index >= paths.length - 1) {
           timer.cancel();
         } else {
-          setCurrentLocation(paths[++index]);
+          final location = paths[++index];
+          if (location.locationTypeId == 2 ||
+              location.locationTypeId == 3 ||
+              location.locationTypeId == 4) {
+            setCurrentLocation(location);
+          } else {
+            timer.cancel();
+          }
         }
       });
     }

@@ -184,7 +184,7 @@ class MapPage extends GetView<MapController> {
             ),
             ListTile(
               leading: GestureDetector(
-                onTap: () => controller.testLocationChange(),
+                onTap: () => controller.testLocationChange2(),
                 child: Container(
                   width: 30,
                   height: 30,
@@ -227,143 +227,150 @@ class MapPage extends GetView<MapController> {
     return Obx(() {
       final shoppingList = controller.sharedData.shoppingList.value;
       return Container(
-        height: controller.sharedData.startShopping.isTrue ? context.height*0.14 : context.height*0.27,
+        height: controller.sharedData.startShopping.isTrue
+            ? context.height * 0.14
+            : context.height * 0.27,
         padding: const EdgeInsets.only(top: 10),
         // width: screenSize.width,
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [AppBoxShadow.boxShadowLight],
         ),
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                ListTile(
-                  leading: GestureDetector(
-                    onTap: () => controller.testGoingShoppingRoutes(),
-                    child: Container(
-                      width: context.width*0.243,
-                      height: context.height*0.0774,
-                      decoration: BoxDecoration(
-                        image: Utils.resolveDecoImg(
-                            shoppingList.building?.imageUrl),
-                        borderRadius: BorderRadius.circular(5),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  ListTile(
+                    leading: GestureDetector(
+                      onTap: () => controller.testLocationChange3(),
+                      child: Container(
+                        width: context.width * 0.243,
+                        height: context.height * 0.0774,
+                        decoration: BoxDecoration(
+                          image: Utils.resolveDecoImg(
+                            shoppingList.building?.imageUrl,
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
                       ),
                     ),
-                  ),
-                  title: Text(
-                    shoppingList.name!,
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
-                  ),
-                  subtitle:
-                      Text(Formatter.shorten(shoppingList.building?.name, 30)),
-                  trailing: Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    child: controller.isShoppingComplete() &&
-                            controller.sharedData.startShopping.isTrue
-                        ? OutlinedButton.icon(
-                            onPressed: () => controller.completeShopping(
-                                  controller.sharedData.shoppingList.value.id ??
-                                      0,
-                                ),
-                            icon: Icon(
-                              Icons.check_circle_outline_outlined,
-                              color: Colors.greenAccent,
-                              size: 23,
-                            ),
-                            label: Text("Complete"))
-                        : IconButton(
-                            onPressed: () => controller.closeShopping(),
-                            icon: Icon(Icons.close),
-                          ),
-                  ),
-                ),
-                // if (controller.startShopping.value)
-                //   Positioned(
-                //     top: 4,
-                //     left: 16,
-                //     child: Container(
-                //       width: 100,
-                //       height: 60,
-                //       child: SpinKitWave(
-                //         color: AppColors.primary.withOpacity(0.9),
-                //         type: SpinKitWaveType.start,
-                //       ),
-                //       decoration: BoxDecoration(
-                //         color: Colors.black38,
-                //         borderRadius: BorderRadius.circular(5),
-                //       ),
-                //     ),
-                //   ),
-              ],
-            ),
-            if (!controller.sharedData.startShopping.isTrue)
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 10,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: screenSize.width * 0.6,
-                      height: 40,
-                      child: Wrap(
-                        runSpacing: 0,
-                        spacing: 0,
-                        runAlignment: WrapAlignment.start,
-                        direction: Axis.horizontal,
-                        children: [
-                          Text(
-                            'Shopping items:',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          ...shoppingList.shoppingItems!
-                              .map(
-                                (e) => Chip(
-                                  label: Text(
-                                    Formatter.shorten(e.product!.name!, 15),
+                    title: Text(
+                      shoppingList.name!,
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+                    ),
+                    subtitle: Text(
+                        Formatter.shorten(shoppingList.building?.name, 30)),
+                    trailing: Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      child: controller.isShoppingComplete() &&
+                              controller.sharedData.startShopping.isTrue
+                          ? OutlinedButton.icon(
+                              onPressed: () => controller.completeShopping(
+                                    controller
+                                            .sharedData.shoppingList.value.id ??
+                                        0,
                                   ),
-                                ),
-                              )
-                              .take(2)
-                              .toList(),
-                          if (shoppingList.shoppingItems!.length > 2)
-                            Chip(label: Text("...")),
+                              icon: Icon(
+                                Icons.check_circle_outline_outlined,
+                                color: Colors.greenAccent,
+                                size: 23,
+                              ),
+                              label: Text("Complete"))
+                          : IconButton(
+                              onPressed: () => controller.closeShopping(),
+                              icon: Icon(Icons.close),
+                            ),
+                    ),
+                  ),
+                  // if (controller.startShopping.value)
+                  //   Positioned(
+                  //     top: 4,
+                  //     left: 16,
+                  //     child: Container(
+                  //       width: 100,
+                  //       height: 60,
+                  //       child: SpinKitWave(
+                  //         color: AppColors.primary.withOpacity(0.9),
+                  //         type: SpinKitWaveType.start,
+                  //       ),
+                  //       decoration: BoxDecoration(
+                  //         color: Colors.black38,
+                  //         borderRadius: BorderRadius.circular(5),
+                  //       ),
+                  //     ),
+                  //   ),
+                ],
+              ),
+              if (!controller.sharedData.startShopping.isTrue)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 10,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: screenSize.width * 0.6,
+                        height: 40,
+                        child: Wrap(
+                          runSpacing: 0,
+                          spacing: 0,
+                          runAlignment: WrapAlignment.start,
+                          direction: Axis.horizontal,
+                          children: [
+                            Text(
+                              'Shopping items:',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            ...shoppingList.shoppingItems!
+                                .map(
+                                  (e) => Chip(
+                                    label: Text(
+                                      Formatter.shorten(e.product!.name!, 15),
+                                    ),
+                                  ),
+                                )
+                                .take(2)
+                                .toList(),
+                            if (shoppingList.shoppingItems!.length > 2)
+                              Chip(label: Text("...")),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            style: OutlinedButton.styleFrom(
+                              primary: AppColors.secondary,
+                            ),
+                            onPressed: () => controller.beginShopping(),
+                            child: Text(
+                              ' BEGIN  ',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              primary: Colors.black54,
+                            ),
+                            onPressed: () => controller.closeShopping(),
+                            child: Text('CANCEL'),
+                          ),
                         ],
                       ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        ElevatedButton(
-                          style: OutlinedButton.styleFrom(
-                            primary: AppColors.secondary,
-                          ),
-                          onPressed: () => controller.beginShopping(),
-                          child: Text(
-                            ' BEGIN  ',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            primary: Colors.black54,
-                          ),
-                          onPressed: () => controller.closeShopping(),
-                          child: Text('CANCEL'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-          ],
+                    ],
+                  ),
+                )
+            ],
+          ),
         ),
       );
     });
