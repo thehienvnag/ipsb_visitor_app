@@ -56,6 +56,9 @@ class HomeController extends FullLifeCycleController {
   // Current position: Lat, Lng
   final Rx<Position?> pos = Rx<Position?>(null);
 
+  final loadingStores = false.obs;
+  final loadingCoupons = false.obs;
+  final loadingCategories = false.obs;
   final loading = false.obs;
 
   @override
@@ -88,11 +91,9 @@ class HomeController extends FullLifeCycleController {
     await initBuilding();
     if (states.building.value.id == null) return;
     buildingId.value = states.building.value.id!;
-    await Future.wait([
-      getStores(),
-      getCoupons(),
-      getProductCategory(),
-    ]);
+    getStores();
+    getCoupons();
+    getProductCategory();
     loading.value = false;
   }
 
@@ -150,12 +151,15 @@ class HomeController extends FullLifeCycleController {
 
   Future<void> getStores() async {
     if (buildingId.value == 0) return;
+    loadingStores.value = true;
     final stores = await storeService.getStoresByBuilding(buildingId.value);
     listStore.value = stores.content ?? [];
+    loadingStores.value = false;
   }
 
   Future<void> getCoupons() async {
     if (buildingId.value == 0) return;
+    loadingCoupons.value = true;
     listCoupon.value = await couponService.getCouponsByBuildingId(
       buildingId.value,
       random: true,
@@ -163,6 +167,7 @@ class HomeController extends FullLifeCycleController {
     if (listCoupon.isEmpty) {
       showSlider.value = false;
     }
+    loadingCoupons.value = false;
   }
 
   Future<void> getBuildings() async {
@@ -214,8 +219,10 @@ class HomeController extends FullLifeCycleController {
 
   /// Get list ProductCategory by api
   Future<void> getProductCategory() async {
+    loadingCategories.value = true;
     final paging = await _categoryService.getProductCategory();
-    listCategories.value = paging.content!;
+    listCategories.value = paging.content ?? [];
+    loadingCategories.value = false;
   }
 
   void goToBuildingStoreDetails() {

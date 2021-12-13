@@ -41,29 +41,44 @@ final SharedStates states = Get.find();
 final items = [
   BottomItem(
     text: 'Home',
-    icon: Icon(Icons.home),
+    icon: Icon(
+      Icons.home,
+      size: 18,
+    ),
     route: Routes.home,
   ),
   BottomItem(
     text: 'Map',
-    icon: Icon(Icons.map),
+    icon: Icon(
+      Icons.map,
+      size: 18,
+    ),
     route: Routes.map,
   ),
   BottomItem(
     text: 'My coupons',
-    icon: Icon(Icons.local_activity),
+    icon: Icon(
+      Icons.local_activity,
+      size: 18,
+    ),
     route: Routes.myCoupon,
   ),
   BottomItem(
     text: 'Shopping',
-    icon: Icon(Icons.shopping_cart),
+    icon: Icon(
+      Icons.shopping_cart,
+      size: 18,
+    ),
     route: Routes.shoppingList,
   ),
   BottomItem(
     text: 'Notification',
     icon: new Stack(
       children: <Widget>[
-        new Icon(Icons.notifications),
+        new Icon(
+          Icons.notifications,
+          size: 18,
+        ),
         // states.unreadNotification.value != 0 ?
         Obx(() {
           if (states.unreadNotification.value != 0) {

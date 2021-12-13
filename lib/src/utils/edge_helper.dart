@@ -51,6 +51,7 @@ class EdgeHelper {
 
     int divide = (edge.distance! / segment).round();
     if (isFloorConnect(edge) || divide < 2) return [];
+    // if (isStoreAndRouteConnect(edge)) return [];
 
     int part = 1;
     List<Location> locations = [];
@@ -97,6 +98,16 @@ class EdgeHelper {
       i++;
     }
     return result;
+  }
+
+  static bool isStoreAndRouteConnect(Edge edge) {
+    if (edge.fromLocation?.locationTypeId == 1 &&
+            edge.toLocation?.locationTypeId == 2 ||
+        (edge.fromLocation?.locationTypeId == 2 &&
+            edge.toLocation?.locationTypeId == 1)) {
+      return true;
+    }
+    return false;
   }
 
   static Location findNearestLocation(

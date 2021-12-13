@@ -86,7 +86,7 @@ class FloorDetection extends BaseFloorDetection {
         } else {
           _updateFloorCounter = 0;
         }
-        if (_updateFloorCounter >= 2) {
+        if (_updateFloorCounter >= 3) {
           return floorId;
         }
       }

@@ -120,12 +120,20 @@ class PdrPositioning implements IPdrPositioning {
     _userAccelerometerEventSub?.cancel();
   }
 
+  double toPositiveAngle(double angle) {
+    angle = angle % 360;
+    if (angle < 0) angle += 360;
+    return angle;
+  }
+
   /// Init the compass for determine heading direction
   void initCompass() {
     _compassEventSub = FlutterCompass.events?.listen((event) {
       if (event.heading != null) {
-        dev.log((event.heading!.abs() - _config.rotationAngle).toString());
-        _heading = event.heading;
+        dev.log((toPositiveAngle(event.heading!) - _config.rotationAngle)
+            .toString());
+
+        _heading = toPositiveAngle(event.heading!);
       }
     });
   }

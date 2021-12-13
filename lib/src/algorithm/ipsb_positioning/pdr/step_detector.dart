@@ -11,7 +11,7 @@ mixin IStepDetector {
 
 class StepDetector implements IStepDetector {
   /// Sperimentally found on my slow walk. It was 10.0 before
-  double mLimit = 1.8;
+  double mLimit = 1;
 
   List<double> mLastValues = List.generate(6, (index) => 0);
   List<double> mScale = [

@@ -155,7 +155,11 @@ class MapController extends GetxController {
         getFloorPlan().then((value) {
           initPositioning();
           loadEdgesInBuilding().then((value) {
-            initShoppingList();
+            // initShoppingList();
+            // final location = EdgeHelper.findNearestLocation(
+            //     edges, currentPosition.value, selectedFloor.value.id);
+
+            // currentPosition.value = location;
           });
           loadPlaceOnBuilding();
           isLoading.value = false;
@@ -302,6 +306,7 @@ class MapController extends GetxController {
               y: location.y!,
               floorPlanId: location.floorPlanId!,
             ));
+            initShoppingList();
           }
         }
       },
@@ -500,6 +505,7 @@ class MapController extends GetxController {
       completeRoute.value = false;
       distanceToDest.value = -1;
       currentStoreName.value = "";
+      // shortestPath.value = [];
       _mapController.setActiveRoute([]);
     }
   }
@@ -509,6 +515,9 @@ class MapController extends GetxController {
       showDirection();
       checkCurrentLocationOnFloor();
       showShoppingDirections();
+      if (location.id == null) {
+        _mapController.setCurrentMarker(null);
+      }
       // Determine current position on floor
       if (location.floorPlanId == selectedFloor.value.id) {
         _mapController.setCurrentMarker(location);

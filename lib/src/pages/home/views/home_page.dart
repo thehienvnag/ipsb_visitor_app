@@ -46,7 +46,7 @@ class HomePage extends GetView<HomeController> {
                         ),
                         height: controller.showSlider.isTrue
                             ? screenSize.height * 0.194
-                            : screenSize.height * 0.154,
+                            : screenSize.height * 0.164,
                         child: Column(
                           children: [
                             Row(

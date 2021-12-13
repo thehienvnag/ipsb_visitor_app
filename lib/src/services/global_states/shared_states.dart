@@ -55,24 +55,23 @@ class SharedStates extends GetxService {
     Get.bottomSheet(
       SingleChildScrollView(
         child: Container(
-          color: Colors.white,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [AppBoxShadow.boxShadow],
+          ),
           child: Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: Column(
               children: <Widget>[
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      width: 150,
-                    ),
+                    Container(),
                     Text("Login",
                         style: TextStyle(
                             fontSize: 20,
                             color: Colors.black.withOpacity(0.8),
                             fontWeight: FontWeight.bold)),
-                    SizedBox(
-                      width: 110,
-                    ),
                     IconButton(
                       icon: Icon(
                         Icons.close,
