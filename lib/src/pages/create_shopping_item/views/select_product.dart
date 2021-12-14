@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ipsb_visitor_app/src/models/product.dart';
 import 'package:ipsb_visitor_app/src/utils/formatter.dart';
@@ -27,8 +28,8 @@ class SelectProduct extends StatelessWidget {
       type: "single",
       listType: "product",
       itemBuilder: (item, selected, changeSelected) => ListTile(
-        leading: Image.network(
-          item.imageUrl!,
+        leading: CachedNetworkImage(
+          imageUrl: item.imageUrl!,
           width: 80,
         ),
         title: Text(
@@ -50,8 +51,8 @@ class SelectProduct extends StatelessWidget {
         ),
       ),
       selectedItemBuilder: (item, remove) => ListTile(
-        leading: Image.network(
-          item.imageUrl!,
+        leading: CachedNetworkImage(
+          imageUrl: item.imageUrl!,
           height: 40,
         ),
         title: Text(Formatter.shorten(item.name)),

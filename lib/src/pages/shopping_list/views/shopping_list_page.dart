@@ -68,13 +68,17 @@ class ShoppingListPage extends GetView<ShoppingListController> {
                 child: Image.asset(ConstImg.emptyList),
               ),
               Container(
+                width: context.width * 0.778,
                 margin: EdgeInsets.only(top: 30),
-                child: Text(
-                  'Shopping list is not available',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 24,
-                    color: Colors.red,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Shopping list is not available',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24,
+                      color: Colors.red,
+                    ),
                   ),
                 ),
               ),
@@ -228,8 +232,8 @@ class ShoppingListPage extends GetView<ShoppingListController> {
                   // ),
                   child: Container(
                     margin: EdgeInsets.only(right: 10),
-                    height: context.height*0.0645,
-                    width: context.width*0.097,
+                    height: context.height * 0.0645,
+                    width: context.width * 0.097,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       image: Utils.resolveDecoImg(element.building?.imageUrl!),

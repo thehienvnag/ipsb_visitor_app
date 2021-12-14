@@ -496,7 +496,7 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
           ));
         }
       });
-      return Column(children: list);
+      return SingleChildScrollView(child: Column(children: list));
     }
 
     return ListView.separated(

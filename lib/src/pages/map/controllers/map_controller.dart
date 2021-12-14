@@ -431,6 +431,9 @@ class MapController extends GetxController {
       }
       return e;
     }).toList();
+    if (product.id == 37) {
+      testLocationChange3();
+    }
 
     showShoppingDirections();
   }
@@ -565,7 +568,7 @@ class MapController extends GetxController {
     double minDistance = selectedFloor.value.mapScale == null
         ? 1
         : selectedFloor.value.mapScale! / 100 * 2;
-    if (distanceToDest.value < 5) {
+    if (distanceToDest.value < 6) {
       if (completeRoute.isFalse) {
         completeRoute.value = true;
         currentStoreName.value =
@@ -945,6 +948,7 @@ class MapController extends GetxController {
   );
 
   void testLocationChange2() async {
+    await Future.delayed(Duration(milliseconds: 2000));
     loc = await goToY(loc, 9, Duration(milliseconds: 300));
     loc = await goToY(loc, 9, Duration(milliseconds: 300));
     loc = await goToY(loc, 8, Duration(milliseconds: 300));
@@ -963,10 +967,11 @@ class MapController extends GetxController {
     loc = await goToY(loc, 9, Duration(milliseconds: 300));
     // loc = await goToY(loc, 9);
     // loc = await goToY(loc, -7);
+    // testLocationChange3();
   }
 
   void testLocationChange3() async {
-    // await Future.delayed(Duration(milliseconds: 2000));
+    await Future.delayed(Duration(milliseconds: 3000));
     loc = await goToY(loc, 9);
     loc = await goToY(loc, 9);
     loc = await goToY(loc, 9);

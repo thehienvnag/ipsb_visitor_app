@@ -243,7 +243,7 @@ class MapPage extends GetView<MapController> {
                 children: [
                   ListTile(
                     leading: GestureDetector(
-                      onTap: () => controller.testLocationChange3(),
+                      // onTap: () => controller.testLocationChange3(),
                       child: Container(
                         width: context.width * 0.243,
                         height: context.height * 0.0774,
