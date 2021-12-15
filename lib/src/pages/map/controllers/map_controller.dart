@@ -320,8 +320,9 @@ class MapController extends GetxController {
         currentPosition.value = Location();
       } else {
         _mapController.setCurrentMarker(null);
-        _mapController
-            .setActiveRoute(Graph.getRouteOnFloor(shortestPath, floor.id!));
+        _mapController.setActiveRoute(
+          Graph.getRouteOnFloor(shortestPath, floor.id!),
+        );
       }
     }
   }
@@ -454,6 +455,7 @@ class MapController extends GetxController {
   void closeShopping() {
     shoppingListVisble.value = false;
     sharedData.startShopping.value = false;
+    currentStoreName.value = "";
     sharedData.shoppingList.value = ShoppingList();
     listStoreShopping.clear();
     listShoppingRoutes.clear();
