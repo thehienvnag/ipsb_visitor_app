@@ -146,6 +146,9 @@ class MapController extends GetxController {
   /// Pdr config
   PdrPositioningConfig? _pdrConfig;
 
+  /// Change floor callback
+  Function(int)? changeFloorCallback;
+
   @override
   void onInit() {
     super.onInit();
@@ -270,7 +273,7 @@ class MapController extends GetxController {
       mapScale: selectedFloor.value.mapScale!,
     );
 
-    IpsbPositioning.start<Location>(
+    changeFloorCallback = IpsbPositioning.start<Location>(
       pdrConfig: _pdrConfig!,
       bleConfig: _bleConfig!,
       resultTranform: (location2d) => Location(

@@ -23,6 +23,7 @@ mixin IBlePositioning on Positioning {
   void start();
   void stop();
   void removeOldLocations();
+  void changeFloor(int floorId);
 }
 
 class BlePositioning implements IBlePositioning {
@@ -99,5 +100,10 @@ class BlePositioning implements IBlePositioning {
   @override
   void removeOldLocations() {
     _trilateration?.removeOldLocations();
+  }
+
+  @override
+  void changeFloor(int floorId) {
+    _floorDetection?.changeFloor(floorId);
   }
 }

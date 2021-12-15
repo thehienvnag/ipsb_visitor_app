@@ -13,6 +13,7 @@ mixin IDataFusion {
   });
   void start();
   void stop();
+  void changeFloor(int floorId);
 }
 
 class DataFusion implements IDataFusion {
@@ -166,5 +167,10 @@ class DataFusion implements IDataFusion {
     _timer?.cancel();
     _blePositioning.stop();
     // _pdrPositioning.stop();
+  }
+
+  @override
+  void changeFloor(int floorId) {
+    _blePositioning.changeFloor(floorId);
   }
 }
