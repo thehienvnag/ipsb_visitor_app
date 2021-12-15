@@ -50,8 +50,8 @@ class EdgeHelper {
     double segment = minDistance / mapScale * meterToPixel;
 
     int divide = (edge.distance! / segment).round();
-    if (isFloorConnect(edge) || divide < 2) return [];
-    // if (isStoreAndRouteConnect(edge)) return [];
+    if (isFloorConnect(edge) || divide < 2 || isStoreAndRouteConnect(edge))
+      return [];
 
     int part = 1;
     List<Location> locations = [];
@@ -101,48 +101,54 @@ class EdgeHelper {
   }
 
   static bool isStoreAndRouteConnect(Edge edge) {
-    if (edge.fromLocation?.locationTypeId == 1 &&
+    return edge.fromLocation?.locationTypeId == 1 &&
             edge.toLocation?.locationTypeId == 2 ||
         (edge.fromLocation?.locationTypeId == 2 &&
-            edge.toLocation?.locationTypeId == 1)) {
-      return true;
-    }
-    return false;
+            edge.toLocation?.locationTypeId == 1);
   }
 
   static Location findNearestLocation(
       List<Edge> edges, Location loc, int? floorId) {
     if (edges.isEmpty) return loc;
     if (floorId == null) return loc;
-    Location location = edges[0].fromLocation!;
+    Location? location;
+    if (edges[0].fromLocation?.locationTypeId == 2) {
+      location = edges[0].fromLocation!;
+    } else {
+      location = edges[0].toLocation!;
+    }
     double minDistance = Utils.calDistance(
       location,
       loc,
     );
+
     edges
         .where((e) =>
             e.fromLocation?.floorPlanId == floorId &&
             e.toLocation?.floorPlanId == floorId)
         .forEach((e) {
-      double fromDistance = Utils.calDistance(
-        loc,
-        e.fromLocation!,
-      );
-      if (fromDistance < minDistance) {
-        minDistance = fromDistance;
-        location = e.fromLocation!;
+      if ([2, 3, 4].contains(e.fromLocation?.locationTypeId)) {
+        double fromDistance = Utils.calDistance(
+          loc,
+          e.fromLocation!,
+        );
+        if (fromDistance < minDistance) {
+          minDistance = fromDistance;
+          location = e.fromLocation!;
+        }
       }
-
-      double toDistance = Utils.calDistance(
-        loc,
-        e.toLocation!,
-      );
-      if (toDistance < minDistance) {
-        minDistance = toDistance;
-        location = e.toLocation!;
+      if ([2, 3, 4].contains(e.toLocation?.locationTypeId)) {
+        double toDistance = Utils.calDistance(
+          loc,
+          e.toLocation!,
+        );
+        if (toDistance < minDistance) {
+          minDistance = toDistance;
+          location = e.toLocation!;
+        }
       }
     });
-    return location;
+    return location!;
   }
 
   static EdgeHelperResponse edgesWithCurrentLocation(
