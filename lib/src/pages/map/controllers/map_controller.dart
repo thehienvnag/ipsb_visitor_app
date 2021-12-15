@@ -281,15 +281,7 @@ class MapController extends GetxController {
         floorPlanId: location2d?.floorPlanId,
       ),
       onFloorChange: (currentFloor) {
-        final floor = listFloorPlan.firstWhere(
-          (floor) => floor.id == currentFloor,
-          orElse: () => FloorPlan(),
-        );
-        if (floor.id != null && floor.id != selectedFloor.value.id) {
-          changeSelectedFloor(floor);
-          currentPosition.value = Location();
-          // timeFloorChange = DateTime.now();
-        }
+        changeFloor(currentFloor);
       },
       onChange: (newLocation, setCurrent) {
         if (timeFloorChange
@@ -311,6 +303,18 @@ class MapController extends GetxController {
         }
       },
     );
+  }
+
+  void changeFloor(int currentFloor) {
+    final floor = listFloorPlan.firstWhere(
+      (floor) => floor.id == currentFloor,
+      orElse: () => FloorPlan(),
+    );
+    if (floor.id != null && floor.id != selectedFloor.value.id) {
+      changeSelectedFloor(floor);
+      currentPosition.value = Location();
+      // timeFloorChange = DateTime.now();
+    }
   }
 
   void initShoppingList() {
@@ -495,6 +499,7 @@ class MapController extends GetxController {
 
   void startShowDirection() {
     if (directionBottomSheet.isTrue) {
+      isShowingDirection.value = true;
       showDirection();
     }
   }
@@ -578,6 +583,9 @@ class MapController extends GetxController {
           storeName: currentStoreName.value,
         )).then((exit) {
           if (exit) {
+            if (isShowingDirection.isTrue) {
+              stopDirection();
+            }
             completeRoute.value = false;
           }
         });
@@ -588,9 +596,9 @@ class MapController extends GetxController {
   void showDirection() {
     // Incase of edges is empty, end function
     if (edges.isEmpty) return;
-    if (shoppingListVisble.value) return;
+    if (shoppingListVisble.isTrue) return;
     if (destPosition.value <= 0) return;
-    isShowingDirection.value = true;
+    if (isShowingDirection.isFalse) return;
 
     int? beginLocationId = currentPosition.value.id;
     if (beginLocationId == null) {
