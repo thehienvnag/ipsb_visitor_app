@@ -13,7 +13,7 @@ mixin IDataFusion {
   });
   void start();
   void stop();
-  void changeFloor(int floorId);
+  void changeFloor(int floorId, bool removeLocation);
 }
 
 class DataFusion implements IDataFusion {
@@ -47,7 +47,7 @@ class DataFusion implements IDataFusion {
   /// Location changing status
   bool onLocationChanging = false;
 
-  final void Function(int) onFloorChange;
+  final void Function(int, bool) onFloorChange;
 
   /// On location updated
   final void Function(Location2d?, void Function(Location2d)) onChange;
@@ -104,9 +104,10 @@ class DataFusion implements IDataFusion {
   void initBleMethod() {
     _blePositioning.start();
     _blePositioning.currentFloorEvents.listen((e) async {
-      if (_currentFloor != e) {
-        _currentFloor = e;
-        onFloorChange(e);
+      int floorId = e.keys.first;
+      if (_currentFloor != floorId) {
+        _currentFloor = floorId;
+        onFloorChange(floorId, e.values.first);
         getBleLocationFloorChange();
       }
     });
@@ -170,7 +171,7 @@ class DataFusion implements IDataFusion {
   }
 
   @override
-  void changeFloor(int floorId) {
-    _blePositioning.changeFloor(floorId);
+  void changeFloor(int floorId, bool removeLocation) {
+    _blePositioning.changeFloor(floorId, removeLocation);
   }
 }

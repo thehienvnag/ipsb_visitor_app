@@ -8,7 +8,7 @@ import 'base_ble_action.dart';
 
 abstract class BaseFloorDetection extends BaseBleAction {
   /// change floor
-  void changeFloor(int floorId);
+  void changeFloor(int floorId, bool removeLocation);
 
   /// stop
   void stop();
@@ -16,7 +16,7 @@ abstract class BaseFloorDetection extends BaseBleAction {
 
 class FloorDetection extends BaseFloorDetection {
   /// On floor changed callback
-  final void Function(int) onChange;
+  final void Function(int, bool) onChange;
 
   /// Ble Config
   late final BlePositioningConfig _config;
@@ -70,7 +70,7 @@ class FloorDetection extends BaseFloorDetection {
       // enabled: false,
     );
     if (floorId != null) {
-      changeFloor(floorId);
+      changeFloor(floorId, true);
     }
   }
 
@@ -161,10 +161,10 @@ class FloorDetection extends BaseFloorDetection {
   }
 
   @override
-  void changeFloor(int floorId) {
+  void changeFloor(int floorId, bool removeLocation) {
     _currentFloor = floorId;
     _willUpdateFloor = null;
     _updateFloorCounter = 0;
-    onChange(floorId);
+    onChange(floorId, removeLocation);
   }
 }

@@ -17,7 +17,7 @@ abstract class BaseTrilateration extends BaseBleAction {
 
 class Trilateration extends BaseTrilateration {
   /// Current floor id stream
-  final Stream<int> currentFloorEvents;
+  final Stream<Map<int, bool>> currentFloorEvents;
 
   /// Ble Config
   late final BlePositioningConfig _config;
@@ -42,8 +42,8 @@ class Trilateration extends BaseTrilateration {
   void init(config) {
     _config = config;
     _beaconManager = BeaconManager(beacons: _config.beacons);
-    currentFloorEvents.listen((floorId) {
-      _currentFloor = floorId;
+    currentFloorEvents.listen((res) {
+      _currentFloor = res.keys.first;
     });
     periodicHandleLocation();
   }

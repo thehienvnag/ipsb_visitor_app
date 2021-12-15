@@ -18,20 +18,21 @@ class BlePositioningConfig extends PositioningConfig {
 }
 
 mixin IBlePositioning on Positioning {
-  Stream<int> get currentFloorEvents;
+  Stream<Map<int, bool>> get currentFloorEvents;
   Location2d? resolve(int? floorId, {bool removeOldLocation = true});
   void start();
   void stop();
   void removeOldLocations();
-  void changeFloor(int floorId);
+  void changeFloor(int floorId, bool removeLocation);
 }
 
 class BlePositioning implements IBlePositioning {
   /// Controller for current floor stream
-  final StreamController<int> _currentFloor = StreamController<int>.broadcast();
+  final StreamController<Map<int, bool>> _currentFloor =
+      StreamController<Map<int, bool>>.broadcast();
 
   @override
-  Stream<int> get currentFloorEvents => _currentFloor.stream;
+  Stream<Map<int, bool>> get currentFloorEvents => _currentFloor.stream;
 
   /// Configurations for Ble Positioning
   late final BlePositioningConfig _config;
@@ -80,8 +81,8 @@ class BlePositioning implements IBlePositioning {
 
   void initBle() {
     _floorDetection = FloorDetection(
-      onChange: (floorId) {
-        _currentFloor.add(floorId);
+      onChange: (floorId, removeLocation) {
+        _currentFloor.add({floorId: removeLocation});
       },
     );
     _floorDetection?.init(_config);
@@ -103,7 +104,7 @@ class BlePositioning implements IBlePositioning {
   }
 
   @override
-  void changeFloor(int floorId) {
-    _floorDetection?.changeFloor(floorId);
+  void changeFloor(int floorId, bool removeLocation) {
+    _floorDetection?.changeFloor(floorId, removeLocation);
   }
 }

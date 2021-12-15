@@ -283,8 +283,8 @@ class MapController extends GetxController {
         locationTypeId: 2,
         floorPlanId: location2d?.floorPlanId,
       ),
-      onFloorChange: (currentFloor) {
-        changeFloor(currentFloor);
+      onFloorChange: (currentFloor, removeLocation) {
+        changeFloor(currentFloor, removeLocation);
       },
       onChange: (newLocation, setCurrent) {
         if (timeFloorChange
@@ -308,15 +308,21 @@ class MapController extends GetxController {
     );
   }
 
-  void changeFloor(int currentFloor) {
+  void changeFloor(int currentFloor, bool removeLocation) {
     final floor = listFloorPlan.firstWhere(
       (floor) => floor.id == currentFloor,
       orElse: () => FloorPlan(),
     );
     if (floor.id != null && floor.id != selectedFloor.value.id) {
       changeSelectedFloor(floor);
-      currentPosition.value = Location();
-      // timeFloorChange = DateTime.now();
+
+      if (removeLocation) {
+        currentPosition.value = Location();
+      } else {
+        _mapController.setCurrentMarker(null);
+        _mapController
+            .setActiveRoute(Graph.getRouteOnFloor(shortestPath, floor.id!));
+      }
     }
   }
 
