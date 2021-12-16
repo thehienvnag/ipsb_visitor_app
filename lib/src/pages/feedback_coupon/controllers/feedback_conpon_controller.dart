@@ -63,6 +63,7 @@ class FeedbackCouponController extends GetxController {
     if (result) {
       BotToast.showText(text: "Feedback Success");
       Timer(Duration(seconds: 2), () {
+        // Get.offAndToNamed(Routes.myCoupon);
         Get.offAllNamed(Routes.myCoupon);
       });
     }else{
