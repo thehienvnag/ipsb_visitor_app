@@ -48,7 +48,7 @@ class LoginEmailController extends GetxController {
               "account_id_" + AuthServices.userLoggedIn.value.id.toString());
           BotToast.showText(text: "Sign In Successfull");
           Get.back();
-        }else{
+        } else {
           BotToast.showText(text: "Sign In Failed");
         }
       }
@@ -89,7 +89,9 @@ class LoginEmailController extends GetxController {
 
   Future<void> logOut() async {
     await FirebaseAuth.instance.signOut();
-    await _googleSignIn!.signOut();
+    if ((await _googleSignIn?.isSignedIn()) ?? false) {
+      await _googleSignIn?.signOut();
+    }
     BotToast.showText(text: "Logout Successfully");
   }
 }

@@ -12,7 +12,9 @@ class ProfileController extends GetxController {
     if (AuthServices.isLoggedIn()) {
       await FirebaseAuth.instance.signOut();
       try {
-        await _googleSignIn.signOut();
+        if (await _googleSignIn.isSignedIn()) {
+          await _googleSignIn.signOut();
+        }
       } catch (Exception) {
         BotToast.showText(text: "Logout Failed");
       }

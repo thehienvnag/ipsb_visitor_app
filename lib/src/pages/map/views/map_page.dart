@@ -227,7 +227,9 @@ class MapPage extends GetView<MapController> {
     return Obx(() {
       final shoppingList = controller.sharedData.shoppingList.value;
       return Container(
-        height: controller.sharedData.startShopping.isTrue ? context.height*0.14 : context.height*0.27,
+        height: controller.sharedData.startShopping.isTrue
+            ? context.height * 0.14
+            : context.height * 0.32,
         padding: const EdgeInsets.only(top: 10),
         // width: screenSize.width,
         decoration: BoxDecoration(
@@ -242,8 +244,8 @@ class MapPage extends GetView<MapController> {
                   leading: GestureDetector(
                     onTap: () => controller.testGoingShoppingRoutes(),
                     child: Container(
-                      width: context.width*0.243,
-                      height: context.height*0.0774,
+                      width: 80,
+                      height: 60,
                       decoration: BoxDecoration(
                         image: Utils.resolveDecoImg(
                             shoppingList.building?.imageUrl),
@@ -253,7 +255,7 @@ class MapPage extends GetView<MapController> {
                   ),
                   title: Text(
                     shoppingList.name!,
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
                   ),
                   subtitle:
                       Text(Formatter.shorten(shoppingList.building?.name, 30)),
@@ -269,7 +271,7 @@ class MapPage extends GetView<MapController> {
                             icon: Icon(
                               Icons.check_circle_outline_outlined,
                               color: Colors.greenAccent,
-                              size: 23,
+                              size: 18,
                             ),
                             label: Text("Complete"))
                         : IconButton(

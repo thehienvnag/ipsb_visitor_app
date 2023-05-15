@@ -29,69 +29,72 @@ class CreateShoppingItemPage extends GetView<CreateShoppingItemController> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(bottom: 10),
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border:
-                  Border.all(color: Colors.grey.withOpacity(0.4), width: 0.5),
-            ),
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    margin: EdgeInsets.only(top: 20, left: 35),
-                    child: Text(
-                      'Information: ',
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(bottom: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border:
+                    Border.all(color: Colors.grey.withOpacity(0.4), width: 0.5),
+              ),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 20, left: 35),
+                      child: Text(
+                        'Information: ',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 25, left: 28, right: 28),
+                    child: SelectProduct(
+                      dataCallback: controller.loadProducts,
+                      label: "Select product",
+                      onSubmitted: (value) => controller.setProduct(value),
+                      goToDetails: controller.goToProductDetails,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 15, right: 30, left: 30),
+                    child: TextField(
+                      onChanged: (val) => controller.note.value = val,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.black12,
+                        contentPadding: EdgeInsets.only(top: 5, left: 10),
+                        hintText: 'Enter note for shopping item',
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(5)),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 30),
+                    child: OutlinedButton(
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                          ElevatedButton.styleFrom(primary: AppColors.primary),
+                      onPressed: () => controller.submitForm(),
+                      child: Text(
+                        "Create",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 25, left: 28, right: 28),
-                  child: SelectProduct(
-                    dataCallback: controller.loadProducts,
-                    label: "Select product",
-                    onSubmitted: (value) => controller.setProduct(value),
-                    goToDetails: controller.goToProductDetails,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 15, right: 30, left: 30),
-                  child: TextField(
-                    onChanged: (val) => controller.note.value = val,
-                    maxLines: 3,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.black12,
-                      contentPadding: EdgeInsets.only(top: 5, left: 10),
-                      hintText: 'Enter note for shopping item',
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(5)),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 30),
-                  child: OutlinedButton(
-                    style: ElevatedButton.styleFrom(primary: AppColors.primary),
-                    onPressed: () => controller.submitForm(),
-                    child: Text(
-                      "Create",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

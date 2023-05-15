@@ -7,13 +7,16 @@ import 'package:ipsb_visitor_app/src/algorithm/ipsb_positioning/positioning/ble_
 import 'base_ble_action.dart';
 
 abstract class BaseFloorDetection extends BaseBleAction {
+  /// change floor
+  void changeFloor(int floorId, bool removeLocation);
+
   /// stop
   void stop();
 }
 
 class FloorDetection extends BaseFloorDetection {
   /// On floor changed callback
-  final void Function(int) onChange;
+  final void Function(int, bool) onChange;
 
   /// Ble Config
   late final BlePositioningConfig _config;
@@ -67,10 +70,7 @@ class FloorDetection extends BaseFloorDetection {
       // enabled: false,
     );
     if (floorId != null) {
-      _currentFloor = floorId;
-      _willUpdateFloor = null;
-      _updateFloorCounter = 0;
-      onChange(floorId);
+      changeFloor(floorId, true);
     }
   }
 
@@ -86,7 +86,7 @@ class FloorDetection extends BaseFloorDetection {
         } else {
           _updateFloorCounter = 0;
         }
-        if (_updateFloorCounter >= 2) {
+        if (_updateFloorCounter >= 3) {
           return floorId;
         }
       }
@@ -158,5 +158,13 @@ class FloorDetection extends BaseFloorDetection {
       }
     });
     return result;
+  }
+
+  @override
+  void changeFloor(int floorId, bool removeLocation) {
+    _currentFloor = floorId;
+    _willUpdateFloor = null;
+    _updateFloorCounter = 0;
+    onChange(floorId, removeLocation);
   }
 }

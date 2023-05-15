@@ -7,11 +7,11 @@ import 'models/location_2d.dart';
 class IpsbPositioning {
   static IDataFusion? _dataFusion;
 
-  static void start<T>({
+  static Function(int) start<T>({
     required PdrPositioningConfig pdrConfig,
     required BlePositioningConfig bleConfig,
     required T Function(Location2d?) resultTranform,
-    required Function(int) onFloorChange,
+    required Function(int, bool) onFloorChange,
     required Function(T, void Function(Location2d)) onChange,
   }) {
     _dataFusion = DataFusion(
@@ -23,6 +23,7 @@ class IpsbPositioning {
     );
     _dataFusion?.init(bleConfig: bleConfig, pdrConfig: pdrConfig);
     _dataFusion?.start();
+    return (floorId) => _dataFusion?.changeFloor(floorId, false);
   }
 
   static stop() {

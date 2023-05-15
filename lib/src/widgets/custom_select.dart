@@ -454,7 +454,8 @@ class _DialogWidgetState<T> extends State<DialogWidget> {
         child: CircularProgressIndicator(),
       );
     }
-    if (widget.listType == "product") {
+
+    if (wrapperItems.isNotEmpty && widget.listType == "product") {
       List<Widget> list = [];
       groupItems().forEach((key, value) {
         if (value.isNotEmpty) {

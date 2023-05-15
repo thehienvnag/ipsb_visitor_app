@@ -146,6 +146,9 @@ class MapController extends GetxController {
   /// Pdr config
   PdrPositioningConfig? _pdrConfig;
 
+  /// Change floor callback
+  Function(int)? changeFloorCallback;
+
   @override
   void onInit() {
     super.onInit();
@@ -155,7 +158,11 @@ class MapController extends GetxController {
         getFloorPlan().then((value) {
           initPositioning();
           loadEdgesInBuilding().then((value) {
-            initShoppingList();
+            // initShoppingList();
+            // final location = EdgeHelper.findNearestLocation(
+            //     edges, currentPosition.value, selectedFloor.value.id);
+
+            // currentPosition.value = location;
           });
           loadPlaceOnBuilding();
           isLoading.value = false;
@@ -266,7 +273,7 @@ class MapController extends GetxController {
       mapScale: selectedFloor.value.mapScale!,
     );
 
-    IpsbPositioning.start<Location>(
+    changeFloorCallback = IpsbPositioning.start<Location>(
       pdrConfig: _pdrConfig!,
       bleConfig: _bleConfig!,
       resultTranform: (location2d) => Location(
@@ -276,16 +283,8 @@ class MapController extends GetxController {
         locationTypeId: 2,
         floorPlanId: location2d?.floorPlanId,
       ),
-      onFloorChange: (currentFloor) {
-        final floor = listFloorPlan.firstWhere(
-          (floor) => floor.id == currentFloor,
-          orElse: () => FloorPlan(),
-        );
-        if (floor.id != null && floor.id != selectedFloor.value.id) {
-          changeSelectedFloor(floor);
-          currentPosition.value = Location();
-          // timeFloorChange = DateTime.now();
-        }
+      onFloorChange: (currentFloor, removeLocation) {
+        changeFloor(currentFloor, removeLocation);
       },
       onChange: (newLocation, setCurrent) {
         if (timeFloorChange
@@ -302,10 +301,30 @@ class MapController extends GetxController {
               y: location.y!,
               floorPlanId: location.floorPlanId!,
             ));
+            initShoppingList();
           }
         }
       },
     );
+  }
+
+  void changeFloor(int currentFloor, bool removeLocation) {
+    final floor = listFloorPlan.firstWhere(
+      (floor) => floor.id == currentFloor,
+      orElse: () => FloorPlan(),
+    );
+    if (floor.id != null && floor.id != selectedFloor.value.id) {
+      changeSelectedFloor(floor);
+
+      if (removeLocation) {
+        currentPosition.value = Location();
+      } else {
+        _mapController.setCurrentMarker(null);
+        _mapController.setActiveRoute(
+          Graph.getRouteOnFloor(shortestPath, floor.id!),
+        );
+      }
+    }
   }
 
   void initShoppingList() {
@@ -436,6 +455,7 @@ class MapController extends GetxController {
   void closeShopping() {
     shoppingListVisble.value = false;
     sharedData.startShopping.value = false;
+    currentStoreName.value = "";
     sharedData.shoppingList.value = ShoppingList();
     listStoreShopping.clear();
     listShoppingRoutes.clear();
@@ -490,6 +510,7 @@ class MapController extends GetxController {
 
   void startShowDirection() {
     if (directionBottomSheet.isTrue) {
+      isShowingDirection.value = true;
       showDirection();
     }
   }
@@ -500,6 +521,7 @@ class MapController extends GetxController {
       completeRoute.value = false;
       distanceToDest.value = -1;
       currentStoreName.value = "";
+      // shortestPath.value = [];
       _mapController.setActiveRoute([]);
     }
   }
@@ -509,6 +531,9 @@ class MapController extends GetxController {
       showDirection();
       checkCurrentLocationOnFloor();
       showShoppingDirections();
+      if (location.id == null) {
+        _mapController.setCurrentMarker(null);
+      }
       // Determine current position on floor
       if (location.floorPlanId == selectedFloor.value.id) {
         _mapController.setCurrentMarker(location);
@@ -569,6 +594,9 @@ class MapController extends GetxController {
           storeName: currentStoreName.value,
         )).then((exit) {
           if (exit) {
+            if (isShowingDirection.isTrue) {
+              stopDirection();
+            }
             completeRoute.value = false;
           }
         });
@@ -579,9 +607,9 @@ class MapController extends GetxController {
   void showDirection() {
     // Incase of edges is empty, end function
     if (edges.isEmpty) return;
-    if (shoppingListVisble.value) return;
+    if (shoppingListVisble.isTrue) return;
     if (destPosition.value <= 0) return;
-    isShowingDirection.value = true;
+    if (isShowingDirection.isFalse) return;
 
     int? beginLocationId = currentPosition.value.id;
     if (beginLocationId == null) {

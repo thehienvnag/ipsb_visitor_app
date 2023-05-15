@@ -19,6 +19,7 @@ class AuthServices {
   static Future<bool> loginWithFirebase(User userCredentials) async {
     IAccountService _accountService = Get.find();
     final idToken = await userCredentials.getIdToken();
+    print("Login token: " + idToken);
     final accountInfo = await _accountService.loginWithFirebase(idToken);
     return saveAuthInfo(accountInfo);
   }

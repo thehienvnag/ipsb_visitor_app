@@ -31,7 +31,7 @@ class CustomMenuButton extends GetView<MapController> {
         child: normalChildButton(),
       ),
       onItemSelected: (value) {
-        controller.changeSelectedFloor(value);
+        controller.changeFloorCallback?.call(value.id!);
       },
       // onMenuButtonToggle: (bool isToggle) {},
     );
